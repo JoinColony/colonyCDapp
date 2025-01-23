@@ -31,6 +31,7 @@ const MSG = defineMessages({
 const AdminNotifications = () => {
   const toggleButton = (
     <NotificationTypeToggle
+      testId="admin-notifications-toggle"
       toastTextEnabled={formatText(MSG.toastAdminNotificationsEnabled)}
       toastTextDisabled={formatText(MSG.toastAdminNotificationsDisabled)}
       notificationType="adminNotificationsDisabled"

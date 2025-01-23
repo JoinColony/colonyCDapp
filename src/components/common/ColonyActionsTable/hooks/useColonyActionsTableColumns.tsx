@@ -9,7 +9,15 @@ import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
+import { EXPANDER_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
 
+import {
+  MOTION_STATE_COLUMN_ID,
+  CREATED_AT_COLUMN_ID,
+  DESCRIPTION_COLUMN_ID,
+  TEAM_COLUMN_ID,
+} from '../consts.ts';
 import ActionBadge from '../partials/ActionBadge/ActionBadge.tsx';
 import ActionDescription from '../partials/ActionDescription/index.ts';
 
@@ -27,6 +35,8 @@ const useColonyActionsTableColumns = ({
   loadingMotionStates,
   refetchMotionStates,
   showUserAvatar = true,
+  isRecentActivityVariant = false,
+  getMenuProps,
 }) => {
   const isMobile = useMobile();
 
@@ -35,7 +45,7 @@ const useColonyActionsTableColumns = ({
 
     return [
       helper.display({
-        id: 'description',
+        id: DESCRIPTION_COLUMN_ID,
         staticSize: '100%',
         header: formatText(MSG.tableHeaderLatestActivity),
         enableSorting: false,
@@ -52,7 +62,7 @@ const useColonyActionsTableColumns = ({
         cellContentWrapperClassName: 'pr-0',
       }),
       helper.display({
-        id: 'team',
+        id: TEAM_COLUMN_ID,
         staticSize: '8.125rem',
         header: formatText({
           id: 'activityFeedTable.table.header.team',
@@ -78,7 +88,7 @@ const useColonyActionsTableColumns = ({
           ) : null;
         },
       }),
-      helper.accessor('createdAt', {
+      helper.accessor(CREATED_AT_COLUMN_ID, {
         staticSize: '10rem',
         header: formatText({
           id: 'activityFeedTable.table.header.date',
@@ -100,7 +110,7 @@ const useColonyActionsTableColumns = ({
           );
         },
       }),
-      helper.accessor('motionState', {
+      helper.accessor(MOTION_STATE_COLUMN_ID, {
         staticSize: isMobile ? '7.4375rem' : '6.25rem',
         header: formatText({
           id: 'activityFeedTable.table.header.status',
@@ -122,9 +132,19 @@ const useColonyActionsTableColumns = ({
           );
         },
         colSpan: (isExpanded) => (isExpanded ? 0 : undefined),
+        cellContentWrapperClassName: isRecentActivityVariant
+          ? 'flex items-end'
+          : '',
+      }),
+      makeMenuColumn<ActivityFeedColonyAction>({
+        helper,
+        getMenuProps,
+        cellProps: {
+          staticSize: isRecentActivityVariant ? '2rem' : '3rem',
+        },
       }),
       helper.display({
-        id: 'expander',
+        id: EXPANDER_COLUMN_ID,
         staticSize: '2.25rem',
         header: () => null,
         enableSorting: false,
@@ -145,10 +165,12 @@ const useColonyActionsTableColumns = ({
     ];
   }, [
     isMobile,
+    isRecentActivityVariant,
     loading,
     loadingMotionStates,
     refetchMotionStates,
     showUserAvatar,
+    getMenuProps,
   ]);
 };
 

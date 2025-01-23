@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { array, type InferType, number, object, string } from 'yup';
 
+import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { SplitPaymentDistributionType } from '~gql';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
@@ -21,6 +22,7 @@ import {
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
+import { useShowCreateStakedExpenditureModal } from '~v5/common/ActionSidebar/partials/CreateStakedExpenditureModal/hooks.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { getSplitPaymentPayload } from './utils.ts';
@@ -238,6 +240,12 @@ export const useSplitPayment = (
   const validationSchema = useValidationSchema();
   const { networkInverseFee = '0' } = useNetworkInverseFee();
 
+  const {
+    renderStakedExpenditureModal,
+    showStakedExpenditureModal,
+    shouldShowStakedExpenditureModal,
+  } = useShowCreateStakedExpenditureModal(Action.SplitPayment);
+
   useActionFormBaseHook({
     validationSchema,
     defaultValues: useMemo(
@@ -261,10 +269,15 @@ export const useSplitPayment = (
     transform: mapPayload((payload: SplitPaymentFormValues) =>
       getSplitPaymentPayload(colony, payload, networkInverseFee),
     ),
+    primaryButton: {
+      type: shouldShowStakedExpenditureModal ? 'button' : 'submit',
+      onClick: showStakedExpenditureModal,
+    },
   });
 
   return {
     currentToken,
     distributionMethod,
+    renderStakedExpenditureModal,
   };
 };

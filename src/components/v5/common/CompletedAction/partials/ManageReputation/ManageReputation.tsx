@@ -9,6 +9,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
+import { getSafeStringifiedNumber } from '~utils/numbers.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import {
@@ -56,6 +57,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
   const {
+    isMultiSig,
     isMotion,
     transactionHash,
     metadata,
@@ -65,12 +67,16 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     amount,
     fromDomain,
     annotation,
+    multiSigData,
   } = action;
+
   const { networkMotionState } = useGetActionData(transactionHash);
   const motionFinished =
     networkMotionState === NetworkMotionState.Finalizable ||
     networkMotionState === NetworkMotionState.Finalized ||
     networkMotionState === NetworkMotionState.Failed;
+
+  const multiSigFinished = multiSigData?.isRejected || multiSigData?.isExecuted;
 
   const isSmite = [
     ColonyActionType.EmitDomainReputationPenalty,
@@ -78,7 +84,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     ColonyActionType.EmitDomainReputationPenaltyMultisig,
   ].includes(action.type);
 
-  const positiveAmountValue = BigNumber.from(amount || '0')
+  const positiveAmountValue = BigNumber.from(getSafeStringifiedNumber(amount))
     .abs()
     .toString();
 
@@ -189,7 +195,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
       )}
       {positiveAmountValue && (
         <>
-          {isMotion && !motionFinished ? (
+          {(isMotion || isMultiSig) && !motionFinished && !multiSigFinished ? (
             <ManageReputationTableInMotion
               isSmite={isSmite}
               amount={positiveAmountValue}

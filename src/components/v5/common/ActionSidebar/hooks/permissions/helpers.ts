@@ -106,6 +106,9 @@ export const getPermissionsNeededForAction = (
     case Action.StagedPayment: {
       return PERMISSIONS_NEEDED_FOR_ACTION.StagedPayment;
     }
+    case Action.ArbitraryTxs: {
+      return PERMISSIONS_NEEDED_FOR_ACTION.ArbitraryTxs;
+    }
     case Action.StreamingPayment:
       return PERMISSIONS_NEEDED_FOR_ACTION.StreamingPayment;
 
@@ -126,6 +129,7 @@ export const getPermissionsDomainIdForAction = (
   switch (actionType) {
     case Action.SimplePayment:
     case Action.PaymentBuilder:
+    case Action.StagedPayment:
       if (!isMotion) {
         return from;
       }
@@ -135,6 +139,7 @@ export const getPermissionsDomainIdForAction = (
       return undefined;
     case Action.ManageReputation:
     case Action.EditExistingTeam:
+    case Action.SplitPayment:
       if (!isMotion) {
         return team;
       }

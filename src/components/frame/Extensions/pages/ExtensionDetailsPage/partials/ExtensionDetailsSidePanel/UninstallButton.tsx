@@ -3,6 +3,7 @@ import { Trash } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
@@ -131,6 +132,17 @@ const UninstallButton = ({
   const [isUninstallModalOpen, setIsUninstallModalOpen] = useState(false);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const { handleUninstall, isLoading } = useUninstall(extensionId);
+  const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
+
+  const isStreamingPaymentsExtension =
+    extensionId === Extension.StreamingPayments;
+
+  // @todo: add proper logic here to determine if there are active streams or unclaimed funds
+  const hasActiveStream = false;
+  const hasUnclaimedFunds = false;
+
+  const shouldShowWarning =
+    isStreamingPaymentsExtension && (hasActiveStream || hasUnclaimedFunds);
 
   const isStreamingPaymentsExtension =
     extensionId === Extension.StreamingPayments;
@@ -151,6 +163,7 @@ const UninstallButton = ({
           isFullSize
           loading={isLoading}
           onClick={() => setIsUninstallModalOpen(true)}
+          disabled={waitingForActionConfirmation}
         >
           {formatText({ id: 'button.uninstallExtension' })}
         </Button>
@@ -193,7 +206,7 @@ const UninstallButton = ({
           label={MSG[extensionId].uninstallConfirmation}
           isChecked={isCheckboxChecked}
           onChange={() => setIsCheckboxChecked((prevState) => !prevState)}
-          classNames="mt-5"
+          className="mt-5"
         />
       </Modal>
     </>

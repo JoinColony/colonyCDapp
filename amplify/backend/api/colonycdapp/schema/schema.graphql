@@ -922,6 +922,10 @@ enum ColonyActionType {
   MANAGE_TOKENS
   MANAGE_TOKENS_MOTION
   MANAGE_TOKENS_MULTISIG
+  """
+  An action related to arbitrary transaction
+  """
+  ARBITRARY_TX
 }
 
 """
@@ -2053,6 +2057,10 @@ type Transaction @model {
   Options associated with the transaction
   """
   options: String # JSON string
+  """
+  ID of the action associated with the transaction
+  """
+  associatedActionId: String
 }
 
 """
@@ -2893,6 +2901,16 @@ type ColonyMultiSig @model {
   The timestamp when the motion was created at
   """
   createdAt: AWSDateTime!
+  """
+  In case of multiple funding actions in a multisig, when funding an expenditure, array containing
+  the details of tokens and amounts to be funded
+  """
+  expenditureFunding: [ExpenditureFundingItem!]
+  """
+  Expenditure associated with the motion, if any
+  """
+  expenditureId: ID
+    @index(name: "byExpenditureId", queryField: "getMultiSigByExpenditureId")
 }
 """
 Represents a Motion within a Colony
@@ -3570,6 +3588,8 @@ type ColonyAction @model @searchable {
   Ids of the staged payment slots released by the action, if any
   """
   expenditureSlotIds: [Int!]
+
+  arbitraryTransactions: [ColonyActionArbitraryTransaction!]
   """
   ID of the associated streaming payment, if any
   """
@@ -3624,6 +3644,15 @@ type ExpenditureSlotChanges {
 type ColonyActionMetadata @model {
   id: ID!
   customTitle: String!
+  """
+  In case of arbitrary transaction actions, stores the array of ABIs used to encode the transactions
+  """
+  arbitraryTxAbis: [ArbitraryTxAbi!]
+}
+
+type ArbitraryTxAbi {
+  contractAddress: String!
+  jsonAbi: String!
 }
 
 type ColonyDecision @model {
@@ -3673,6 +3702,14 @@ type ColonyActionRoles {
   Administration role
   """
   role_6: Boolean
+}
+
+"""
+Colony Arbitrary transaction that can be involved in an action
+"""
+type ColonyActionArbitraryTransaction {
+  contractAddress: String!
+  encodedFunction: String!
 }
 
 """
@@ -3983,6 +4020,10 @@ type Expenditure @model {
   Address of StakedExpenditure extension which created the expenditure, if applicable
   """
   stakedExpenditureAddress: ID
+  """
+  Only used for Split Payments, used to prevent sending multiple payment notifications
+  """
+  splitPaymentPayoutClaimedNotificationSent: Boolean
 }
 
 """

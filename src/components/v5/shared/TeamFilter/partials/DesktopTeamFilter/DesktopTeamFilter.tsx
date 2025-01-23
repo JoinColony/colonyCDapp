@@ -2,9 +2,8 @@ import clsx from 'clsx';
 import { throttle } from 'lodash';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import { notMaybe } from '~utils/arrays/index.ts';
+import { type Domain } from '~types/graphql.ts';
 
 import AllTeamsItem from '../AllTeamsItem.tsx';
 import CreateNewTeamItem from '../CreateNewTeamItem.tsx';
@@ -15,24 +14,15 @@ import { getOrderedDomains } from './helpers.ts';
 
 const displayName = 'v5.shared.TeamFilter.DesktopTeamFilter';
 
-const DesktopTeamFilter = () => {
+const DesktopTeamFilter = ({ allDomains }: { allDomains: Domain[] }) => {
   const [teamsWidth, setTeamsWidth] = useState(0);
   const [overflowingItemIndex, setOverFlowingItemIndex] = useState(-1);
 
   const teamItemsRef = useRef<HTMLDivElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const {
-    colony: { domains },
-  } = useColonyContext();
-
   const selectedDomain = useGetSelectedDomainFilter();
   const isAllTeamsFilterActive = selectedDomain === undefined;
-
-  // this is in memo due to being a dependency for the other memo
-  const allDomains = useMemo(() => {
-    return domains?.items.filter(notMaybe) || [];
-  }, [domains?.items]);
 
   useEffect(() => {
     const { current: teamsElement } = containerRef;
@@ -103,34 +93,38 @@ const DesktopTeamFilter = () => {
   );
 
   return (
-    <div className="flex h-[34px] w-fit overflow-hidden whitespace-nowrap">
+    <div className="mt-[-2px] flex h-[38px] w-fit overflow-hidden whitespace-nowrap p-[2px]">
       <AllTeamsItem
         selected={isAllTeamsFilterActive}
         // The item should have a delimiter only if it is not the first one before the selected team
         hasDelimiter={selectedDomainIndex !== 0}
       />
-      <div className="flex flex-wrap overflow-hidden" ref={containerRef}>
-        {displayDomains.map((domain, index) => (
-          <div
-            ref={(el) => {
-              if (el) {
-                teamItemsRef.current[index] = el;
-              }
-            }}
-            key={`teamFilter.${domain.id}`}
-            className={clsx('h-full flex-1 flex-shrink-0', {
-              'pointer-events-none opacity-0':
-                overflowingItemIndex > -1 && index >= overflowingItemIndex,
-            })}
-          >
-            <TeamItem
-              selected={selectedDomain?.nativeId === domain.nativeId}
-              // The item should have a delimiter only if it is not the first one before the selected team
-              hasDelimiter={index !== selectedDomainIndex - 1}
-              domain={domain}
-            />
-          </div>
-        ))}
+      <div className="flex flex-wrap" ref={containerRef}>
+        {displayDomains.map((domain, index) => {
+          const isHidden =
+            overflowingItemIndex > -1 && index >= overflowingItemIndex;
+          return (
+            <div
+              ref={(el) => {
+                if (el) {
+                  teamItemsRef.current[index] = el;
+                }
+              }}
+              key={`teamFilter.${domain.id}`}
+              className={clsx('h-full flex-1 flex-shrink-0', {
+                'pointer-events-none opacity-0': isHidden,
+              })}
+            >
+              <TeamItem
+                selected={selectedDomain?.nativeId === domain.nativeId}
+                // The item should have a delimiter only if it is not the first one before the selected team
+                hasDelimiter={index !== selectedDomainIndex - 1}
+                domain={domain}
+                tabIndex={isHidden ? -1 : 0}
+              />
+            </div>
+          );
+        })}
       </div>
       {overflowingItemIndex > -1 && (
         <TeamsDropdown domains={displayDomains.slice(overflowingItemIndex)} />

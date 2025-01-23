@@ -1743,7 +1743,7 @@ const checkArguments = () => {
     process.exit(0);
   }
 
-  if (DEFAULT_TIMEOUT < 1) {
+  if (DEFAULT_COLONIES < 1) {
     console.log(
       `You've chosen to not create any colonies. You must have at least one colony for this script to work properly.`,
     );
@@ -1767,9 +1767,13 @@ const checkArguments = () => {
     );
   }
 
-  console.log(
-    `(For this to work, you will need to have already deployed the previous Colony version resolver to the network.)`,
-  );
+  if (usePreviousColonyVersionArg) {
+    console.log(`Colonies will be deployed using the previous colony version.`);
+    console.log(
+      `(For this to work, you will need to have already deployed the previous Colony version resolver to the network.)`,
+    );
+  }
+
 };
 
 const checkNodeVersion = () => {

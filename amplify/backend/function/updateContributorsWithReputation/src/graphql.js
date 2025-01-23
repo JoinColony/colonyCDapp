@@ -51,6 +51,8 @@ module.exports = {
         domains {
           items {
             nativeId
+            nativeSkillId
+            isRoot
           }
         }
         lastUpdatedContributorsWithReputation

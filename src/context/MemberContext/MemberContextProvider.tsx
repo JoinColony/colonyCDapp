@@ -15,13 +15,20 @@ import {
   HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
   VERIFIED_MEMBERS_LIST_LIMIT,
 } from '~constants/index.ts';
+import { useSearchContext } from '~context/SearchContext/SearchContext.ts';
 import {
+  useOnCreateColonyContributorSubscription,
+  useOnUpdateColonyContributorSubscription,
   useOnUpdateColonySubscription,
   useSearchColonyContributorsQuery,
 } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useAllMembers from '~hooks/members/useAllMembers.ts';
 import useColonyContributors from '~hooks/members/useColonyContributors.ts';
+import {
+  useGetColonyContributorsCount,
+  useGetColonyFollowersCount,
+} from '~hooks/useGetColoniesMembersCount.ts';
 import { COLONY_VERIFIED_ROUTE } from '~routes/index.ts';
 import { type ColonyContributor } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -38,6 +45,16 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   } = useColonyContext();
   const isMobile = useMobile();
   const isVerifiedPage = useMatch(`${colonyName}/${COLONY_VERIFIED_ROUTE}`);
+
+  const {
+    colonyMemberCount: totalFollowersCount,
+    loading: followersCountLoading,
+  } = useGetColonyFollowersCount(colonyAddress);
+
+  const {
+    colonyMemberCount: totalContributorCount,
+    loading: contributorsCountLoading,
+  } = useGetColonyContributorsCount(colonyAddress);
 
   const contributorsPageSize = useMemo(() => {
     let itemsToShow = CONTRIBUTORS_MEMBERS_LIST_LIMIT;
@@ -92,11 +109,19 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [getFilterContributorType],
   );
 
+  const { searchValue } = useSearchContext();
+
+  const hasActiveFilter =
+    !!filterStatus ||
+    Object.keys(permissions).length > 0 ||
+    contributorTypes.size > 0 ||
+    searchValue.length > 0;
+
   const {
     data: memberSearchData,
     loading,
     fetchMore,
-    refetch,
+    refetch: refetchColonyContributors,
   } = useSearchColonyContributorsQuery({
     variables: {
       colonyAddress,
@@ -130,15 +155,35 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     },
   });
 
-  const { data } = useOnUpdateColonySubscription();
+  const { data: newColonyUpdateResult } = useOnUpdateColonySubscription();
+
+  const newColonyUpdate =
+    newColonyUpdateResult?.onUpdateColony
+      ?.lastUpdatedContributorsWithReputation;
+
+  const { data: createColonyContributorSubscription } =
+    useOnCreateColonyContributorSubscription();
+
+  const newColonyContributorAdded =
+    createColonyContributorSubscription?.onCreateColonyContributor
+      ?.contributorAddress;
+
+  const { data: updateColonyContributorSubscription } =
+    useOnUpdateColonyContributorSubscription();
+
+  const newColonyContributorRolesUpdate =
+    updateColonyContributorSubscription?.onUpdateColonyContributor?.roles;
+
+  const newColonyContributorUpdate =
+    newColonyContributorAdded || newColonyContributorRolesUpdate;
 
   useEffect(() => {
     let timeout;
     // When the colony first loads, the reputation is updated asynchronously. This means that the currently
     // cached reputation might be out of date. If this is the case, we should refetch.
-    if (data?.onUpdateColony?.lastUpdatedContributorsWithReputation) {
+    if (newColonyUpdate || newColonyContributorUpdate) {
       // It looks hacky, but we need the timeout to ensure that opensearch has been updated before we refetch.
-      timeout = setTimeout(refetch, 2000);
+      timeout = setTimeout(refetchColonyContributors, 2000);
     }
 
     return () => {
@@ -146,20 +191,11 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
         clearTimeout(timeout);
       }
     };
-  }, [data?.onUpdateColony?.lastUpdatedContributorsWithReputation, refetch]);
+  }, [newColonyContributorUpdate, newColonyUpdate, refetchColonyContributors]);
 
   const allMembers = useMemo(
     () =>
       memberSearchData?.searchColonyContributors?.items.filter(notNull) || [],
-    [memberSearchData],
-  );
-
-  const followers = useMemo(
-    () =>
-      memberSearchData?.searchColonyContributors?.items.filter(
-        (item): item is NonNullable<typeof item> =>
-          item !== null && !!item.isWatching,
-      ) || [],
     [memberSearchData],
   );
 
@@ -168,7 +204,6 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     pagedContributors,
     canLoadMore: moreContributors,
     loadMore: loadMoreContributors,
-    totalContributorCount,
     totalContributors,
   } = useColonyContributors({
     allMembers,
@@ -222,10 +257,8 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       membersByAddress,
       filteredMembers,
       verifiedMembers,
-      totalMemberCount: memberSearchData?.searchColonyContributors?.total || 0,
+      totalMemberCount: totalFollowersCount,
       totalMembers: allMembers,
-      followersCount: followers.length,
-      followers,
       pagedMembers,
       moreMembers,
       loadMoreMembers,
@@ -236,15 +269,14 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       pagedContributors,
       moreContributors,
       loadMoreContributors,
-      loading,
+      loading: loading || followersCountLoading || contributorsCountLoading,
+      hasActiveFilter,
     }),
     [
       membersByAddress,
       filteredMembers,
       verifiedMembers,
-      memberSearchData,
       allMembers,
-      followers,
       pagedMembers,
       moreMembers,
       loadMoreMembers,
@@ -256,6 +288,10 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       moreContributors,
       loadMoreContributors,
       loading,
+      followersCountLoading,
+      contributorsCountLoading,
+      totalFollowersCount,
+      hasActiveFilter,
     ],
   );
 

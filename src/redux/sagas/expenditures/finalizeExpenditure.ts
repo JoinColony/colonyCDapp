@@ -3,7 +3,10 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import type ColonyManager from '~context/ColonyManager.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
+import {
+  getClaimableExpenditurePayouts,
+  getExpenditureCreatingActionId,
+} from '~utils/expenditures.ts';
 
 import {
   type ChannelDefinition,
@@ -57,6 +60,7 @@ function* finalizeExpenditureAction({
           id: meta.id,
           index: 0,
         },
+        associatedActionId: getExpenditureCreatingActionId(expenditure),
       });
     } else {
       const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
@@ -78,6 +82,7 @@ function* finalizeExpenditureAction({
           id: meta.id,
           index: 0,
         },
+        associatedActionId: getExpenditureCreatingActionId(expenditure),
       });
     }
 
@@ -96,6 +101,7 @@ function* finalizeExpenditureAction({
       metaId: meta.id,
       nativeExpenditureId: expenditure.nativeId,
       colonyClient,
+      associatedActionId: getExpenditureCreatingActionId(expenditure),
     });
 
     yield put<AllActions>({

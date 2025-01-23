@@ -12,6 +12,7 @@ export { TransactionErrors };
 export type MethodParams = (MethodParam | MethodParam[] | MethodParam[][])[];
 
 export interface TxConfig {
+  associatedActionId?: string;
   context: string;
   group: {
     key: string;
@@ -66,6 +67,7 @@ export enum TRANSACTION_METHODS {
   AddVerifiedMembers = 'addVerifiedMembers',
   Approve = 'approve',
   AnnotateTransaction = 'annotateTransaction',
+  ArbitraryTxs = 'arbitraryTxs',
   CancelDraftExpenditure = 'cancelDraftExpenditure',
   CancelLockedExpenditure = 'cancelLockedExpenditure',
   CancelStakedExpenditure = 'cancelStakedExpenditure',
@@ -73,6 +75,7 @@ export enum TRANSACTION_METHODS {
   ClaimColonyFunds = 'claimColonyFunds',
   ClaimExpenditure = 'claimExpenditure',
   CreateColony = 'createColony',
+  FinishCreateColony = 'finishCreateColony',
   CreateDomain = 'createDomain',
   CreateExpenditure = 'createExpenditure',
   CreateMotion = 'createMotion',

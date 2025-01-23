@@ -1,19 +1,16 @@
-import { ColonyRole } from '@colony/colony-js';
 import { ShieldStar, Signature, UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 
 import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
-import {
-  ColonyActionType,
-  useGetColonyHistoricRoleRolesQuery,
-  type GetColonyHistoricRoleRolesQuery,
-  type ColonyActionRoles,
-} from '~gql';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { ColonyActionType, useGetColonyHistoricRoleRolesQuery } from '~gql';
+import { getUserRolesForDomain } from '~transformers';
 import { Authority } from '~types/authority.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { getHistoricRolesDatabaseId } from '~utils/databaseId.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
@@ -24,6 +21,7 @@ import {
   TEAM_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { UserRoleModifier } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
@@ -44,39 +42,21 @@ import {
   TeamFromRow,
 } from '../rows/index.ts';
 
+import {
+  getIsPermissionsRemoval,
+  transformActionRolesToColonyRoles,
+} from './utils.ts';
+
 const displayName = 'v5.common.CompletedAction.partials.SetUserRoles';
 
 interface Props {
   action: ColonyAction;
 }
 
-const transformActionRolesToColonyRoles = (
-  roles:
-    | GetColonyHistoricRoleRolesQuery['getColonyHistoricRole']
-    | ColonyActionRoles,
-): ColonyRole[] => {
-  if (!roles) return [];
-
-  const roleKeys = Object.keys(roles);
-
-  const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => roles[key] !== null)
-    .map((key) => {
-      const match = key.match(/role_(\d+)/); // Extract the role number
-      if (match && match[1]) {
-        const roleIndex = parseInt(match[1], 10);
-        if (roleIndex in ColonyRole) {
-          return roleIndex;
-        }
-      }
-      return null;
-    })
-    .filter((role): role is ColonyRole => role !== null);
-
-  return colonyRoles;
-};
-
 const SetUserRoles = ({ action }: Props) => {
+  const {
+    colony: { roles: rolesInColony },
+  } = useColonyContext();
   const decisionMethod = useDecisionMethod(action);
   const {
     customTitle = formatText(
@@ -95,7 +75,10 @@ const SetUserRoles = ({ action }: Props) => {
     blockNumber,
     colonyAddress,
     rolesAreMultiSig,
+    motionData,
+    multiSigData,
   } = action;
+  const areRolesMultiSig = !!rolesAreMultiSig;
 
   const roleAuthority = rolesAreMultiSig
     ? Authority.ViaMultiSig
@@ -108,30 +91,47 @@ const SetUserRoles = ({ action }: Props) => {
         colonyAddress,
         nativeId: fromDomain?.nativeId,
         recipientAddress,
-        isMultiSig: rolesAreMultiSig,
+        isMultiSig: areRolesMultiSig,
       }),
     },
     fetchPolicy: 'cache-and-network',
   });
 
-  const isMultiSig = roleAuthority === Authority.ViaMultiSig;
+  const colonyRoles = extractColonyRoles(rolesInColony);
+  const currentUserRoles = getUserRolesForDomain({
+    colonyRoles,
+    isMultiSig: areRolesMultiSig,
+    userAddress: recipientAddress ?? '', // this shouldn't be undefined
+    domainId: fromDomain?.nativeId,
+    constraint: 'excludeInheritedRoles',
+  });
 
-  const dbPermissionsOld = transformActionRolesToColonyRoles(roles);
+  const actionRoles = transformActionRolesToColonyRoles(roles);
+  // in case of motions, no historic roles are created so we just assume we are modifying their current roles (which contract wise we are)
 
-  const { role: dbRoleForDomainOld } = getRole(dbPermissionsOld, isMultiSig);
+  const dbPermissionsOld =
+    actionRoles.filter(Boolean).length > 0 // if we didnt just remove all the roles
+      ? actionRoles
+      : currentUserRoles;
+
+  const { role: dbRoleForDomainOld } = getRole(
+    dbPermissionsOld,
+    areRolesMultiSig,
+  );
 
   const dbPermissionsNew = transformActionRolesToColonyRoles(
     historicRoles?.getColonyHistoricRole || roles,
+    {
+      isMotion: !!motionData || !!multiSigData,
+    },
   );
 
   const { name: dbRoleNameNew, role: dbRoleForDomainNew } = getRole(
     dbPermissionsNew,
-    isMultiSig,
+    areRolesMultiSig,
   );
 
-  const metadata =
-    action.motionData?.motionDomain.metadata ??
-    action.multiSigData?.multiSigDomain.metadata;
+  const metadata = action.motionData?.motionDomain.metadata;
 
   const rolesTitle = formatRolesTitle(roles);
 
@@ -146,7 +146,9 @@ const SetUserRoles = ({ action }: Props) => {
             [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             member: recipientAddress,
             authority: roleAuthority,
-            role: dbRoleForDomainNew,
+            role: getIsPermissionsRemoval(roles)
+              ? UserRoleModifier.Remove
+              : dbRoleForDomainNew,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
@@ -217,7 +219,7 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.authority' })}
           rowContent={
-            rolesAreMultiSig
+            areRolesMultiSig
               ? formatText({ id: 'actionSidebar.authority.viaMultiSig' })
               : formatText({ id: 'actionSidebar.authority.own' })
           }

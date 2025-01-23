@@ -29,10 +29,18 @@ const UserInfoPopoverTrigger = forwardRef<
     },
     ref,
   ) => {
+    const handleClick = (
+      event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    ) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onClick();
+    };
+
     return (
       <button
         ref={ref}
-        onClick={onClick}
+        onClick={handleClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         type="button"

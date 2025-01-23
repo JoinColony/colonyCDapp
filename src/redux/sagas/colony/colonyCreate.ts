@@ -12,6 +12,7 @@ import { /* BigNumber */ utils } from 'ethers';
 import { poll } from 'ethers/lib/utils';
 import { all, call, put } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import {
   ADDRESS_ZERO,
   DEFAULT_TOKEN_DECIMALS,
@@ -238,23 +239,25 @@ function* colonyCreate({
     /**
      * Save colony metadata to the db
      */
-    yield apolloClient.mutate<
-      CreateColonyEtherealMetadataMutation,
-      CreateColonyEtherealMetadataMutationVariables
-    >({
-      mutation: CreateColonyEtherealMetadataDocument,
-      variables: {
-        input: {
-          colonyName: givenColonyName,
-          colonyDisplayName: displayName,
-          tokenAvatar,
-          tokenThumbnail,
-          initiatorAddress: walletAddress,
-          transactionHash: colonyCreationTransactionHash,
-          inviteCode, // temporary, while in private beta
+    yield mutateWithAuthRetry(() =>
+      apolloClient.mutate<
+        CreateColonyEtherealMetadataMutation,
+        CreateColonyEtherealMetadataMutationVariables
+      >({
+        mutation: CreateColonyEtherealMetadataDocument,
+        variables: {
+          input: {
+            colonyName: givenColonyName,
+            colonyDisplayName: displayName,
+            tokenAvatar,
+            tokenThumbnail,
+            initiatorAddress: walletAddress,
+            transactionHash: colonyCreationTransactionHash,
+            inviteCode, // temporary, while in private beta
+          },
         },
-      },
-    });
+      }),
+    );
 
     const {
       payload: { eventData },
@@ -410,7 +413,7 @@ function* colonyCreate({
 //   .mul(BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS))
 //   .div(100); // 1% in wei
 
-function* deployExtensions(
+export function* deployExtensions(
   colonyClient: AnyColonyClient,
   channels: Record<string, ChannelDefinition>,
 ) {

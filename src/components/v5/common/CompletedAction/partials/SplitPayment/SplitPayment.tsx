@@ -29,7 +29,6 @@ import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import {
-  getNumeralTokenAmount,
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
@@ -153,6 +152,10 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
     amount,
     -getTokenDecimalsWithFallback(splitToken?.decimals),
   );
+  const redoAmount = moveDecimal(
+    amount,
+    -getTokenDecimalsWithFallback(splitToken?.decimals),
+  );
 
   const expenditureMeatballOptions: MeatBallMenuItem[] = [
     {
@@ -168,10 +171,10 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
             [ACTION_TYPE_FIELD_NAME]: Action.SplitPayment,
             distributionMethod: distributionType,
             [TEAM_FIELD_NAME]: fundFromDomainNativeId,
-            [AMOUNT_FIELD_NAME]: getNumeralTokenAmount(
-              amount,
-              splitToken?.decimals,
-            ),
+            [AMOUNT_FIELD_NAME]:
+              typeof redoAmount === 'string'
+                ? redoAmount.replace(',', '')
+                : redoAmount,
             payments: slots.map((slot) => {
               const currentAmount = moveDecimal(
                 slot.payouts?.[0].amount,
@@ -232,9 +235,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
           contentWrapperClassName={clsx('z-[65] sm:min-w-[11.25rem]', {
             '!left-6 right-6': isMobile,
           })}
-          dropdownPlacementProps={{
-            top: 12,
-          }}
+          hasLeftAlignment
           items={expenditureMeatballOptions}
         />
       </div>
@@ -274,7 +275,6 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
             id: 'actionSidebar.tooltip.distributionTypes',
           })}
         />
-        <AmountRow amount={amount || '1'} token={splitToken} />
 
         {selectedTeam?.metadata && (
           <TeamFromRow
@@ -282,6 +282,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
             actionType={action.type}
           />
         )}
+        <AmountRow amount={amount || '1'} token={splitToken} />
 
         <DecisionMethodRow action={action} />
 

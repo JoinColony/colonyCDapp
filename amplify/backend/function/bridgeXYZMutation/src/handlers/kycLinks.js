@@ -1,12 +1,16 @@
-const fetch = require('cross-fetch');
-const { v4: uuid } = require('uuid');
-const { graphqlRequest } = require('../utils');
+const { graphqlRequest } = require('../api/graphql/utils');
+
+const { handlePost } = require('../api/rest/bridge');
+
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { updateUser, getUserByBridgeCustomerId } = require('../graphql');
+const {
+  updateUser,
+  getUserByBridgeCustomerId,
+} = require('../api/graphql/schemas');
 
 /**
  * Extracts customer_id from TOS links of the following format:
@@ -22,28 +26,16 @@ const extractCustomerId = (tosLink) => {
   }
 };
 
-const kycLinksHandler = async (
-  event,
-  { appSyncApiKey, apiKey, apiUrl, graphqlURL },
-) => {
+const kycLinksHandler = async (event) => {
   const checksummedWalletAddress = event.request.headers['x-wallet-address'];
   const { body, path } = event.arguments?.input || {};
 
   try {
-    const res = await fetch(`${apiUrl}/${path}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Idempotency-Key': uuid(),
-        'Api-Key': apiKey,
-      },
-      body: JSON.stringify({
-        ...body,
-        type: 'individual',
-      }),
-      method: 'POST',
+    const response = await handlePost(path, {
+      ...body,
+      type: 'individual',
     });
-
-    const data = await res.json();
+    const data = response.data;
 
     /**
      * customer_id in the kyc link object will be null until both TOS/KYC approved
@@ -68,8 +60,6 @@ const kycLinksHandler = async (
       {
         bridgeCustomerId: customerId,
       },
-      graphqlURL,
-      appSyncApiKey,
     );
     const userByCustomerIdData =
       userByCustomerIdQuery.data?.getUserByBridgeCustomerId;
@@ -85,17 +75,12 @@ const kycLinksHandler = async (
 
     if (userByCustomerIdData?.items?.length === 0) {
       // Add customer_id to the user object
-      const mutation = await graphqlRequest(
-        updateUser,
-        {
-          input: {
-            id: checksummedWalletAddress,
-            bridgeCustomerId: customerId,
-          },
+      const mutation = await graphqlRequest(updateUser, {
+        input: {
+          id: checksummedWalletAddress,
+          bridgeCustomerId: customerId,
         },
-        graphqlURL,
-        appSyncApiKey,
-      );
+      });
 
       if (mutation.errors || !mutation.data) {
         const [error] = mutation.errors;

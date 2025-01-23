@@ -13,7 +13,10 @@ import {
   useGetDomainBalanceQuery,
 } from '~gql';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import { sortByLabel } from '~v5/frame/ColonyHome/partials/TotalInOutBalance/utils.ts';
+import {
+  sortByLabel,
+  parseTimeframeKey,
+} from '~v5/frame/ColonyHome/partials/TotalInOutBalance/utils.ts';
 
 import { useColonyContext } from '../ColonyContext/ColonyContext.ts';
 
@@ -79,7 +82,7 @@ const TotalInOutBalanceChartContextProvider: FC<PropsWithChildren> = ({
   const value = useMemo(() => {
     const timeframeBalanceArray = domainBalanceData?.timeframe
       ?.map((timeframeBalance) => ({
-        label: timeframeBalance?.key,
+        label: parseTimeframeKey(timeframeBalance?.key),
         in: convertAmount(timeframeBalance?.value?.totalIn ?? '0'),
         out: convertAmount(timeframeBalance?.value?.totalOut ?? '0'),
       }))

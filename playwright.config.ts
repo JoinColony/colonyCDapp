@@ -8,6 +8,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  fullyParallel: true,
   testDir: './playwright/e2e',
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -16,7 +17,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [['list'], ['html']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -31,7 +32,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'], permissions: ['clipboard-read'] },
     },
 
     {
@@ -41,13 +42,14 @@ export default defineConfig({
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { ...devices['Desktop Safari'], permissions: ['clipboard-read'] },
     },
   ],
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run frontend',
+    command: 'npm run preview',
+    timeout: 90000,
     url: 'http://localhost:9091',
     reuseExistingServer: !process.env.CI,
   },

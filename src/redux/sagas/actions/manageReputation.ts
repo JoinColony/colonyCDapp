@@ -144,7 +144,7 @@ function* manageReputationAction({
       },
     } = yield waitForTxResult(manageReputation.channel);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({

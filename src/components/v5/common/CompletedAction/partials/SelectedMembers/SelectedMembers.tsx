@@ -1,9 +1,11 @@
+import { getPaginationRowModel } from '@tanstack/react-table';
+import clsx from 'clsx';
 import React from 'react';
 
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import Table from '~v5/common/Table/Table.tsx';
+import { Table } from '~v5/common/Table/Table.tsx';
 
 import { type MembersTableModel, membersColumns } from './tableFixtures.tsx';
 import { SelectedMemberType, type SelectedMember } from './types.ts';
@@ -51,9 +53,21 @@ const SelectedMembers = ({ memberAddresses }: SelectedMembersProps) => {
         {formatText({ id: 'actionSidebar.manageVerifiedMembers.table.title' })}
       </h5>
       <Table<MembersTableModel>
+        className={clsx({
+          'pb-4': members.length > 10,
+        })}
         data={members}
         columns={membersColumns}
-        verticalLayout={isMobile}
+        layout={isMobile ? 'vertical' : 'horizontal'}
+        overrides={{
+          initialState: {
+            pagination: {
+              pageIndex: 0,
+              pageSize: 10,
+            },
+          },
+          getPaginationRowModel: getPaginationRowModel(),
+        }}
       />
     </div>
   );

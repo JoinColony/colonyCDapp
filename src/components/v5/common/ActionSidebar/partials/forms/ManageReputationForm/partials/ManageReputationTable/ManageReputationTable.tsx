@@ -44,7 +44,8 @@ const ManageReputationTable: FC = () => {
     useReputationAmountField(120);
 
   const handleFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const unformattedValue = unformatNumeral(e.target.value);
+    // Strip 'M' from the input as the character 'M' is used as a placeholder in the unformatNumeral function and can result in weird values
+    const unformattedValue = unformatNumeral(e.target.value.replace('M', ''));
 
     field.onChange(unformattedValue);
     setValue(formatNumeral(e.target.value, formattingOptions));
@@ -80,10 +81,10 @@ const ManageReputationTable: FC = () => {
         }}
         disabled={isChangeFieldDisabled}
         name="amount"
-        className={clsx('flex-shrink outline-none outline-0', {
+        className={clsx('flex-shrink bg-transparent outline-none outline-0', {
           'placeholder:text-negative-400': !!error,
-          'bg-transparent placeholder:text-gray-300': isChangeFieldDisabled,
-          'bg-base-white placeholder:text-gray-400':
+          'placeholder:text-gray-300': isChangeFieldDisabled,
+          'transition-colors placeholder:text-gray-400 md:hover:text-blue-400 md:placeholder:hover:text-blue-400':
             !isChangeFieldDisabled && !error,
         })}
         placeholder={formatText({ id: 'actionSidebar.enterValue' })}

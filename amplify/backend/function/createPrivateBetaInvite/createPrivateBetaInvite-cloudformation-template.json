@@ -89,7 +89,7 @@
             "Ref": "functioncolonycdappSSMAccessArn"
           }
         ],
-        "Timeout": 25
+        "Timeout": 60
       }
     },
     "LambdaExecutionRole": {

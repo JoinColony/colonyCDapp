@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { addYears, subYears } from 'date-fns';
 import format from 'date-fns/format';
 import isDate from 'date-fns/isDate';
 import React, { useState, type FC } from 'react';
@@ -35,6 +36,9 @@ const TimeRowField: FC<TimeRowFieldProps> = ({
   const [value, setValue] = useState(
     isDate(field.value) ? customDateValue : field.value,
   );
+
+  const year15YearsAgo = subYears(new Date(), 15).getFullYear();
+  const year15YearsAhead = addYears(new Date(), 15).getFullYear();
 
   return (
     <CardSelect<string>
@@ -97,6 +101,8 @@ const TimeRowField: FC<TimeRowFieldProps> = ({
                   inline
                   onClose={onClick}
                   minDate={minDate}
+                  minYear={year15YearsAgo}
+                  maxYear={year15YearsAhead}
                 />
               </div>
             )}

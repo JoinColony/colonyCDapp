@@ -1,10 +1,12 @@
 import { type ApolloClient } from '@apollo/client';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import {
   type CreateDomainMetadataMutation,
   type CreateDomainMetadataMutationVariables,
   CreateDomainMetadataDocument,
   DomainColor,
+  type DomainMetadataFragment,
 } from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
@@ -37,43 +39,49 @@ export function* handleDomainMetadata({
   customActionTitle,
 }: Params) {
   if (isCreateDomain) {
-    yield apolloClient.mutate<
-      CreateDomainMetadataMutation,
-      CreateDomainMetadataMutationVariables
-    >({
-      mutation: CreateDomainMetadataDocument,
-      variables: {
-        input: {
-          id: getPendingMetadataDatabaseId(colonyAddress, txHash),
-          name: domainName,
-          color: domainColor || DomainColor.LightPink,
-          description: domainPurpose || '',
+    yield mutateWithAuthRetry(() =>
+      apolloClient.mutate<
+        CreateDomainMetadataMutation,
+        CreateDomainMetadataMutationVariables
+      >({
+        mutation: CreateDomainMetadataDocument,
+        variables: {
+          input: {
+            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
+            name: domainName,
+            color: domainColor || DomainColor.LightPink,
+            description: domainPurpose || '',
+          },
         },
-      },
-    });
+      }),
+    );
   } else if (domain?.metadata) {
-    yield apolloClient.mutate<
-      CreateDomainMetadataMutation,
-      CreateDomainMetadataMutationVariables
-    >({
-      mutation: CreateDomainMetadataDocument,
-      variables: {
-        input: {
-          id: getPendingMetadataDatabaseId(colonyAddress, txHash),
-          name: domainName,
-          color: domainColor || domain.metadata.color,
-          description: domainPurpose || domain.metadata.description,
-          changelog: getUpdatedDomainMetadataChangelog({
-            transactionHash: txHash,
-            metadata: domain.metadata,
-            newName: domainName,
-            newColor: domainColor,
-            newDescription: domainPurpose,
-          }),
+    const domainMetadata = domain.metadata as DomainMetadataFragment;
+
+    yield mutateWithAuthRetry(() =>
+      apolloClient.mutate<
+        CreateDomainMetadataMutation,
+        CreateDomainMetadataMutationVariables
+      >({
+        mutation: CreateDomainMetadataDocument,
+        variables: {
+          input: {
+            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
+            name: domainName,
+            color: domainColor || domainMetadata.color,
+            description: domainPurpose || domainMetadata.description,
+            changelog: getUpdatedDomainMetadataChangelog({
+              transactionHash: txHash,
+              metadata: domainMetadata,
+              newName: domainName,
+              newColor: domainColor,
+              newDescription: domainPurpose,
+            }),
+          },
         },
-      },
-    });
+      }),
+    );
   }
 
-  yield createActionMetadataInDB(txHash, customActionTitle);
+  yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 }

@@ -22,7 +22,10 @@ export const useGetSplitPaymentColumns = (
   isLoading?: boolean,
 ) => {
   const isTablet = useTablet();
-  const splitPaymentColumnHelper = createColumnHelper<SplitPaymentTableModel>();
+  const splitPaymentColumnHelper = useMemo(
+    () => createColumnHelper<SplitPaymentTableModel>(),
+    [],
+  );
   const { colony } = useColonyContext();
   const { loading: isColonyContributorDataLoading } = useMemberContext();
   const isDataLoading = isLoading || isColonyContributorDataLoading;
@@ -87,6 +90,11 @@ export const useGetSplitPaymentColumns = (
             tokenAddress={row.original.tokenAddress}
           />
         ),
+        meta: {
+          footer: {
+            colSpan: isTablet ? 2 : undefined,
+          },
+        },
       }),
       splitPaymentColumnHelper.accessor('percent', {
         enableSorting: false,
@@ -103,9 +111,10 @@ export const useGetSplitPaymentColumns = (
               isLoading={isDataLoading}
               className="h-4 w-full rounded"
             >
-              <span className="text-md font-medium text-gray-900">
-                {parseFloat(percentCalculated.toFixed(4))}%
-              </span>
+              <div className="flex items-center gap-2 text-md font-medium text-gray-900">
+                {parseFloat(percentCalculated.toFixed(4))}
+                <span>%</span>
+              </div>
             </LoadingSkeleton>
           );
         },
@@ -119,6 +128,11 @@ export const useGetSplitPaymentColumns = (
               </LoadingSkeleton>
             )
           : undefined,
+        meta: {
+          footer: {
+            display: isTablet ? 'none' : undefined,
+          },
+        },
       }),
     ],
     [

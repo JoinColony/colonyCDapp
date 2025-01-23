@@ -23,12 +23,17 @@ export const PaymentBuilderContext = createContext<{
   toggleOnReleaseModal: () => void;
   toggleOffReleaseModal: () => void;
   isReleaseModalOpen: boolean;
+  toggleOnFinalizeModal: () => void;
+  toggleOffFinalizeModal: () => void;
+  isFinalizeModalOpen: boolean;
   selectedFundingAction: ExpenditureAction | null;
-  selectedReleaseAction: ExpenditureAction | null;
   setSelectedFundingAction: (action: ExpenditureAction | null) => void;
-  setSelectedReleaseAction: (action: ExpenditureAction | null) => void;
   selectedMilestones: MilestoneItem[];
   setSelectedMilestones: (transaction: MilestoneItem[]) => void;
+  selectedReleaseAction: ExpenditureAction | null;
+  setSelectedReleaseAction: (action: ExpenditureAction | null) => void;
+  selectedFinalizeAction: ExpenditureAction | null;
+  setSelectedFinalizeAction: (action: ExpenditureAction | null) => void;
 }>({
   toggleOnFundingModal: noop,
   toggleOffFundingModal: noop,
@@ -36,6 +41,9 @@ export const PaymentBuilderContext = createContext<{
   toggleOnCancelModal: noop,
   toggleOffCancelModal: noop,
   isCancelModalOpen: false,
+  toggleOnFinalizeModal: noop,
+  toggleOffFinalizeModal: noop,
+  isFinalizeModalOpen: false,
   toggleOnMilestoneModal: noop,
   toggleOffMilestoneModal: noop,
   isMilestoneModalOpen: false,
@@ -49,6 +57,8 @@ export const PaymentBuilderContext = createContext<{
   selectedFundingAction: null,
   selectedReleaseAction: null,
   setSelectedFundingAction: noop,
+  selectedFinalizeAction: null,
+  setSelectedFinalizeAction: noop,
   setSelectedReleaseAction: noop,
   selectedMilestones: [],
   setSelectedMilestones: noop,

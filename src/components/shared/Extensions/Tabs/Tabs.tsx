@@ -29,7 +29,6 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
           upperContainerClassName,
         )}
         leftNavBtnClassName="absolute left-0 z-base"
-        rightNavBtnClassName="z-base"
         // @ts-ignore - react-tabs-scrollable has invalid type for this prop
         leftBtnIcon={<CaretLeft size={12} />}
         // @ts-ignore - react-tabs-scrollable has invalid type for this prop

@@ -17,7 +17,13 @@ import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import { convertEnotationToNumber } from '~utils/numbers.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
-import Table from '~v5/common/Table/index.ts';
+import { useBuildTokenSumsMap } from '~v5/common/ActionSidebar/partials/forms/shared/hooks/useBuildTokenSumsMap.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
+import {
+  getMoreActionsMenu,
+  renderCellContent,
+} from '~v5/common/Table/utils.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import FileUploadModal from '../FileUploadModal/FileUploadModal.tsx';
@@ -46,6 +52,8 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
   });
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
+  useBuildTokenSumsMap();
+
   useEffect(() => {
     if (paymentsFromFile) {
       const formattedData = paymentsFromFile.map(
@@ -72,7 +80,6 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
       key: id,
     }));
   const value: PaymentBuilderRecipientsFieldModel[] = useWatch({ name }) || [];
-  const columns = useRecipientsFieldTableColumns(name, value);
   const isTablet = useTablet();
   const isMobile = useMobile();
   const getMenuProps = ({ index }) => ({
@@ -111,6 +118,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
         : []),
     ],
   });
+  const columns = useRecipientsFieldTableColumns(name, value, getMenuProps);
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
 
@@ -133,41 +141,55 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
   );
 
   return (
-    <div>
+    <div data-testid="payment-builder-recipients-field">
       <h5 className="mb-3 mt-6 text-2">
         {formatText({ id: 'actionSidebar.payments' })}
       </h5>
       {!!data.length && !hasNoDecisionMethods && (
         <Table<PaymentBuilderRecipientsTableModel>
-          virtualizedProps={
-            data.length > 10
-              ? {
-                  virtualizedRowHeight: isTablet ? 46 : 54,
-                }
-              : undefined
-          }
           className={clsx(
             '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
             {
               '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.25rem]': isTablet,
               '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[3.375rem] [&_td:first-child]:pl-4 [&_td]:pr-4 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
                 !isTablet,
-              '[&_table]:!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
+              '!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
                 !!fieldState.error,
             },
           )}
-          verticalLayout={isTablet}
-          getRowId={({ key }) => key}
           columns={columns}
           data={data}
-          getMenuProps={getMenuProps}
-          withBorder={false}
-          renderCellWrapper={(_, content) => content}
-          initialState={{
-            pagination: {
-              pageSize: 400,
+          layout={isTablet ? 'vertical' : 'horizontal'}
+          rows={
+            data.length > 10
+              ? {
+                  virtualizedRowHeight: isTablet ? 46 : 54,
+                }
+              : undefined
+          }
+          borders={{
+            visible: true,
+            type: 'unset',
+          }}
+          renderCellWrapper={renderCellContent}
+          overrides={{
+            getRowId: ({ key }) => key,
+            initialState: {
+              pagination: {
+                pageIndex: 0,
+                pageSize: 400,
+              },
+            },
+            state: {
+              columnVisibility: {
+                [MEATBALL_MENU_COLUMN_ID]: !isTablet,
+              },
             },
           }}
+          moreActions={getMoreActionsMenu({
+            getMenuProps,
+            visible: isTablet,
+          })}
         />
       )}
       <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row">

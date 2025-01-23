@@ -7,7 +7,11 @@ import { useWatch } from 'react-hook-form';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useUserReputation from '~hooks/useUserReputation.ts';
 import { getInputTextWidth } from '~utils/elements.ts';
-import { calculatePercentageReputation } from '~utils/reputation.ts';
+import { getSafeStringifiedNumber } from '~utils/numbers.ts';
+import {
+  calculatePercentageReputation,
+  getReputationDifference,
+} from '~utils/reputation.ts';
 import {
   getFormattedTokenValue,
   getTokenDecimalsWithFallback,
@@ -85,7 +89,7 @@ export const useReputationFields = () => {
 
   const amountValueCalculated = BigNumber.from(
     moveDecimal(
-      amount || '0',
+      getSafeStringifiedNumber(amount),
       getTokenDecimalsWithFallback(nativeToken.decimals),
     ),
   ).toString();
@@ -110,11 +114,10 @@ export const useReputationFields = () => {
     getTokenDecimalsWithFallback(nativeToken.decimals),
   );
 
-  const amountPercentageValue =
-    typeof newPercentageReputation === 'number' &&
-    typeof percentageReputation === 'number'
-      ? Math.abs(newPercentageReputation - percentageReputation)
-      : '~0';
+  const amountPercentageValue = getReputationDifference(
+    newPercentageReputation,
+    percentageReputation,
+  );
 
   const newValueIsGreaterThanZero = isSmite
     ? BigNumber.from(userReputation || '0').gte(amountValueCalculated)

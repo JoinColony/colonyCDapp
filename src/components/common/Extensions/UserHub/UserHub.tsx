@@ -100,7 +100,7 @@ const UserHub: FC<Props> = ({
           <>
             <div>
               <TitleLabel
-                className="pb-5"
+                className="pb-3.5"
                 text={formatText(MSG.titleColonyOverview)}
               />
               <ul className="-ml-4 flex w-[calc(100%+2rem)] flex-col">
@@ -127,13 +127,13 @@ const UserHub: FC<Props> = ({
                           'font-medium': selectedTab === id,
                         })}
                       >
-                        <span className="relative mr-2 flex shrink-0">
+                        <span className="relative mr-2.5 flex shrink-0">
                           {id === UserHubTab.Notifications && (
                             <NotificationsEnabledWrapper>
                               <UnreadNotifications />
                             </NotificationsEnabledWrapper>
                           )}
-                          <Icon size={14} />
+                          <Icon size={16} />
                         </span>
                         {formatText(label)}
                       </div>

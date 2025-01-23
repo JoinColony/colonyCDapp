@@ -12,7 +12,9 @@ import {
 } from '~types/colony.ts';
 import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
-import Table from '~v5/common/Table/index.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
+import { getMoreActionsMenu } from '~v5/common/Table/utils.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import SocialLinkModal from './partials/SocialLinkModal/index.ts';
@@ -49,7 +51,7 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
       ],
     };
   };
-  const columns = useSocialLinksTableColumns();
+  const columns = useSocialLinksTableColumns(getMenuProps);
   const data: SocialLinksTableModel[] = fieldArrayMethods.fields.map(
     ({ id }, index) => ({
       key: id,
@@ -67,16 +69,35 @@ const SocialLinksTable: FC<SocialLinksTableProps> = ({ name }) => {
             {formatText({ id: 'editColony.socialLinks.table.title' })}
           </h5>
           <Table<SocialLinksTableModel>
-            sizeUnit={isMobile ? undefined : '%'}
-            meatBallMenuSize={isMobile ? undefined : 10}
+            overrides={{
+              state: {
+                columnVisibility: isMobile
+                  ? {
+                      // We will use the more actions for the meatball menu on the vertical layout
+                      [MEATBALL_MENU_COLUMN_ID]: false,
+                      name: true,
+                      link: true,
+                    }
+                  : {
+                      [MEATBALL_MENU_COLUMN_ID]: true,
+                      name: true,
+                      link: true,
+                    },
+              },
+              getRowId: ({ key }) => key,
+            }}
+            borders={{
+              type: 'unset',
+              visible: true,
+            }}
             className={clsx({ '!border-negative-400': !!fieldState.error })}
-            getRowId={({ key }) => key}
+            layout={isMobile ? 'vertical' : 'horizontal'}
             columns={columns}
             data={data}
-            getMenuProps={
-              readonly || hasNoDecisionMethods ? undefined : getMenuProps
-            }
-            verticalLayout={isMobile}
+            moreActions={getMoreActionsMenu({
+              getMenuProps,
+              visible: isMobile,
+            })}
           />
         </>
       )}

@@ -26,6 +26,7 @@ const HeaderAvatar = () => {
         userName={userName}
         userAddress={wallet.address}
         size={isMobile ? 18 : 16}
+        testId="header-avatar"
       />
       {!isMobile && (
         <p className="ml-1 truncate text-sm font-medium">{userName}</p>

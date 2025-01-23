@@ -10,7 +10,7 @@ const {
   getFormattedIncomingFunds,
   getFormattedExpenditures,
   getTokenAddressesFromExpenditures,
-  getPeriodFormat,
+  getFullPeriodFormat,
   getPeriodFor,
   isAfter,
   isBefore,
@@ -40,7 +40,9 @@ const getInOutActions = async (colonyAddress, domainId) => {
     ...getFormattedIncomingFunds(incomingFunds, domainId),
     ...getFormattedActions(actions, domainId),
     ...getFormattedExpenditures(filteredExpenditures, domainId, tokensDecimals),
-  ];
+  ].filter(
+    (action) => !!action.token && (!!action.amount || !!action.networkFee),
+  );
 };
 
 const getTokensDatesMap = (actions) => {
@@ -94,8 +96,12 @@ const groupBalanceByPeriod = (
 
   // Initialise the balance for each period item within the timeframe
   for (let periodIndex = 0; periodIndex < timeframePeriod; periodIndex++) {
-    const periodStartDate = getPeriodFor(periodIndex, timeframeType, timeframePeriodEndDate);
-    const formattedPeriod = getPeriodFormat(periodStartDate, timeframeType);
+    const periodStartDate = getPeriodFor(
+      periodIndex,
+      timeframeType,
+      timeframePeriodEndDate,
+    );
+    const formattedPeriod = getFullPeriodFormat(periodStartDate, timeframeType);
 
     if (!balance[formattedPeriod]) {
       balance[formattedPeriod] = getDefaultDomainBalance();
@@ -103,7 +109,12 @@ const groupBalanceByPeriod = (
   }
   // Add each action to its corresponding balance period in/out operation
   actions.forEach((action) => {
-    const period = getPeriodFormat(action.finalizedDate, timeframeType);
+    const period = getFullPeriodFormat(action.finalizedDate, timeframeType);
+
+    if (!balance[period]) {
+      console.warn(`No balance entry configured for period ${period}`);
+      return;
+    }
 
     // If we are at colony level and the action has a type
     // The action is among the acceptedColonyActionTypes and must be an outgoing source of funds

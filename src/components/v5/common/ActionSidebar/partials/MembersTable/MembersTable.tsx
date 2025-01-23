@@ -8,7 +8,7 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { useMobile } from '~hooks/index.ts';
 import { type ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';
-import Table from '~v5/common/Table/Table.tsx';
+import { Table } from '~v5/common/Table/Table.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { useVerifiedMembersTableColumns } from './hooks.tsx';
@@ -33,11 +33,6 @@ const VerifiedMembersTable: FC<VerifiedMembersTableProps> = ({ name }) => {
   });
   const { getFieldState, getValues } = useFormContext();
   const { readonly } = useAdditionalFormOptionsContext();
-  const columns = useVerifiedMembersTableColumns(
-    name,
-    fieldArrayMethods,
-    manageMembers,
-  );
   const isMobile = useMobile();
   const isEmptyData = getValues(name)?.[0]?.value === undefined;
   const getMenuProps = ({ index }) => {
@@ -45,7 +40,7 @@ const VerifiedMembersTable: FC<VerifiedMembersTableProps> = ({ name }) => {
       ? {
           cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
           contentWrapperClassName: clsx({
-            '!left-6 right-6': isMobile,
+            '!left-6 right-6': !isMobile,
           }),
           items: [
             {
@@ -58,6 +53,13 @@ const VerifiedMembersTable: FC<VerifiedMembersTableProps> = ({ name }) => {
         }
       : undefined;
   };
+  const columns = useVerifiedMembersTableColumns({
+    name,
+    fieldArrayMethods,
+    manageMembers,
+    getMenuProps,
+  });
+
   const fieldState = getFieldState(name);
 
   useEffect(() => {
@@ -75,11 +77,22 @@ const VerifiedMembersTable: FC<VerifiedMembersTableProps> = ({ name }) => {
         className={clsx({
           '!border-negative-400': !!fieldState.error,
         })}
-        withBorder={false}
-        getRowId={({ key }) => key}
         columns={columns}
         data={data}
-        getMenuProps={getMenuProps}
+        borders={{
+          visible: true,
+          type: 'unset',
+        }}
+        moreActions={{}}
+        overrides={{
+          getRowId: ({ key }) => key,
+          initialState: {
+            pagination: {
+              pageIndex: 0,
+              pageSize: 400,
+            },
+          },
+        }}
       />
       {!readonly && (
         <Button

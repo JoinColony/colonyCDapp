@@ -178,7 +178,9 @@ function* createStreamingPaymentAction({
     } = yield waitForTxResult(createStreamingPayment.channel);
 
     if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, customActionTitle);
+      yield createActionMetadataInDB(txHash, {
+        customTitle: customActionTitle,
+      });
     }
 
     if (annotationMessage) {

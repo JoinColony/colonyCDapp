@@ -21,6 +21,7 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
     colony: { colonyAddress },
   } = useColonyContext();
   const { refetchExtensionData } = useExtensionData(extensionId);
+  const { setWaitingForActionConfirmation } = useExtensionDetailsPageContext();
 
   const enableExtensionValues = {
     colonyAddress,
@@ -40,6 +41,7 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
       await enableAsyncFunction(enableExtensionValues);
       await waitForDbAfterExtensionAction({
         method: ExtensionMethods.REENABLE,
+        setWaitingForActionConfirmation,
         refetchExtensionData,
       });
       toast.success(

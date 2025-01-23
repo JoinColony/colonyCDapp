@@ -6,8 +6,8 @@ import { defineMessages } from 'react-intl';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
-import { type ColonyAction } from '~types/graphql.ts';
-import { mapPayload } from '~utils/actions.ts';
+import { type MultiSigAction } from '~types/motions.ts';
+import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { useFinalizeSuccessCallback } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -21,7 +21,7 @@ interface FinalizeButtonProps {
   isPending: boolean;
   setIsPending: (isPending: boolean) => void;
   isMotionOlderThanAWeek: boolean;
-  action: ColonyAction;
+  action: MultiSigAction;
 }
 
 const MSG = defineMessages({
@@ -40,7 +40,10 @@ const FinalizeButton: FC<FinalizeButtonProps> = ({
 }) => {
   const { colony } = useColonyContext();
   const { onFinalizeSuccessCallback } = useFinalizeSuccessCallback();
+  const associatedActionId = getMotionAssociatedActionId(action);
+
   const transform = mapPayload(() => ({
+    associatedActionId,
     colonyAddress: colony.colonyAddress,
     multiSigId,
     canActionFail: isMotionOlderThanAWeek,

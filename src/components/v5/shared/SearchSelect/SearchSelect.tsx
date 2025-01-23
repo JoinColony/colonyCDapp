@@ -42,13 +42,18 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       additionalButtons,
       className,
       placeholder,
+      shouldReturnAddresses = false,
     },
     ref,
   ) => {
     const [searchValue, setSearchValue] = useState('');
     const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
     const isMobile = useMobile();
-    const filteredList = useSearchSelect(items, debouncedSearchValue);
+    const filteredList = useSearchSelect(
+      items,
+      debouncedSearchValue,
+      shouldReturnAddresses,
+    );
 
     useEffect(() => {
       const debounceTimeout = setTimeout(() => {
@@ -112,7 +117,11 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
               onChange={onChange}
               state={state}
               message={message}
+              shouldFocus
               value={searchValue}
+              className={clsx({
+                'focus:shadow-transparent': !searchValue.length,
+              })}
               placeholder={
                 placeholder ??
                 formatText({
@@ -200,6 +209,8 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                       icon={Binoculars}
                       title={{ id: 'actionSidebar.emptyTitle' }}
                       description={{ id: 'actionSidebar.emptyDescription' }}
+                      isDropdown
+                      className="!p-0"
                     />
                   )}
             </div>
@@ -211,6 +222,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
     return (
       <Portal>
         <MenuContainer
+          testId="search-select-menu"
           className={clsx(
             className,
             'absolute z-dropdown max-h-[37.5rem] w-full max-w-[calc(100%-2.25rem)] bg-base-white px-2.5 py-6 sm:max-w-[20.375rem]',

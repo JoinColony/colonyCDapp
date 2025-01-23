@@ -8,7 +8,9 @@ import { supportedExtensionsConfig } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 import { formatText } from '~utils/intl.ts';
+import { getNeededExtension } from '~v5/common/ActionSidebar/partials/utils.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import { type ActionTypeNotificationProps } from './types.ts';
@@ -29,10 +31,15 @@ const MSG = defineMessages({
     defaultMessage:
       'This will disable the Colony and prevent any further activity until resolved.',
   },
-  createDecisionError: {
-    id: `${displayName}.createDecisionError`,
+  noExtensionError: {
+    id: `${displayName}.noExtensionError`,
     defaultMessage:
-      'Agreements requires the Reputation weighted extension to be enabled.',
+      '{actionName} requires the {extensionName} extension to be enabled.',
+  },
+  stagedExpenditureExtensionNotEnabledError: {
+    id: `${displayName}.stagedExpenditureExtensionNotEnabledError`,
+    defaultMessage:
+      'Staged payments requires the Staged payments extension to be enabled.',
   },
   learnMore: {
     id: `${displayName}.learnMore`,
@@ -76,7 +83,10 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
         return formatText(MSG.enterRecoveryModeError);
       case Action.CreateDecision:
         return isFieldDisabled
-          ? formatText(MSG.createDecisionError)
+          ? formatText(MSG.noExtensionError, {
+              actionName: 'Agreements',
+              extensionName: 'Reputation weighted',
+            })
           : undefined;
       case Action.StreamingPayment: {
         const extensionName = supportedExtensionsConfig.find(
@@ -84,8 +94,9 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
         )?.name;
 
         return isFieldDisabled && extensionName
-          ? formatText(MSG.extensionNotInstalled, {
-              extensionName: formatText(extensionName),
+          ? formatText(MSG.noExtensionError, {
+              actionName: 'Streaming',
+              extensionName: 'Streaming Payments',
             })
           : undefined;
       }
@@ -95,6 +106,9 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
   };
 
   const notificationTitle = getNotificationTitle();
+
+  const extensionId = getNeededExtension(selectedAction);
+  const extensionLink = `${COLONY_EXTENSIONS_ROUTE}/${extensionId}`;
 
   return (
     <>
@@ -113,17 +127,15 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
                   {formatText(MSG.learnMore)}
                 </a>
               ) : (
-                selectedAction === Action.CreateDecision && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigate(`extensions/${Extension.VotingReputation}`);
-                      toggleActionSidebarOff();
-                    }}
-                  >
-                    {formatText(MSG.viewExtension)}
-                  </button>
-                )
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate(extensionLink);
+                    toggleActionSidebarOff();
+                  }}
+                >
+                  {formatText(MSG.viewExtension)}
+                </button>
               )
             }
           >

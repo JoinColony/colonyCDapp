@@ -8,7 +8,10 @@ import { type SwitchProps } from './types.ts';
 const displayName = 'v5.common.Fields.Switch';
 
 const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ id, disabled: disabledProp, readOnly, className, ...rest }, ref) => {
+  (
+    { id, disabled: disabledProp, readOnly, testId, className, ...rest },
+    ref,
+  ) => {
     const generatedId = useId();
     const { isDarkMode } = usePageThemeContext();
     const disabled = disabledProp || readOnly;
@@ -20,6 +23,7 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           'pointer-events-none': disabled,
           'cursor-pointer': !disabled,
         })}
+        data-testid={testId}
       >
         <input
           ref={ref}

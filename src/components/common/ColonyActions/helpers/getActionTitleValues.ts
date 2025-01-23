@@ -181,6 +181,13 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.SplitAmount,
         ActionTitleMessageKeys.TokenSymbol,
       ];
+    case actionType.includes(ColonyActionType.Payment):
+      return [
+        ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.Amount,
+        ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
+      ];
     default:
       return [];
   }

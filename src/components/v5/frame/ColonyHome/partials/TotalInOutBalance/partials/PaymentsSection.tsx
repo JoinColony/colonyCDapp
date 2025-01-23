@@ -5,12 +5,8 @@ import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTotalInOutBalanceContext } from '~context/TotalInOutBalanceContext/TotalInOutBalanceContext.ts';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { formatText } from '~utils/intl.ts';
-import {
-  ACTION_TYPE_FIELD_NAME,
-  FROM_FIELD_NAME,
-} from '~v5/common/ActionSidebar/consts.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { MSG } from '../consts.ts';
@@ -23,7 +19,6 @@ export const PaymentsSection = () => {
     totalOut,
     previousTotalOut,
   } = useTotalInOutBalanceContext();
-  const selectedDomain = useGetSelectedDomainFilter();
   const { setShowTabletSidebar } = usePageLayoutContext();
 
   const {
@@ -35,7 +30,6 @@ export const PaymentsSection = () => {
 
     toggleActionSidebarOn({
       [ACTION_TYPE_FIELD_NAME]: Action.PaymentGroup,
-      [FROM_FIELD_NAME]: selectedDomain?.nativeId ?? '',
     });
   };
 

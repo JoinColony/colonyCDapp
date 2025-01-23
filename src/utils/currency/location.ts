@@ -3,7 +3,7 @@ import { SupportedCurrencies } from '~gql';
 
 import { locationApiConfig } from './config.ts';
 import { type IpLocationResponse, type IpifyResponse } from './types.ts';
-import { buildAPIEndpoint, fetchData } from './utils.ts';
+import { buildAPIEndpoint, fetchJsonData } from './utils.ts';
 
 const { ipGeolocatorEndpoint, ipLookupEndpoint } = locationApiConfig;
 
@@ -13,25 +13,19 @@ const { ipGeolocatorEndpoint, ipLookupEndpoint } = locationApiConfig;
  */
 const getUserIp = async () => {
   const url = buildAPIEndpoint(new URL(ipLookupEndpoint), { format: 'json' });
-  const ip = await fetchData<IpifyResponse>(
+  return fetchJsonData<IpifyResponse>(
     url,
-    (response) => {
-      return response.ip;
-    },
     'Unable to get user IP address.',
-  );
-
-  return ip;
+  ).then(({ ip }) => ip);
 };
 
 const getUserCountryCode = async (ip: string) => {
   const url = buildAPIEndpoint(new URL(ipGeolocatorEndpoint), { ip });
-  return fetchData<IpLocationResponse>(
+  return fetchJsonData<IpLocationResponse>(
     url,
-    // eslint-disable-next-line camelcase
-    ({ country_code2 }) => country_code2,
     'Failed to fetch user country code. ',
-  );
+    // eslint-disable-next-line camelcase
+  ).then(({ country_code2 }) => country_code2);
 };
 
 /**

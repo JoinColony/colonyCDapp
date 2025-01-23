@@ -95,7 +95,7 @@
             "Ref": "awsParametersAndSecretsManagerExtensionArn"
           }
         ],
-        "Timeout": 25
+        "Timeout": 60
       }
     },
     "LambdaExecutionRole": {

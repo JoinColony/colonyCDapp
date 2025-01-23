@@ -17,7 +17,7 @@ const MembersInformation = () => {
     loading: membersLoading,
     totalContributors,
     totalContributorCount,
-    followersCount,
+    totalMemberCount,
   } = useMemberContext();
 
   const allMembers = totalContributors.map((member) => ({
@@ -40,28 +40,30 @@ const MembersInformation = () => {
         />
         <LoadingSkeleton
           isLoading={membersLoading}
-          className="h-4 w-[70px] rounded"
+          className="h-4 w-[4.375rem] rounded"
         >
           <p>
+            {/* What the UI calls members, the context calls contributors */}
             <span className="font-semibold">{totalContributorCount}</span>{' '}
             {formatText({ id: 'colonyHome.members' })}
           </p>
         </LoadingSkeleton>
       </Link>
-      <LoadingSkeleton
-        isLoading={membersLoading}
-        className="h-4 w-[70px] rounded"
+      <Link
+        className="md:hover:text-blue-400"
+        to={{ pathname: COLONY_FOLLOWERS_ROUTE, search: search || '' }}
       >
-        <Link
-          className="md:hover:text-blue-400"
-          to={{ pathname: COLONY_FOLLOWERS_ROUTE, search: search || '' }}
+        <LoadingSkeleton
+          isLoading={membersLoading}
+          className="h-4 w-[4.375rem] rounded"
         >
           <p>
-            <span className="font-semibold">{followersCount}</span>{' '}
+            {/* What the UI calls followers, the context calls members */}
+            <span className="font-semibold">{totalMemberCount}</span>{' '}
             {formatText({ id: 'colonyHome.followers' })}
           </p>
-        </Link>
-      </LoadingSkeleton>
+        </LoadingSkeleton>
+      </Link>
     </div>
   );
 };

@@ -1,9 +1,11 @@
+import { Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { type FieldValues } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
 import { type Colony } from '~types/graphql.ts';
+import { findDomainByNativeId } from '~utils/domains.ts';
 
 import { getPaymentBuilderPayload } from '../forms/PaymentBuilderForm/utils.ts';
 import { getSplitPaymentPayload } from '../forms/SplitPaymentForm/utils.ts';
@@ -55,6 +57,15 @@ export const getCreateStakedExpenditurePayload = ({
     stakedExpenditureAddress,
   } = options;
 
+  const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
+  const createdInDomain =
+    findDomainByNativeId(Number(values.createdInDomainId), colony) ||
+    rootDomain;
+
+  if (!createdInDomain) {
+    return null;
+  }
+
   const payload = getActionPayload({
     actionType,
     formValues: values,
@@ -68,6 +79,7 @@ export const getCreateStakedExpenditurePayload = ({
 
   return {
     ...payload,
+    createdInDomain,
     stakeAmount: BigNumber.from(stakeAmount),
     stakedExpenditureAddress,
     tokenAddress: colony.nativeToken.tokenAddress,

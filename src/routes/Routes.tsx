@@ -65,6 +65,7 @@ import {
   COLONY_MULTISIG_ROUTE,
   COLONY_AGREEMENTS_ROUTE,
   USER_CRYPTO_TO_FIAT_ROUTE,
+  RESERVED_ROUTES,
   COLONY_STREAMING_PAYMENTS_ROUTE,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
@@ -87,10 +88,9 @@ const Routes = () => {
         <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
 
         {/* Main routes */}
-        <Route element={<MainRoute />}>
-          <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
-          <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
-        </Route>
+        <Route element={<MainRoute />} />
+        <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
+        <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
 
         {/* User routes */}
         <Route path={USER_HOME_ROUTE} element={<UserRoute />}>
@@ -120,6 +120,14 @@ const Routes = () => {
           path={CREATE_COLONY_ROUTE}
           element={<OnboardingPage flow={Flow.Colony} />}
         />
+
+        {/* If a reserved route has not been used by this point, redirect to NotFoundRoute */}
+        {[...RESERVED_ROUTES]
+          // Allow in use colony names
+          .filter((route) => !['/meta', '/beta'].includes(route))
+          .map((route) => (
+            <Route path={route} element={<NotFoundRoute />} />
+          ))}
 
         {/* Colony routes */}
         <Route path={COLONY_HOME_ROUTE} element={<ColonyRoute />}>

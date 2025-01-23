@@ -3,6 +3,7 @@ import React from 'react';
 import { Action } from '~constants/actions.ts';
 import { useActiveActionType } from '~v5/common/ActionSidebar/hooks/useActiveActionType.ts';
 
+import ArbitraryTxsDescription from './partials/ArbitraryTxsDescription.tsx';
 import CreateDecisionDescription from './partials/CreateDecisionDescription.tsx';
 import CreateNewDomainDescription from './partials/CreateNewDomainDescription.tsx';
 import EditColonyDetailsDescription from './partials/EditColonyDetailsDescription.tsx';
@@ -63,6 +64,8 @@ const ActionSidebarDescription = () => {
       return <SplitPaymentDescription />;
     case Action.StagedPayment:
       return <StagedPaymentsDescription />;
+    case Action.ArbitraryTxs:
+      return <ArbitraryTxsDescription />;
     case Action.StreamingPayment:
       return <StreamingPaymentDescription />;
     default:

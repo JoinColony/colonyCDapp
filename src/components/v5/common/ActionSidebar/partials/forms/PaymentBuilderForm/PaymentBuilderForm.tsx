@@ -1,12 +1,9 @@
 import { UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
-import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
-import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
-import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
@@ -18,10 +15,8 @@ import PaymentBuilderRecipientsField from './partials/PaymentBuilderRecipientsFi
 const displayName = 'v5.common.ActionSidebar.partials.PaymentBuilderForm';
 
 const PaymentBuilderForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  usePaymentBuilder(getFormOptions);
+  const { renderStakedExpenditureModal } = usePaymentBuilder(getFormOptions);
   const hasNoDecisionMethods = useHasNoDecisionMethods();
-
-  const createdInFilterFn = useFilterCreatedInField('from');
 
   return (
     <>
@@ -40,15 +35,10 @@ const PaymentBuilderForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <TeamsSelect name="from" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
-      <DecisionMethodField
-        // @TODO remove MultiSig once we add support for multisig advanced payments
-        filterOptionsFn={({ value }) =>
-          ![DecisionMethod.Reputation, DecisionMethod.MultiSig].includes(value)
-        }
-      />
-      <CreatedIn filterOptionsFn={createdInFilterFn} />
+      <DecisionMethodField />
       <Description />
       <PaymentBuilderRecipientsField name="payments" />
+      {renderStakedExpenditureModal()}
     </>
   );
 };

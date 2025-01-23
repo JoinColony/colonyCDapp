@@ -1,4 +1,5 @@
 const EnvVarsConfig = require('./envVars.js');
+const { SupportedNetwork } = require('../consts.js');
 
 const {
   ColonyJSNetworkMapping,
@@ -6,15 +7,23 @@ const {
   NETWORK_DATA,
 } = require('../consts');
 
+const DEFAULT_NETWORK = SupportedNetwork.ArbitrumOne;
+
 const NetworkConfig = (() => {
   return {
     getConfig: async () => {
       const { network } = await EnvVarsConfig.getEnvVars();
-      const supportedNetwork = ColonyJSNetworkMapping[network];
+      const resolvedNetwork = ColonyJSNetworkMapping[network] || network;
+
+      const DEFAULT_NETWORK_TOKEN =
+        TOKEN_DATA[resolvedNetwork] || TOKEN_DATA[DEFAULT_NETWORK];
+      const DEFAULT_NETWORK_INFO =
+        NETWORK_DATA[resolvedNetwork] || NETWORK_DATA[DEFAULT_NETWORK];
 
       return {
-        DEFAULT_NETWORK_TOKEN: TOKEN_DATA[supportedNetwork],
-        DEFAULT_NETWORK_INFO: NETWORK_DATA[supportedNetwork],
+        DEFAULT_NETWORK_TOKEN,
+        DEFAULT_NETWORK_INFO,
+        supportedNetwork: resolvedNetwork || DEFAULT_NETWORK,
       };
     },
   };

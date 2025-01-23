@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 
-import { FAILED_LOADING_DURATION as POLLING_TIMEOUT } from '~frame/LoadingTemplate/index.ts';
 import { useGetExpenditureQuery } from '~gql';
-import noop from '~utils/noop.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 
 export const useGetExpenditureData = (
   expenditureId: string | null | undefined,
+  // Forces the polling to continue until the attached component unmounts
+  options?: {
+    pollUntilUnmount?: boolean;
+  },
 ) => {
   const pollInterval = getSafePollingInterval();
+
+  const [isPolling, setIsPolling] = useState(false);
+
   const { data, loading, refetch, startPolling, stopPolling } =
     useGetExpenditureQuery({
       variables: {
@@ -19,33 +24,33 @@ export const useGetExpenditureData = (
     });
 
   const expenditure = data?.getExpenditure;
-  const [isPolling, setIsPolling] = useState(expenditureId && !expenditure);
+
+  const shouldPoll =
+    (expenditureId && !expenditure) || !!options?.pollUntilUnmount;
 
   useEffect(() => {
-    const shouldPoll = expenditureId && !expenditure;
-
     setIsPolling(shouldPoll);
 
     if (!shouldPoll) {
-      return noop;
+      stopPolling();
+
+      return;
     }
 
-    const cancelPollingTimer = setTimeout(stopPolling, POLLING_TIMEOUT);
+    if (!isPolling) {
+      startPolling(pollInterval);
+    }
+  }, [isPolling, pollInterval, shouldPoll, startPolling, stopPolling]);
 
-    startPolling(pollInterval);
-
+  useEffect(() => {
     return () => {
-      if (cancelPollingTimer) {
-        clearTimeout(cancelPollingTimer);
-      }
-
       stopPolling();
     };
-  }, [pollInterval, expenditureId, expenditure, stopPolling, startPolling]);
+  }, [stopPolling]);
 
   return {
     expenditure,
-    loadingExpenditure: loading || isPolling,
+    loadingExpenditure: loading || (isPolling && !expenditure),
     refetchExpenditure: refetch,
     startPolling,
     stopPolling,

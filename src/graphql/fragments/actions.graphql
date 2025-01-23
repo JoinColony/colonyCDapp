@@ -120,6 +120,10 @@ fragment ColonyAction on ColonyAction {
   }
   metadata {
     customTitle
+    arbitraryTxAbis {
+      contractAddress
+      jsonAbi
+    }
   }
   members
   rootHash
@@ -139,6 +143,15 @@ fragment ColonyAction on ColonyAction {
     metadata {
       distributionType
     }
+    creatingActions: actions(filter: { type: { eq: CREATE_EXPENDITURE } }) {
+      items {
+        transactionHash: id
+      }
+    }
+  }
+  arbitraryTransactions {
+    contractAddress
+    encodedFunction
   }
 }
 

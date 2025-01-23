@@ -13,6 +13,8 @@ export const BETA_DISCLAIMER = `https://docs.colony.io/use/beta/`;
 export const PRIVACY_POLICY = `https://colony.io/terms-of-service#privacy-policy`;
 export const TERMS_AND_CONDITIONS = `https://colony.io/terms-of-service`;
 export const ADVANCED_SETTINGS = `https://docs.colony.io/use/advanced-features/`;
+export const REQUEST_ACCESS = `https://colony.io/request-access`;
+export const REQUEST_INVITES = `https://colony.io/request-invite`;
 
 /*
  * Utils
@@ -112,3 +114,10 @@ export const getSafeTransactionMonitor = (
  */
 export const LEARN_MORE_CRYPTO_TO_FIAT =
   'https://help.colony.io/en/articles/9529993-crypto-to-fiat#h_af81098357';
+
+/**
+ * Arbitrary Transactions
+ */
+
+export const LEARN_MORE_ARBITRARY_TRANSACTIONS =
+  'https://help.colony.io/en/articles/9739602-interact-with-any-contract-from-a-colony';

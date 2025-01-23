@@ -5,16 +5,24 @@ import React, { type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks';
 import { type TransactionType } from '~redux/immutable/index.ts';
-import { TX_SEARCH_PARAM } from '~routes';
+import {
+  COLONY_EXTENSIONS_ROUTE,
+  COLONY_HOME_ROUTE,
+  COLONY_INCOMING_ROUTE,
+  TX_SEARCH_PARAM,
+} from '~routes';
 import {
   getGroupKey,
   getGroupStatus,
   getGroupValues,
   getActiveTransactionIdx,
   getGroupId,
+  getHasZeroAddressTransaction,
 } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { arrayToObject } from '~utils/arrays/index.ts';
@@ -29,15 +37,14 @@ import GroupedTransactionStatus from './GroupedTransactionStatus.tsx';
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransaction';
 
-// When the user clicks on a transaction, we want to use the hash to navigate to the associated action
-// in the action sidebar. For some grouped transactions, we don't have a hash which is associated with
-// an action. Any grouped transaction with a key in the below list cannot be linked to an action.
-const GROUP_KEYS_WHICH_CANNOT_LINK = [
-  TRANSACTION_METHODS.StakeMotion,
-  TRANSACTION_METHODS.FinalizeMotion,
-  TRANSACTION_METHODS.EscalateMotion,
+const EXTENSION_GROUP_KEYS = [
+  TRANSACTION_METHODS.SetMultiSigThresholds,
   TRANSACTION_METHODS.EnableExtension,
-  TRANSACTION_METHODS.ClaimColonyFunds,
+  TRANSACTION_METHODS.InstallExtension,
+  TRANSACTION_METHODS.UpgradeExtension,
+  TRANSACTION_METHODS.DeprecateExtension,
+  TRANSACTION_METHODS.UninstallExtension,
+  TRANSACTION_METHODS.InstallAndEnableExtension,
 ];
 
 const GroupedTransaction: FC<GroupedTransactionProps> = ({
@@ -50,11 +57,15 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
 }) => {
   const isMobile = useMobile();
   const navigate = useNavigate();
+  const { joinedColonies, joinedColoniesLoading } = useAppContext();
+  const colonyContext = useColonyContext({ nullableContext: true });
 
   const groupKey = getGroupKey(transactionGroup);
   const groupId = getGroupId(transactionGroup);
   const status = getGroupStatus(transactionGroup);
   const values = getGroupValues<TransactionType>(transactionGroup);
+  const hasZeroAddressTransaction =
+    getHasZeroAddressTransaction(transactionGroup);
 
   const groupMsgId = `transaction.group`;
 
@@ -89,34 +100,66 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
 
   const selectedTransactionIdx = getActiveTransactionIdx(transactionGroup) || 0;
 
-  const canLinkToAction =
+  const colonyName = joinedColonies.find(
+    (colony) => colony.colonyAddress === values.colonyAddress,
+  )?.name;
+
+  const canLink =
     isClickable &&
     values.group?.key &&
-    !GROUP_KEYS_WHICH_CANNOT_LINK.includes(
-      values.group.key as TRANSACTION_METHODS,
-    ) &&
-    status === TransactionStatus.Succeeded;
+    colonyName &&
+    status === TransactionStatus.Succeeded &&
+    !(hasZeroAddressTransaction && !values.associatedActionId);
 
   const createdAt =
     transactionGroup?.[0].createdAt &&
     getFormattedDateFrom(new Date(transactionGroup[0].createdAt));
 
   const handleNavigateToAction = () => {
-    if (canLinkToAction) {
-      navigate(
-        `${window.location.pathname}?${TX_SEARCH_PARAM}=${values.hash}`,
-        {
-          replace: true,
-        },
-      );
+    if (!canLink) return;
+
+    // If this is a create colony transaction.
+    if (values.group.key === TRANSACTION_METHODS.CreateColony) {
+      navigate(`/${COLONY_HOME_ROUTE.replace(':colonyName', colonyName)}`);
+      return;
     }
+
+    // If this is a claim colony funds transaction.
+    if (values.group.key === TRANSACTION_METHODS.ClaimColonyFunds) {
+      navigate(
+        `/${COLONY_HOME_ROUTE.replace(':colonyName', colonyName)}${COLONY_INCOMING_ROUTE}`,
+      );
+      return;
+    }
+
+    // If this is a transaction related to extension management.
+    if (
+      EXTENSION_GROUP_KEYS.includes(values.group.key as TRANSACTION_METHODS)
+    ) {
+      navigate(
+        `/${COLONY_HOME_ROUTE.replace(':colonyName', colonyName)}${COLONY_EXTENSIONS_ROUTE}`,
+      );
+      return;
+    }
+
+    // Otherwise, this is transaction is related to an action.
+    const path =
+      colonyContext && colonyName === colonyContext.colony.name
+        ? window.location.pathname
+        : `/${colonyName}`;
+    navigate(
+      `${path}?${TX_SEARCH_PARAM}=${values.associatedActionId || values.hash}`,
+      {
+        replace: true,
+      },
+    );
   };
 
   return (
     <li
       className={clsx(`border-b border-gray-100 py-3.5 last:border-none`, {
         'list-none': hideSummary,
-        'hover:bg-gray-25': !!canLinkToAction,
+        'hover:bg-gray-25': !!canLink,
       })}
     >
       <div className="flex w-full flex-col items-start">
@@ -125,11 +168,11 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
             <button
               type="button"
               onClick={handleNavigateToAction}
-              disabled={!canLinkToAction || hideSummary}
+              disabled={!canLink || hideSummary || joinedColoniesLoading}
               className={clsx(
-                'flex w-full flex-col items-start gap-1  sm:px-6',
+                'flex w-full flex-col items-start gap-1 sm:px-6',
                 {
-                  'cursor-default': !canLinkToAction,
+                  'cursor-default': !canLink,
                 },
               )}
             >

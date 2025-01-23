@@ -18,6 +18,7 @@ import {
   type Address,
   type ManageVerifiedMembersOperation,
 } from '~types/index.ts';
+import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
 
 import { type OneTxPaymentPayload } from './colonyActions.ts';
 import {
@@ -42,14 +43,9 @@ export enum RootMotionMethodNames {
   UnlockToken = 'unlockToken',
 }
 
-export type ExpenditureFundMotionPayload = Omit<
-  ExpenditureFundPayload,
-  'colonyAddress'
-> & {
-  fromDomainId: number;
+export interface ExpenditureFundMotionPayload extends ExpenditureFundPayload {
   motionDomainId: number;
-  colony: Colony;
-};
+}
 
 export type StakedExpenditureCancelMotionPayload =
   CancelStakedExpenditurePayload & {
@@ -67,6 +63,7 @@ export type ExpenditureCancelMotionPayload = Omit<
 };
 
 export type MotionFinalizePayload = {
+  associatedActionId: string;
   userAddress: Address;
   colonyAddress: Address;
   motionId: string;
@@ -123,7 +120,8 @@ export type MotionActionTypes =
         activateTokens: boolean;
         activeAmount: string;
         tokenAddress: Address;
-        actionId?: string;
+        actionId: string;
+        associatedActionId: string;
         annotationMessage?: string;
       },
       object
@@ -133,6 +131,7 @@ export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_VOTE,
       {
+        associatedActionId: string;
         userAddress: Address;
         colonyAddress: Address;
         motionId: BigNumber;
@@ -145,6 +144,7 @@ export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_REVEAL_VOTE,
       {
+        associatedActionId: string;
         userAddress: Address;
         colonyAddress: Address;
         motionId: BigNumber;
@@ -166,6 +166,7 @@ export type MotionActionTypes =
         colonyAddress: Address;
         extensionAddress: Address;
         transactionHash: string;
+        associatedActionId: string;
       },
       object
     >
@@ -182,6 +183,7 @@ export type MotionActionTypes =
           colonyAddress: string;
           extensionAddress: string;
         }[];
+        associatedActionId: string;
       },
       object
     >
@@ -513,5 +515,23 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_EDIT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_STREAMING_PAYMENT_EDIT_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_ARBITRARY_TRANSACTION,
+      {
+        customActionTitle: string;
+        colonyAddress: Address;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
+        annotationMessage?: string;
+        isMultiSig?: boolean;
+        transactions: AddTransactionTableModel[];
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_ARBITRARY_TRANSACTION_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_ARBITRARY_TRANSACTION_SUCCESS,
       MetaWithSetter<object>
     >;

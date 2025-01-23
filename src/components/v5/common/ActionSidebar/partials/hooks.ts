@@ -18,6 +18,8 @@ import {
   type FinalizeSuccessCallback,
 } from '../types.ts';
 
+import { getNeededExtension } from './utils.ts';
+
 const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.PaymentBuilder]: 'button.createPayment',
   [Action.SimplePayment]: 'button.createPayment',
@@ -39,6 +41,7 @@ const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.CreateNewIntegration]: 'button.createIntegration',
   [Action.CreateDecision]: 'button.createDecision',
   [Action.ManageVerifiedMembers]: 'button.updateVerified',
+  [Action.ArbitraryTxs]: 'button.createTransaction',
 };
 
 export const useSubmitButtonText = () => {
@@ -74,30 +77,60 @@ export const useSubmitButtonDisabled = () => {
 };
 
 export const useIsFieldDisabled = () => {
-  const getNeededExtension = (action: Action) => {
-    switch (action) {
-      case Action.CreateDecision:
-        return Extension.VotingReputation;
-      case Action.StreamingPayment:
-        return Extension.StreamingPayments;
-      default:
-        return '';
-    }
-  };
+  const {
+    extensionData: votingReputationExtensionData,
+    loading: votingReputationLoading,
+  } = useExtensionData(Extension.VotingReputation);
+
+  const {
+    extensionData: stagedExpenditureExtensionData,
+    loading: stagedExpenditureLoading,
+  } = useExtensionData(Extension.StagedExpenditure);
+
+  const {
+    extensionData: streamingPaymentExtensionData,
+    loading: streamingPaymentLoading,
+  } = useExtensionData(Extension.StreamingPayments);
 
   const selectedAction = useActiveActionType();
   const extensionId = selectedAction ? getNeededExtension(selectedAction) : '';
-  const { extensionData, loading } = useExtensionData(extensionId);
-  const isExtensionEnabled =
-    extensionData &&
-    isInstalledExtensionData(extensionData) &&
-    extensionData.isEnabled;
+
+  const isVotingReputationExtensionEnabled =
+    votingReputationExtensionData &&
+    isInstalledExtensionData(votingReputationExtensionData) &&
+    votingReputationExtensionData.isEnabled;
 
   if (
     extensionId &&
     selectedAction === Action.CreateDecision &&
-    !isExtensionEnabled &&
-    !loading
+    !isVotingReputationExtensionEnabled &&
+    !votingReputationLoading
+  ) {
+    return true;
+  }
+
+  const isStagedExpenditureExtensionEnabled =
+    stagedExpenditureExtensionData &&
+    isInstalledExtensionData(stagedExpenditureExtensionData) &&
+    stagedExpenditureExtensionData.isEnabled;
+
+  if (
+    selectedAction === Action.StagedPayment &&
+    !isStagedExpenditureExtensionEnabled &&
+    !stagedExpenditureLoading
+  ) {
+    return true;
+  }
+
+  const isStreamingPyamentExtensionEnabled =
+    streamingPaymentExtensionData &&
+    isInstalledExtensionData(streamingPaymentExtensionData) &&
+    streamingPaymentExtensionData.isEnabled;
+
+  if (
+    selectedAction === Action.StreamingPayment &&
+    !isStreamingPyamentExtensionEnabled &&
+    !streamingPaymentLoading
   ) {
     return true;
   }

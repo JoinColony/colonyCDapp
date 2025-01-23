@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { noop } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { TourTargets } from '~common/Tours/enums.ts';
 import { LEARN_MORE_COLONY_HELP_GENERAL } from '~constants';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { formatText } from '~utils/intl.ts';
@@ -127,6 +128,7 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
   const renderFeedbackButton = useCallback(
     () => (
       <div
+        data-tour={TourTargets.HelpAndFeedback}
         className={clsx('w-full', {
           relative: !isPopoverMode,
         })}
@@ -135,15 +137,18 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
           isFullSize
           id={FEEDBACK_BUTTON_ID}
           onClick={handleClick}
-          className={clsx('!justify-start !gap-3 !border-none bg-gray-900', {
-            '!p-2': !isPopoverMode,
-            'pointer-events-none absolute -left-1 -top-0.5 !w-fit !justify-center !px-3 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100':
-              isPopoverMode,
-            '!bg-gray-100 hover:!bg-gray-50': isDarkMode,
-            '!bg-gray-50': isDarkMode && isWidgetOpen,
-            'hover:!bg-gray-800': !isDarkMode,
-            '!bg-gray-800': !isDarkMode && isWidgetOpen,
-          })}
+          className={clsx(
+            'z-10 !justify-start !gap-3 !border-none bg-gray-900',
+            {
+              '!p-2': !isPopoverMode,
+              'pointer-events-none absolute -left-1 -top-0.5 !w-fit !justify-center !px-3 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100':
+                isPopoverMode,
+              '!bg-gray-100 hover:!bg-gray-50': isDarkMode,
+              '!bg-gray-50': isDarkMode && isWidgetOpen,
+              'hover:!bg-gray-800': !isDarkMode,
+              '!bg-gray-800': !isDarkMode && isWidgetOpen,
+            },
+          )}
         >
           {renderChatsCircle()}
           <p

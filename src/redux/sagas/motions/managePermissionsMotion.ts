@@ -104,7 +104,6 @@ function* managePermissionsMotion({
         }
         case Authority.Own:
         default: {
-          // If assigning the user own permissions and isMultiSig, then pass the colony address
           // If assigning the user own permissions and is not multi-sig, then pass address zero
           altTarget = ADDRESS_ZERO;
           break;
@@ -309,7 +308,7 @@ function* managePermissionsMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({

@@ -1,5 +1,5 @@
+import debounce from 'lodash/debounce';
 import merge from 'lodash/merge';
-import debounce from 'lodash.debounce';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { type BaseFieldProps } from './types.ts';
@@ -29,7 +29,7 @@ export const useInput = (maxCharNumber: number, defaultValue?: string) => {
       setIsTyping(true);
       const { value } = e.target;
       setCurrentCharNumber(value.length);
-      debounced(value);
+      debounced();
     },
     [debounced],
   );

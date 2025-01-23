@@ -69,17 +69,17 @@ const subtractYearsFor = (numberOfYears, timeframePeriodEndDate) => {
   const now = timeframePeriodEndDate
     ? new Date(timeframePeriodEndDate)
     : new Date();
-  return startOfDay(
-    new Date(startOfYear(new Date(subYears(now, numberOfYears)))),
-  );
+  const timeOffset = numberOfYears > 0 ? numberOfYears : 0;
+  return startOfDay(new Date(startOfYear(new Date(subYears(now, timeOffset)))));
 };
 
 const subtractMonthsFor = (numberOfMonths, timeframePeriodEndDate) => {
   const now = timeframePeriodEndDate
     ? new Date(timeframePeriodEndDate)
     : new Date();
+  const timeOffset = numberOfMonths > 0 ? numberOfMonths : 0;
   return startOfDay(
-    new Date(startOfMonth(new Date(subMonths(now, numberOfMonths)))),
+    new Date(startOfMonth(new Date(subMonths(now, timeOffset)))),
   );
 };
 
@@ -87,16 +87,45 @@ const subtractWeeksFor = (numberOfWeeks, timeframePeriodEndDate) => {
   const now = timeframePeriodEndDate
     ? new Date(timeframePeriodEndDate)
     : new Date();
-  return startOfDay(
-    new Date(startOfWeek(new Date(subWeeks(now, numberOfWeeks)))),
-  );
+  const timeOffset = numberOfWeeks > 0 ? numberOfWeeks : 0;
+  return startOfDay(new Date(startOfWeek(new Date(subWeeks(now, timeOffset)))));
 };
 
 const subtractDaysFor = (numberOfDays, timeframePeriodEndDate) => {
   const now = timeframePeriodEndDate
     ? new Date(timeframePeriodEndDate)
     : new Date();
-  return startOfDay(new Date(subDays(now, numberOfDays)));
+  const timeOffset = numberOfDays > 0 ? numberOfDays : 0;
+  return startOfDay(new Date(subDays(now, timeOffset)));
+};
+
+const getFullPeriodFormat = (date, timeframeType) => {
+  if (!date || timeframeType === TimeframeType.TOTAL) {
+    return '0';
+  }
+
+  let formattingPattern = ``;
+
+  switch (timeframeType) {
+    case TimeframeType.DAILY: {
+      formattingPattern = 'dd-MM-yyyy';
+      break;
+    }
+    case TimeframeType.WEEKLY: {
+      formattingPattern = `ww'W'-yyyy`;
+      break;
+    }
+    case TimeframeType.MONTHLY: {
+      formattingPattern = '01-MM-yyyy';
+      break;
+    }
+    default: {
+      formattingPattern = '01-01-yyyy';
+      break;
+    }
+  }
+
+  return format(new Date(date), formattingPattern);
 };
 
 const getPeriodFormat = (date, timeframeType) => {
@@ -254,6 +283,7 @@ const shouldFetchNetworkBalance = (timeframeType) =>
 module.exports = {
   getDifferenceInSeconds,
   getPeriodFormat,
+  getFullPeriodFormat,
   getPeriodFor,
   getFormattedIncomingFunds,
   getFormattedActions,

@@ -16,14 +16,14 @@ const WidgetBox: FC<WidgetBoxProps> = ({
   icon: Icon,
   iconClassName = 'text-blue-400',
   contentClassName = 'block w-full',
-  titleClassName,
+  titleClassName = 'text-1',
 }) => {
   const wrapperClassName =
     'rounded-lg py-6 px-6 w-full flex items-center justify-between gap-2 border';
   const baseContent = (
     <>
       <span className={contentClassName}>
-        {title && <h3 className={clsx(titleClassName, 'text-1')}>{title}</h3>}
+        {title && <h3 className={clsx(titleClassName)}>{title}</h3>}
         {value}
       </span>
       {additionalContent}

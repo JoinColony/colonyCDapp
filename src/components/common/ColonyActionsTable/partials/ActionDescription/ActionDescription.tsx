@@ -13,6 +13,7 @@ import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpe
 import { useGetStreamingPaymentData } from '~v5/common/ActionSidebar/hooks/useGetStreamingPaymentData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/index.ts';
 import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import { type ActionDescriptionProps } from './types.ts';
 
@@ -45,7 +46,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     useGetExpenditureData(expenditureId);
 
   const { streamingPaymentData, loadingStreamingPayment } =
-    useGetStreamingPaymentData(expenditureId);
+    useGetStreamingPaymentData(action?.streamingPaymentId);
 
   const isLoading =
     loading || loadingExpenditure || loadingStreamingPayment || loadingUser;
@@ -88,23 +89,32 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
           {loading ? (
             <div className="aspect-square h-[26px] w-auto rounded-full skeleton before:rounded-full" />
           ) : (
-            <UserAvatar
-              size={26}
-              userAddress={walletAddress}
-              userName={user?.profile?.displayName ?? undefined}
-              userAvatarSrc={
-                user?.profile?.thumbnail ?? user?.profile?.avatar ?? undefined
-              }
-              className="flex-shrink-0 flex-grow-0"
-            />
+            <UserInfoPopover
+              walletAddress={walletAddress}
+              user={user}
+              popperOptions={{
+                placement: 'bottom-start',
+              }}
+              withVerifiedBadge={false}
+            >
+              <UserAvatar
+                size={26}
+                userAddress={walletAddress}
+                userName={user?.profile?.displayName ?? undefined}
+                userAvatarSrc={
+                  user?.profile?.thumbnail ?? user?.profile?.avatar ?? undefined
+                }
+                className="flex-shrink-0 flex-grow-0"
+              />
+            </UserInfoPopover>
           )}
         </>
       )}
-      <div className="flex flex-grow flex-col-reverse gap-0.5 md:flex-row md:items-center md:justify-between md:gap-4">
-        <div>
+      <div className="flex min-w-0 flex-grow flex-col-reverse gap-0.5 md:flex-row md:items-center md:justify-between md:gap-4">
+        <div className="flex w-full min-w-0 flex-col">
           <p
             className={clsx(
-              'line-clamp-2 text-md font-medium text-gray-900 md:line-clamp-1',
+              'line-clamp-2 min-w-0 break-words text-md font-medium text-gray-900 md:line-clamp-1',
               {
                 'overflow-hidden rounded skeleton sm:w-64': isLoading,
               },

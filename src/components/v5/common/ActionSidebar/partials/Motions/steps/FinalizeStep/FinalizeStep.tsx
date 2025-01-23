@@ -70,9 +70,10 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const isMotionAgreement =
     actionData.type === ColonyActionType.CreateDecisionMotion;
   const isMotionClaimable =
-    (isMotionFinalized || isMotionFailedNotFinalizable || isMotionAgreement) &&
-    !isMotionFailed &&
-    !isMotionFailedNotFinalizable;
+    ((isMotionFinalized || isMotionFailedNotFinalizable) &&
+      !isMotionFailed &&
+      !isMotionFailedNotFinalizable) ||
+    (isMotionAgreement && !isClaimed);
 
   const handleSuccess = () => {
     startPollingAction(getSafePollingInterval());
@@ -114,6 +115,18 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
    */
   const wrongMotionState = !motionState || motionState === MotionState.Invalid;
 
+  const statusId = (() => {
+    if (isMotionAgreement) {
+      return isClaimed
+        ? 'motion.finalizeStep.finalizeAgreement'
+        : 'motion.finalizeStep.claimable.finalizeAgreement';
+    }
+
+    return isMotionFailedNotFinalizable
+      ? 'motion.finalizeStep.failed.statusText'
+      : 'motion.finalizeStep.statusText';
+  })();
+
   return (
     <MenuWithStatusText
       statusText={
@@ -123,11 +136,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           iconAlignment="top"
           iconSize={16}
         >
-          {formatText({
-            id: isMotionFailedNotFinalizable
-              ? 'motion.finalizeStep.failed.statusText'
-              : 'motion.finalizeStep.statusText',
-          })}
+          {formatText({ id: statusId })}
         </StatusText>
       }
       content={

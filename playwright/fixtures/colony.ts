@@ -1,22 +1,20 @@
-export const validColonyNameFieldValues = [
-  'Valid Name', // Simple, valid name
-  'A', // Minimum valid length (1 character)
-  'A'.repeat(20), // Maximum valid length (20 characters)
-];
-
-export const invalidColonyNameFieldValues = [
-  'A'.repeat(21), // More than 20 characters
-  ' VeryLongName123456789', // 21 characters after trimming
-];
-
-export const validColonyURLFieldValues = [
-  'ValidColony',
-  'test123',
-  'a'.repeat(20),
-];
-export const invalidColonyURLFieldValues = [
-  'invalid name',
-  '/invalid',
-  'a'.repeat(21),
-  'account', // Reserved keyword
+export const expendituresBatchRecipients = [
+  {
+    username: 'fry',
+    address: '0x27fF0C145E191C22C75cD123C679C3e1F58a4469',
+    amount: '2',
+    claimDelay: '24',
+  },
+  {
+    username: 'amy',
+    address: '0x9dF24e73f40b2a911Eb254A8825103723E13209C',
+    amount: '3',
+    claimDelay: '12',
+  },
+  {
+    username: 'ulysses-ultimate',
+    address: '0x2da1037D928b395D118f5C72B23C93Ea43892DF0',
+    amount: '5',
+    claimDelay: '6',
+  },
 ];

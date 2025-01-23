@@ -56,7 +56,6 @@ export const getSimplePaymentPayload = (
     amount,
     tokenAddress,
     recipient,
-    payments,
     decisionMethod,
   } = values;
   const fromDomainId = Number(from);
@@ -74,16 +73,6 @@ export const getSimplePaymentPayload = (
         tokenAddress,
         networkInverseFee,
       }),
-      ...payments.map(
-        ({ recipient: paymentRecipientAddress, amount: paymentAmount }) =>
-          getPaymentPayload({
-            colony,
-            recipientAddress: paymentRecipientAddress,
-            amount: paymentAmount.toString(),
-            tokenAddress,
-            networkInverseFee,
-          }),
-      ),
     ],
     annotationMessage: annotationMessage
       ? sanitizeHTML(annotationMessage)

@@ -1,6 +1,6 @@
 import { Scales } from '@phosphor-icons/react';
-import React from 'react';
-import { useWatch } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -10,8 +10,15 @@ import { DecisionMethod } from '~types/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
-import { actionsWithStakingDecisionMethod } from '~v5/common/ActionSidebar/hooks/permissions/consts.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
+import {
+  actionsWithStakingDecisionMethod,
+  actionsWithoutMultiSigDecisionMethod,
+  actionsWithoutReputationDecisionMethod,
+} from '~v5/common/ActionSidebar/hooks/permissions/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
@@ -26,7 +33,6 @@ const DecisionMethodField = ({
   reputationOnly,
   disabled,
   tooltipContent = 'actionSidebar.tooltip.decisionMethod',
-  filterOptionsFn,
 }: DecisionMethodFieldProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -42,6 +48,10 @@ const DecisionMethodField = ({
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
+  const decisionMethod = useWatch({ name: DECISION_METHOD_FIELD_NAME });
+
+  const { setValue } = useFormContext();
+
   const {
     isVotingReputationEnabled,
     isMultiSigEnabled,
@@ -50,11 +60,20 @@ const DecisionMethodField = ({
   const actionType = useWatch({ name: ACTION_TYPE_FIELD_NAME });
 
   const shouldShowPermissions = !reputationOnly && userRoles.length > 0;
+
+  const shouldShowReputation =
+    isVotingReputationEnabled &&
+    !actionsWithoutReputationDecisionMethod.includes(actionType);
+
   const shouldShowStaking =
     isStakedExpenditureEnabled &&
     actionsWithStakingDecisionMethod.includes(actionType);
+
   const shouldShowMultiSig =
-    !reputationOnly && isMultiSigEnabled && userMultiSigRoles.length > 0;
+    !reputationOnly &&
+    isMultiSigEnabled &&
+    !actionsWithoutMultiSigDecisionMethod.includes(actionType) &&
+    userMultiSigRoles.length > 0;
 
   const getDecisionMethods = () => {
     const decisionMethods: DecisionMethodOption[] = [
@@ -66,7 +85,7 @@ const DecisionMethodField = ({
             },
           ]
         : []),
-      ...(isVotingReputationEnabled
+      ...(shouldShowReputation
         ? [
             {
               label: formatText({ id: 'decisionMethod.reputation' }),
@@ -92,12 +111,20 @@ const DecisionMethodField = ({
         : []),
     ];
 
-    if (filterOptionsFn) {
-      return decisionMethods?.filter(filterOptionsFn);
-    }
-
     return decisionMethods;
   };
+
+  const isDecisionMethodAvailable = getDecisionMethods()
+    .map((decision) => decision.value)
+    .includes(decisionMethod);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      if (!isDecisionMethodAvailable) {
+        setValue(DECISION_METHOD_FIELD_NAME, undefined);
+      }
+    });
+  }, [isDecisionMethodAvailable, setValue]);
 
   return (
     <ActionFormRow
@@ -122,6 +149,9 @@ const DecisionMethodField = ({
         })}
         disabled={disabled || hasNoDecisionMethods}
         cardClassName="sm:min-w-[12.875rem]"
+        {...(!isDecisionMethodAvailable && {
+          valueOverride: undefined,
+        })}
       />
     </ActionFormRow>
   );

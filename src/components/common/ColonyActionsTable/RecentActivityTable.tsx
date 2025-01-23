@@ -3,15 +3,17 @@ import React, { type FC } from 'react';
 import useActionsCount from '~hooks/useActionsCount.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { type ColonyAction } from '~types/graphql.ts';
-import Table from '~v5/common/Table/index.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
 
 import { useActionsTableProps } from './hooks/useActionsTableProps.tsx';
+import { useHandleRedoAction } from './hooks/useHandleRedoAction.ts';
 import { type ColonyActionsTableProps } from './types.ts';
 
 const displayName = 'common.RecentActivityTable';
 
 const RecentActivityTable: FC<ColonyActionsTableProps> = ({
   actionProps,
+  pageSize = 10,
   ...props
 }) => {
   const selectedDomain = useGetSelectedDomainFilter();
@@ -22,29 +24,35 @@ const RecentActivityTable: FC<ColonyActionsTableProps> = ({
       domainId: nativeDomainId,
     });
 
-  const pageCount = Math.ceil(totalActions / (props.pageSize ?? 10));
+  const pageCount = Math.ceil(totalActions / pageSize);
 
-  const { tableProps, renderSubComponent } = useActionsTableProps(
+  const { tableProps } = useActionsTableProps(
     {
       ...props,
+      pageSize,
+      pagination: {
+        visible: totalActions > 0,
+        pageTotalVisible: !loadingActionsCount && pageCount > 1,
+      },
+      overrides: {
+        pageCount,
+      },
       showUserAvatar: false,
-      showTotalPagesNumber: !loadingActionsCount,
       isRecentActivityVariant: true,
     },
     actionProps.setSelectedAction,
   );
 
+  useHandleRedoAction({ actionProps });
+
   return (
     <Table<ColonyAction>
       {...tableProps}
       showTableHead={false}
-      showTableBorder={false}
-      renderSubComponent={renderSubComponent}
-      pageCount={pageCount}
-      withBorder={false}
-      withNarrowBorder
-      alwaysShowPagination={totalActions > 0}
-      showTotalPagesNumber={pageCount > 1}
+      borders={{
+        type: 'narrow',
+        visible: false,
+      }}
     />
   );
 };

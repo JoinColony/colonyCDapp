@@ -39,6 +39,7 @@ export function* createTransaction(id: string, config: TxConfig) {
   }
 
   yield addTransactionToDb(id, {
+    associatedActionId: config.associatedActionId,
     context: config.context as ClientType | ExtendedClientType,
     createdAt: new Date(),
     from: walletAddress,

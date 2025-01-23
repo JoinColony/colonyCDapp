@@ -30,7 +30,6 @@ import { toFinite } from '~utils/lodash.ts';
 export enum ExtensionCategory {
   Payments = 'Payments',
   DecisionMethods = 'Decision Methods',
-  Expenditures = 'Expenditures',
 }
 
 const multiSigName = 'extensions.MultiSig';
@@ -78,7 +77,7 @@ const multiSigMessages = {
       'Enables the multi-signer permissions system for the Colony.',
   },
   multiSigDescriptionLong: {
-    id: `${oneTransactionPaymentName}.descriptionLong`,
+    id: `${multiSigName}.descriptionLong`,
     defaultMessage: `<p>The Multi-Sig Permissions system leverages the existing “Core” Permissions system on Colony. With the additional security requirement of needing multiple permission holders to sign before an action can be taken.</p><p>This means that as long as at least two people hold the same permission in a team, then individuals are not able to skip governance and solely control that team or the Colony as a whole. So, doing actions such as transferring funds, making payments, changing reputation, creating teams, unlocking the token, etc. cannot be done without collective input from other permission holders.</p><p>This makes for more flexible options for distribution of authority and a more secure and decentralized Colony and permission system, while maintaining efficiency.</p><h4>How the extension works</h4><ul><li>A Colony member creates an action such as, “Pay Alice 100 xDAI”, selecting the “Multi-Sig” as the Governance option.</li><li>An approval process begins, where users with the required permissions need to approve the action by signing.</li><li>A minimum required number of permission holders need to sign to reach consensus, this can be fixed or relative based on how this extension is configured.</li><li>Once consensus has been achieved, approval concludes and the action is able to be finalized.</li></ul><h4>Useful for:</h4><ul><li>Taking quick actions in a Colony in a secure way.</li><li>Teams that need to be more decentralized, and autonomous without compromising security.</li><li>Teams that require more flexible ways of distributing authority.</li><li>Complimenting the Reputation governance extension to allow quicker actions without individuals having control with “Core” Permissions.</li></ul>`,
   },
 };
@@ -198,7 +197,8 @@ const streamingPaymentsMessage = {
   },
   streamingPaymentsDescriptionShort: {
     id: `${streamingPaymentsName}.description`,
-    defaultMessage: 'Streaming Payments extension.',
+    defaultMessage:
+      'Continuously stream tokens to a recipient, that are claimable at any time. Useful for things like salaries, subscriptions, and more.',
   },
   streamingPaymentsDescriptionLong: {
     id: `${streamingPaymentsName}.descriptionLong`,
@@ -342,7 +342,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     icon: ExtensionAdvancedPaymentsIcon,
     imageURLs: [stakedHero, stakedInterface],
-    category: ExtensionCategory.Expenditures,
+    category: ExtensionCategory.DecisionMethods,
     extensionId: Extension.StakedExpenditure,
     name: MSG.stakedExpenditureName,
     descriptionShort: MSG.stakedExpenditureDescriptionShort,
@@ -389,7 +389,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     icon: ExtensionStreamingPaymentsIcon,
     imageURLs: [streamingHero, streamingInterface],
-    category: ExtensionCategory.Expenditures,
+    category: ExtensionCategory.Payments,
     extensionId: Extension.StreamingPayments,
     name: MSG.streamingPaymentsName,
     descriptionShort: MSG.streamingPaymentsDescriptionShort,

@@ -1,6 +1,6 @@
 import { MagnifyingGlass, X } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import debounce from 'lodash.debounce';
+import debounce from 'lodash/debounce';
 import React, {
   type ChangeEvent,
   type ChangeEventHandler,
@@ -68,7 +68,7 @@ const SearchInput: FC<SearchInputProps> = ({
 
   return (
     <div className='group relative flex w-full justify-end bg-base-white text-md text-3 after:absolute after:-left-[0.1875rem] after:-top-[0.1875rem] after:block after:h-[calc(100%+0.1875rem+0.1875rem)] after:w-[calc(100%+0.1875rem+0.1875rem)] after:rounded-xl after:border-[0.1875rem] after:border-transparent after:transition-all after:duration-normal after:content-[""] focus-within:border-blue-100 hover:after:border-blue-100'>
-      <span className="pointer-events-none absolute left-3 top-[50%] z-mid flex translate-y-[-50%] text-gray-900 sm:left-[0.75rem] sm:text-gray-500">
+      <span className="pointer-events-none absolute left-3 top-[50%] z-aboveBase flex translate-y-[-50%] text-gray-900 sm:left-[0.75rem] sm:text-gray-500">
         <MagnifyingGlass size={14} />
       </span>
       <input
@@ -79,6 +79,15 @@ const SearchInput: FC<SearchInputProps> = ({
         )}
         type="text"
         onInput={onInput}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            onSearchButtonClick();
+
+            if (isMobile) {
+              setSearchValue(value);
+            }
+          }
+        }}
         placeholder={searchInputPlaceholder}
         defaultValue={searchValue}
       />

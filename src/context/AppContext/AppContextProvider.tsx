@@ -7,11 +7,7 @@ import React, {
   useEffect,
 } from 'react';
 
-import {
-  GetUserByAddressDocument,
-  type GetUserByAddressQuery,
-  type GetUserByAddressQueryVariables,
-} from '~gql';
+import { useGetUserByAddressLazyQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useJoinedColonies from '~hooks/useJoinedColonies.ts';
 import usePrevious from '~hooks/usePrevious.ts';
@@ -31,6 +27,8 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   // and the first render is important here
   const [walletConnecting, setWalletConnecting] = useState(true);
 
+  const [getUserByAddress] = useGetUserByAddressLazyQuery();
+
   const {
     joinedColonies,
     loading: joinedColoniesLoading,
@@ -44,13 +42,11 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
           if (!shouldBackgroundUpdate) {
             setUserLoading(true);
           }
-          const apolloClient = getContext(ContextModule.ApolloClient);
-          const { data } = await apolloClient.query<
-            GetUserByAddressQuery,
-            GetUserByAddressQueryVariables
-          >({
-            query: GetUserByAddressDocument,
-            variables: { address: utils.getAddress(address) },
+
+          const { data } = await getUserByAddress({
+            variables: {
+              address: utils.getAddress(address),
+            },
             fetchPolicy: 'network-only',
           });
           const [currentUser] = data?.getUserByAddress?.items || [];
@@ -66,7 +62,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     },
-    [],
+    [getUserByAddress],
   );
 
   const updateWallet = useCallback(() => {

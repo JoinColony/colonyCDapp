@@ -9,6 +9,7 @@ import {
 import {
   getPaginationRowModel,
   getSortedRowModel,
+  type Row,
   type SortingState,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
@@ -30,11 +31,10 @@ import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import { AddFundsModal } from '~v5/common/Modals/AddFundsModal/AddFundsModal.tsx';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
-import Table from '~v5/common/Table/index.ts';
-import { type TableProps } from '~v5/common/Table/types.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
-import Button from '~v5/shared/Button/index.ts';
 import Link from '~v5/shared/Link/index.ts';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import BalanceFilters from './Filters/BalanceFilters/BalanceFilters.tsx';
 import { useBalanceTableColumns, useBalancesData } from './hooks.tsx';
@@ -83,8 +83,9 @@ const BalanceTable: FC = () => {
     { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },
   ] = useToggle();
 
-  const columns = useBalanceTableColumns(nativeToken, nativeTokenStatus);
-  const getMenuProps: TableProps<BalanceTableFieldModel>['getMenuProps'] = ({
+  const getMenuProps: (
+    row: Row<BalanceTableFieldModel>,
+  ) => MeatBallMenuProps | undefined = ({
     original: { token: selectedTokenData, loading },
   }) => {
     if (loading) return undefined;
@@ -172,39 +173,49 @@ const BalanceTable: FC = () => {
     };
   };
 
+  const columns = useBalanceTableColumns(
+    nativeToken,
+    nativeTokenStatus,
+    getMenuProps,
+  );
+
+  const hasPagination = data.length >= 10;
+
   return (
     <>
       <TableHeader title={formatText({ id: 'balancePage.table.title' })}>
-        <BalanceFilters />
-        <Button
-          mode="primarySolid"
-          onClick={toggleAddFundsModalOn}
-          size="small"
-        >
-          {formatText({ id: 'balancePage.table.addFunds' })}
-        </Button>
+        <BalanceFilters toggleAddFundsModalOn={toggleAddFundsModalOn} />
       </TableHeader>
       <Table<BalanceTableFieldModel>
-        getRowId={({ token }) => (token ? token.tokenAddress : uniqueId())}
+        overrides={{
+          getRowId: ({ token }) => (token ? token.tokenAddress : uniqueId()),
+          state: {
+            sorting,
+            rowSelection,
+            columnVisibility: {
+              type: !isMobile,
+            },
+          },
+          initialState: {
+            pagination: {
+              pageIndex: 0,
+              pageSize: 10,
+            },
+          },
+          onSortingChange: setSorting,
+          onRowSelectionChange: setRowSelection,
+          getSortedRowModel: getSortedRowModel(),
+          getPaginationRowModel: getPaginationRowModel(),
+        }}
+        className={clsx({
+          'pb-4': hasPagination,
+        })}
         columns={columns}
         data={data || []}
-        state={{
-          sorting,
-          rowSelection,
-          columnVisibility: {
-            type: !isMobile,
-          },
+        pagination={{
+          visible: hasPagination,
+          pageNumberVisible: true,
         }}
-        initialState={{
-          pagination: {
-            pageSize: 10,
-          },
-        }}
-        showPageNumber={data.length >= 10}
-        onSortingChange={setSorting}
-        onRowSelectionChange={setRowSelection}
-        getSortedRowModel={getSortedRowModel()}
-        getPaginationRowModel={getPaginationRowModel()}
         emptyContent={
           !tokensDataLength && (
             <EmptyContent
@@ -216,7 +227,6 @@ const BalanceTable: FC = () => {
             />
           )
         }
-        getMenuProps={getMenuProps}
         renderCellWrapper={(className, content, { cell }) => (
           <div
             className={clsx(
@@ -236,7 +246,6 @@ const BalanceTable: FC = () => {
             {content}
           </div>
         )}
-        meatBallMenuStaticSize={isMobile ? '2.25rem' : undefined}
       />
 
       <AddFundsModal

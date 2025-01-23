@@ -61,6 +61,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
                   size === 'extraSmall',
                 'min-h-8.5 px-3 py-2 text-sm': size === 'medium',
                 'min-h-8.5 px-2.5 py-1.5 text-sm': size === 'small',
+                [buttonClasses.link]: mode === 'link',
                 [buttonClasses.primarySolid]: mode === 'primarySolid',
                 [buttonClasses.primarySolidFull]: mode === 'primarySolidFull',
                 [buttonClasses.primaryOutline]: mode === 'primaryOutline',

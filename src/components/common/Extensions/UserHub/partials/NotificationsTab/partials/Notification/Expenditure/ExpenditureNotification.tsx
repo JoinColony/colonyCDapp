@@ -8,15 +8,18 @@ import {
   useGetColonyActionQuery,
   useGetExpenditureQuery,
   ColonyActionType,
+  useGetUserByAddressQuery,
 } from '~gql';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
 
+import { MentionNotificationMessage } from '../Action/MentionNotificationMessage.tsx';
 import NotificationWrapper from '../NotificationWrapper.tsx';
 
 import ExpenditureFundingMotionNotificationMessage from './ExpenditureFundingMotionNotificationMessage.tsx';
+import ExpenditureFundingMultiSigNotificationMessage from './ExpenditureFundingMultiSigNotificationMessage.tsx';
 import ExpenditureNotificationMessage from './ExpenditureNotificationMessage.tsx';
 
 const displayName =
@@ -39,10 +42,16 @@ const ExpenditureNotification: FC<NotificationProps> = ({
   const navigate = useNavigate();
 
   const {
+    creator,
     expenditureID,
     notificationType,
     transactionHash: notificationTransactionHash,
   } = notification.customAttributes || {};
+
+  const { data: userData, loading: loadingUser } = useGetUserByAddressQuery({
+    variables: { address: creator || '' },
+    skip: !creator,
+  });
 
   const isExpenditureNotification =
     !!notificationType &&
@@ -64,6 +73,15 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       NotificationType.MotionVoting,
       NotificationType.MotionReveal,
       NotificationType.MotionFinalized,
+    ].includes(notificationType);
+
+  const isExpenditureMultiSigNotification =
+    !!notificationType &&
+    [
+      NotificationType.MultisigActionCreated,
+      NotificationType.MultisigActionApproved,
+      NotificationType.MultisigActionRejected,
+      NotificationType.MultisigActionFinalized,
     ].includes(notificationType);
 
   const { data: expenditureData, loading: loadingExpenditure } =
@@ -101,11 +119,17 @@ const ExpenditureNotification: FC<NotificationProps> = ({
   const notificationAction = notificationActionData?.getColonyAction;
 
   let isExpenditureFundingMotionNotification = isExpenditureMotionNotification;
+  let isExpenditureFundingMultiSigNotification =
+    isExpenditureMultiSigNotification;
 
   if (notificationTransactionHash !== transactionHash) {
     isExpenditureFundingMotionNotification =
       isExpenditureFundingMotionNotification &&
       notificationAction?.type === ColonyActionType.FundExpenditureMotion;
+
+    isExpenditureFundingMultiSigNotification =
+      isExpenditureFundingMultiSigNotification &&
+      notificationAction?.type === ColonyActionType.FundExpenditureMultisig;
   }
 
   const loading =
@@ -147,8 +171,12 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       return null;
     }
 
-    return formatText({ id: 'action.title' }, actionTitleValues);
-  }, [action, actionTitleValues, colony]);
+    return formatText(
+      { id: 'action.title' },
+      actionTitleValues,
+      notification.id,
+    );
+  }, [action, actionTitleValues, colony, notification.id]);
 
   return (
     <NotificationWrapper
@@ -157,6 +185,17 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       notification={notification}
       onClick={handleNotificationClicked}
     >
+      {notificationType === NotificationType.Mention && (
+        <MentionNotificationMessage
+          actionMetadataDescription={actionMetadataDescription}
+          actionTitle={actionTitle}
+          creator={
+            userData?.getUserByAddress?.items[0]?.profile?.displayName ?? ''
+          }
+          loading={loadingColony || loadingAction || loadingUser}
+          notificationType={notificationType}
+        />
+      )}
       {isExpenditureNotification && (
         <ExpenditureNotificationMessage
           actionTitle={actionTitle}
@@ -167,6 +206,14 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       )}
       {isExpenditureFundingMotionNotification && (
         <ExpenditureFundingMotionNotificationMessage
+          actionTitle={actionTitle}
+          actionMetadataDescription={actionMetadataDescription}
+          loading={loading}
+          notificationType={notificationType as NotificationType}
+        />
+      )}
+      {isExpenditureFundingMultiSigNotification && (
+        <ExpenditureFundingMultiSigNotificationMessage
           actionTitle={actionTitle}
           actionMetadataDescription={actionMetadataDescription}
           loading={loading}

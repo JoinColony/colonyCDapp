@@ -1,8 +1,14 @@
-import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
+import {
+  createColumnHelper,
+  type Row,
+  type ColumnDef,
+} from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
+import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import AmountField from '../AmountField/index.ts';
 import UserSelect from '../UserSelect/index.ts';
@@ -11,6 +17,9 @@ import { type TransactionTableModel } from './types.ts';
 
 export const useTransactionTableColumns = (
   name: string,
+  getMenuProps: (
+    row: Row<TransactionTableModel>,
+  ) => MeatBallMenuProps | undefined,
 ): ColumnDef<TransactionTableModel, string>[] => {
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
@@ -18,6 +27,15 @@ export const useTransactionTableColumns = (
   const columnHelper = useMemo(
     () => createColumnHelper<TransactionTableModel>(),
     [],
+  );
+
+  const menuColumn: ColumnDef<TransactionTableModel, string> = useMemo(
+    () =>
+      makeMenuColumn({
+        helper: columnHelper,
+        getMenuProps,
+      }),
+    [columnHelper, getMenuProps],
   );
 
   const columns: ColumnDef<TransactionTableModel, string>[] = useMemo(
@@ -44,5 +62,5 @@ export const useTransactionTableColumns = (
     [columnHelper, name, selectedTeam],
   );
 
-  return columns;
+  return menuColumn ? [...columns, menuColumn] : columns;
 };

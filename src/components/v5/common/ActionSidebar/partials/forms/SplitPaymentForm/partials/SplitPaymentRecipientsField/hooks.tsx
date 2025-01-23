@@ -1,5 +1,10 @@
-import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
+import {
+  createColumnHelper,
+  type Row,
+  type ColumnDef,
+} from '@tanstack/react-table';
 import Decimal from 'decimal.js';
+import moveDecimal from 'move-decimal-point';
 import React, { useMemo, useCallback, useEffect } from 'react';
 import { type FieldValues, type UseFieldArrayReturn } from 'react-hook-form';
 
@@ -13,6 +18,8 @@ import { type ColonyContributor, type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
+import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import SplitPaymentAmountField from '../SplitPaymentAmountField/SplitPaymentAmountField.tsx';
 import SplitPaymentPayoutsTotal from '../SplitPaymentPayoutsTotal/SplitPaymentPayoutsTotal.tsx';
@@ -31,6 +38,8 @@ export const useRecipientsFieldTableColumns = ({
   amount,
   fieldArrayMethods: { update },
   disabled,
+  distributionMethod,
+  getMenuProps,
 }: {
   name: string;
   token: Token;
@@ -38,6 +47,10 @@ export const useRecipientsFieldTableColumns = ({
   amount: string | undefined;
   fieldArrayMethods: UseFieldArrayReturn<FieldValues, string, 'id'>;
   disabled?: boolean;
+  distributionMethod?: SplitPaymentDistributionType;
+  getMenuProps: (
+    row: Row<SplitPaymentRecipientsTableModel>,
+  ) => MeatBallMenuProps | undefined;
 }): ColumnDef<SplitPaymentRecipientsTableModel, string>[] => {
   const isTablet = useTablet();
   const columnHelper = useMemo(
@@ -45,12 +58,22 @@ export const useRecipientsFieldTableColumns = ({
     [],
   );
   const dataRef = useWrapWithRef(data);
+  const distributionMethodRef = useWrapWithRef(distributionMethod);
   const getPercentValue = useCallback((index: number): number => {
     const percent = dataRef.current?.[index]?.percent || 0;
 
     return percent;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const menuColumn = useMemo(
+    () =>
+      makeMenuColumn({
+        helper: columnHelper,
+        getMenuProps,
+      }),
+    [columnHelper, getMenuProps],
+  );
 
   const columns: ColumnDef<SplitPaymentRecipientsTableModel, string>[] =
     useMemo(
@@ -106,6 +129,11 @@ export const useRecipientsFieldTableColumns = ({
               <SplitPaymentPayoutsTotal
                 data={dataRef.current || []}
                 token={token}
+                value={
+                  distributionMethodRef?.current ===
+                    SplitPaymentDistributionType.Equal &&
+                  (amount ? moveDecimal(amount, token.decimals) : 0)
+                }
                 convertToWEI
               />
               {isTablet && (
@@ -113,7 +141,8 @@ export const useRecipientsFieldTableColumns = ({
                   {parseFloat(
                     (
                       dataRef.current?.reduce(
-                        (acc, _, index) => acc + getPercentValue(index),
+                        (acc, _, index) =>
+                          Number(acc) + Number(getPercentValue(index)),
                         0,
                       ) || 0
                     ).toFixed(4),
@@ -123,6 +152,11 @@ export const useRecipientsFieldTableColumns = ({
               )}
             </div>
           ),
+          meta: {
+            footer: {
+              colSpan: isTablet ? 2 : undefined,
+            },
+          },
         }),
         columnHelper.display({
           id: 'percent',
@@ -161,27 +195,37 @@ export const useRecipientsFieldTableColumns = ({
             />
           ),
           footer: !isTablet
-            ? () => (
-                <span className="text-md font-medium text-gray-900">
-                  {parseFloat(
-                    (
-                      dataRef.current?.reduce(
-                        (acc, _, index) => acc + getPercentValue(index),
-                        0,
-                      ) || 0
-                    ).toFixed(4),
-                  )}
-                  %
-                </span>
-              )
+            ? () => {
+                return (
+                  <span className="text-md font-medium text-gray-900">
+                    {distributionMethodRef?.current ===
+                    SplitPaymentDistributionType.Equal
+                      ? '100%'
+                      : `${Number(
+                          dataRef.current
+                            ?.reduce(
+                              (acc, _, index) =>
+                                Number(acc) + Number(getPercentValue(index)),
+                              0,
+                            )
+                            .toFixed(4) || 0,
+                        )}%`}
+                  </span>
+                );
+              }
             : undefined,
+          meta: {
+            footer: {
+              display: isTablet ? 'none' : undefined,
+            },
+          },
         }),
       ],
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [amount, columnHelper, name, token, disabled],
+      [amount, columnHelper, name, token, disabled, isTablet],
     );
 
-  return columns;
+  return menuColumn ? [...columns, menuColumn] : columns;
 };
 
 export const useDistributionMethodUpdate = ({
@@ -210,13 +254,12 @@ export const useDistributionMethodUpdate = ({
               percent: Number(percentPerRecipient.toFixed(4)),
               amount: amount
                 ? new Decimal(amount)
-                    .mul(percentPerRecipient)
-                    .div(100)
+                    .div(data.length || 1)
                     .toDecimalPlaces(
                       getSelectedToken(colony, data[index].tokenAddress || '')
                         ?.decimals || DEFAULT_TOKEN_DECIMALS,
                     )
-                    .toString()
+                    .toFixed()
                 : undefined,
             });
           });

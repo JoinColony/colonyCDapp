@@ -17,12 +17,14 @@ interface NotificationTypeToggleProps {
     | 'notificationsDisabled'
     | 'mentionNotificationsDisabled'
     | 'paymentNotificationsDisabled';
+  testId?: string;
 }
 
 const NotificationTypeToggle: FC<NotificationTypeToggleProps> = ({
   notificationType,
   toastTextDisabled,
   toastTextEnabled,
+  testId,
 }) => {
   const { user, updateUser } = useAppContext();
   const [isNotificationTypeDisabled, setIsNotificationTypeDisabled] = useState(
@@ -67,6 +69,7 @@ const NotificationTypeToggle: FC<NotificationTypeToggleProps> = ({
       onChange={async () => {
         await handleUpdateNotificationTypeMuted(!isNotificationTypeDisabled);
       }}
+      testId={testId}
     />
   );
 };

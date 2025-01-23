@@ -33,14 +33,14 @@ const JoinedColoniesPopover = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={getTooltipProps}
-      classNames={clsx(
-        'bg-white z-top mt-4 max-h-[calc(100vh-32px)] w-[252px] rounded-lg border-gray-200 px-0 pb-4 pt-0 shadow-none',
+      className={clsx(
+        'bg-white !left-[calc(100%+0.4rem)] z-top max-h-[calc(100%-32px)] w-[252px] !transform-none rounded-lg border-gray-200 px-0 pb-4 pt-0 shadow-none',
         {
           '!bg-gray-100': isDarkMode,
         },
       )}
     >
-      <div className="flex max-h-[calc(536px)] flex-col gap-6 overflow-hidden">
+      <div className="flex flex-col gap-6 overflow-hidden">
         {wallet ? (
           <JoinedColoniesList
             enableMobileAndDesktopLayoutBreakpoints={

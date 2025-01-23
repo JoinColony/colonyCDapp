@@ -1,22 +1,18 @@
 import { Id } from '@colony/colony-js';
 import { unformatNumeral } from 'cleave-zen';
-import { BigNumber } from 'ethers';
 import { type TestContext } from 'yup';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
+import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { convertPeriodToSeconds } from '~utils/extensions.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
-import { groupBy } from '~utils/lodash.ts';
-import {
-  calculateFee,
-  getBalanceForTokenAndDomain,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens.ts';
+import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
 
 import { type PaymentBuilderFormValues } from './hooks.ts';
 
@@ -24,15 +20,13 @@ export const getPaymentBuilderPayload = (
   colony: Colony,
   values: PaymentBuilderFormValues,
   networkInverseFee: string,
-): CreateExpenditurePayload | null => {
+): CreateExpenditurePayload | CreateStakedExpenditurePayload | null => {
   const colonyTokens = colony.tokens?.items.filter(notNull);
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   const createdInDomain =
-    findDomainByNativeId(values.createdIn, colony) || rootDomain;
-
-  if (!createdInDomain) {
-    return null;
-  }
+    values.decisionMethod === DecisionMethod.Permissions
+      ? undefined
+      : findDomainByNativeId(values.createdIn, colony) || rootDomain;
 
   return {
     colonyAddress: colony.colonyAddress,
@@ -60,14 +54,12 @@ interface AllTokensAmountValidationParams {
   value: string | null | undefined;
   context: TestContext<{ formValues?: any }>;
   colony: Colony;
-  networkInverseFee: string | undefined;
 }
 
 export const allTokensAmountValidation = ({
   value,
   context,
   colony,
-  networkInverseFee,
 }: AllTokensAmountValidationParams) => {
   if (!value) {
     return false;
@@ -79,50 +71,12 @@ export const allTokensAmountValidation = ({
     path,
   } = context;
   const { formValues } = formContext || {};
-  const { payments, from, stages } = formValues || {};
+  const { from, _tokenSums } = formValues || {};
   const { tokenAddress: fieldTokenAddress } = parent || {};
 
-  if (!fieldTokenAddress) {
+  if (!fieldTokenAddress || !from || !_tokenSums) {
     return false;
   }
-
-  const groupedTokens = groupBy(
-    payments || stages,
-    (payment) => payment.tokenAddress,
-  );
-
-  const token = colony.tokens?.items
-    .filter(notNull)
-    .find(
-      ({ token: { tokenAddress } }) => tokenAddress === fieldTokenAddress,
-    )?.token;
-
-  const tokenAmountSum = groupedTokens[fieldTokenAddress].reduce(
-    (acc, payment) => {
-      const { amount } = payment;
-
-      if (!amount) {
-        return acc;
-      }
-
-      const tokenDecimals = getTokenDecimalsWithFallback(token?.decimals);
-
-      const { totalToPay } = calculateFee(
-        amount,
-        networkInverseFee ?? '0',
-        tokenDecimals,
-      );
-
-      return acc.add(totalToPay);
-    },
-    BigNumber.from('0'),
-  );
-
-  const tokenBalance = getBalanceForTokenAndDomain(
-    colony.balances,
-    fieldTokenAddress,
-    from || Id.RootDomain,
-  );
 
   const index = getLastIndexFromPath(path);
 
@@ -134,6 +88,12 @@ export const allTokensAmountValidation = ({
       path,
     });
   }
+
+  const token = colony.tokens?.items
+    .filter(notNull)
+    .find(
+      ({ token: { tokenAddress } }) => tokenAddress === fieldTokenAddress,
+    )?.token;
 
   if (!token) {
     return context.createError({
@@ -149,7 +109,15 @@ export const allTokensAmountValidation = ({
     });
   }
 
-  if (!tokenAmountSum.lte(tokenBalance)) {
+  const tokenAmountSum = _tokenSums[fieldTokenAddress];
+
+  const tokenBalance = getBalanceForTokenAndDomain(
+    colony.balances,
+    fieldTokenAddress,
+    from || Id.RootDomain,
+  );
+
+  if (!tokenAmountSum?.lte(tokenBalance)) {
     return context.createError({
       message: formatText(
         {

@@ -4,15 +4,18 @@ import { type DeepPartial } from 'utility-types';
 import { type InferType, array, number, object, string } from 'yup';
 
 import { MAX_MILESTONE_LENGTH } from '~constants';
+import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { ExpenditureType } from '~gql';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
+import useTokenLockStates from '~hooks/useTokenLockStates.ts';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
+import { shouldPreventPaymentsWithTokenInColony } from '~utils/tokens.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
@@ -24,13 +27,14 @@ import {
   FROM_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
+import { useShowCreateStakedExpenditureModal } from '~v5/common/ActionSidebar/partials/CreateStakedExpenditureModal/hooks.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { allTokensAmountValidation } from '../PaymentBuilderForm/utils.ts';
 
 import { getStagedPaymentPayload } from './utils.ts';
 
-export const useValidationSchema = (networkInverseFee: string | undefined) => {
+export const useValidationSchema = () => {
   const { colony } = useColonyContext();
   const colonyTokens = useMemo(
     () =>
@@ -39,6 +43,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         .map((colonyToken) => colonyToken.token) || [],
     [colony.tokens?.items],
   );
+  const tokenLockStatesMap = useTokenLockStates();
 
   return useMemo(
     () =>
@@ -115,10 +120,20 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                         value,
                         context,
                         colony,
-                        networkInverseFee,
                       }),
                     ),
-                  [TOKEN_FIELD_NAME]: string().required(),
+                  [TOKEN_FIELD_NAME]: string()
+                    .test(
+                      'token-unlocked',
+                      formatText({ id: 'errors.amount.tokenIsLocked' }) || '',
+                      (value) =>
+                        !shouldPreventPaymentsWithTokenInColony(
+                          value || '',
+                          colony,
+                          tokenLockStatesMap,
+                        ),
+                    )
+                    .required(),
                 })
                 .defined()
                 .required(),
@@ -144,9 +159,10 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
             });
           },
         )
+
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, colonyTokens, networkInverseFee],
+    [colony, colonyTokens, tokenLockStatesMap],
   );
 };
 
@@ -160,8 +176,14 @@ export const useStagePayment = (
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
   const { networkInverseFee = '0' } = useNetworkInverseFee();
-  const validationSchema = useValidationSchema(networkInverseFee);
+  const validationSchema = useValidationSchema();
   const { setExpectedExpenditureType } = usePaymentBuilderContext();
+
+  const {
+    renderStakedExpenditureModal,
+    showStakedExpenditureModal,
+    shouldShowStakedExpenditureModal,
+  } = useShowCreateStakedExpenditureModal(Action.StagedPayment);
 
   useActionFormBaseHook({
     validationSchema,
@@ -189,5 +211,13 @@ export const useStagePayment = (
     transform: mapPayload((payload: StagedPaymentFormValues) => {
       return getStagedPaymentPayload(colony, payload, networkInverseFee);
     }),
+    primaryButton: {
+      type: shouldShowStakedExpenditureModal ? 'button' : 'submit',
+      onClick: showStakedExpenditureModal,
+    },
   });
+
+  return {
+    renderStakedExpenditureModal,
+  };
 };

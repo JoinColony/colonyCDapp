@@ -5,6 +5,7 @@ import { type ActionTypes } from '~redux/actionTypes.ts';
 import { type Domain } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 
+import { type ExpenditureFundPayload } from './expenditures.ts';
 import {
   type MetaWithSetter,
   type ErrorActionType,
@@ -43,6 +44,7 @@ export type MultiSigActionTypes =
         domainId: number;
         roles: ColonyRole[];
         multiSigId: string;
+        associatedActionId: string;
       },
       MetaWithSetter<object>
     >
@@ -54,6 +56,7 @@ export type MultiSigActionTypes =
   | UniqueActionType<
       ActionTypes.MULTISIG_FINALIZE,
       {
+        associatedActionId: string;
         colonyAddress: Address;
         multiSigId: string;
         canActionFail: boolean;
@@ -68,10 +71,21 @@ export type MultiSigActionTypes =
   | UniqueActionType<
       ActionTypes.MULTISIG_CANCEL,
       {
+        associatedActionId: string;
         colonyAddress: Address;
         motionId: string;
       },
       object
     >
   | ErrorActionType<ActionTypes.MULTISIG_CANCEL_ERROR, object>
-  | UniqueActionTypeWithoutPayload<ActionTypes.MULTISIG_CANCEL_SUCCESS, object>;
+  | UniqueActionTypeWithoutPayload<ActionTypes.MULTISIG_CANCEL_SUCCESS, object>
+  | UniqueActionType<
+      ActionTypes.MULTISIG_EXPENDITURE_FUND,
+      ExpenditureFundPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MULTISIG_EXPENDITURE_FUND_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MULTISIG_EXPENDITURE_FUND_SUCCESS,
+      MetaWithSetter<object>
+    >;

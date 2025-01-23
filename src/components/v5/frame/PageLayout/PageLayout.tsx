@@ -50,7 +50,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         <section ref={topContentContainerRef}>{topContent}</section>
         <div className="flex h-[calc(100vh-var(--top-content-height))] flex-row">
           <section
-            className={clsx('md:py-4 md:pl-4', {
+            className={clsx('relative md:py-4 md:pl-4', {
               'sm:py-4 sm:pl-4': enableMobileAndDesktopLayoutBreakpoints,
             })}
           >
@@ -65,6 +65,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               {headerProps ? <PageHeader {...headerProps} /> : header}
             </section>
             <section
+              id="main-content-container"
               className={clsx(
                 'modal-blur h-full w-full overflow-auto px-6 scrollbar-gutter-stable md:p-8 md:pb-0 md:pt-2',
                 {
@@ -73,9 +74,12 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               )}
             >
               <div
-                className={clsx('mx-auto max-w-[79.875rem] pb-4 pt-6 md:pt-0', {
-                  '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
-                })}
+                className={clsx(
+                  'mx-auto flex min-h-full max-w-[79.875rem] flex-grow flex-col pb-4 pt-6 md:pt-0',
+                  {
+                    '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
+                  },
+                )}
               >
                 {(pageTitle || isTablet) && (
                   <section

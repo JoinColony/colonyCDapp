@@ -2,10 +2,12 @@ import { Id, getChildIndex, ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
+  type ColonyMetadataFragment,
   CreateColonyMetadataDocument,
   type CreateColonyMetadataMutation,
   type CreateColonyMetadataMutationVariables,
@@ -34,7 +36,7 @@ import {
 
 function* editColonyMotion({
   payload: {
-    colony: { colonyAddress, metadata },
+    colony: { colonyAddress },
     colony,
     colonyDisplayName,
     colonyAvatarImage,
@@ -233,51 +235,56 @@ function* editColonyMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
+    const colonyMetadata = colony.metadata as ColonyMetadataFragment;
+
     /*
      * Save the pending colony metadata in the database
      */
     if (colony.metadata) {
-      yield apolloClient.mutate<
-        CreateColonyMetadataMutation,
-        CreateColonyMetadataMutationVariables
-      >({
-        mutation: CreateColonyMetadataDocument,
-        variables: {
-          input: {
-            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
-            displayName: colonyDisplayName ?? colony.metadata.displayName,
-            avatar: colonyAvatarImage ?? colony.metadata.avatar,
-            thumbnail: colonyThumbnail ?? colony.metadata.thumbnail,
-            description: colonyDescription ?? colony.metadata.description,
-            externalLinks: colonyExternalLinks ?? colony.metadata.externalLinks,
-            // We only need a single entry here, as we'll be appending it to the colony's metadata
-            // changelog if the motion succeeds.
-            changelog: [
-              {
-                transactionHash: txHash,
-                newDisplayName:
-                  colonyDisplayName ?? colony.metadata.displayName,
-                oldDisplayName: colony.metadata.displayName,
-                hasAvatarChanged:
-                  colonyAvatarImage === undefined
-                    ? false
-                    : colonyAvatarImage !== colony.metadata.avatar,
-                hasDescriptionChanged:
-                  metadata?.description !== colonyDescription,
-                haveExternalLinksChanged: !isEqual(
-                  metadata?.externalLinks,
-                  colonyExternalLinks,
-                ),
-                newSafes: colony.metadata.safes,
-                oldSafes: colony.metadata.safes,
-              },
-            ],
+      yield mutateWithAuthRetry(() =>
+        apolloClient.mutate<
+          CreateColonyMetadataMutation,
+          CreateColonyMetadataMutationVariables
+        >({
+          mutation: CreateColonyMetadataDocument,
+          variables: {
+            input: {
+              id: getPendingMetadataDatabaseId(colonyAddress, txHash),
+              displayName: colonyDisplayName ?? colonyMetadata.displayName,
+              avatar: colonyAvatarImage ?? colonyMetadata.avatar,
+              thumbnail: colonyThumbnail ?? colonyMetadata.thumbnail,
+              description: colonyDescription ?? colonyMetadata.description,
+              externalLinks:
+                colonyExternalLinks ?? colonyMetadata.externalLinks,
+              // We only need a single entry here, as we'll be appending it to the colony's metadata
+              // changelog if the motion succeeds.
+              changelog: [
+                {
+                  transactionHash: txHash,
+                  newDisplayName:
+                    colonyDisplayName ?? colonyMetadata.displayName,
+                  oldDisplayName: colonyMetadata.displayName,
+                  hasAvatarChanged:
+                    colonyAvatarImage === undefined
+                      ? false
+                      : colonyAvatarImage !== colonyMetadata.avatar,
+                  hasDescriptionChanged:
+                    colonyMetadata?.description !== colonyDescription,
+                  haveExternalLinksChanged: !isEqual(
+                    colonyMetadata?.externalLinks,
+                    colonyExternalLinks,
+                  ),
+                  newSafes: colonyMetadata.safes,
+                  oldSafes: colonyMetadata.safes,
+                },
+              ],
+            },
           },
-        },
-      });
+        }),
+      );
     }
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({

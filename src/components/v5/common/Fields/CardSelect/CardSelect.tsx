@@ -96,7 +96,7 @@ function CardSelect<TValue = string>({
     placeholder || formatText({ id: 'common.fields.cardSelect.placeholder' });
 
   return (
-    <div className="w-full sm:relative">
+    <div className="w-full sm:relative" data-testid="card-select">
       {readonly || disabled ? (
         <span
           className={clsx('text-md', {

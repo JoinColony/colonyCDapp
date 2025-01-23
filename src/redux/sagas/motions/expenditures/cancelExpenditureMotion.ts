@@ -19,6 +19,7 @@ import {
   initiateTransaction,
   putError,
 } from '~redux/sagas/utils/index.ts';
+import { getExpenditureCreatingActionId } from '~utils/expenditures.ts';
 
 function* cancelExpenditureMotion({
   meta,
@@ -99,6 +100,7 @@ function* cancelExpenditureMotion({
           id: meta.id,
           index: 1,
         },
+        associatedActionId: getExpenditureCreatingActionId(expenditure),
       },
     });
 

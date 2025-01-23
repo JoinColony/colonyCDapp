@@ -6,6 +6,7 @@ import { number, object, type ObjectSchema, string } from 'yup';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
+import { getMotionAssociatedActionId } from '~utils/actions.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -46,6 +47,8 @@ export const useStakingForm = () => {
   const userAvailableTokens = BigNumber.from(
     tokenBalanceData?.activeBalance ?? 0,
   ).add(tokenBalanceData?.inactiveBalance ?? 0);
+
+  const associatedActionId = getMotionAssociatedActionId(motionAction);
 
   const validationSchema: ObjectSchema<StakingFormValues> = object()
     .shape({
@@ -114,20 +117,24 @@ export const useStakingForm = () => {
   const transform = useMemo(
     () =>
       getStakingTransformFn({
+        actionId: motionAction.transactionHash,
         userAddress: user?.walletAddress ?? '',
         colonyAddress: colony?.colonyAddress ?? '',
         motionId,
         nativeTokenDecimals: tokenDecimals,
         tokenAddress,
         activeAmount: tokenBalanceData?.activeBalance ?? '0',
+        associatedActionId,
       }),
     [
+      motionAction.transactionHash,
       user?.walletAddress,
       colony?.colonyAddress,
       motionId,
       tokenDecimals,
       tokenAddress,
       tokenBalanceData?.activeBalance,
+      associatedActionId,
     ],
   );
 

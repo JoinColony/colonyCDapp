@@ -2,7 +2,6 @@ import React, {
   type FC,
   type PropsWithChildren,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -10,11 +9,16 @@ import { type FieldValues } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useTablet } from '~hooks';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import useToggle from '~hooks/useToggle/index.ts';
 import { TX_SEARCH_PARAM } from '~routes/routeConstants.ts';
 import { isChildOf } from '~utils/checks/isChildOf.ts';
 import { getElementWithSelector } from '~utils/elements.ts';
 import { removeQueryParamFromUrl } from '~utils/urls.ts';
+import {
+  FROM_FIELD_NAME,
+  TEAM_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 
 import {
   useAnalyticsContext,
@@ -55,6 +59,8 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
     },
   ] = useToggle();
   const { trackEvent } = useAnalyticsContext();
+  const selectedDomain = useGetSelectedDomainFilter();
+  const selectedDomainNativeId = selectedDomain?.nativeId ?? '';
   const navigate = useNavigate();
 
   const removeTxParamOnClose = useCallback(() => {
@@ -78,35 +84,38 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
     return undefined;
   });
 
-  useEffect(() => {
-    if (!isActionSidebarOpen) {
-      setActionSidebarInitialValues(undefined);
-    }
-  }, [isActionSidebarOpen]);
+  const getSidebarInitialValues = useCallback(
+    (initialValues = {}) => ({
+      [FROM_FIELD_NAME]: selectedDomainNativeId,
+      [TEAM_FIELD_NAME]: selectedDomainNativeId,
+      ...initialValues,
+    }),
+    [selectedDomainNativeId],
+  );
 
   const toggleOn = useCallback(
     (initialValues) => {
-      setActionSidebarInitialValues(initialValues);
+      setActionSidebarInitialValues(getSidebarInitialValues(initialValues));
       // Track the event when the action panel is opened
       trackEvent(OPEN_ACTION_PANEL_EVENT);
       return toggleActionSidebarOn();
     },
-    [toggleActionSidebarOn, trackEvent],
+    [getSidebarInitialValues, toggleActionSidebarOn, trackEvent],
   );
 
-  const toggleOff = useCallback(() => {
+  const toggleOff = useCallback((): void => {
     removeTxParamOnClose();
-    return toggleActionSidebarOff();
+    toggleActionSidebarOff();
   }, [toggleActionSidebarOff, removeTxParamOnClose]);
 
   const toggle = useCallback(
-    (initialValues) => {
+    (initialValues): void => {
       if (!isActionSidebarOpen) {
-        setActionSidebarInitialValues(initialValues);
+        setActionSidebarInitialValues(getSidebarInitialValues(initialValues));
       }
-      return toggleActionSidebar();
+      toggleActionSidebar();
     },
-    [isActionSidebarOpen, toggleActionSidebar],
+    [isActionSidebarOpen, getSidebarInitialValues, toggleActionSidebar],
   );
 
   const value = useMemo<ActionSidebarContextValue>(

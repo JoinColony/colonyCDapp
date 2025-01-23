@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers';
 import { getAddress, isAddress } from 'ethers/lib/utils';
 
 import { apolloClient } from '~apollo';
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { DEV_USDC_ADDRESS, isDev } from '~constants';
 import {
   CreateExpenditureMetadataDocument,
@@ -83,25 +84,27 @@ export function* saveExpenditureMetadata({
   numberOfTokens,
   distributionType,
 }: SaveExpenditureMetadataParams) {
-  yield apolloClient.mutate<
-    CreateExpenditureMetadataMutation,
-    CreateExpenditureMetadataMutationVariables
-  >({
-    mutation: CreateExpenditureMetadataDocument,
-    variables: {
-      input: {
-        id: getExpenditureDatabaseId(colonyAddress, expenditureId),
-        fundFromDomainNativeId: fundFromDomainId,
-        stages: stages?.map((stage, index) => ({
-          name: stage.name,
-          slotId: index + 1,
-        })),
-        expectedNumberOfPayouts: numberOfPayouts,
-        expectedNumberOfTokens: numberOfTokens,
-        distributionType,
+  yield mutateWithAuthRetry(() =>
+    apolloClient.mutate<
+      CreateExpenditureMetadataMutation,
+      CreateExpenditureMetadataMutationVariables
+    >({
+      mutation: CreateExpenditureMetadataDocument,
+      variables: {
+        input: {
+          id: getExpenditureDatabaseId(colonyAddress, expenditureId),
+          fundFromDomainNativeId: fundFromDomainId,
+          stages: stages?.map((stage, index) => ({
+            name: stage.name,
+            slotId: index + 1,
+          })),
+          expectedNumberOfPayouts: numberOfPayouts,
+          expectedNumberOfTokens: numberOfTokens,
+          distributionType,
+        },
       },
-    },
-  });
+    }),
+  );
 }
 
 export const getPayoutsWithSlotIds = (
@@ -119,6 +122,7 @@ interface ClaimExpendituresPayoutsParams {
   claimablePayouts: ExpenditurePayoutWithSlotId[];
   metaId: string;
   colonyClient: AnyColonyClient;
+  associatedActionId: string;
 }
 
 // NOTE: this is called from 3 sagas so it's designed to be wrapped in a try catch
@@ -128,6 +132,7 @@ export function* claimExpenditurePayouts({
   nativeExpenditureId,
   metaId,
   colonyClient,
+  associatedActionId,
 }: ClaimExpendituresPayoutsParams) {
   if (claimablePayouts.length === 0) {
     return;
@@ -146,6 +151,7 @@ export function* claimExpenditurePayouts({
     metaId,
     batchKey: 'claimExpenditurePayouts',
     channelId: 'claimPayouts',
+    associatedActionId,
   });
 
   yield createMulticallChannels();

@@ -34,7 +34,6 @@ function* createExpenditure({
   payload: {
     colonyAddress,
     payouts,
-    createdInDomain,
     fundFromDomainId,
     isStaged,
     stages,
@@ -88,7 +87,7 @@ function* createExpenditure({
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
       colonyClient.networkClient,
       colonyClient,
-      createdInDomain.nativeId,
+      fundFromDomainId,
       ColonyRole.Administration,
     );
 
@@ -96,7 +95,7 @@ function* createExpenditure({
       context: ClientType.ColonyClient,
       methodName: 'makeExpenditure',
       identifier: colonyAddress,
-      params: [permissionDomainId, childSkillIndex, createdInDomain.nativeId],
+      params: [permissionDomainId, childSkillIndex, fundFromDomainId],
       group: {
         key: batchKey,
         id: meta.id,
@@ -167,7 +166,9 @@ function* createExpenditure({
     });
 
     if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, customActionTitle);
+      yield createActionMetadataInDB(txHash, {
+        customTitle: customActionTitle,
+      });
     }
 
     if (isStaged) {

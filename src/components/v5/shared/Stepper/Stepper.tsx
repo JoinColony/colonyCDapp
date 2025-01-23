@@ -18,6 +18,7 @@ function Stepper<TKey extends React.Key>({
   activeStepKey,
   setActiveStepKey,
   items,
+  disablePreviousSteps = false,
 }: StepperProps<TKey>): JSX.Element | null {
   const activeItemIndex = items.findIndex(({ key }) => key === activeStepKey);
   const [hiddenItem, setHiddenItem] = useState<TKey | undefined>(undefined);
@@ -94,7 +95,7 @@ function Stepper<TKey extends React.Key>({
 
   return items.length ? (
     <>
-      <div className="flex w-full items-center gap-1">
+      <div className="flex w-full items-center gap-1" data-testid="stepper">
         {isMobile && isScrollableList && (
           <button type="button" onClick={scrollLeft}>
             <CaretLeft className="text-gray-400" size={18} />
@@ -118,7 +119,10 @@ function Stepper<TKey extends React.Key>({
               } = heading;
               const isNextStepOptional = items[index + 1]?.isOptional;
               const isNextStepSkipped = items[index + 1]?.isSkipped;
-              const itemDisabled = index > activeItemIndex || isSkipped;
+              const itemDisabled =
+                isSkipped ||
+                index > activeItemIndex ||
+                (index < activeItemIndex && disablePreviousSteps);
 
               return !isHidden ? (
                 <motion.li

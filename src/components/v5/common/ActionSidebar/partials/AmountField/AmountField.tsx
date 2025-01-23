@@ -79,7 +79,8 @@ const AmountField: FC<AmountFieldProps> = ({
   const handleFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
     const formattedValue = formatNumeral(e.target.value, formattingOptions);
 
-    const unformattedValue = unformatNumeral(e.target.value);
+    // Strip 'M' from the input as the character 'M' is used as a placeholder in the unformatNumeral function and can result in weird values
+    const unformattedValue = unformatNumeral(e.target.value.replace('M', ''));
 
     if (
       wrapperRef.current &&
@@ -95,7 +96,7 @@ const AmountField: FC<AmountFieldProps> = ({
     onChange?.();
 
     field.onChange(unformattedValue.replace('-', ''));
-    setValue(formatNumeral(e.target.value, formattingOptions));
+    setValue(formattedValue);
   };
 
   const handleTokenSelect = (selectedTokenAddress: string) => {
@@ -168,7 +169,8 @@ const AmountField: FC<AmountFieldProps> = ({
         className={clsx(
           'col-start-1 row-start-1 w-auto min-w-[0.5em] flex-shrink resize-none appearance-none bg-base-white text-md outline-none outline-0',
           {
-            'text-gray-900 placeholder:text-gray-400': !isError && !isDisabled,
+            'text-gray-900 transition-colors placeholder:text-gray-400 md:hover:text-blue-400 md:placeholder:hover:text-blue-400':
+              !isError && !isDisabled,
             'text-gray-400 placeholder:text-gray-300':
               isDisabled && !isTokenSelectionDisabled,
             'text-gray-500 placeholder:text-gray-300':

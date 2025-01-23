@@ -6,6 +6,7 @@ import React, {
   useState,
 } from 'react';
 
+import useCloseModals from '~hooks/useCloseModals.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { TokensModalType } from '~v5/common/TokensModal/consts.ts';
 import TokensModal from '~v5/common/TokensModal/index.ts';
@@ -20,6 +21,8 @@ const TokensModalContextProvider: FC<PropsWithChildren> = ({ children }) => {
     isTokensModalOpen,
     { toggleOn: toggleOnTokensModal, toggleOff: toggleOffTokensModal },
   ] = useToggle();
+
+  useCloseModals(() => toggleOffTokensModal());
 
   const value = useMemo(
     () => ({

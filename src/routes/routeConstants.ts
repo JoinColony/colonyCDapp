@@ -25,7 +25,7 @@ export const COLONY_EXTENSION_DETAILS_ROUTE = `${COLONY_EXTENSIONS_ROUTE}/:exten
 export const COLONY_INCOMING_ROUTE = `incoming`;
 export const COLONY_BALANCES_ROUTE = `balances`;
 export const COLONY_FOLLOWERS_ROUTE = `members/followers`;
-export const COLONY_STREAMING_PAYMENTS_ROUTE = `streaming-payments`;
+export const COLONY_STREAMING_PAYMENTS_ROUTE = `streaming`;
 export const COLONY_MEMBERS_ROUTE = `members`;
 export const COLONY_MEMBERS_WITH_DOMAIN_ROUTE = `members/:domainId`;
 export const COLONY_VERIFIED_ROUTE = `verified`;
@@ -62,6 +62,8 @@ export const CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM = 'verification';
 
 // Note all base routes begin with a '/'
 
+// Make sure this is kept up to date with the same set in the block-ingestor
+// src/constants.ts
 export const RESERVED_ROUTES = new Set([
   NOT_FOUND_ROUTE,
   METACOLONY_HOME_ROUTE,

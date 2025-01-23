@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import { notMaybe } from '~utils/arrays/index.ts';
+import { type Domain } from '~types/graphql.ts';
 import ArrowScroller from '~v5/common/ArrowScroller/ArrowScroller.tsx';
 
 import AllTeamsItem from './AllTeamsItem.tsx';
@@ -13,16 +12,8 @@ import TeamItem from './TeamItem.tsx';
 
 const displayName = 'v5.shared.TeamFilter.MobileTeamFilter';
 
-const MobileTeamFilter = () => {
-  const {
-    colony: { domains },
-  } = useColonyContext();
+const MobileTeamFilter = ({ allDomains }: { allDomains: Domain[] }) => {
   const selectedDomain = useGetSelectedDomainFilter();
-
-  const allDomains = useMemo(
-    () => domains?.items.filter(notMaybe) || [],
-    [domains?.items],
-  );
 
   const selectedDomainIndex = useMemo(
     () =>

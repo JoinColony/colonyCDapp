@@ -5,7 +5,7 @@ import { useMobile } from '~hooks/index.ts';
 import { useSocialLinksTableColumns } from '~hooks/useSocialLinksTableColumns.tsx';
 import { type SocialLinksTableModel } from '~types/colony.ts';
 import { formatText } from '~utils/intl.ts';
-import Table from '~v5/common/Table/index.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
 
 const displayName = 'v5.common.ActionsContent.partials.SocialLinksTable';
 
@@ -30,12 +30,16 @@ const SocialLinksTable = ({ socialLinks }: Props) => {
             {formatText({ id: 'editColony.socialLinks.table.title' })}
           </h5>
           <Table<SocialLinksTableModel>
-            sizeUnit="%"
-            meatBallMenuSize={10}
-            getRowId={({ key }) => key}
+            overrides={{
+              getRowId: ({ key }) => key,
+            }}
+            borders={{
+              type: 'unset',
+              visible: true,
+            }}
+            layout={isMobile ? 'vertical' : 'horizontal'}
             columns={columns}
             data={data}
-            verticalLayout={isMobile}
           />
         </>
       )}

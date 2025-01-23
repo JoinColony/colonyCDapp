@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
+import { MAX_USERNAME_LENGTH } from '~common/Onboarding/wizardSteps/StepCreateUser/validation.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/index.ts';
@@ -16,7 +17,6 @@ import { Avatar } from '~v5/shared/Avatar/Avatar.tsx';
 import {
   profileFileOptions,
   MAX_BIO_CHARS,
-  MAX_DISPLAYNAME_CHARS,
   MAX_LOCATION_CHARS,
 } from '../consts.ts';
 import IconSuccessContent from '../IconSuccessContent.tsx';
@@ -127,8 +127,9 @@ export const useUserProfilePageForm = () => {
           className: rowStyles,
           descriptionClassName,
           inputProps: {
-            maxCharNumber: MAX_DISPLAYNAME_CHARS,
-            shouldNumberOfCharsBeVisible: true,
+            maxCharNumber: MAX_USERNAME_LENGTH,
+            shouldNumberOfCharsBeVisible: canChangeUsername,
+            defaultValue: user?.profile?.displayName || '',
             name: 'displayName',
             isDisabled: !canChangeUsername,
             register,
@@ -160,6 +161,7 @@ export const useUserProfilePageForm = () => {
                 size={60}
                 src={avatarUrl ?? undefined}
                 address={wallet.address}
+                testId="user-profile-avatar"
               />
             ) : (
               <div />
@@ -169,6 +171,7 @@ export const useUserProfilePageForm = () => {
             uploaderText,
             SuccessComponent: IconSuccessContent,
             uploaderShownByDefault: false,
+            testId: 'avatar-uploader',
           },
         },
       ],

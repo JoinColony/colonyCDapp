@@ -1,11 +1,9 @@
 require('cross-fetch/polyfill');
-const { getColonyNetworkClient, Network, Id } = require('@colony/colony-js');
 const {
-  providers,
   constants: { AddressZero },
   utils: { Logger, getAddress },
+  BigNumber,
 } = require('ethers');
-const Decimal = require('decimal.js');
 
 const {
   getContributorReputation,
@@ -17,6 +15,7 @@ const {
 
 const {
   graphqlRequest,
+  repMinerRequest,
   getContributorType,
   sortAddressesDescendingByReputation,
   createContributorReputationInDb,
@@ -27,43 +26,28 @@ const {
   updateReputationInDomain,
   getDomainDatabaseId,
   calculatePercentageReputation,
+  loggingFnFactory,
 } = require('./utils');
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
-let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
-let networkAddress;
 let reputationOracleEndpoint =
   'http://reputation-monitor:3001/reputation/local';
-let network = Network.Custom;
+let log = loggingFnFactory();
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
 
   if (ENV === 'qa' || ENV === 'prod') {
     const { getParams } = require('/opt/nodejs/getParams');
-    [
-      apiKey,
-      graphqlURL,
-      rpcURL,
-      networkAddress,
-      reputationOracleEndpoint,
-      network,
-    ] = await getParams([
+    [apiKey, graphqlURL, reputationOracleEndpoint] = await getParams([
       'appsyncApiKey',
       'graphqlUrl',
-      'chainRpcEndpoint',
-      'networkContractAddress',
       'reputationEndpoint',
-      'chainNetwork',
     ]);
-  } else {
-    const {
-      etherRouterAddress,
-    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-    networkAddress = etherRouterAddress;
+    log = loggingFnFactory(ENV);
   }
 };
 
@@ -84,33 +68,9 @@ exports.handler = async (event) => {
       return true;
     }
 
-    const provider = new providers.StaticJsonRpcProvider(rpcURL);
+    log(`Colony ${colonyAddress} reputation update started`);
 
-    const networkClient = getColonyNetworkClient(network, provider, {
-      networkAddress,
-      reputationOracleEndpoint,
-    });
-
-    const colonyClient = await networkClient.getColonyClient(colonyAddress);
-    const { skillId: rootSkillId } = await colonyClient.getDomain(
-      Id.RootDomain,
-    );
-
-    let totalRepInColony;
-    try {
-      ({ reputationAmount: totalRepInColony } =
-        await colonyClient.getReputationWithoutProofs(
-          rootSkillId,
-          AddressZero,
-        ));
-    } catch (e) {
-      console.error('Could not get total reputation in colony', e);
-      // may error if there's no rep in colony. In that case, there are no contributors to update.
-      return true;
-    }
-
-    // query all domains
-
+    // get the current colony from the db, along with it's domain information
     const { data } =
       (await graphqlRequest(
         getColony,
@@ -119,6 +79,28 @@ exports.handler = async (event) => {
         apiKey,
       )) ?? {};
 
+    const colony = data?.getColony ?? {};
+    const domains = colony?.domains?.items ?? [];
+    const rootDomain = domains.find(({ isRoot }) => isRoot);
+
+    const { currentRootHash } = await repMinerRequest(
+      `${reputationOracleEndpoint}/rootHashes`,
+    );
+
+    let totalRepInColony;
+    try {
+      ({ reputationAmount: totalRepInColony } = await repMinerRequest(`
+          ${reputationOracleEndpoint}/${currentRootHash}/${colonyAddress}/${rootDomain.nativeSkillId}/${AddressZero}/noProof
+        `));
+    } catch (e) {
+      console.error('Could not get total reputation in colony', e);
+      // may error if there's no rep in colony. In that case, there are no contributors to update.
+      return true;
+    }
+
+    log({ totalRepInColony: totalRepInColony?.toString() || '0' });
+
+    // query database rep metadata
     const { data: response } =
       (await graphqlRequest(
         getReputationMiningCycleMetadata,
@@ -128,12 +110,26 @@ exports.handler = async (event) => {
       )) ?? {};
 
     const lastUpdatedCache =
-      data?.getColony?.lastUpdatedContributorsWithReputation;
+      colony?.lastUpdatedContributorsWithReputation || null;
 
     const lastReputationMiningCycleCompletion =
       response?.getReputationMiningCycleMetadata?.lastCompletedAt;
 
+    log({
+      lastUpdatedCache,
+      lastReputationMiningCycleCompletion,
+      willUpdateCache: !(
+        new Date(lastReputationMiningCycleCompletion).valueOf() <
+        new Date(lastUpdatedCache).valueOf()
+      ),
+    });
+
     // We only need to update the cache if the reputation mining cycle has completed since the last time we updated the cache
+    /*
+     * @NOTE This could be improved by checking the current root hash against a pre-stored value eliminating the need for the ingestor
+     * In theory. In practice we still need the ingestor to UI visual updates on "how much time 'till the reputation updates"
+     * And since we already store all those values, changing this becomes a bit pointless
+     */
     if (
       new Date(lastReputationMiningCycleCompletion).valueOf() <
       new Date(lastUpdatedCache).valueOf()
@@ -141,22 +137,19 @@ exports.handler = async (event) => {
       return true;
     }
 
-    const allNativeDomainIds =
-      data?.getColony?.domains?.items?.map(({ nativeId }) => nativeId) ?? [];
-
     const promiseResults = await Promise.allSettled(
-      allNativeDomainIds.map(async (nativeDomainId) => {
-        const { skillId } = await colonyClient.getDomain(nativeDomainId);
+      domains.map(async ({ nativeId, nativeSkillId, isRoot }) => {
+        const skillId = BigNumber.from(nativeSkillId);
         let addresses;
         let totalRepInDomain;
 
         try {
-          ({ addresses } = await colonyClient.getMembersReputation(skillId));
-          ({ reputationAmount: totalRepInDomain } =
-            await colonyClient.getReputationWithoutProofs(
-              skillId,
-              AddressZero,
-            ));
+          ({ addresses } = await await repMinerRequest(
+            `${reputationOracleEndpoint}/${currentRootHash}/${colonyAddress}/${skillId}`,
+          ));
+          ({ reputationAmount: totalRepInDomain } = await repMinerRequest(
+            `${reputationOracleEndpoint}/${currentRootHash}/${colonyAddress}/${skillId}/${AddressZero}/noProof`,
+          ));
         } catch (e) {
           // can error if no rep in domain. skip in this case.
           return;
@@ -164,28 +157,42 @@ exports.handler = async (event) => {
 
         // update total rep in domain in db
         await updateReputationInDomain({
-          databaseDomainId: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          databaseDomainId: getDomainDatabaseId(colonyAddress, nativeId),
           apiKey,
           graphqlURL,
-          reputation: totalRepInDomain.toString(),
-          colonyReputation: totalRepInColony.toString(),
+          reputation: totalRepInDomain?.toString() || '0',
+          colonyReputation: totalRepInColony?.toString() || '0',
         });
 
         // For each domain, sort addresses by reputation, get the contributor type, and
         // update the database with the corresponding Contributor entry
 
+        // This will take a long time depending on how many reputation holders there are
         const sortedAddresses = await sortAddressesDescendingByReputation(
-          colonyClient,
+          reputationOracleEndpoint,
+          currentRootHash,
+          colonyAddress,
           skillId,
           addresses,
         );
 
         const totalAddresses = sortedAddresses.length;
 
+        log({
+          nativeId,
+          nativeSkillId,
+          totalRepInDomain: totalRepInDomain?.toString() || '0',
+          addressesWithReputation: JSON.stringify(
+            sortedAddresses.map(({ address, reputationBN }) => ({
+              address,
+              reputationBN: reputationBN?.toString() || '0',
+            })),
+          ),
+        });
+
         const promiseStatuses = await Promise.allSettled(
           sortedAddresses.map(async ({ address, reputationBN }, idx) => {
             const contributorAddress = getAddress(address);
-            const contributorRepDecimal = new Decimal(reputationBN.toString());
 
             const colonyReputationPercentage = calculatePercentageReputation(
               reputationBN,
@@ -197,10 +204,9 @@ exports.handler = async (event) => {
               totalRepInDomain,
             );
 
-            const contributorReputationId = `${colonyAddress}_${nativeDomainId}_${contributorAddress}`;
+            const contributorReputationId = `${colonyAddress}_${nativeId}_${contributorAddress}`;
             const colonyContributorId = `${colonyAddress}_${contributorAddress}`;
-            const reputation = reputationBN.toString();
-            const isRootDomain = nativeDomainId === Id.RootDomain;
+            const reputation = reputationBN?.toString() || '0';
 
             const { data: repResponse } =
               (await graphqlRequest(
@@ -211,7 +217,7 @@ exports.handler = async (event) => {
               )) ?? {};
 
             // If root domain, check if we have a contributor entry
-            if (isRootDomain) {
+            if (isRoot) {
               const { data: contributorResponse } =
                 (await graphqlRequest(
                   getColonyContributor,
@@ -267,7 +273,7 @@ exports.handler = async (event) => {
               await createContributorReputationInDb({
                 colonyAddress,
                 contributorAddress,
-                nativeDomainId,
+                nativeId,
                 id: contributorReputationId,
                 reputationRaw: reputation,
                 reputationPercentage: domainReputationPercentage,
@@ -294,7 +300,9 @@ exports.handler = async (event) => {
 
     for (const { status, reason } of promiseResults) {
       if (status === 'rejected') {
-        console.error(reason);
+        log(
+          `ERROR: Some reputation entries could not be processed -- ${reason}`,
+        );
         allFulfilled = false;
       }
     }
@@ -307,7 +315,7 @@ exports.handler = async (event) => {
         input: {
           id: colonyAddress,
           lastUpdatedContributorsWithReputation: new Date().toISOString(),
-          reputation: totalRepInColony.toString(),
+          reputation: totalRepInColony?.toString() || '0',
         },
       },
       graphqlURL,
@@ -316,7 +324,7 @@ exports.handler = async (event) => {
 
     return allFulfilled;
   } catch (e) {
-    console.error(e);
+    console.log(`ERROR: ${e}`);
     return false;
   }
 };

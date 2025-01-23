@@ -19,6 +19,7 @@ import { type Schema } from 'yup';
 
 import { type AdditionalFormOptionsContextValue } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import AdditionalFormOptionsContextProvider from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContextProvider.tsx';
+import { useStableDepsEffect } from '~hooks/useStableDepsEffect.ts';
 
 const displayName = 'Form';
 
@@ -49,6 +50,7 @@ export interface FormProps<FormData extends FieldValues> {
   className?: string;
   innerRef?: Ref<UseFormReturn<FormData>>;
   id?: string;
+  testId?: string;
 }
 
 const Form = <FormData extends FieldValues>({
@@ -64,8 +66,10 @@ const Form = <FormData extends FieldValues>({
   className,
   innerRef,
   id,
+  testId,
 }: FormProps<FormData>) => {
   const { readonly, ...formOptions } = options || {};
+
   // Resolver updated to have the access to all of the form values inside a field validator context
   const resolver = useMemo<Resolver<FormData> | undefined>(() => {
     if (!validationSchema) {
@@ -98,7 +102,8 @@ const Form = <FormData extends FieldValues>({
     handleSubmit,
     watch,
     reset,
-    formState: { isSubmitting },
+    getValues,
+    formState: { isSubmitting, errors: formErrors },
   } = formHelpers;
   const values = watch();
 
@@ -107,10 +112,10 @@ const Form = <FormData extends FieldValues>({
    * Useful in user settings.
    */
   useEffect(() => {
-    if (isSubmitting && resetOnSubmit) {
+    if (isSubmitting && resetOnSubmit && !Object.keys(formErrors)) {
       reset(values);
     }
-  }, [isSubmitting, values, resetOnSubmit, reset]);
+  }, [isSubmitting, values, resetOnSubmit, reset, formErrors]);
 
   const submitHandler = useCallback<React.FormEventHandler<HTMLFormElement>>(
     (event) => {
@@ -129,11 +134,34 @@ const Form = <FormData extends FieldValues>({
     [handleSubmit, onSubmit, formHelpers, onError],
   );
 
+  // Separate concern for handling defaultValues updates
+  useStableDepsEffect(() => {
+    const initializeForm = async () => {
+      const resolvedDefaultValues =
+        typeof defaultValues === 'function'
+          ? await defaultValues()
+          : defaultValues;
+
+      const currentValues = getValues();
+      const mergedValues = { ...resolvedDefaultValues, ...currentValues };
+
+      reset(mergedValues, { keepDirtyValues: true, keepValues: true });
+    };
+
+    initializeForm();
+  }, [defaultValues, reset, getValues]);
+
   return (
     <AdditionalFormOptionsContextProvider value={{ readonly }}>
       <FormProvider {...formHelpers}>
         {/* noValidate attribute added to hide native browser validation */}
-        <form id={id} className={className} onSubmit={submitHandler} noValidate>
+        <form
+          id={id}
+          className={className}
+          onSubmit={submitHandler}
+          noValidate
+          data-testid={testId}
+        >
           {typeof children === 'function' ? children(formHelpers) : children}
         </form>
       </FormProvider>

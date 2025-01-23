@@ -118,6 +118,7 @@ const ActionFormRow = <T,>(
       >
         {label ? (
           <Tooltip
+            placement="top"
             {...label}
             tooltipContent={<span>{label.tooltipContent}</span>}
             selectTriggerRef={(triggerRef) => {
@@ -127,7 +128,6 @@ const ActionFormRow = <T,>(
 
               return triggerRef.querySelector(`.${LABEL_CLASSNAME}`);
             }}
-            placement="top"
           >
             {tooltipContent}
           </Tooltip>

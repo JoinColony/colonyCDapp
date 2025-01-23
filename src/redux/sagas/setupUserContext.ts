@@ -13,6 +13,7 @@ import { ActionTypes } from '../actionTypes.ts';
 import { type AllActions } from '../types/actions/index.ts';
 
 import actionsSagas from './actions/index.ts';
+import colonyFinishCreateSaga from './colony/colonyFinishCreate.ts';
 import colonySagas, { colonyCreateSaga } from './colony/index.ts';
 import decisionsSagas from './decisions/index.ts';
 import expendituresSagas from './expenditures/index.ts';
@@ -52,6 +53,7 @@ function* setupContextDependentSagas() {
     call(actionsSagas),
     call(colonySagas),
     call(colonyCreateSaga),
+    call(colonyFinishCreateSaga),
     call(extensionSagas),
     call(motionSagas),
     call(multiSigSagas),

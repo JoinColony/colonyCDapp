@@ -53,6 +53,7 @@ fragment Expenditure on Expenditure {
       or: [
         { type: { eq: MOVE_FUNDS } }
         { type: { eq: FUND_EXPENDITURE_MOTION } }
+        { type: { eq: FUND_EXPENDITURE_MULTISIG } }
       ]
       isMotionFinalization: { ne: true }
     }
@@ -63,7 +64,10 @@ fragment Expenditure on Expenditure {
   }
   finalizingActions: actions(
     filter: {
-      type: { eq: FINALIZE_EXPENDITURE }
+      or: [
+        { type: { eq: FINALIZE_EXPENDITURE } }
+        { type: { eq: FINALIZE_EXPENDITURE_MOTION } }
+      ]
       isMotionFinalization: { ne: true }
     }
   ) {
@@ -144,5 +148,8 @@ fragment ExpenditureAction on ColonyAction {
   }
   motionData {
     ...ColonyMotion
+  }
+  multiSigData {
+    ...ColonyMultiSig
   }
 }

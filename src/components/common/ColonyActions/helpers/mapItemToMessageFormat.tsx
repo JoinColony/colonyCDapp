@@ -81,7 +81,7 @@ const useGetRecipientData = (
   } = actionData || {};
   const safeRecipient = safeTransaction?.transactions?.items[0]?.recipient;
   const stagedPaymentRecipientAddress =
-    expenditure?.slots[0].recipientAddress || '';
+    expenditure?.slots[0]?.recipientAddress || '';
   const stagedPaymentRecipient = useUserByAddress(
     stagedPaymentRecipientAddress,
   );
@@ -420,8 +420,8 @@ export const useMapColonyActionToExpectedFormat = ({
         decimals={getTokenDecimalsWithFallback(
           getSelectedToken(
             colony,
-            !!expenditureData?.slots?.length &&
-              !!expenditureData?.slots[0].payouts?.length
+            !!expenditureData?.slots.length &&
+              !!expenditureData.slots[0].payouts?.length
               ? expenditureData.slots[0].payouts[0].tokenAddress
               : '',
           )?.decimals,

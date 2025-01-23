@@ -133,7 +133,7 @@ module.exports = {
         content: '0px 1px 2px rgba(16, 24, 40, 0.05)',
         overlay: 'blur(2px)',
         'light-blue': '0px 0px 3px 3px rgba(239, 248, 255, 1)',
-        'select': '0px 1px 2px 0px rgba(16, 24, 40, 0.05);'
+        select: '0px 1px 2px 0px rgba(16, 24, 40, 0.05);',
       },
       transitionDuration: {
         slow: '450ms',
@@ -148,7 +148,7 @@ module.exports = {
       },
       zIndex: {
         base: '1',
-        mid: '2',
+        aboveBase: '2',
         sidebar: '10',
         dropdown: '20',
         header: '100',
@@ -158,7 +158,7 @@ module.exports = {
       },
       spacing: {
         4.5: '1.125rem',
-        8.5: '2.125rem'
+        8.5: '2.125rem',
       },
     },
   },
@@ -280,6 +280,9 @@ module.exports = {
           '@apply relative after:w-full after:h-4.5 after:z-base after:block after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:overflow-hidden after:text-gray-700 hover:after:text-gray-900 after:font-medium hover:after:font-semibold after:content-[attr(aria-label)]':
             {},
         },
+        '.drop-shadow-default': {
+          'box-shadow': ' 0px 10px 30px rgba(0, 0, 0, 0.05)',
+        },
       });
       addComponents({
         '.inner': {
@@ -306,6 +309,12 @@ module.exports = {
         },
         '.divider': {
           '@apply w-full border border-gray-200': {},
+        },
+        'ul.react-datepicker__time-list': {
+          '@apply bg-base-white': {},
+        },
+        'li.react-datepicker__time-list-item': {
+          '@apply hover:bg-gray-50 !important': {},
         },
       });
     },

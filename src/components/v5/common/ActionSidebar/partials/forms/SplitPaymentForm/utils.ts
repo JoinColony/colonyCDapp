@@ -3,6 +3,8 @@ import { Id } from '@colony/colony-js';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { SplitPaymentDistributionType } from '~gql';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
+import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -14,7 +16,7 @@ export const getSplitPaymentPayload = (
   colony: Colony,
   values: SplitPaymentFormValues,
   networkInverseFee: string,
-): CreateExpenditurePayload | null => {
+): CreateExpenditurePayload | CreateStakedExpenditurePayload | null => {
   const colonyTokens = colony.tokens?.items.filter(notNull);
   const {
     tokenAddress,
@@ -23,11 +25,15 @@ export const getSplitPaymentPayload = (
     team,
     description,
     payments,
+    decisionMethod,
   } = values;
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
-  const createdInDomain = findDomainByNativeId(createdIn, colony) || rootDomain;
+  const createdInDomain =
+    decisionMethod === DecisionMethod.Permissions
+      ? undefined
+      : findDomainByNativeId(createdIn, colony) || rootDomain;
 
-  if (!createdInDomain || !payments.length) {
+  if (!payments.length) {
     return null;
   }
 

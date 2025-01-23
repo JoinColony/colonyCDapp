@@ -7,7 +7,14 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile, useTablet } from '~hooks';
 import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
-import Table from '~v5/common/Table/Table.tsx';
+import { useBuildTokenSumsMap } from '~v5/common/ActionSidebar/partials/forms/shared/hooks/useBuildTokenSumsMap.ts';
+import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
+import {
+  getMoreActionsMenu,
+  renderCellContent,
+} from '~v5/common/Table/utils.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { useStagedPaymentRecipientsTableColumns } from './hooks.tsx';
@@ -20,6 +27,7 @@ import {
 const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
   name,
 }) => {
+  const isFieldDisabled = useIsFieldDisabled();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const {
     colony: { nativeToken },
@@ -31,11 +39,12 @@ const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
     name,
   });
 
+  useBuildTokenSumsMap();
+
   const data: StagedPaymentRecipientsTableModel[] = fields.map(({ id }) => ({
     key: id,
   }));
   const value: StagedPaymentRecipientsFieldModel[] = useWatch({ name }) || [];
-  const columns = useStagedPaymentRecipientsTableColumns(name, value);
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
   const getMenuProps = ({ index }) => ({
@@ -62,37 +71,58 @@ const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
         : []),
     ],
   });
+  const columns = useStagedPaymentRecipientsTableColumns(
+    name,
+    value,
+    getMenuProps,
+  );
 
   return (
     <div>
       <h5 className="mb-3 mt-6 text-2">
         {formatText({ id: 'actionSidebar.stages' })}
       </h5>
-      {!!data.length && !hasNoDecisionMethods && (
+      {!!data.length && !hasNoDecisionMethods && !isFieldDisabled && (
         <Table<StagedPaymentRecipientsTableModel>
+          className={clsx({
+            '!border-negative-400 md:[&_tfoot>tr>td]:!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
+              !!fieldState.error,
+          })}
           tableClassName={clsx(
             '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
             {
               '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.25rem]': isTablet,
               '[&_table]:table-auto lg:[&_table]:table-fixed [&_td:first-child]:pl-4 [&_td]:pr-5 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-5':
                 !isTablet,
-              '!border-negative-400 md:[&_tfoot>tr>td]:!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
-                !!fieldState.error,
             },
           )}
-          verticalLayout={isTablet}
-          getRowId={({ key }) => key}
           columns={columns}
           data={data}
-          getMenuProps={getMenuProps}
-          withBorder={false}
+          layout={isTablet ? 'vertical' : 'horizontal'}
           footerColSpan={isMobile ? 2 : 1}
-          renderCellWrapper={(_, content) => content}
-          initialState={{
-            pagination: {
-              pageSize: 400,
+          renderCellWrapper={renderCellContent}
+          borders={{
+            visible: true,
+            type: 'unset',
+          }}
+          overrides={{
+            getRowId: ({ key }) => key,
+            state: {
+              columnVisibility: {
+                [MEATBALL_MENU_COLUMN_ID]: !isTablet,
+              },
+            },
+            initialState: {
+              pagination: {
+                pageIndex: 0,
+                pageSize: 400,
+              },
             },
           }}
+          moreActions={getMoreActionsMenu({
+            getMenuProps,
+            visible: isTablet,
+          })}
         />
       )}
       <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row">
@@ -108,7 +138,9 @@ const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
               tokenAddress: nativeToken?.tokenAddress || '',
             });
           }}
-          disabled={hasNoDecisionMethods || data.length === 400}
+          disabled={
+            hasNoDecisionMethods || data.length === 400 || isFieldDisabled
+          }
         >
           {formatText({ id: 'button.addMilestone' })}
         </Button>

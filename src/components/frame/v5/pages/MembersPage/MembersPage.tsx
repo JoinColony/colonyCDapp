@@ -38,7 +38,9 @@ const MembersPage: FC = () => {
   const resolvedMembersPath = useResolvedPath(COLONY_FOLLOWERS_ROUTE);
   const resolvedContributorsPath = useResolvedPath(COLONY_MEMBERS_ROUTE);
   const [activeTab, setActiveTab] = useState(0);
-  const { sortedContributorCount, sortedMemberCount } = useMembersPage();
+  const { totalContributorCount, sortedContributorCount, sortedMemberCount } =
+    useMembersPage();
+
   const {
     colony: { name: colonyName },
   } = useColonyContext();
@@ -98,74 +100,84 @@ const MembersPage: FC = () => {
     resolvedMembersPath.pathname,
   ]);
 
-  return (
-    <ContentWithTeamFilter>
-      <Tabs
-        activeTab={activeTab}
-        onTabClick={(_, id) =>
-          navigate(id === 0 ? COLONY_MEMBERS_ROUTE : COLONY_FOLLOWERS_ROUTE)
-        }
-        items={[
-          {
-            id: 0,
-            title: formatText({ id: 'membersPage.title' }),
-            notificationNumber: sortedContributorCount,
-            content: (
-              <MembersTabContentWrapper
-                title={formatText({ id: 'membersPage.members.title' })}
-                description={formatText({
-                  id: 'membersPage.members.description',
-                })}
-                additionalActions={
-                  <Filter
-                    excludeFilterType={FilterTypes.Team}
-                    searchInputLabel={formatMessage({
-                      id: 'filter.members.search.title',
-                    })}
-                    searchInputPlaceholder={formatMessage({
-                      id: 'filter.members.input.placeholder',
-                    })}
-                    customLabel={formatMessage({ id: 'allFilters' })}
-                  />
-                }
-                titleAction={titleAction}
-              >
-                <Outlet />
-              </MembersTabContentWrapper>
-            ),
-          },
-          {
-            id: 1,
-            title: formatText({ id: 'membersPage.followers.title' }),
-            notificationNumber: sortedMemberCount,
-            content: (
-              <MembersTabContentWrapper
-                title={formatText({ id: 'membersPage.followers.title' })}
-                description={formatText({
-                  id: 'membersPage.followers.description',
-                })}
-                additionalActions={
-                  <Filter
-                    excludeFilterType={FilterTypes.Team}
-                    searchInputLabel={formatMessage({
-                      id: 'filter.members.search.title',
-                    })}
-                    searchInputPlaceholder={formatMessage({
-                      id: 'filter.members.input.placeholder',
-                    })}
-                    customLabel={formatMessage({ id: 'allFilters' })}
-                  />
-                }
-                titleAction={titleAction}
-              >
-                <Outlet />
-              </MembersTabContentWrapper>
-            ),
-          },
-        ]}
-      />
-    </ContentWithTeamFilter>
+  const tabs = (
+    <Tabs
+      activeTab={activeTab}
+      onTabClick={(_, id) =>
+        navigate(id === 0 ? COLONY_MEMBERS_ROUTE : COLONY_FOLLOWERS_ROUTE)
+      }
+      items={[
+        {
+          id: 0,
+          title: formatText({ id: 'membersPage.title' }),
+          notificationNumber:
+            activeTab === 0 ? sortedContributorCount : totalContributorCount,
+          content: (
+            <MembersTabContentWrapper
+              title={formatText({ id: 'membersPage.members.title' })}
+              description={formatText({
+                id: 'membersPage.members.description',
+              })}
+              additionalActions={
+                <Filter
+                  excludeFilterType={FilterTypes.Team}
+                  searchInputLabel={formatMessage({
+                    id: 'filter.members.search.title',
+                  })}
+                  searchInputPlaceholder={formatMessage({
+                    id: 'filter.members.input.placeholder',
+                  })}
+                  customLabel={formatMessage({ id: 'allFilters' })}
+                />
+              }
+              titleAction={titleAction}
+            >
+              <Outlet />
+            </MembersTabContentWrapper>
+          ),
+        },
+        {
+          id: 1,
+          title: formatText({ id: 'membersPage.followers.title' }),
+          notificationNumber: sortedMemberCount,
+          content: (
+            <MembersTabContentWrapper
+              title={formatText({ id: 'membersPage.followers.title' })}
+              description={formatText({
+                id: 'membersPage.followers.description',
+              })}
+              additionalActions={
+                <Filter
+                  excludeFilterType={FilterTypes.Team}
+                  searchInputLabel={formatMessage({
+                    id: 'filter.members.search.title',
+                  })}
+                  searchInputPlaceholder={formatMessage({
+                    id: 'filter.members.input.placeholder',
+                  })}
+                  customLabel={formatMessage({ id: 'allFilters' })}
+                />
+              }
+              titleAction={titleAction}
+            >
+              <Outlet />
+            </MembersTabContentWrapper>
+          ),
+        },
+      ]}
+    />
   );
+
+  if (activeTab === 1) {
+    return (
+      <>
+        <div className="h-[3.625rem]" />
+        {tabs}
+      </>
+    );
+  }
+
+  return <ContentWithTeamFilter>{tabs}</ContentWithTeamFilter>;
 };
 
 MembersPage.displayName = displayName;

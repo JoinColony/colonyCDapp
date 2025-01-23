@@ -76,8 +76,6 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         payouts: ExpenditurePayoutFieldValue[];
-        // the domain to create the expenditure in
-        createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
         isStaged?: boolean;
@@ -96,6 +94,7 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         nativeExpenditureId: number;
+        associatedActionId: string;
       },
       object
     >
@@ -143,6 +142,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CLAIM,
       {
+        associatedActionId: string;
         colonyAddress: Address;
         nativeExpenditureId: number;
         claimablePayouts: ExpenditurePayoutWithSlotId[];
@@ -182,6 +182,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.RECLAIM_EXPENDITURE_STAKE,
       {
+        associatedActionId: string;
         colonyAddress: Address;
         nativeExpenditureId: number;
       },

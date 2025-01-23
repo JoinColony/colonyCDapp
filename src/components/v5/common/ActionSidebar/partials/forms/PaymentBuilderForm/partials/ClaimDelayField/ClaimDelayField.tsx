@@ -67,12 +67,14 @@ const ClaimDelayField: FC<ClaimDelayFieldProps> = ({
     >
       <input
         {...field}
+        value={field.value ?? ''}
         ref={inputRef}
         name={name}
         className={clsx(
           'col-start-1 row-start-1 w-auto min-w-[0.5em] flex-shrink resize-none appearance-none bg-base-white text-md outline-none outline-0',
           {
-            'text-gray-900 placeholder:text-gray-400': !isError && !disabled,
+            'text-gray-900 transition-colors placeholder:text-gray-400 md:hover:text-blue-400 md:placeholder:hover:text-blue-400':
+              !isError && !disabled,
             'bg-transparent text-gray-400 placeholder:text-gray-300': disabled,
             'text-negative-400 placeholder:text-negative-400':
               !disabled && isError,
@@ -85,6 +87,13 @@ const ClaimDelayField: FC<ClaimDelayFieldProps> = ({
             event.target.value,
             formattingOptions,
           );
+
+          if (
+            (!field.value && !formattedValue) ||
+            formattedValue === field.value
+          ) {
+            return;
+          }
 
           if (
             wrapperRef.current &&

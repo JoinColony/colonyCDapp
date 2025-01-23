@@ -3,6 +3,7 @@ import { type ClientTypeTokens } from '@colony/colony-js';
 import { utils, BigNumber } from 'ethers';
 import { useMemo } from 'react';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -40,10 +41,10 @@ import { filter, groupBy, mapValues, orderBy } from '~utils/lodash.ts';
 import { DEFAULT_TX_HASH } from './consts.ts';
 
 export const TX_PAGE_SIZE = 20;
-// In minutes
-export const TX_RETRY_TIMEOUT = 10;
 
 export const convertTransactionType = ({
+  associatedActionId,
+  colonyAddress,
   context,
   createdAt,
   error,
@@ -91,6 +92,7 @@ export const convertTransactionType = ({
 
   return {
     context: context as ClientTypeTokens | ExtendedClientType,
+    colonyAddress,
     createdAt: new Date(createdAt),
     error: error ?? undefined,
     from,
@@ -106,6 +108,7 @@ export const convertTransactionType = ({
     title: title ? JSON.parse(title) : undefined,
     titleValues: titleValues ? JSON.parse(titleValues) : undefined,
     options: options ? JSON.parse(options) : undefined,
+    associatedActionId: associatedActionId ?? undefined,
   };
 };
 
@@ -114,17 +117,14 @@ export const getGroupStatus = (txGroup: TransactionType[]) => {
   if (txGroup.some((tx) => tx.status === TransactionStatus.Failed)) {
     return TransactionStatus.Failed;
   }
-  if (
-    txGroup.every(
-      (tx) =>
-        tx.status === TransactionStatus.Succeeded &&
-        tx.hash !== DEFAULT_TX_HASH,
-    )
-  ) {
+  if (txGroup.every((tx) => tx.status === TransactionStatus.Succeeded)) {
     return TransactionStatus.Succeeded;
   }
   return TransactionStatus.Pending;
 };
+
+export const getHasZeroAddressTransaction = (txGroup: TransactionType[]) =>
+  txGroup.some((tx) => tx.hash === DEFAULT_TX_HASH);
 
 // Get the index of the first transaction in a group that is ready to sign
 export const getActiveTransactionIdx = (txGroup: TransactionType[]) => {
@@ -232,6 +232,7 @@ export const getTransaction = async (id: string, fetchPolicy?: FetchPolicy) => {
 export const addTransactionToDb = async (
   id: string,
   {
+    associatedActionId,
     context,
     createdAt,
     from,
@@ -292,62 +293,65 @@ export const addTransactionToDb = async (
     params: txParams,
     identifier: identifier || null,
     options: JSON.stringify(options),
+    associatedActionId: associatedActionId || null,
   };
 
-  await apollo.mutate<
-    CreateTransactionMutation,
-    CreateTransactionMutationVariables
-  >({
-    mutation: CreateTransactionDocument,
-    variables: {
-      input,
-    },
-    update: (cache, { data }) => {
-      const newTx = data?.createTransaction;
+  await mutateWithAuthRetry(() =>
+    apollo.mutate<
+      CreateTransactionMutation,
+      CreateTransactionMutationVariables
+    >({
+      mutation: CreateTransactionDocument,
+      variables: {
+        input,
+      },
+      update: (cache, { data }) => {
+        const newTx = data?.createTransaction;
 
-      if (!newTx) {
-        return;
-      }
+        if (!newTx) {
+          return;
+        }
 
-      cache.updateQuery<
-        GetUserTransactionsQuery,
-        GetUserTransactionsQueryVariables
-      >(
-        {
-          query: GetUserTransactionsDocument,
-          variables: {
-            userAddress: fromAddress,
-            limit: TX_PAGE_SIZE,
+        cache.updateQuery<
+          GetUserTransactionsQuery,
+          GetUserTransactionsQueryVariables
+        >(
+          {
+            query: GetUserTransactionsDocument,
+            variables: {
+              userAddress: fromAddress,
+              limit: TX_PAGE_SIZE,
+            },
+          },
+          (result) => {
+            if (!result?.getTransactionsByUser) {
+              return result;
+            }
+
+            return {
+              ...result,
+              getTransactionsByUser: {
+                ...result.getTransactionsByUser,
+                items: [newTx, ...result.getTransactionsByUser.items],
+              },
+            };
+          },
+        );
+      },
+      optimisticResponse: {
+        createTransaction: {
+          __typename: 'Transaction',
+          ...input,
+          id,
+          createdAt: txCreatedAt,
+          group: {
+            __typename: 'TransactionGroup',
+            ...input.group,
           },
         },
-        (result) => {
-          if (!result?.getTransactionsByUser) {
-            return result;
-          }
-
-          return {
-            ...result,
-            getTransactionsByUser: {
-              ...result.getTransactionsByUser,
-              items: [newTx, ...result.getTransactionsByUser.items],
-            },
-          };
-        },
-      );
-    },
-    optimisticResponse: {
-      createTransaction: {
-        __typename: 'Transaction',
-        ...input,
-        id,
-        createdAt: txCreatedAt,
-        group: {
-          __typename: 'TransactionGroup',
-          ...input.group,
-        },
       },
-    },
-  });
+    }),
+  );
 };
 
 export const updateTransaction = async (
@@ -384,77 +388,87 @@ export const updateTransaction = async (
     };
   }
 
-  return apollo.mutate<
-    UpdateTransactionMutation,
-    UpdateTransactionMutationVariables
-  >(mutationOpts);
+  await mutateWithAuthRetry(() =>
+    apollo
+      .mutate<
+        UpdateTransactionMutation,
+        UpdateTransactionMutationVariables
+      >(mutationOpts)
+      .then(() =>
+        apollo.refetchQueries({ include: [GetUserTransactionsDocument] }),
+      ),
+  );
+  // return;
 };
 
 export const deleteTransaction = async (id: string) => {
   const apollo = getContext(ContextModule.ApolloClient);
   const wallet = getContext(ContextModule.Wallet);
   const walletAddress = utils.getAddress(wallet.address);
-  await apollo.mutate<
-    UpdateTransactionMutation,
-    UpdateTransactionMutationVariables
-  >({
-    mutation: UpdateTransactionDocument,
-    variables: {
-      input: {
-        id,
-        from: walletAddress,
-        status: TransactionStatus.Failed,
-        deleted: true,
-      },
-    },
-    optimisticResponse: {
-      updateTransaction: {
-        __typename: 'Transaction',
-        id,
-        deleted: true,
-        status: TransactionStatus.Failed,
-        // null values for optimistic response
-        error: null,
-        identifier: null,
-        params: null,
-      },
-    },
-    update: (cache, { data }) => {
-      const newTx = data?.updateTransaction;
 
-      if (!newTx) {
-        return;
-      }
-
-      cache.updateQuery<
-        GetUserTransactionsQuery,
-        GetUserTransactionsQueryVariables
-      >(
-        {
-          query: GetUserTransactionsDocument,
-          variables: {
-            userAddress: walletAddress,
-            limit: TX_PAGE_SIZE,
-          },
+  await mutateWithAuthRetry(() =>
+    apollo.mutate<
+      UpdateTransactionMutation,
+      UpdateTransactionMutationVariables
+    >({
+      mutation: UpdateTransactionDocument,
+      variables: {
+        input: {
+          id,
+          from: walletAddress,
+          status: TransactionStatus.Failed,
+          deleted: true,
         },
-        (result) => {
-          if (!result?.getTransactionsByUser) {
-            return result;
-          }
+      },
+      optimisticResponse: {
+        updateTransaction: {
+          __typename: 'Transaction',
+          id,
+          deleted: true,
+          status: TransactionStatus.Failed,
+          // null values for optimistic response
+          error: null,
+          identifier: null,
+          params: null,
+        },
+      },
+      update: (cache, { data }) => {
+        const newTx = data?.updateTransaction;
 
-          return {
-            ...result,
-            getTransactionsByUser: {
-              ...result.getTransactionsByUser,
-              items: result.getTransactionsByUser.items.filter(
-                (tx) => tx?.id !== id,
-              ),
+        if (!newTx) {
+          return;
+        }
+
+        cache.updateQuery<
+          GetUserTransactionsQuery,
+          GetUserTransactionsQueryVariables
+        >(
+          {
+            query: GetUserTransactionsDocument,
+            variables: {
+              userAddress: walletAddress,
+              limit: TX_PAGE_SIZE,
             },
-          };
-        },
-      );
-    },
-  });
+          },
+          (result) => {
+            if (!result?.getTransactionsByUser) {
+              return result;
+            }
+
+            return {
+              ...result,
+              getTransactionsByUser: {
+                ...result.getTransactionsByUser,
+                items: result.getTransactionsByUser.items.filter(
+                  (tx) => tx?.id !== id,
+                ),
+              },
+            };
+          },
+        );
+      },
+    }),
+  );
 };
 
 // Update the transaction status to pending in the database
@@ -516,19 +530,6 @@ export const transactionSetParams = async (
     ...input,
     status: TransactionStatus.Pending,
   });
-};
-
-// Set the transaction back to pending, remove any error
-export const transactionRetry = async (id: string) => {
-  const wallet = getContext(ContextModule.Wallet);
-  const walletAddress = utils.getAddress(wallet.address);
-  const input = {
-    id,
-    from: walletAddress,
-    status: TransactionStatus.Ready,
-    error: null,
-  };
-  return updateTransaction(input, input);
 };
 
 export const failPendingTransactions = async () => {

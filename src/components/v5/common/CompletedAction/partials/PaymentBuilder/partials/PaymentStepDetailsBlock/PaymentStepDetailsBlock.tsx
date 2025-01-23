@@ -7,7 +7,10 @@ import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { ActionTypes } from '~redux';
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
-import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
+import {
+  getClaimableExpenditurePayouts,
+  getExpenditureCreatingActionId,
+} from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import { CacheQueryKeys, removeCacheEntry } from '~utils/queries.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
@@ -86,6 +89,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
 
   const claimPayload: ClaimExpenditurePayload | undefined = nativeId
     ? {
+        associatedActionId: getExpenditureCreatingActionId(expenditure),
         colonyAddress: colony.colonyAddress,
         claimablePayouts,
         nativeExpenditureId: nativeId,
@@ -104,6 +108,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
     }
 
     const payload: ReclaimExpenditureStakePayload = {
+      associatedActionId: getExpenditureCreatingActionId(expenditure),
       colonyAddress: colony.colonyAddress,
       nativeExpenditureId: expenditure?.nativeId,
     };
@@ -170,12 +175,17 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
               <PaymentOverview total={totals} paid={paid} payable={payable} />
               <ActionButton
                 actionType={ActionTypes.EXPENDITURE_CLAIM}
-                className="mt-4 w-full"
+                className="mt-4"
                 mode="primarySolid"
-                disabled={!claimablePayouts.length || !blockTime}
+                disabled={
+                  !claimablePayouts.length ||
+                  !blockTime ||
+                  isWaitingForClaimedPayouts
+                }
                 values={claimPayload}
                 text={formatText({ id: 'expenditure.paymentStage.button' })}
                 loadingBehavior={LoadingBehavior.TxLoader}
+                isFullSize
                 onSuccess={async () => {
                   if (isStaked && !isStakeClaimed) {
                     await handleReclaimStake();
@@ -187,7 +197,6 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                   // we need to remove all getDomainBalance queries to refetch the correct balances
                   removeCacheEntry(CacheQueryKeys.GetDomainBalance);
                 }}
-                isLoading={isWaitingForClaimedPayouts}
               />
             </div>
           ),

@@ -17,5 +17,6 @@ export interface TooltipProps {
   isFullWidthContent?: boolean;
   className?: string;
   contentWrapperClassName?: string;
+  testId?: string;
   selectTriggerRef?: (ref: HTMLElement | null) => HTMLElement | null;
 }

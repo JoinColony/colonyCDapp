@@ -1,16 +1,22 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import {
   ContextModule,
   getContext,
   type ColonyManager,
 } from '~context/index.ts';
 import {
+  type DomainMetadataFragment,
   GetFullColonyByNameDocument,
   UpdateDomainMetadataDocument,
   type UpdateDomainMetadataMutation,
   type UpdateDomainMetadataMutationVariables,
+  type CreateDomainMetadataMutation,
+  type CreateDomainMetadataMutationVariables,
+  CreateDomainMetadataDocument,
+  DomainColor,
 } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import {
@@ -19,6 +25,7 @@ import {
 } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
+import { getDomainNameFallback } from '~utils/domains.ts';
 
 import {
   createGroupTransaction,
@@ -40,7 +47,7 @@ function* editDomainAction({
   payload: {
     colonyAddress,
     domainName,
-    domainColor,
+    domainColor = DomainColor.Root,
     domainPurpose,
     domain,
     annotationMessage,
@@ -140,35 +147,7 @@ function* editDomainAction({
       },
     } = yield waitForTxResult(editDomain.channel);
 
-    /**
-     * Save the updated metadata in the database
-     */
-    if (domain.metadata) {
-      yield apolloClient.mutate<
-        UpdateDomainMetadataMutation,
-        UpdateDomainMetadataMutationVariables
-      >({
-        mutation: UpdateDomainMetadataDocument,
-        variables: {
-          input: {
-            id: getDomainDatabaseId(colonyAddress, domain.nativeId),
-            name: domainName,
-            color: domainColor,
-            description: domainPurpose,
-            changelog: getUpdatedDomainMetadataChangelog({
-              transactionHash: txHash,
-              metadata: domain.metadata,
-              newName: domainName,
-              newColor: domainColor,
-              newDescription: domainPurpose,
-            }),
-          },
-        },
-        refetchQueries: [GetFullColonyByNameDocument],
-      });
-    }
-
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({
@@ -176,6 +155,58 @@ function* editDomainAction({
         message: annotationMessage,
         txHash,
       });
+    }
+
+    /**
+     * Save the updated metadata in the database
+     */
+    if (domain.metadata) {
+      yield mutateWithAuthRetry(() =>
+        apolloClient.mutate<
+          UpdateDomainMetadataMutation,
+          UpdateDomainMetadataMutationVariables
+        >({
+          mutation: UpdateDomainMetadataDocument,
+          variables: {
+            input: {
+              id: getDomainDatabaseId(colonyAddress, domain.nativeId),
+              name: domainName,
+              color: domainColor,
+              description: domainPurpose,
+              changelog: getUpdatedDomainMetadataChangelog({
+                transactionHash: txHash,
+                metadata: domain.metadata as DomainMetadataFragment,
+                newName: domainName,
+                newColor: domainColor,
+                newDescription: domainPurpose,
+              }),
+            },
+          },
+          refetchQueries: [GetFullColonyByNameDocument],
+        }),
+      );
+    } else {
+      // Create new metadata if no metadata exists
+      yield mutateWithAuthRetry(() =>
+        apolloClient.mutate<
+          CreateDomainMetadataMutation,
+          CreateDomainMetadataMutationVariables
+        >({
+          mutation: CreateDomainMetadataDocument,
+          variables: {
+            input: {
+              id: getDomainDatabaseId(colonyAddress, domain.nativeId),
+              name: getDomainNameFallback({
+                domainName,
+                nativeId: domain.nativeId,
+              }),
+              color: domainColor,
+              description: domainPurpose,
+            },
+          },
+          refetchQueries: [GetFullColonyByNameDocument],
+        }),
+      );
     }
 
     setTxHash?.(txHash);

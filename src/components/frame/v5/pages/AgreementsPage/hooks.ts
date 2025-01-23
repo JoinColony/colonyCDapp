@@ -13,6 +13,7 @@ import {
   makeWithMotionStateMapper,
 } from '~hooks/useActivityFeed/helpers.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import useNetworkMotionStates from '~hooks/useNetworkMotionStates.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { isTransactionFormat } from '~utils/web3/index.ts';
@@ -100,6 +101,8 @@ export const useGetAgreements = () => {
 
   const { agreementsData, refetchAgreements, loading } = useGetAllAgreements();
 
+  const selectedDomain = useGetSelectedDomainFilter();
+
   const motionIds = useMemo(
     () =>
       agreementsData
@@ -144,7 +147,15 @@ export const useGetAgreements = () => {
     (motionStatesLoading || loadingExtensions) &&
     !!activeFilters?.motionStates?.length;
 
-  const filteredAgreements = agreements
+  const filteredAgreements = (
+    selectedDomain
+      ? agreements.filter(
+          (agreement) =>
+            Number(agreement.motionData?.nativeMotionDomainId) ===
+            selectedDomain?.nativeId,
+        )
+      : agreements
+  )
     .filter((agreement) =>
       filterActionByMotionState(agreement, activeFilters?.motionStates),
     )

@@ -1,21 +1,18 @@
-export const fetchData = async <T, R = string>(
+export const fetchJsonData = async <T>(
   url: string,
-  cb: (data: T) => R,
   error = `Fetch to ${url} failed.`,
 ) => {
   try {
     const res = await fetch(url);
     if (res.ok) {
       const data: T = await res.json();
-      return cb(data);
+      return data;
     }
-
-    console.error(error, res.status, ': ', res.statusText);
+    console.error(res.status, ': ', res.statusText);
   } catch (e) {
-    console.error(error, e);
+    console.error(e);
   }
-
-  return null;
+  throw new Error(error);
 };
 
 export const convertTokenToCLNY = (

@@ -5,8 +5,11 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type MotionStakes, useGetMotionTimeoutPeriodsQuery } from '~gql';
 import { type TimerValueProps } from '~shared/TimerValue/TimerValue.tsx';
 import { MotionState } from '~utils/colonyMotions.ts';
+import { getSafePollingInterval } from '~utils/queries.ts';
 
 import { getCurrentStatePeriodInMs, splitTimeLeft } from './helpers.ts';
+
+const pollInterval = getSafePollingInterval();
 
 const useMotionTimeoutPeriods = (colonyAddress: string, motionId: string) => {
   const { data, loading, refetch } = useGetMotionTimeoutPeriodsQuery({
@@ -125,16 +128,25 @@ export const useMotionCountdown = ({
    * Count it down
    */
   useEffect(() => {
+    let motionStatePollTimer: NodeJS.Timeout;
+
     const timer = setInterval(() => {
       setTimeLeft((oldTimeLeft) => oldTimeLeft - 1);
     }, 1000);
 
     if (timeLeft === 0) {
-      refetchMotionState();
       clearInterval(timer);
+
+      motionStatePollTimer = setInterval(refetchMotionState, pollInterval);
     }
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+
+      if (motionStatePollTimer) {
+        clearInterval(motionStatePollTimer);
+      }
+    };
   }, [
     timeLeft,
     currentStatePeriodInMs,
@@ -142,6 +154,7 @@ export const useMotionCountdown = ({
     motionId,
     user,
     refetchMotionState,
+    state,
   ]);
 
   useEffect(() => {

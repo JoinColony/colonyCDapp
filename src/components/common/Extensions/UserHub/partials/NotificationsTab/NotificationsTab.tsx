@@ -70,7 +70,7 @@ const NotificationsTab = ({ closeUserHub }: { closeUserHub: () => void }) => {
         {hasUnreadNotifications && markAllAsRead && (
           <button
             onClick={() => markAllAsRead()}
-            className="text-xs font-medium text-blue-400"
+            className="text-xs font-medium text-blue-400 hover:text-gray-900"
             type="button"
           >
             {formatText(MSG.markAllAsRead)}
@@ -78,9 +78,12 @@ const NotificationsTab = ({ closeUserHub }: { closeUserHub: () => void }) => {
         )}
       </div>
       <div
-        className={clsx('flex flex-col justify-center pt-4 sm:justify-normal', {
-          'h-full sm:h-auto': isEmpty,
-        })}
+        className={clsx(
+          'flex flex-col justify-center pt-0.5 sm:justify-normal',
+          {
+            'h-full sm:h-auto': isEmpty,
+          },
+        )}
       >
         {isEmpty ? (
           <>

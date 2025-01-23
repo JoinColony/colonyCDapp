@@ -1,5 +1,6 @@
 import { MagnifyingGlass, X } from '@phosphor-icons/react';
-import React, { type FC, useLayoutEffect, useRef } from 'react';
+import clsx from 'clsx';
+import React, { type FC, useRef, useEffect } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import InputBase from '~v5/common/Fields/InputBase/index.ts';
@@ -10,14 +11,16 @@ const displayName = 'v5.SearchSelect.partials.SearchInput';
 
 const SearchInput: FC<SearchInputProps> = ({
   onChange,
+  onClose,
   value,
   placeholder = formatText({ id: 'placeholder.search' }),
   shouldFocus = false,
+  className,
   ...props
 }) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (searchInputRef.current && shouldFocus) {
       searchInputRef?.current?.focus();
     }
@@ -30,7 +33,7 @@ const SearchInput: FC<SearchInputProps> = ({
         onChange={(e) => {
           onChange?.(e.target.value);
         }}
-        className="peer w-full rounded-lg px-8.5 text-3"
+        className={clsx('peer w-full rounded-lg px-8.5 text-3', className)}
         placeholder={placeholder}
         value={value}
         ref={searchInputRef}
@@ -39,6 +42,11 @@ const SearchInput: FC<SearchInputProps> = ({
             <MagnifyingGlass size={14} />
           </span>
         }
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            onClose?.();
+          }
+        }}
         prefix={
           value ? (
             <button

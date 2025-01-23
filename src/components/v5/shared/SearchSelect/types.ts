@@ -15,6 +15,7 @@ export interface SearchSelectProps extends BaseFieldProps {
   checkboxesList?: string[];
   additionalButtons?: React.ReactNode;
   placeholder?: string;
+  shouldReturnAddresses?: boolean;
 }
 
 export interface SearchSelectOptionProps {

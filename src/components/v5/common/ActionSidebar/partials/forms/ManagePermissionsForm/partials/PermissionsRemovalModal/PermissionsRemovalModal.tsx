@@ -14,7 +14,7 @@ import {
   getRemovedInheritedPermissions,
 } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/utils.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
-import Table from '~v5/common/Table/Table.tsx';
+import { Table } from '~v5/common/Table/Table.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -91,7 +91,7 @@ const PermissionsRemovalModal: React.FC<PermissionsRemovalModalProps> = ({
           name="acknowledge"
           isChecked={isAcknowledged}
           onChange={() => setIsAcknowledged((state) => !state)}
-          classNames="mb-8"
+          className="mb-8"
           disabled={isFormSubmitting}
         >
           <p className="text-md">{formatText(MSG.acknowledge)}</p>

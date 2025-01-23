@@ -15,9 +15,10 @@ import { formatText } from '~utils/intl.ts';
 
 import NotificationWrapper from '../NotificationWrapper.tsx';
 
-import ActionNotificationMessage from './ActionNotificationMessage.tsx';
+import { MentionNotificationMessage } from './MentionNotificationMessage.tsx';
 import MotionNotificationMessage from './MotionNotificationMessage.tsx';
 import MultisigNotificationMessage from './MultisigNotificationMessage.tsx';
+import { PermissionsNotificationMessage } from './PermissionsNotificationMessage.tsx';
 
 const displayName = 'common.Extensions.UserHub.partials.ActionNotification';
 
@@ -44,6 +45,7 @@ const ActionNotification: FC<NotificationProps> = ({
     variables: { address: creator || '' },
     skip: !creator,
   });
+
   const { data: actionData, loading: loadingAction } = useGetColonyActionQuery({
     variables: {
       transactionHash: transactionHash || '',
@@ -83,8 +85,8 @@ const ActionNotification: FC<NotificationProps> = ({
       return null;
     }
 
-    return formatText({ id: 'action.title' }, titleValues);
-  }, [action, colony, titleValues]);
+    return formatText({ id: 'action.title' }, titleValues, notification.id);
+  }, [action, colony, titleValues, notification.id]);
 
   const actionTitle =
     action?.metadata?.customTitle || action?.decisionData?.title || '';
@@ -96,20 +98,23 @@ const ActionNotification: FC<NotificationProps> = ({
       notification={notification}
       onClick={handleNotificationClicked}
     >
-      {notificationType &&
-        [NotificationType.PermissionsAction, NotificationType.Mention].includes(
-          notificationType,
-        ) && (
-          <ActionNotificationMessage
-            actionMetadataDescription={actionMetadataDescription}
-            actionTitle={actionTitle}
-            creator={
-              userData?.getUserByAddress?.items[0]?.profile?.displayName ?? ''
-            }
-            loading={loadingColony || loadingAction || loadingUser}
-            notificationType={notificationType}
-          />
-        )}
+      {notificationType === NotificationType.PermissionsAction && (
+        <PermissionsNotificationMessage
+          actionMetadataDescription={actionMetadataDescription}
+          actionTitle={actionTitle}
+          loading={loadingColony || loadingAction || loadingUser}
+        />
+      )}
+      {notificationType === NotificationType.Mention && (
+        <MentionNotificationMessage
+          actionMetadataDescription={actionMetadataDescription}
+          actionTitle={actionTitle}
+          loading={loadingColony || loadingAction || loadingUser}
+          creator={
+            userData?.getUserByAddress?.items[0]?.profile?.displayName ?? ''
+          }
+        />
+      )}
       {notificationType &&
         [
           NotificationType.MultisigActionCreated,

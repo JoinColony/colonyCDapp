@@ -115,7 +115,7 @@ function* manageVerifiedMembersAction({
       },
     } = yield waitForTxResult(manageVerifiedMembers.channel);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({

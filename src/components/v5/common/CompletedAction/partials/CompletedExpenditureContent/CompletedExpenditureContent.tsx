@@ -88,6 +88,8 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
   const tokensCount = getTokensNumber(expenditure);
   const stagedPaymentTokenSymbol =
     tokensCount === 1 &&
+    stages &&
+    stages.length > 0 &&
     allTokens.find(({ token }) => token.tokenAddress === stages[0].tokenAddress)
       ?.token.symbol;
 
@@ -99,9 +101,7 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
           contentWrapperClassName={clsx('z-[65] sm:min-w-[11.25rem]', {
             '!left-6 right-6': isMobile,
           })}
-          dropdownPlacementProps={{
-            top: 12,
-          }}
+          hasLeftAlignment
           items={[
             {
               key: '3',

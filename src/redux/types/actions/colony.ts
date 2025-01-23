@@ -7,11 +7,14 @@ import {
   type InstalledExtensionData,
 } from '~types/extensions.ts';
 import { type Address, type WithKey } from '~types/index.ts';
+import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
 
 import {
+  type MetaWithSetter,
   type ActionType,
   type ErrorActionType,
   type UniqueActionType,
+  type ActionTypeWithMeta,
 } from './index.ts';
 
 export type ColonyActionTypes =
@@ -46,6 +49,16 @@ export type ColonyActionTypes =
   | ActionType<typeof ActionTypes.CREATE_CANCEL>
   | ErrorActionType<ActionTypes.CREATE_ERROR, object>
   | UniqueActionType<ActionTypes.CREATE_SUCCESS, void, object>
+  | UniqueActionType<
+      ActionTypes.FINISH_CREATE,
+      {
+        colonyName: string;
+        tokenChoice: 'create' | 'select';
+      },
+      { navigate?: NavigateFunction }
+    >
+  | ErrorActionType<ActionTypes.FINISH_CREATE_ERROR, object>
+  | UniqueActionType<ActionTypes.FINISH_CREATE_SUCCESS, void, object>
   | ErrorActionType<ActionTypes.RECOVERY_MODE_ENTER_ERROR, object>
   | UniqueActionType<ActionTypes.RECOVERY_MODE_ENTER_SUCCESS, object, object>
   | UniqueActionType<
@@ -99,4 +112,19 @@ export type ColonyActionTypes =
   | UniqueActionType<ActionTypes.EXTENSION_UPGRADE_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_UPGRADE_ERROR, object>
   | UniqueActionType<ActionTypes.EXTENSION_UNINSTALL_SUCCESS, object, object>
-  | ErrorActionType<ActionTypes.EXTENSION_UNINSTALL_ERROR, object>;
+  | ErrorActionType<ActionTypes.EXTENSION_UNINSTALL_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.CREATE_ARBITRARY_TRANSACTION,
+      {
+        colonyAddress: Address;
+        customActionTitle: string;
+        transactions: AddTransactionTableModel[];
+        annotationMessage: string | null;
+      },
+      MetaWithSetter<object>
+    >
+  | ActionTypeWithMeta<
+      ActionTypes.CREATE_ARBITRARY_TRANSACTION_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.CREATE_ARBITRARY_TRANSACTION_ERROR, object>;

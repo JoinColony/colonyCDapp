@@ -13,6 +13,7 @@ import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
 import ActionBadge from '../ActionBadge/ActionBadge.tsx';
+import { ColonyActionLinkWrapper } from '../ColonyActionLinkWrapper.tsx';
 
 import { type ActionMobileDescriptionProps } from './types.ts';
 
@@ -33,6 +34,7 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
     fromDomain,
     createdAt,
     expenditureId,
+    transactionHash,
   } = action;
 
   const { expenditure, loadingExpenditure } =
@@ -73,78 +75,80 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
   );
 
   return (
-    <div className="expandable flex items-start justify-between gap-1 pb-4 pl-[1.125rem] pr-[.9375rem]">
-      <div className="flex flex-col gap-2 text-gray-500">
-        {shouldShowCounter && isMotion && motionData && motionState && (
-          <MotionCountDownTimer
-            className="flex-shrink-0 text-xs font-medium text-negative-400"
-            timerClassName="text-negative-400 font-medium text-xs"
-            prefix={formatText({
-              id: 'activityFeedTable.table.motionCountDown.prefix',
+    <div className="expandable flex items-start gap-1 pb-4">
+      <ColonyActionLinkWrapper className="flex-grow" txHash={transactionHash}>
+        <div className="flex flex-col gap-2 text-gray-500">
+          {shouldShowCounter && isMotion && motionData && motionState && (
+            <MotionCountDownTimer
+              className="flex-shrink-0 text-xs font-medium text-negative-400"
+              timerClassName="text-negative-400 font-medium text-xs"
+              prefix={formatText({
+                id: 'activityFeedTable.table.motionCountDown.prefix',
+              })}
+              motionId={motionData.motionId}
+              motionStakes={motionData.motionStakes}
+              motionState={motionState}
+              refetchMotionState={refetchMotionState}
+            />
+          )}
+          <p
+            className={clsx(textClassName, 'text-gray-600', {
+              'overflow-hidden rounded skeleton': isLoading,
             })}
-            motionId={motionData.motionId}
-            motionStakes={motionData.motionStakes}
-            motionState={motionState}
-            refetchMotionState={refetchMotionState}
-          />
-        )}
-        <p
-          className={clsx(textClassName, 'text-gray-600', {
-            'overflow-hidden rounded skeleton': isLoading,
-          })}
-        >
-          {actionMetadataDescription}
-        </p>
-        {team && (
+          >
+            {actionMetadataDescription}
+          </p>
+          {team && (
+            <div className="flex items-center gap-2">
+              {formatText(
+                { id: 'activityFeedTable.table.team' },
+                {
+                  teamBadge: (
+                    <TeamBadge
+                      textClassName="line-clamp-1 break-all"
+                      name={team?.name || ''.padEnd(6, '-')}
+                      color={team?.color}
+                    />
+                  ),
+                  p: renderLabel,
+                },
+              )}
+            </div>
+          )}
           <div className="flex items-center gap-2">
             {formatText(
-              { id: 'activityFeedTable.table.team' },
+              { id: 'activityFeedTable.table.date' },
               {
-                teamBadge: (
-                  <TeamBadge
-                    textClassName="line-clamp-1 break-all"
-                    name={team?.name || ''.padEnd(6, '-')}
-                    color={team?.color}
+                date: (
+                  <span className={clsx(textClassName, 'text-gray-600')}>
+                    {date}
+                  </span>
+                ),
+                p: renderLabel,
+              },
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            {formatText(
+              { id: 'activityFeedTable.table.status' },
+              {
+                statusBadge: (
+                  <ActionBadge
+                    motionState={motionState}
+                    loading={loadingMotionStates || isLoading}
+                    expenditureId={expenditureId ?? undefined}
                   />
                 ),
                 p: renderLabel,
               },
             )}
           </div>
-        )}
-        <div className="flex items-center gap-2">
-          {formatText(
-            { id: 'activityFeedTable.table.date' },
-            {
-              date: (
-                <span className={clsx(textClassName, 'text-gray-600')}>
-                  {date}
-                </span>
-              ),
-              p: renderLabel,
-            },
-          )}
         </div>
-        <div className="flex items-center gap-2">
-          {formatText(
-            { id: 'activityFeedTable.table.status' },
-            {
-              statusBadge: (
-                <ActionBadge
-                  motionState={motionState}
-                  loading={loadingMotionStates || isLoading}
-                  expenditureId={expenditureId ?? undefined}
-                />
-              ),
-              p: renderLabel,
-            },
-          )}
-        </div>
-      </div>
+      </ColonyActionLinkWrapper>
       {meatBallMenuProps && (
         <MeatBallMenu
           {...meatBallMenuProps}
-          contentWrapperClassName="!left-6 right-6"
+          contentWrapperClassName="!left-0 right-6"
           buttonClassName={(isMenuOpen) =>
             clsx({ '!text-gray-600': !isMenuOpen })
           }

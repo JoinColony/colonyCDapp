@@ -1,18 +1,20 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import React, { type FC, useMemo } from 'react';
+import React, { type FC, useMemo, useState, useEffect } from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ExpenditureSlotFragment, ExpenditureStatus } from '~gql';
 import { useTablet } from '~hooks';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
+import { type ExpenditurePayoutWithSlotId } from '~types/expenditures.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { convertPeriodToHours } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
-import Table from '~v5/common/Table/index.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
+import { renderCellContent } from '~v5/common/Table/utils.tsx';
 
 import AmountField from './partials/AmountField/AmountField.tsx';
 import ClaimStatusBadge from './partials/ClaimStatusBadge/ClaimStatusBadge.tsx';
@@ -45,10 +47,18 @@ const useGetPaymentBuilderColumns = ({
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
     useCurrentBlockTime();
 
-  const claimablePayouts = useMemo(
-    () => getClaimableExpenditurePayouts(slots, blockTime, finalizedTimestamp),
-    [blockTime, finalizedTimestamp, slots],
-  );
+  const [claimablePayouts, setClaimablePayouts] = useState<
+    ExpenditurePayoutWithSlotId[]
+  >([]);
+
+  useEffect(() => {
+    if (finalizedTimestamp !== null) {
+      fetchCurrentBlockTime();
+      setClaimablePayouts(
+        getClaimableExpenditurePayouts(slots, blockTime, finalizedTimestamp),
+      );
+    }
+  }, [slots, blockTime, finalizedTimestamp, fetchCurrentBlockTime]);
 
   const allPaymentsLoaded = data.filter((item) => item.isLoading).length === 0;
 
@@ -250,13 +260,6 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
         {formatText({ id: 'actionSidebar.payments' })}
       </h5>
       <Table<PaymentBuilderTableModel>
-        virtualizedProps={
-          data.length > 10
-            ? {
-                virtualizedRowHeight: isTablet ? 46 : 54,
-              }
-            : undefined
-        }
         className={clsx(
           '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
           {
@@ -299,13 +302,26 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
             : data
         }
         columns={columns}
-        renderCellWrapper={(_, content) => content}
-        verticalLayout={isTablet}
-        withBorder={false}
-        initialState={{
-          pagination: {
-            pageSize: 400,
+        renderCellWrapper={renderCellContent}
+        rows={
+          data.length > 10
+            ? {
+                virtualizedRowHeight: isTablet ? 46 : 54,
+              }
+            : undefined
+        }
+        overrides={{
+          initialState: {
+            pagination: {
+              pageIndex: 0,
+              pageSize: 400,
+            },
           },
+        }}
+        layout={isTablet ? 'vertical' : 'horizontal'}
+        borders={{
+          visible: true,
+          type: 'unset',
         }}
       />
     </div>

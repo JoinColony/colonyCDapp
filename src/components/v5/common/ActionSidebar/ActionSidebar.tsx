@@ -14,32 +14,29 @@ import React, {
   useLayoutEffect,
   useRef,
 } from 'react';
-import { Link } from 'react-router-dom';
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
+import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
-import { COLONY_ACTIVITY_ROUTE, TX_SEARCH_PARAM } from '~routes';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
-import { removeQueryParamFromUrl } from '~utils/urls.ts';
-import Button from '~v5/shared/Button/Button.tsx';
-import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import CompletedAction from '../CompletedAction/index.ts';
-import FourOFourMessage from '../FourOFourMessage/index.ts';
 
 import { actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
 import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.tsx';
+import { ActionNotFound } from './partials/ActionNotFound.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleton/ActionSidebarLoadingSkeleton.tsx';
 import ActionSidebarStatusPill from './partials/ActionSidebarStatusPill/ActionSidebarStatusPill.tsx';
+import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar';
@@ -100,6 +97,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   }, [loadingAction, stopPollingForAction]);
 
   const { formRef, closeSidebarClick } = useCloseSidebarClick();
+
+  const { getIsDraftAgreement } = useDraftAgreement({
+    formContextOverride: formRef.current,
+  });
+
   const { isCopied, handleClipboardCopy } = useCopyToClipboard();
   const isMobile = useMobile();
 
@@ -127,65 +129,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
     if (actionNotFound) {
       return (
-        <div className="pt-14">
-          <FourOFourMessage
-            description={formatText({
-              id: isInvalidTransactionHash
-                ? 'actionSidebar.fourOfour.descriptionInvalidHash'
-                : 'actionSidebar.fourOfour.description',
-            })}
-            links={
-              <>
-                {!isInvalidTransactionHash && (
-                  <Link
-                    to={COLONY_ACTIVITY_ROUTE}
-                    className="mb-2 text-sm text-blue-400 underline"
-                    onClick={toggleActionSidebarOff}
-                  >
-                    {formatText({
-                      id: 'actionSidebar.fourOfour.activityPageLink',
-                    })}
-                  </Link>
-                )}
-                <Link
-                  to={removeQueryParamFromUrl(
-                    window.location.href,
-                    TX_SEARCH_PARAM,
-                  )}
-                  className="mb-2 text-sm text-blue-400 underline"
-                >
-                  {formatText({
-                    id: 'actionSidebar.fourOfour.createNewAction',
-                  })}
-                </Link>
-              </>
-            }
-            primaryLinkButton={
-              isInvalidTransactionHash ? (
-                <ButtonLink
-                  mode="primarySolid"
-                  to={COLONY_ACTIVITY_ROUTE}
-                  className="flex-1"
-                  onClick={toggleActionSidebarOff}
-                >
-                  {formatText({
-                    id: 'actionSidebar.fourOfour.activityPageLink',
-                  })}
-                </ButtonLink>
-              ) : (
-                <Button
-                  mode="primarySolid"
-                  className="flex-1"
-                  onClick={startPollingForAction}
-                >
-                  {formatText({
-                    id: 'button.retry',
-                  })}
-                </Button>
-              )
-            }
-          />
-        </div>
+        <ActionNotFound
+          isInvalidTransactionHash={isInvalidTransactionHash}
+          onCloseSidebar={toggleActionSidebarOff}
+          onRefetchAction={startPollingForAction}
+        />
       );
     }
 
@@ -231,6 +179,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       exit="hidden"
       initial="hidden"
       animate="visible"
+      data-testid="action-drawer"
       className={clsx(
         className,
         `
@@ -271,7 +220,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             <button
               type="button"
               className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-              onClick={closeSidebarClick}
+              onClick={() =>
+                closeSidebarClick({
+                  shouldShowCancelModal: !getIsDraftAgreement(),
+                })
+              }
               aria-label={formatText({ id: 'ariaLabel.closeModal' })}
             >
               <X size={18} />
@@ -303,6 +256,13 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                     isMultiSig={isMultiSig}
                   />
                 )}
+                {(!!(
+                  isMotion && action?.motionData?.motionStateHistory.endedAt
+                ) ||
+                  !!isMultiSig) &&
+                  motionState && (
+                    <MotionOutcomeBadge motionState={motionState} />
+                  )}
               </div>
             )}
             {isMobile && getShareButton()}

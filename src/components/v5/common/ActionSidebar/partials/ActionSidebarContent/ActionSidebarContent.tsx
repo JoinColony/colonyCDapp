@@ -1,19 +1,19 @@
-import { useApolloClient } from '@apollo/client';
+import { ApolloError, useApolloClient } from '@apollo/client';
 import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useEffect, type FC, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { defineMessages } from 'react-intl';
 
+import { TourTargets } from '~common/Tours/enums.ts';
 import { Action } from '~constants/actions.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { GetTotalColonyActionsDocument, SearchActionsDocument } from '~gql';
+import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
-import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import { isQueryActive } from '~utils/isQueryActive.ts';
 import ActionTypeSelect from '~v5/common/ActionSidebar/ActionTypeSelect.tsx';
@@ -24,7 +24,6 @@ import {
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
-import { actionsWithStakingDecisionMethod } from '~v5/common/ActionSidebar/hooks/permissions/consts.ts';
 import useHasActionPermissions from '~v5/common/ActionSidebar/hooks/permissions/useHasActionPermissions.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import useActionFormProps from '~v5/common/ActionSidebar/hooks/useActionFormProps.ts';
@@ -34,11 +33,10 @@ import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner
 
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
-import CreateStakedExpenditureModal from '../CreateStakedExpenditureModal/CreateStakedExpenditureModal.tsx';
 import RemoveDraftModal from '../RemoveDraftModal/RemoveDraftModal.tsx';
 
 import { useGetFormActionErrors } from './hooks.ts';
-import { MultiSigMembersError } from './partials/MultiSigMembersError/MultiSigMembersError.tsx';
+import { MultiSigMembersError } from './partials/MultiSigMembersError.tsx';
 import NoPermissionsError from './partials/NoPermissionsError.tsx';
 import NoReputationError from './partials/NoReputationError.tsx';
 import { SidebarBanner } from './partials/SidebarBanner.tsx';
@@ -49,11 +47,19 @@ import {
 
 const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 
+const MSG = defineMessages({
+  apolloNetworkError: {
+    id: `${displayName}.apolloNetworkError`,
+    defaultMessage:
+      'There has been a database error. Your transaction may still have been processed.',
+  },
+});
+
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
-  actionFormProps: { primaryButton },
+  actionFormProps: { primaryButton, onFormClose },
+  showApolloNetworkError,
 }) => {
-  const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
@@ -76,11 +82,9 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const {
     formState: {
       errors: { this: customError },
-      isValid,
     },
     getValues,
     reset,
-    trigger,
   } = useFormContext();
 
   const formValues = getValues();
@@ -102,28 +106,15 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     hasPermissions === false ||
     areMemberPermissionsLoading ||
     !canCreateAction ||
-    hasNoDecisionMethods;
+    hasNoDecisionMethods ||
+    showApolloNetworkError;
 
   const [
     isRemoveDraftModalVisible,
     { toggleOn: showRemoveDraftModal, toggleOff: hideRemoveDraftModal },
   ] = useToggle();
 
-  const [
-    isCreateStakedExpenditureModalVisible,
-    {
-      toggleOn: showCreateStakedExpenditureModal,
-      toggleOff: hideCreateStakedExpenditureModal,
-    },
-  ] = useToggle();
-
-  const draftAgreement = useSelector(
-    getDraftDecisionFromStore(user?.walletAddress || '', colony.colonyAddress),
-  );
-
-  const shouldShowCreateStakedExpenditureModal =
-    actionsWithStakingDecisionMethod.includes(actionType) &&
-    decisionMethod === DecisionMethod.Staking;
+  const { draftAgreement } = useDraftAgreement();
 
   useEffect(() => {
     if (
@@ -166,7 +157,10 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           })}
         />
         {selectedAction && (
-          <div className="text-md text-gray-900">
+          <div
+            className="text-md text-gray-900"
+            data-testid="action-sidebar-description"
+          >
             <ActionSidebarDescription />
           </div>
         )}
@@ -189,9 +183,20 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
         <NoReputationError />
-        {customError && (
+        {showApolloNetworkError && (
           <div className="mt-7">
             <NotificationBanner icon={WarningCircle} status="error">
+              {showApolloNetworkError && formatText(MSG.apolloNetworkError)}
+            </NotificationBanner>
+          </div>
+        )}
+        {customError && (
+          <div className="mt-7">
+            <NotificationBanner
+              icon={WarningCircle}
+              status="error"
+              testId="action-sidebar-custom-error"
+            >
               {customError.message?.toString()}
             </NotificationBanner>
           </div>
@@ -199,6 +204,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         {flatFormErrors.length ? (
           <div className="mt-7">
             <NotificationBanner
+              testId="action-sidebar-error"
               status="error"
               icon={WarningCircle}
               description={
@@ -218,18 +224,8 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <div className="mt-auto">
           <ActionButtons
             isActionDisabled={isSubmitDisabled}
-            onSubmitClick={
-              shouldShowCreateStakedExpenditureModal
-                ? async () => {
-                    await trigger();
-
-                    if (isValid) {
-                      showCreateStakedExpenditureModal();
-                    }
-                  }
-                : undefined
-            }
             primaryButton={primaryButton}
+            onFormClose={onFormClose}
           />
         </div>
       )}
@@ -256,14 +252,6 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           }}
         />
       )}
-      {shouldShowCreateStakedExpenditureModal && (
-        <CreateStakedExpenditureModal
-          actionType={actionType}
-          isOpen={isCreateStakedExpenditureModalVisible}
-          onClose={hideCreateStakedExpenditureModal}
-          formValues={formValues}
-        />
-      )}
     </>
   );
 };
@@ -275,14 +263,43 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
   const { getFormOptions, actionFormProps } = useActionFormProps(defaultValues);
   const client = useApolloClient();
 
+  const [showApolloNetworkError, setShowApolloNetworkError] = useState(false);
+
   return (
-    <div className="flex w-full flex-grow overflow-hidden">
+    <div
+      className="flex w-full flex-grow overflow-hidden"
+      data-tour={TourTargets.ActionsPanel}
+      data-testid="action-sidebar-content"
+    >
       <div className="w-full flex-grow pb-6 pt-8">
         <ActionForm
           {...actionFormProps}
           key={actionFormProps.mode}
           className="flex h-full flex-col"
           innerRef={formRef}
+          onError={(error) => {
+            console.error(error);
+
+            // Auth failed before transaction was sent
+            if (
+              (error.message as unknown) === 'Auth failed' ||
+              (error.code as unknown) === 4001
+            ) {
+              setShowApolloNetworkError(true);
+            }
+
+            // Mutation failed in saga
+            if (error instanceof ApolloError) {
+              const { networkError } = error;
+
+              const statusCode = (networkError as { statusCode?: number })
+                ?.statusCode;
+
+              if (statusCode === 403) {
+                setShowApolloNetworkError(true);
+              }
+            }
+          }}
           onSuccess={() => {
             if (isQueryActive('SearchActions')) {
               client.refetchQueries({
@@ -298,10 +315,12 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
 
             actionFormProps?.onSuccess?.();
           }}
+          testId="action-form"
         >
           <ActionSidebarFormContent
             getFormOptions={getFormOptions}
             actionFormProps={actionFormProps}
+            showApolloNetworkError={showApolloNetworkError}
           />
         </ActionForm>
       </div>

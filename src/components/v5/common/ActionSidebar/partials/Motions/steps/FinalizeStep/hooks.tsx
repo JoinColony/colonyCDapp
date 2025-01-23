@@ -13,7 +13,7 @@ import { type ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotion
 import { type MotionFinalizePayload } from '~redux/types/actions/motion.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { type MotionAction } from '~types/motions.ts';
-import { mapPayload } from '~utils/actions.ts';
+import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
 import { getIsMotionOlderThanAWeek } from '~utils/dates.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
@@ -65,17 +65,26 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   const isFinalizable =
     hasEnoughFundsToFinalize && !motionStateHistory.hasFailedNotFinalizable;
 
+  const associatedActionId = getMotionAssociatedActionId(actionData);
+
   const transform = useMemo(
     () =>
       mapPayload(
         (): MotionFinalizePayload => ({
+          associatedActionId,
           colonyAddress,
           userAddress: user?.walletAddress || '',
           motionId,
           canMotionFail: isMotionOlderThanWeek,
         }),
       ),
-    [colonyAddress, isMotionOlderThanWeek, motionId, user?.walletAddress],
+    [
+      associatedActionId,
+      colonyAddress,
+      isMotionOlderThanWeek,
+      motionId,
+      user?.walletAddress,
+    ],
   );
 
   return {
@@ -203,6 +212,8 @@ export const useClaimConfig = (
     pollLockedTokenBalance();
   };
 
+  const associatedActionId = getMotionAssociatedActionId(actionData);
+
   const claimPayload = useMemo(
     () =>
       mapPayload(
@@ -214,13 +225,27 @@ export const useClaimConfig = (
             extensionData && isInstalledExtensionData(extensionData)
               ? extensionData.address
               : ADDRESS_ZERO,
+          associatedActionId,
         }),
       ),
-    [userAddress, colonyAddress, transactionHash, extensionData],
+    [
+      userAddress,
+      colonyAddress,
+      transactionHash,
+      extensionData,
+      associatedActionId,
+    ],
   );
 
   const getDescriptionItems = (): DescriptionListItem[] => {
-    if (!isMotionFailedNotFinalizable && !isMotionFinalized) {
+    const isMotionAgreement =
+      actionData.type === ColonyActionType.CreateDecisionMotion;
+
+    if (
+      !isMotionFailedNotFinalizable &&
+      !isMotionFinalized &&
+      !isMotionAgreement
+    ) {
       return [];
     }
 

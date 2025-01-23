@@ -5,14 +5,49 @@ import {
   ExtensionMethods,
   type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
+import { type SetStateFn } from '~types';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { camelCase } from '~utils/lodash.ts';
+import { waitForCondition } from '~utils/waitForCondition.ts';
 
-export const waitForDbAfterExtensionAction = (
+export const waitForDbAfterExtensionSettingsChange = async ({
+  extensionData,
+  refetchExtensionData,
+  interval = 1000,
+  timeout = 30000,
+}: {
+  extensionData: AnyExtensionData;
+  refetchExtensionData: RefetchExtensionDataFn;
+  interval?: number;
+  timeout?: number;
+}) => {
+  await waitForCondition(
+    async () => {
+      const previousExtensionParams = isInstalledExtensionData(extensionData)
+        ? extensionData.params || null
+        : null;
+
+      const refetchedExtensionData = await refetchExtensionData();
+
+      const haveParamsUpdated =
+        previousExtensionParams !== refetchedExtensionData?.params;
+
+      return haveParamsUpdated;
+    },
+    {
+      interval,
+      timeout,
+    },
+  );
+};
+
+export const waitForDbAfterExtensionAction = async (
   args: {
     refetchExtensionData: RefetchExtensionDataFn;
+    setWaitingForActionConfirmation: SetStateFn;
     interval?: number;
+    timeout?: number;
   } & (
     | {
         method: ExtensionMethods.UPGRADE;
@@ -33,22 +68,18 @@ export const waitForDbAfterExtensionAction = (
       }
   ),
 ) => {
-  const { refetchExtensionData, interval = 1000, method } = args;
+  const {
+    refetchExtensionData,
+    setWaitingForActionConfirmation,
+    interval = 1000,
+    timeout = 30000,
+    method,
+  } = args;
 
-  return new Promise<void>((res, rej) => {
-    const initTime = new Date().valueOf();
-    const intervalId = setInterval(async () => {
-      const thirtySeconds = 1000 * 30;
-      if (new Date().valueOf() - initTime > thirtySeconds) {
-        // after 30 seconds, assume something went wrong
-        clearInterval(intervalId);
-        rej(
-          new Error(
-            `After ${thirtySeconds} seconds, could not find extension in the database.`,
-          ),
-        );
-      }
+  setWaitingForActionConfirmation(true);
 
+  await waitForCondition(
+    async () => {
       const shouldRefetchPermissions =
         method === ExtensionMethods.INSTALL ||
         method === ExtensionMethods.ENABLE;
@@ -132,12 +163,15 @@ export const waitForDbAfterExtensionAction = (
         }
       }
 
-      if (condition) {
-        clearInterval(intervalId);
-        res();
-      }
-    }, interval);
-  });
+      return condition;
+    },
+    {
+      interval,
+      timeout,
+    },
+  );
+
+  setWaitingForActionConfirmation(false);
 };
 
 export const getTextChunks = () => {

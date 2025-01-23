@@ -6,7 +6,10 @@ import { type AnyActionType } from '~types/actions.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
-import { getExtendedActionType } from '~utils/colonyActions.ts';
+import {
+  formatActionType,
+  getExtendedActionType,
+} from '~utils/colonyActions.ts';
 import { getMotionState, MotionState } from '~utils/colonyMotions.ts';
 import { getMultiSigState } from '~utils/multiSig/index.ts';
 
@@ -80,13 +83,15 @@ export const filterBySearch = (
     isMotion ? pendingColonyMetadata : colony.metadata,
   );
 
+  const formattedActionType = formatActionType(extendedActionType);
+
   const searchValue = search.toLowerCase();
   const searchIsAddress = isHexString(searchValue);
   const terms = searchIsAddress
     ? [transactionHash, initiatorAddress, recipientAddress, token?.tokenAddress]
     : [
         metadata?.customTitle,
-        extendedActionType,
+        formattedActionType,
         amount,
         token?.name,
         token?.symbol,
@@ -110,6 +115,7 @@ const ACTION_TYPES_TO_HIDE = [
   ColonyActionType.FinalizeExpenditure,
   ColonyActionType.FinalizeExpenditureMotion,
   ColonyActionType.FundExpenditureMotion,
+  ColonyActionType.FundExpenditureMultisig,
   ColonyActionType.SetExpenditureStateMotion,
   ColonyActionType.EditExpenditure,
   ColonyActionType.EditExpenditureMotion,

@@ -2,10 +2,14 @@ import { MagnifyingGlass } from '@phosphor-icons/react';
 import React, { type FC, useCallback, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import SearchInputMobile from '~v5/common/Filter/partials/SearchInput/SearchInput.tsx';
+import SearchPill from '~v5/common/Pills/SearchPill/SearchPill.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -24,18 +28,19 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
   filterValue,
   hasFilterChanged,
 }) => {
-  const {
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible: isFiltersOpen,
-  } = usePopperTooltip({
+  const [isSearchOpened, setIsSearchOpened] = useState(false);
+  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip({
     delayShow: 200,
     delayHide: 200,
     placement: 'bottom-end',
     trigger: 'click',
     interactive: true,
+    visible: isSearchOpened,
+    onVisibleChange: setIsSearchOpened,
   });
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
   const isMobile = useMobile();
   const [isModalOpen, { toggleOff: toggleModalOff, toggleOn: toggleModalOn }] =
     useToggle();
@@ -45,7 +50,6 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
     },
     [onSearch],
   );
-  const [isSearchOpened, setIsSearchOpened] = useState(false);
 
   const RootItems = items.map(
     ({ icon, items: nestedItems, label, name, title, filterName }) => (
@@ -65,24 +69,42 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
 
   return (
     <>
-      <div className="flex flex-row gap-2">
-        <FilterButton
-          isOpen={isFiltersOpen}
-          onClick={toggleModalOn}
-          setTriggerRef={setTriggerRef}
-          customLabel={formatText({ id: 'teamsPage.filter.filterButton' })}
-          numberSelectedFilters={hasFilterChanged && isMobile ? 1 : 0}
-        />
-        {isMobile && (
+      <div className="flex flex-col items-start gap-2">
+        <div className="flex flex-row gap-2">
+          {!!searchValue && !isMobile && (
+            <SearchPill value={searchValue} onClick={() => onSearch('')} />
+          )}
+          <FilterButton
+            isOpen={isSearchOpened}
+            onClick={toggleModalOn}
+            setTriggerRef={setTriggerRef}
+            customLabel={formatText({ id: 'teamsPage.filter.filterButton' })}
+            numberSelectedFilters={hasFilterChanged && isMobile ? 1 : 0}
+          />
+          {isMobile && (
+            <Button
+              mode="tertiary"
+              className="flex sm:hidden"
+              size="small"
+              aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
+              onClick={() => setIsSearchOpened(true)}
+            >
+              <MagnifyingGlass size={14} />
+            </Button>
+          )}
           <Button
-            mode="tertiary"
-            className="flex sm:hidden"
+            onClick={() =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+              })
+            }
+            text={formatText({ id: 'teamsPage.createNewTeam' })}
+            mode="primarySolid"
             size="small"
-            aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
-            onClick={() => setIsSearchOpened(true)}
-          >
-            <MagnifyingGlass size={14} />
-          </Button>
+          />
+        </div>
+        {!!searchValue && isMobile && (
+          <SearchPill value={searchValue} onClick={() => onSearch('')} />
         )}
       </div>
       {isMobile && (
@@ -120,7 +142,7 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
           </Modal>
         </>
       )}
-      {isFiltersOpen && !isMobile && (
+      {isSearchOpened && !isMobile && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}
@@ -130,11 +152,12 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
             hasShadow: true,
             className: 'pt-6 pb-4 px-2.5',
           }}
-          classNames="w-full sm:max-w-[20.375rem]"
+          className="w-full sm:max-w-[20.375rem]"
         >
           <div className="mb-6 px-3.5">
             <SearchInputDesktop
               onChange={onInputChange}
+              onClose={() => setIsSearchOpened(false)}
               placeholder={formatText({ id: 'teamsPage.filter.search' })}
               value={searchValue}
             />

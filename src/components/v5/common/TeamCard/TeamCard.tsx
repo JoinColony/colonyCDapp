@@ -133,10 +133,6 @@ const TeamCard: FC<TeamCardProps> = ({
               'sm:min-w-[16rem]',
               { '!left-6 right-6': isMobile },
             )}
-            dropdownPlacementProps={{
-              top: 12,
-              withAutoTopPlacement: !isMobile,
-            }}
           />
         </div>
       </div>

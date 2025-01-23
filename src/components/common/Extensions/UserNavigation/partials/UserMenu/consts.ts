@@ -1,5 +1,12 @@
-import { type Icon, Lifebuoy, Code, Briefcase } from '@phosphor-icons/react';
+import {
+  type Icon,
+  Lifebuoy,
+  Code,
+  Briefcase,
+  MapTrifold,
+} from '@phosphor-icons/react';
 
+import { FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
 import { ExtendedSupportedCurrencies, SupportedCurrencies } from '~gql';
 import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 import EthereumIcon from '~icons/EthereumIcon.tsx';
@@ -33,19 +40,26 @@ export const userMenuItems: Array<{
   id: string;
   icon: Icon;
   name: UserMenuItemName;
+  featureFlag?: string;
 }> = [
   {
     id: '1',
+    icon: MapTrifold,
+    name: UserMenuItemName.GUIDED_TOURS,
+    featureFlag: FeatureFlag.GUIDED_TOURS,
+  },
+  {
+    id: '2',
     icon: Lifebuoy,
     name: UserMenuItemName.CONTACT_AND_SUPPORT,
   },
   {
-    id: '2',
+    id: '3',
     icon: Code,
     name: UserMenuItemName.DEVELOPERS,
   },
   {
-    id: '3',
+    id: '4',
     icon: Briefcase,
     name: UserMenuItemName.LEGAL_AND_PRIVACY,
   },

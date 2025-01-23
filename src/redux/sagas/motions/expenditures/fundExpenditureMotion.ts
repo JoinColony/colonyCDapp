@@ -1,94 +1,106 @@
-import {
-  ClientType,
-  ColonyRole,
-  Id,
-  getChildIndex,
-  getPermissionProofs,
-  getPotDomain,
-} from '@colony/colony-js';
-import { constants } from 'ethers';
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { ClientType, Extension, getPotDomain } from '@colony/colony-js';
+import { BigNumber, constants, type BigNumberish } from 'ethers';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ADDRESS_ZERO, APP_URL } from '~constants/index.ts';
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { FUND_EXPENDITURE_REQUIRED_ROLE } from '~constants/permissions.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
-  createGroupTransaction,
+  createTransaction,
   createTransactionChannels,
   waitForTxResult,
 } from '~redux/sagas/transactions/index.ts';
 import { getExpenditureBalancesByTokenAddress } from '~redux/sagas/utils/expenditures.ts';
 import {
-  createInvalidParamsError,
   getColonyManager,
+  getMoveFundsActionDomain,
+  getMoveFundsPermissionProofs,
+  getPermissionProofsLocal,
   initiateTransaction,
+  putError,
+  takeFrom,
+  uploadAnnotation,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
+import { getExpenditureCreatingActionId } from '~utils/expenditures.ts';
 
 function* fundExpenditureMotion({
   payload: {
-    colony: { colonyAddress },
+    colonyAddress,
     expenditure,
     fromDomainFundingPotId,
+    colonyDomains,
+    colonyRoles,
+    annotationMessage,
     motionDomainId,
-    fromDomainId,
-    /* annotationMessage */
   },
-  meta: { setTxHash, id },
   meta,
 }: Action<ActionTypes.MOTION_EXPENDITURE_FUND>) {
-  const { createMotion /* annotationMessage */ } = yield call(
+  const { createMotion, annotateMotion } = yield call(
     createTransactionChannels,
-    id,
+    meta.id,
     ['createMotion', 'annotateMotion'],
   );
 
   try {
-    const sagaName = fundExpenditureMotion.name;
-
-    if (
-      !fromDomainId ||
-      !colonyAddress ||
-      !expenditure ||
-      !fromDomainFundingPotId ||
-      !motionDomainId
-    ) {
-      const paramDescription =
-        (!fromDomainId &&
-          'The domain id the expenditure is being funded from') ||
-        (!colonyAddress && 'Colony address') ||
-        (!expenditure && 'The expenditure being funded') ||
-        (!fromDomainFundingPotId &&
-          'The domain funding pot id from which the expenditure will be funded') ||
-        (!motionDomainId &&
-          'The id of the domain the motion is taking place in');
-      throw createInvalidParamsError(sagaName, paramDescription as string);
-    }
-
+    const balances = getExpenditureBalancesByTokenAddress(expenditure);
     const { nativeFundingPotId: expenditureFundingPotId } = expenditure;
 
     const colonyManager = yield call(getColonyManager);
-    const colonyClient = yield call(
-      [colonyManager, colonyManager.getClient],
+    const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
-    const votingReputationClient = yield call(
-      [colonyManager, colonyManager.getClient],
-      ClientType.VotingReputationClient,
-      colonyAddress,
+    const votingReputationClient = yield colonyClient.getExtensionClient(
+      Extension.VotingReputation,
     );
 
-    const childSkillIndex = yield call(
-      getChildIndex,
-      colonyClient.networkClient,
+    const fromDomainId: BigNumberish = yield getPotDomain(
       colonyClient,
-      motionDomainId,
+      fromDomainFundingPotId,
+    );
+    const expenditurePotDomainId: BigNumberish = yield call(
+      getPotDomain,
+      colonyClient,
+      expenditureFundingPotId,
+    );
+
+    // this will basically just run motionDomainId through inheritance validation
+    const actionDomainId = getMoveFundsActionDomain({
+      actionDomainId: motionDomainId,
       fromDomainId,
+      toDomainId: expenditurePotDomainId,
+    });
+
+    const requiredRoles = [FUND_EXPENDITURE_REQUIRED_ROLE];
+
+    const { fromChildSkillIndex, toChildSkillIndex } = yield call(
+      getMoveFundsPermissionProofs,
+      {
+        actionDomainId,
+        toDomainId: expenditurePotDomainId,
+        fromDomainId,
+        colonyDomains,
+        colonyAddress,
+      },
+    );
+
+    const [votRepPermissionDomainId, votRepChildSkillIndex] = yield call(
+      getPermissionProofsLocal,
+      {
+        networkClient: colonyClient.networkClient,
+        colonyRoles,
+        colonyDomains,
+        requiredDomainId: Number(actionDomainId),
+        requiredColonyRoles: requiredRoles,
+        permissionAddress: votingReputationClient.address,
+        isMultiSig: false,
+      },
     );
 
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],
-      Id.RootDomain,
+      actionDomainId,
     );
 
     const { key, value, branchMask, siblings } = yield call(
@@ -97,40 +109,14 @@ function* fundExpenditureMotion({
       ADDRESS_ZERO,
     );
 
-    const balances = getExpenditureBalancesByTokenAddress(expenditure);
-
-    const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
-      getPermissionProofs,
-      colonyClient.networkClient,
-      colonyClient,
-      fromDomainId,
-      [ColonyRole.Funding],
-      votingReputationClient.address,
-    );
-
-    const expenditurePotDomain = yield call(
-      getPotDomain,
-      colonyClient,
-      expenditureFundingPotId,
-    );
-
-    const [, toChildSkillIndex] = yield call(
-      getPermissionProofs,
-      colonyClient.networkClient,
-      colonyClient,
-      expenditurePotDomain,
-      [ColonyRole.Funding],
-      votingReputationClient.address,
-    );
-
     const encodedFundingPotActions = [...balances.entries()].map(
-      ([tokenAddress, amount]) =>
-        colonyClient.interface.encodeFunctionData(
+      ([tokenAddress, amount]) => {
+        return colonyClient.interface.encodeFunctionData(
           'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)',
           [
-            fromPermissionDomainId,
-            constants.MaxUint256,
-            fromPermissionDomainId,
+            votRepPermissionDomainId,
+            votRepChildSkillIndex,
+            BigNumber.from(actionDomainId),
             fromChildSkillIndex,
             toChildSkillIndex,
             fromDomainFundingPotId,
@@ -138,7 +124,8 @@ function* fundExpenditureMotion({
             amount,
             tokenAddress,
           ],
-        ),
+        );
+      },
     );
 
     const encodedMulticallAction = colonyClient.interface.encodeFunctionData(
@@ -148,72 +135,80 @@ function* fundExpenditureMotion({
 
     const batchKey = 'createMotion';
 
-    yield createGroupTransaction({
-      channel: createMotion,
-      batchKey,
-      meta,
-      config: {
-        context: ClientType.VotingReputationClient,
-        methodName: 'createMotion',
+    yield fork(createTransaction, createMotion.id, {
+      context: ClientType.VotingReputationClient,
+      methodName: 'createMotion',
+      params: [
+        actionDomainId,
+        constants.MaxUint256,
+        ADDRESS_ZERO,
+        encodedMulticallAction,
+        key,
+        value,
+        branchMask,
+        siblings,
+      ],
+      identifier: colonyAddress,
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
+      ready: false,
+      associatedActionId: getExpenditureCreatingActionId(expenditure),
+    });
+
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateMotion.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
         identifier: colonyAddress,
-        params: [
-          motionDomainId,
-          childSkillIndex,
-          ADDRESS_ZERO,
-          encodedMulticallAction,
-          key,
-          value,
-          branchMask,
-          siblings,
-        ],
         group: {
           key: batchKey,
           id: meta.id,
           index: 1,
         },
-      },
-    });
+        ready: false,
+      });
+    }
+
+    yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
+    if (annotationMessage) {
+      yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
+    }
 
     yield initiateTransaction(createMotion.id);
 
     const {
-      type,
       payload: {
         receipt: { transactionHash: txHash },
       },
     } = yield call(waitForTxResult, createMotion.channel);
 
-    setTxHash?.(txHash);
-
-    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<Action<ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS>>({
-        type: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
-        meta,
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateMotion,
+        message: annotationMessage,
+        txHash,
       });
-
-      // @TODO: Remove during advanced payments UI wiring
-      // eslint-disable-next-line no-console
-      console.log(
-        `Fund Expenditure Motion URL: ${APP_URL}${window.location.pathname.slice(
-          1,
-        )}?tx=${txHash}`,
-      );
     }
-  } catch (e) {
-    console.error(e);
-    yield put<Action<ActionTypes.MOTION_EXPENDITURE_FUND_ERROR>>({
-      type: ActionTypes.MOTION_EXPENDITURE_FUND_ERROR,
-      payload: {
-        name: ActionTypes.MOTION_EXPENDITURE_FUND_ERROR,
-        message: JSON.stringify(e),
-      },
+
+    yield put<Action<ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS>>({
+      type: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
       meta,
-      error: true,
     });
+  } catch (error) {
+    return yield putError(
+      ActionTypes.MOTION_EXPENDITURE_FUND_ERROR,
+      error,
+      meta,
+    );
   } finally {
     createMotion.channel.close();
+    annotateMotion.channel.close();
   }
-  // @todo add annotation logic post-rebase on master
+
+  return null;
 }
 
 export default function* fundExpenditureMotionSaga() {

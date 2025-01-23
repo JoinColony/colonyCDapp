@@ -3,6 +3,7 @@ import { useVisible } from 'react-hooks-visible';
 
 import { type TableRowProps, type VirtualizedRowProps } from './types.ts';
 
+/** @TODO refactor this to use @tanstack/react-virtual */
 const VirtualizedRow: FC<VirtualizedRowProps> = ({
   children,
   className,
@@ -18,7 +19,7 @@ const VirtualizedRow: FC<VirtualizedRowProps> = ({
       {isVisible ? (
         children
       ) : (
-        <div style={{ width: '100%', height: itemHeight }} />
+        <td style={{ width: 'auto', height: itemHeight }} />
       )}
     </tr>
   );
