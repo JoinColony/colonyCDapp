@@ -1,4 +1,7 @@
-import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
+import {
+  useDynamicContext,
+  useDynamicEvents,
+} from '@dynamic-labs/sdk-react-core';
 import { utils } from 'ethers';
 import React, {
   useState,
@@ -188,6 +191,52 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     };
     walletHandler();
   }, [primaryWallet, setupUserContext, updateWallet]);
+
+  useDynamicEvents('primaryWalletNetworkChanged', async () => {
+    // console.log('network change', args);
+    // console.log({ primaryWallet })
+    if (primaryWallet) {
+      setWalletConnecting(true);
+
+      // Both methods exist as described by the documentation
+      // https://docs.dynamic.xyz/wallets/using-wallets/evm/evm-wallets#ethereum-wallet-methods
+      // and as supported by the code actually working
+      // I suspect their types are the ones not working properly here
+      // @ts-ignore
+      const publicClient = await primaryWallet.getPublicClient();
+      // @ts-ignore
+      const walletClient = await primaryWallet.getWalletClient();
+
+      const walletAddress = utils.getAddress(primaryWallet.address);
+
+      const RetryProvider = retryProviderFactory(
+        walletClient.transport,
+        walletAddress,
+      );
+      const provider = new RetryProvider();
+
+      const dynamicWallet = {
+        ...walletClient,
+        publicClient,
+        ethersProvider: provider,
+        provider,
+        primaryWallet,
+        address: walletAddress,
+        label: primaryWallet.key,
+        chains: [publicClient.chain, walletClient.chain],
+      };
+
+      debugLogging('SETTING WALLET CONTEXT', dynamicWallet);
+
+      setContext(ContextModule.Wallet, dynamicWallet);
+
+      updateWallet();
+
+      await setupUserContext(undefined);
+
+      setWalletConnecting(false);
+    }
+  });
 
   /*
    * When the user switches account in Metamask, re-initiate the wallet connect flow

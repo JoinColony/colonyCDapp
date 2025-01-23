@@ -62,12 +62,14 @@ const Entry = ({ store }: Props) => {
     <DynamicContextProvider
       theme={isDarkMode ? 'dark' : 'light'}
       settings={{
-        logLevel: 'WARN',
+        debugError: import.meta.env.DEV,
+        logLevel: import.meta.env.DEV ? 'WARN' : 'ERROR',
         mobileExperience: 'redirect',
         environmentId: import.meta.env.DYNAMIC_ENV_ID,
         walletConnectors: [EthereumWalletConnectors],
         initialAuthenticationMode: 'connect-only',
         enableVisitTrackingOnConnectOnly: false,
+        networkValidationMode: 'always',
         recommendedWallets: [
           {
             walletKey: 'metamask',
