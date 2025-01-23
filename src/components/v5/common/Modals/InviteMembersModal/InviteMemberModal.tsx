@@ -30,34 +30,6 @@ const MSG = defineMessages({
     defaultMessage:
       'You have reached your invite limit during early access. If you need more, please make a request.',
   },
-  invitesUsed: {
-    id: `${displayName}.invitesUsed`,
-    defaultMessage:
-      '{invitesAvailable} {invitesAvailable, plural, one {invite} other {invites}} remaining',
-  },
-  inviteLinkHeading: {
-    id: `${displayName}.inviteLinkHeading`,
-    defaultMessage: 'Unique colony invite link:',
-  },
-  limitReached: {
-    id: `${displayName}.limitReached`,
-    defaultMessage: 'Invite limit reached',
-  },
-  requestInvites: {
-    id: `${displayName}.requestInvites`,
-    defaultMessage: 'Request invites',
-  },
-  requestMoreInvites: {
-    id: `${displayName}.requestMoreInvites`,
-    defaultMessage: 'Request more invites for your colony',
-  },
-  buttonText: {
-    id: `${displayName}.buttonText`,
-    defaultMessage: `{isCopied, select,
-      true {Link copied}
-      other {Copy link}
-    }`,
-  },
 });
 
 const InviteMembersModal = ({ isOpen, onClose }: Props) => {
