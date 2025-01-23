@@ -4,16 +4,11 @@ import { call, put } from 'redux-saga/effects';
 import { ContextModule, getContext } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions } from '~redux/types/actions/index.ts';
-import { isFullWallet } from '~types/wallet.ts';
 
 import { putError, initiateMessageSigning } from '../utils/index.ts';
 
 export function* signMessage(purpose, message) {
   const wallet = getContext(ContextModule.Wallet);
-
-  if (!isFullWallet(wallet)) {
-    throw new Error('Background login not yet completed.');
-  }
 
   const messageId = `${nanoid(10)}-signMessage`;
   /*

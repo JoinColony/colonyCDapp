@@ -1,11 +1,18 @@
 import { ApolloProvider } from '@apollo/client';
+import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
+import {
+  DynamicContextProvider,
+  mergeNetworks,
+} from '@dynamic-labs/sdk-react-core';
 import { PostHogProvider } from 'posthog-js/react';
 import React from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
+import useLocalStorage from 'use-local-storage';
 
+import { GANACHE_NETWORK, GANACHE_LOCAL_RPC_URL } from '~constants/index.ts';
 import AnalyticsContextProvider from '~context/AnalyticsContext/AnalyticsContextProvider.tsx';
 import BreadcrumbsContextProvider from '~context/BreadcrumbsContext/BreadcrumbsContextProvider.tsx';
 import { getContext, ContextModule } from '~context/index.ts';
@@ -38,35 +45,92 @@ if (__COMMIT_HASH__) {
 const Entry = ({ store }: Props) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
+  const [isDarkMode] = useLocalStorage(
+    'isDarkMode',
+    window.matchMedia('(prefers-color-scheme: dark)').matches,
+  );
+
   return (
-    <PostHogProvider {...posthogConfig}>
-      <IntlProvider
-        locale="en"
-        defaultLocale="en"
-        messages={{
-          ...messages,
-          ...actionMessages,
-          ...eventsMessages,
-          ...systemMessages,
-          ...motionStatesMessages,
-        }}
-      >
-        <ApolloProvider client={apolloClient}>
-          <ReduxProvider store={store}>
-            <HelmetProvider>
-              <AnalyticsContextProvider>
-                <Router>
-                  <BreadcrumbsContextProvider>
-                    <RouteTracker />
-                    <Routes />
-                  </BreadcrumbsContextProvider>
-                </Router>
-              </AnalyticsContextProvider>
-            </HelmetProvider>
-          </ReduxProvider>
-        </ApolloProvider>
-      </IntlProvider>
-    </PostHogProvider>
+    <DynamicContextProvider
+      theme={isDarkMode ? 'dark' : 'light'}
+      settings={{
+        debugError: import.meta.env.DEV,
+        logLevel: import.meta.env.DEV ? 'WARN' : 'ERROR',
+        mobileExperience: 'redirect',
+        environmentId: import.meta.env.DYNAMIC_ENV_ID,
+        walletConnectors: [EthereumWalletConnectors],
+        initialAuthenticationMode: 'connect-only',
+        networkValidationMode: 'always',
+        recommendedWallets: [
+          {
+            walletKey: 'metamask',
+            label: 'Recommended',
+          },
+        ],
+        overrides: {
+          evmNetworks: (networks) => {
+            if (import.meta.env.DEV) {
+              return mergeNetworks(
+                [
+                  {
+                    blockExplorerUrls: [
+                      GANACHE_NETWORK.blockExplorerUrl as string,
+                    ],
+                    chainId: parseInt(GANACHE_NETWORK.chainId, 10),
+                    chainName: 'Local Hardhat Instance',
+                    iconUrls: ['/src/images/icons/hardhat.svg'],
+                    name: 'Local Hardhat Instance',
+                    nativeCurrency: {
+                      decimals: 18,
+                      name: 'Ether',
+                      symbol: 'ETH',
+                      iconUrl:
+                        'https://app.dynamic.xyz/assets/networks/eth.svg',
+                    },
+                    networkId: parseInt(GANACHE_NETWORK.chainId, 10),
+
+                    rpcUrls: [GANACHE_LOCAL_RPC_URL],
+                    vanityName: 'Hardhat',
+                  },
+                ],
+                networks,
+              );
+            }
+            return networks;
+          },
+        },
+        shadowDOMEnabled: false,
+      }}
+    >
+      <PostHogProvider {...posthogConfig}>
+        <IntlProvider
+          locale="en"
+          defaultLocale="en"
+          messages={{
+            ...messages,
+            ...actionMessages,
+            ...eventsMessages,
+            ...systemMessages,
+            ...motionStatesMessages,
+          }}
+        >
+          <ApolloProvider client={apolloClient}>
+            <ReduxProvider store={store}>
+              <HelmetProvider>
+                <AnalyticsContextProvider>
+                  <Router>
+                    <BreadcrumbsContextProvider>
+                      <RouteTracker />
+                      <Routes />
+                    </BreadcrumbsContextProvider>
+                  </Router>
+                </AnalyticsContextProvider>
+              </HelmetProvider>
+            </ReduxProvider>
+          </ApolloProvider>
+        </IntlProvider>
+      </PostHogProvider>
+    </DynamicContextProvider>
   );
 };
 

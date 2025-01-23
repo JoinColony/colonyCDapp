@@ -6,7 +6,7 @@ import retryRpcProviderFactory from '~redux/sagas/wallet/RetryProvider.ts';
 
 export type ColonyWallet = BasicWallet | FullWallet;
 
-const RetryProvider = retryRpcProviderFactory();
+const RetryProvider = retryRpcProviderFactory(undefined);
 
 export interface FullWallet extends WalletState, Account {
   ethersProvider: InstanceType<typeof RetryProvider>;

@@ -1,4 +1,5 @@
 import { SupportedCurrencies } from '~gql';
+import debugLogging from '~utils/debug/debugLogging.ts';
 
 import { currencyApiConfig, coinGeckoMappings } from './config.ts';
 import {
@@ -36,8 +37,8 @@ const extractTokenPriceFromResponse = (
       mapToAPIFormat(currencies, conversionDenomination)
     ];
   } catch (e) {
-    console.error(
-      'Could not get token price from CoinGecko response. Response shape might have changed.',
+    debugLogging(
+      'CoinGecko: Could not get token price from response. Response shape might have changed.',
       e,
     );
     return 0;
@@ -80,14 +81,14 @@ export const fetchTokenPriceByName = async ({
         );
       }
 
-      console.error(
-        `Unable to get price for ${tokenName}. It probably doesn't have a listed exchange value.`,
+      debugLogging(
+        `CoinGecko: Unable to get price for ${tokenName}. It probably doesn't have a listed exchange value.`,
       );
       return 0;
     });
   } catch (e) {
     if (import.meta.env.DEV) {
-      console.error(e);
+      debugLogging(e);
     }
     return 0;
   }

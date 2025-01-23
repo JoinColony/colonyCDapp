@@ -7,7 +7,6 @@ import {
 import { DEFAULT_NETWORK } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import { ColonyJSNetworkMapping, Network } from '~types/network.ts';
-import { isFullWallet } from '~types/wallet.ts';
 
 import type { SignerOrProvider } from '@colony/colony-js';
 
@@ -16,10 +15,6 @@ import type { SignerOrProvider } from '@colony/colony-js';
  */
 const getNetworkClient = async (signerOrProvider?: SignerOrProvider) => {
   const wallet = getContext(ContextModule.Wallet);
-
-  if (!isFullWallet(wallet)) {
-    throw new Error('Background login not yet completed.');
-  }
 
   const network = DEFAULT_NETWORK;
 

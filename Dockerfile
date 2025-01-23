@@ -1,6 +1,6 @@
 # From https://github.com/runtime-env/import-meta-env/blob/main/packages/examples/docker-starter-example/Dockerfile
 FROM node:20.11-alpine3.19 as build-stage
-RUN apk add git
+RUN apk add git python3 make g++
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN SKIP_HOOKS=true npm ci

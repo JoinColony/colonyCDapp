@@ -3,11 +3,8 @@ import { all, call, fork, put } from 'redux-saga/effects';
 // import AppLoadingState from '~context/appLoadingState';
 
 import { authenticateWallet } from '~auth/index.ts';
-import { getContext, setContext, ContextModule } from '~context/index.ts';
+import { getContext, ContextModule } from '~context/index.ts';
 import { failPendingTransactions } from '~state/transactionState.ts';
-import { type ColonyWallet } from '~types/wallet.ts';
-import { getLastWallet, type LastWallet } from '~utils/autoLogin.ts';
-import { createAddress } from '~utils/web3/index.ts';
 
 import { ActionTypes } from '../actionTypes.ts';
 import { type AllActions } from '../types/actions/index.ts';
@@ -24,27 +21,7 @@ import multiSigSagas from './multiSig/index.ts';
 import setupTransactionsSaga from './transactions/transactionsToDb.ts';
 import { setupUsersSagas, userLogout } from './users/index.ts';
 import { getGasPrices, putError } from './utils/index.ts';
-import { getWallet } from './wallet/index.ts';
 // import vestingSagas from './vesting';
-import getOnboard from './wallet/onboard.ts';
-
-const ONBOARD_METAMASK_WALLET_LABEL = 'MetaMask';
-
-const getMetamaskAddress = async () => {
-  // try/catch just in case createAddress errors
-  try {
-    if (window.ethereum) {
-      // @ts-ignore
-      const accounts = await window.ethereum.request({
-        method: 'eth_accounts',
-      });
-      return createAddress(accounts[0]);
-    }
-  } catch {
-    // silent
-  }
-  return undefined;
-};
 
 function* setupContextDependentSagas() {
   // const appLoadingState: typeof AppLoadingState = AppLoadingState;
@@ -69,9 +46,7 @@ function* setupContextDependentSagas() {
   ]);
 }
 
-function* initializeFullWallet(lastWallet: LastWallet | null) {
-  const wallet = yield call(getWallet, lastWallet);
-  setContext(ContextModule.Wallet, wallet);
+function* initializeFullWallet() {
   // We're forking the next one as we don't really need to wait for it
   yield call(getGasPrices);
   yield call(authenticateWallet);
@@ -85,14 +60,7 @@ function* initializeFullWallet(lastWallet: LastWallet | null) {
  */
 export function* setupUserContext() {
   try {
-    /* Instantiate the onboard object and load into context */
-    const onboard = yield getOnboard();
-    setContext(ContextModule.Onboard, onboard);
-    /*
-     * Get the new wallet and set it in context.
-     */
-
-    let wallet: ColonyWallet | undefined;
+    let wallet;
 
     try {
       wallet = getContext(ContextModule.Wallet);
@@ -100,22 +68,7 @@ export function* setupUserContext() {
       // wallet not seen in context yet
     }
 
-    const lastWallet = getLastWallet();
-    const selectedMetamaskAddress = yield getMetamaskAddress();
-
-    /*
-     * If the wallet we've pulled from context does not have the same address as the selected account
-     * in Metamask, it's because the user just switched their account in metamask.
-     * In this case we just logout previous user and disconnect wallet.
-     */
-    if (
-      !wallet &&
-      lastWallet &&
-      selectedMetamaskAddress &&
-      lastWallet.address.toLocaleLowerCase() !==
-        selectedMetamaskAddress.toLocaleLowerCase() &&
-      lastWallet.type === ONBOARD_METAMASK_WALLET_LABEL
-    ) {
+    if (!wallet) {
       return yield putError(
         ActionTypes.WALLET_OPEN_ERROR,
         Error(
@@ -125,7 +78,7 @@ export function* setupUserContext() {
       );
     }
 
-    yield call(initializeFullWallet, lastWallet);
+    yield call(initializeFullWallet);
 
     yield put<AllActions>({
       type: ActionTypes.WALLET_OPEN_SUCCESS,
@@ -138,18 +91,6 @@ export function* setupUserContext() {
      * but we then do not wait for a return value (which will never come).
      */
     yield fork(setupContextDependentSagas);
-
-    // const userContext = {
-    //   apolloClient,
-    //   colonyManager,
-    //   wallet,
-    // };
-    // yield setupResolvers(apolloClient, userContext);
-
-    /*
-     * Get the network contract values from the resolver
-     */
-    // yield updateNetworkContracts();
 
     yield put<AllActions>({
       type: ActionTypes.USER_CONTEXT_SETUP_SUCCESS,

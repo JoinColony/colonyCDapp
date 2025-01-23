@@ -1,5 +1,6 @@
 import { SupportedCurrencies } from '~gql';
 import { Network } from '~types/network.ts';
+import debugLogging from '~utils/debug/debugLogging.ts';
 
 import { currencyApiConfig, coinGeckoMappings } from './config.ts';
 import {
@@ -41,8 +42,8 @@ const extractAddressPriceFromResponse = (
       mapToAPIFormat(currencies, conversionDenomination)
     ];
   } catch (e) {
-    console.error(
-      'Could not get contract price from CoinGecko response. Response shape might have changed.',
+    debugLogging(
+      'CoinGecko: Could not get contract price from response. Response shape might have changed.',
       e,
     );
     return 0;
@@ -89,8 +90,8 @@ export const fetchTokenPriceByAddress = async ({
         );
       }
 
-      console.error(
-        `Unable to get price for ${contractAddress}. It probably doesn't have a listed exchange value.`,
+      debugLogging(
+        `CoinGecko: Unable to get price for ${contractAddress}. It probably doesn't have a listed exchange value.`,
       );
       return 0;
     });

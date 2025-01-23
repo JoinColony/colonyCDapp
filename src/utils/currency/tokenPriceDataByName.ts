@@ -1,6 +1,7 @@
 import fromUnixTime from 'date-fns/fromUnixTime';
 
 import { SupportedCurrencies } from '~gql';
+import debugLogging from '~utils/debug/debugLogging.ts';
 
 import { currencyApiConfig, coinGeckoMappings } from './config.ts';
 import {
@@ -51,8 +52,8 @@ const extractTokenPriceDataFromResponse = (
       lastUpdatedAt: fromUnixTime(tokenData.last_updated_at),
     };
   } catch (e) {
-    console.error(
-      'Could not get token price from CoinGecko response. Response shape might have changed.',
+    debugLogging(
+      'CoinGecko: Could not get token price from response. Response shape might have changed.',
       e,
     );
     return fallbackResponseData;
@@ -95,14 +96,14 @@ export const fetchTokenPriceDataByName = async ({
         );
       }
 
-      console.error(
-        `Unable to get price for ${tokenName}. It probably doesn't have a listed exchange value.`,
+      debugLogging(
+        `CoinGecko: Unable to get price for ${tokenName}. It probably doesn't have a listed exchange value.`,
       );
       return fallbackResponseData;
     });
   } catch (e) {
     if (!import.meta.env.DEV) {
-      console.error(e);
+      debugLogging(e);
     }
     return fallbackResponseData;
   }
