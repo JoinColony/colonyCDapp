@@ -60,7 +60,6 @@ const Entry = ({ store }: Props) => {
         environmentId: import.meta.env.DYNAMIC_ENV_ID,
         walletConnectors: [EthereumWalletConnectors],
         initialAuthenticationMode: 'connect-only',
-        enableVisitTrackingOnConnectOnly: false,
         networkValidationMode: 'always',
         recommendedWallets: [
           {
