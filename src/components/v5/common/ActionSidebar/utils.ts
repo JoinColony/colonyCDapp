@@ -1,6 +1,7 @@
 import { apolloClient } from '~apollo';
 import { Action } from '~constants/actions.ts';
 import { SearchActionsDocument } from '~gql';
+import { type ColonyContributorFragment } from '~gql';
 import { ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
 import { isQueryActive } from '~utils/isQueryActive.ts';
@@ -9,6 +10,8 @@ import {
   updateContributorVerifiedStatus,
 } from '~utils/members.ts';
 import { removeCacheEntry, CacheQueryKeys } from '~utils/queries.ts';
+import { splitAddress } from '~utils/strings.ts';
+import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
 import {
   GROUP_FUNDS_LIST,
@@ -194,4 +197,37 @@ export const getActionGroup = (actionType: Action) => {
   }
 
   return null;
+};
+
+export const formatMembersSelectOptions = (
+  members: ColonyContributorFragment[],
+  isVerified = true,
+): SearchSelectOption[] => {
+  return members.map((member, index) => {
+    const { walletAddress, profile } = member.user || {};
+
+    const splittedWalletAddress = walletAddress && splitAddress(walletAddress);
+    const maskedWalletAddress =
+      splittedWalletAddress &&
+      `${splittedWalletAddress.header}${splittedWalletAddress.start}...${splittedWalletAddress.end}`;
+
+    const splittedContributorAddress = splitAddress(member.contributorAddress);
+    const maskedContributorAddress = `${splittedContributorAddress.header}${splittedContributorAddress.start}...${splittedContributorAddress.end}`;
+
+    const walletAddressValue = walletAddress || member.contributorAddress || '';
+
+    return {
+      value: walletAddressValue,
+      isVerified,
+      label:
+        profile?.displayName ||
+        (walletAddress && maskedWalletAddress) ||
+        maskedContributorAddress,
+      avatar: profile?.thumbnail || profile?.avatar || undefined,
+      id: index,
+      profile,
+      showAvatar: true,
+      walletAddress: walletAddressValue,
+    };
+  });
 };
