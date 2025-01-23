@@ -125,6 +125,11 @@ body.ReactModal__Body--open:not(.show-header-in-modal) .modal-blur-navigation {
   --onboard-account-select-modal-z-index: 10000 !important;
 }
 
+body .dynamic-modal .badge__container__primary {
+  /* stylelint-disable-next-line color-no-hex */
+  background-color: #eff8ff !important;
+}
+
 body[data-dynamic-theme='dark'] .dynamic-modal .badge__container__primary {
   background-color: var(--dynamic-badge-dot-background) !important;
 }
