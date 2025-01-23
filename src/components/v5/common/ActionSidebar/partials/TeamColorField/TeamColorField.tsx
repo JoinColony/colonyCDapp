@@ -63,6 +63,7 @@ const TeamColorField: FC<TeamColourFieldProps> = ({ name, disabled }) => {
             })}
             onClick={toggleDecisionSelect}
             disabled={disabled}
+            data-testid="team-color-select-button"
           >
             {field.value ? (
               <TeamColorBadge
