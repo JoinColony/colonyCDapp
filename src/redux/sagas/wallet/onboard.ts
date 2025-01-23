@@ -1,7 +1,5 @@
 import Onboard, { type InitOptions } from '@web3-onboard/core';
-import injectedWalletsModule, {
-  ProviderLabel,
-} from '@web3-onboard/injected-wallets';
+import injectedWalletsModule from '@web3-onboard/injected-wallets';
 
 import {
   TERMS_AND_CONDITIONS,
@@ -53,73 +51,7 @@ const getDevelopmentWallets = async () => {
 };
 
 const onboardConfig: InitOptions = {
-  wallets: [
-    injectedWalletsModule({
-      // Only enable required injected wallets
-      filter: {
-        [ProviderLabel.AlphaWallet]: false,
-        // [ProviderLabel.ApexWallet]: false,
-        [ProviderLabel.AToken]: false,
-        // [ProviderLabel.BifrostWallet]: false,
-        [ProviderLabel.Binance]: true, // Enabled
-        [ProviderLabel.Bitpie]: false,
-        // [ProviderLabel.Bitski]: false,
-        [ProviderLabel.BlockWallet]: false,
-        [ProviderLabel.Brave]: true, // Enabled
-        [ProviderLabel.Coinbase]: true, // Enabled
-        [ProviderLabel.Dcent]: false,
-        [ProviderLabel.Detected]: false,
-        [ProviderLabel.Exodus]: true, // Enabled
-        [ProviderLabel.Frame]: false,
-        // [ProviderLabel.Frontier]: false,
-        [ProviderLabel.HuobiWallet]: false,
-        [ProviderLabel.HyperPay]: false,
-        [ProviderLabel.ImToken]: false,
-        // [ProviderLabel.InfinityWallet]: false,
-        [ProviderLabel.Liquality]: false,
-        [ProviderLabel.MeetOne]: false,
-        [ProviderLabel.MetaMask]: true, // Enabled
-        [ProviderLabel.MyKey]: false,
-        [ProviderLabel.Opera]: false,
-        [ProviderLabel.OwnBit]: false,
-        [ProviderLabel.Status]: false,
-        [ProviderLabel.Trust]: true, // Enabled
-        [ProviderLabel.TokenPocket]: false,
-        [ProviderLabel.TP]: false,
-        [ProviderLabel.WalletIo]: false,
-        [ProviderLabel.XDEFI]: false,
-        [ProviderLabel.OneInch]: false,
-        [ProviderLabel.Tokenary]: false,
-        [ProviderLabel.Tally]: false,
-        [ProviderLabel.Rabby]: false,
-        [ProviderLabel.MathWallet]: false,
-        // [ProviderLabel.Bitget]: false,
-        [ProviderLabel.Sequence]: false,
-        [ProviderLabel.Core]: false,
-        // [ProviderLabel.Enkrypt]: false,
-        // [ProviderLabel.Zeal]: false,
-        // [ProviderLabel.Phantom]: false,
-        // [ProviderLabel.OKXWallet]: false,
-        // [ProviderLabel.Zerion]: true, // Enabled
-        // [ProviderLabel.Rainbow]: false,
-        // [ProviderLabel.SafePal]: false,
-        // [ProviderLabel.DeFiWallet]: false,
-        // [ProviderLabel.Safeheron]: false,
-        // [ProviderLabel.Talisman]: false,
-        // [ProviderLabel.OneKey]: false,
-        // [ProviderLabel.Fordefi]: false,
-        // [ProviderLabel.RoninWallet]: false,
-        // [ProviderLabel.Coin98Wallet]: false,
-        // [ProviderLabel.SubWallet]: false,
-        // [ProviderLabel.Kayros]: false,
-        // [ProviderLabel.FoxWallet]: false,
-        // [ProviderLabel.Lif3Wallet]: false,
-        // [ProviderLabel.ZodiacPilot]: false,
-        // [ProviderLabel.StableWallet]: false,
-        // [ProviderLabel.Echooo]: false,
-      },
-    }),
-  ],
+  wallets: [injectedWalletsModule()],
   // Chains array only used in `ganacheModule` for use in development.
   chains: [
     // local
@@ -156,10 +88,10 @@ const onboardConfig: InitOptions = {
     desktop: { enabled: false },
     mobile: { enabled: false },
   },
-  // notify: {
-  //   desktop: { enabled: false },
-  //   mobile: { enabled: false },
-  // },
+  notify: {
+    desktop: { enabled: false, transactionHandler: () => {} },
+    mobile: { enabled: false, transactionHandler: () => {} },
+  },
   appMetadata: {
     name: formatMessage({ id: 'info.text' }),
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" viewBox="0 0 256 256"><path fill="#101828" d="M128,64.7c17.7,0,32.1-14.5,32.1-32.3S145.7,0,128,0c-17.7,0-32.1,14.5-32.1,32.3   S110.3,64.7,128,64.7z"></path><path fill="#101828" d="M128,256c17.7,0,32.1-14.5,32.1-32.3c0-17.9-14.4-32.3-32.1-32.3c-17.7,0-32.1,14.5-32.1,32.3   C95.9,241.5,110.3,256,128,256z"></path><path fill="#101828" d="M222.7,160.3c17.7,0,32.1-14.5,32.1-32.3c0-17.9-14.4-32.3-32.1-32.3   c-17.7,0-32.1,14.5-32.1,32.3C190.6,145.9,204.9,160.3,222.7,160.3z"></path><path fill="#101828" d="M33,160.3c17.7,0,32.1-14.5,32.1-32.3S50.8,95.7,33,95.7S0.9,110.1,0.9,128S15.3,160.3,33,160.3   z"></path><path fill="#101828" d="M128.1,76L76.5,128l51.6,51.9l51.6-51.9L128.1,76z"></path><path fill="#101828" d="M185.9,69.7V14.1l55.2,55.6H185.9z"></path><path fill="#101828" d="M69.8,69.7H14.6l55.2-55.6V69.7z"></path><path fill="#101828" d="M69.8,186.3v55.6l-55.2-55.6H69.8z"></path><path fill="#101828" d="M185.9,186.3h55.2l-55.2,55.6V186.3z"></path></svg>`,
