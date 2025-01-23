@@ -1,10 +1,25 @@
-import { Bug, DiscordLogo, Lifebuoy, Star, XLogo } from '@phosphor-icons/react';
+import {
+  Bug,
+  DiscordLogo,
+  Lifebuoy,
+  Lightbulb,
+  Star,
+  XLogo,
+} from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { COLONY_DISCORD, COLONY_DOCS, COLONY_X } from '~constants/index.ts';
+import {
+  COLONY_DISCORD,
+  COLONY_EDUCATION_PORTAL,
+  COLONY_X,
+} from '~constants/index.ts';
 import { useMobile } from '~hooks/index.ts';
-import { openFeaturesBugs, openWhatsNew } from '~hooks/useBeamer.ts';
+import {
+  FeaturebaseBoards,
+  useOpenChangelogWidget,
+  useOpenFeedbackWidget,
+} from '~hooks/useFeaturebase.ts';
 import ExternalLink from '~shared/ExternalLink/index.ts';
 import { formatText } from '~utils/intl.ts';
 
@@ -17,17 +32,21 @@ const displayName =
   'common.Extensions.UserNavigation.partials.UserSubmenu.partials.Contact';
 
 const MSG = defineMessages({
-  getHelp: {
-    id: `${displayName}.getHelp`,
-    defaultMessage: 'Get help',
+  educationPortal: {
+    id: `${displayName}.educationPortal`,
+    defaultMessage: 'Education portal',
   },
   whatsNew: {
     id: `${displayName}.whatsNew`,
     defaultMessage: "What's new",
   },
-  featureBugs: {
-    id: `${displayName}.featuresBugs`,
-    defaultMessage: 'Features & Bugs',
+  featureRequest: {
+    id: `${displayName}.featureRequest`,
+    defaultMessage: 'Request a feature',
+  },
+  bugReport: {
+    id: `${displayName}.bugReport`,
+    defaultMessage: 'Report a bug',
   },
   discord: {
     id: `${displayName}.discord`,
@@ -43,18 +62,31 @@ const Contact = () => {
   const isMobile = useMobile();
   const iconSize = isMobile ? ICON_SIZE_MOBILE : ICON_SIZE;
 
+  const openChangelogWidget = useOpenChangelogWidget();
+  const openFeatureRequestWidget = useOpenFeedbackWidget(
+    FeaturebaseBoards.FeatureRequest,
+  );
+  const openBugReportWidget = useOpenFeedbackWidget(
+    FeaturebaseBoards.BugReport,
+  );
+
   return (
     <MenuList>
       <MenuListItem>
-        <ExternalLink href={COLONY_DOCS} className={actionItemClass}>
+        <ExternalLink
+          href={COLONY_EDUCATION_PORTAL}
+          className={actionItemClass}
+        >
           <Lifebuoy size={iconSize} />
-          <p className={actionItemLabelClass}>{formatText(MSG.getHelp)}</p>
+          <p className={actionItemLabelClass}>
+            {formatText(MSG.educationPortal)}
+          </p>
         </ExternalLink>
       </MenuListItem>
       <MenuListItem>
         <button
           type="button"
-          onClick={openWhatsNew}
+          onClick={openChangelogWidget}
           className={actionItemClass}
         >
           <Star size={iconSize} />
@@ -64,11 +96,23 @@ const Contact = () => {
       <MenuListItem>
         <button
           type="button"
-          onClick={openFeaturesBugs}
+          onClick={openFeatureRequestWidget}
+          className={actionItemClass}
+        >
+          <Lightbulb size={iconSize} />
+          <p className={actionItemLabelClass}>
+            {formatText(MSG.featureRequest)}
+          </p>
+        </button>
+      </MenuListItem>
+      <MenuListItem>
+        <button
+          type="button"
+          onClick={openBugReportWidget}
           className={actionItemClass}
         >
           <Bug size={iconSize} />
-          <p className={actionItemLabelClass}>{formatText(MSG.featureBugs)}</p>
+          <p className={actionItemLabelClass}>{formatText(MSG.bugReport)}</p>
         </button>
       </MenuListItem>
       <MenuListItem>
