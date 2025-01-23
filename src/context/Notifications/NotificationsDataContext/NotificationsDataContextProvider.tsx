@@ -10,6 +10,28 @@ import {
   type NotificationsDataContextValues,
 } from './NotificationsDataContext.ts';
 
+const STORES =
+  isDev && !!import.meta.env.MAGICBELL_DEV_KEY
+    ? [
+        {
+          id: 'dev-store',
+          defaultQueryParams: {
+            topic: import.meta.env.MAGICBELL_DEV_KEY,
+            // eslint-disable-next-line camelcase
+            per_page: 10,
+          },
+        },
+      ]
+    : [
+        {
+          id: 'store',
+          // eslint-disable-next-line camelcase
+          defaultQueryParams: { per_page: 10 },
+        },
+      ];
+
+const USE_BELL_OPTS = { storeId: isDev ? 'dev-store' : 'store' };
+
 const NotificationsDataContextProvider = ({
   children,
 }: {
@@ -25,7 +47,7 @@ const NotificationsDataContextProvider = ({
     notifications,
     totalPages,
     unreadCount,
-  } = useBell({ storeId: isDev ? 'dev-store' : 'store' }) || {
+  } = useBell(USE_BELL_OPTS) || {
     currentPage: 1,
     fetchNextPage: () => Promise.resolve(),
     markAllAsRead: () => null,
@@ -70,26 +92,7 @@ const NotificationsDataContextProvider = ({
       apiKey={import.meta.env.MAGICBELL_API_KEY}
       userExternalId={user.notificationsData.magicbellUserId}
       userKey={data?.getUserNotificationsHMAC || ''}
-      stores={
-        isDev && !!import.meta.env.MAGICBELL_DEV_KEY
-          ? [
-              {
-                id: 'dev-store',
-                defaultQueryParams: {
-                  topic: import.meta.env.MAGICBELL_DEV_KEY,
-                  // eslint-disable-next-line camelcase
-                  per_page: 10,
-                },
-              },
-            ]
-          : [
-              {
-                id: 'store',
-                // eslint-disable-next-line camelcase
-                defaultQueryParams: { per_page: 10 },
-              },
-            ]
-      }
+      stores={STORES}
     >
       <NotificationsDataContext.Provider value={value}>
         {children}
