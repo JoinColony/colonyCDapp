@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Extension } from '@colony/colony-js';
 import { Trash } from '@phosphor-icons/react';
 import React, { useState } from 'react';
@@ -10,7 +11,7 @@ import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';
 
-import { useUninstall } from './hooks.tsx';
+import { useGetActiveAndUnclaimedStreams, useUninstall } from './hooks.tsx';
 
 const displayName = 'pages.ExtensionDetailsPage.UninstallButton';
 
@@ -110,8 +111,11 @@ const MSG = {
     },
     uninstallWarning: {
       id: `${displayName}.${Extension.StreamingPayments}.uninstallWarning`,
-      defaultMessage:
-        '{hasActiveStream, select, true {<li>The colony has at least one currently active stream. This extension cannot be uninstalled while any streams are still active, please cancel the stream or wait for its conclusion before uninstalling.</li>} other {}}{hasUnclaimedFunds, select, true {<li>The colony has at least one stream with unclaimed funds. This extension cannot be uninstalled until all streamed funds have been claimed. Please claim all remaining unclaimed funds before uninstalling.</li>} other {}}',
+      defaultMessage: `
+      {hasActiveStream, select,
+      true {<ul><li>This extension is not able to be uninstalled because there are current active streams or streamed funds that have not yet been claimed.</li><li>Please do the following before uninstalling:<ul><li>Ensure all active streams have been cancelled.</li><li>All streamed funds have been claimed, or willing forfeited by the recipient.</li></ul></li></ul>}
+      other {<ul><li>Please ensure all Streams are cancelled before uninstalling.</li></ul>}
+    }`,
     },
     uninstallConfirmation: {
       id: `${displayName}.${Extension.StreamingPayments}.uninstallConfirmation`,
@@ -124,6 +128,8 @@ const ListChunks = (chunks: React.ReactNode[]) => (
   <ul className="list-disc pl-4">{chunks}</ul>
 );
 
+const ListItemChunks = (chunks: React.ReactNode[]) => <li>{chunks}</li>;
+
 const UninstallButton = ({
   extensionData: { extensionId },
 }: {
@@ -133,16 +139,15 @@ const UninstallButton = ({
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const { handleUninstall, isLoading } = useUninstall(extensionId);
   const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
+  const { hasActiveStream, hasUnclaimedFunds } =
+    useGetActiveAndUnclaimedStreams();
 
   const isStreamingPaymentsExtension =
     extensionId === Extension.StreamingPayments;
 
-  // @todo: add proper logic here to determine if there are active streams or unclaimed funds
-  const hasActiveStream = false;
-  const hasUnclaimedFunds = false;
-
-  const shouldShowWarning =
-    isStreamingPaymentsExtension && (hasActiveStream || hasUnclaimedFunds);
+  const canRemoveExtension =
+    !isStreamingPaymentsExtension ||
+    (isStreamingPaymentsExtension && (!hasActiveStream || !hasUnclaimedFunds));
 
   return (
     <>
@@ -178,26 +183,26 @@ const UninstallButton = ({
         })}
         disabled={!isCheckboxChecked}
       >
-        {shouldShowWarning && (
-          <div className="mt-6 rounded-md border border-negative-400 bg-negative-100 p-4 text-sm text-negative-400">
-            <FormattedMessage
-              {...MSG[extensionId].uninstallWarning}
-              values={{
-                ul: ListChunks,
-                hasActiveStream,
-                hasUnclaimedFunds,
-              }}
-            />
-          </div>
+        <div className="mt-6 rounded-md border border-negative-400 bg-negative-100 p-4 text-sm text-negative-400">
+          <FormattedMessage
+            {...MSG[extensionId].uninstallWarning}
+            values={{
+              ul: ListChunks,
+              li: ListItemChunks,
+              hasActiveStream: hasActiveStream || hasUnclaimedFunds,
+            }}
+          />
+        </div>
+        {canRemoveExtension && (
+          <Checkbox
+            name="uninstall"
+            id="uninstall"
+            label={MSG[extensionId].uninstallConfirmation}
+            isChecked={isCheckboxChecked}
+            onChange={() => setIsCheckboxChecked((prevState) => !prevState)}
+            className="mt-5"
+          />
         )}
-        <Checkbox
-          name="uninstall"
-          id="uninstall"
-          label={MSG[extensionId].uninstallConfirmation}
-          isChecked={isCheckboxChecked}
-          onChange={() => setIsCheckboxChecked((prevState) => !prevState)}
-          className="mt-5"
-        />
       </Modal>
     </>
   );
