@@ -1,6 +1,9 @@
 import { Interface } from 'ethers/lib/utils';
 
-import { type ColonyActionFragment } from '~gql';
+import {
+  type ColonyActionArbitraryTransaction,
+  type ColonyActionFragment,
+} from '~gql';
 
 import { type ActionTitleMessageKeys } from '../components/common/ColonyActions/helpers/getActionTitleValues.ts';
 
@@ -48,21 +51,41 @@ export const decodeArbitraryTransaction = (
   }
 };
 
-export const getDecodedArbitraryTransaction = (transaction) => {
-  const abi = transaction.action.metadata?.arbitraryTxAbis?.find(
-    (abiItem) => abiItem.contractAddress === transaction.contractAddress,
+export const getDecodedArbitraryTransactions = (
+  data: ColonyActionArbitraryTransaction[],
+  action: ColonyActionFragment,
+) => {
+  const decodedArbitraryTransactions = data?.map(
+    ({ contractAddress, encodedFunction }) => {
+      const abi = action.metadata?.arbitraryTxAbis?.find(
+        (abiItem) => abiItem.contractAddress === contractAddress,
+      );
+      if (!abi) {
+        return {
+          contractAddress,
+          encodedFunction,
+        };
+      }
+
+      const decodedTx = decodeArbitraryTransaction(
+        abi.jsonAbi,
+        encodedFunction,
+      );
+      if (!decodedTx) {
+        return {
+          contractAddress,
+          encodedFunction,
+          jsonAbi: JSON.stringify(JSON.parse(abi.jsonAbi)),
+        };
+      }
+      return {
+        contractAddress,
+        jsonAbi: JSON.stringify(JSON.parse(abi.jsonAbi)),
+        ...decodedTx,
+      };
+    },
   );
-
-  if (!abi) {
-    return {};
-  }
-
-  const decodedTx = decodeArbitraryTransaction(
-    abi.jsonAbi,
-    transaction.encodedFunction,
-  );
-
-  return decodedTx;
+  return decodedArbitraryTransactions;
 };
 
 type ArbitraryFormatMessageValues = {
