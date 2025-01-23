@@ -5,11 +5,12 @@ import {
   mergeNetworks,
 } from '@dynamic-labs/sdk-react-core';
 import { PostHogProvider } from 'posthog-js/react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
+import useLocalStorage from 'use-local-storage';
 
 import { GANACHE_NETWORK, GANACHE_LOCAL_RPC_URL } from '~constants/index.ts';
 import AnalyticsContextProvider from '~context/AnalyticsContext/AnalyticsContextProvider.tsx';
@@ -43,20 +44,11 @@ if (__COMMIT_HASH__) {
 
 const Entry = ({ store }: Props) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
-  const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem('isDarkMode') === 'true' || false,
+
+  const [isDarkMode] = useLocalStorage(
+    'isDarkMode',
+    window.matchMedia('(prefers-color-scheme: dark)').matches,
   );
-
-  useEffect(() => {
-    function checkAppTheme() {
-      setIsDarkMode(localStorage.getItem('isDarkMode') === 'true');
-    }
-    window.addEventListener('storage', checkAppTheme);
-
-    return () => {
-      window.removeEventListener('storage', checkAppTheme);
-    };
-  }, []);
 
   return (
     <DynamicContextProvider
