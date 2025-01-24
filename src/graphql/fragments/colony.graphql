@@ -1,6 +1,10 @@
 fragment Colony on Colony {
   colonyAddress: id
   name
+  colonyCreateEvent {
+    blockNumber
+    creationSalt
+  }
   nativeToken {
     ...Token
   }

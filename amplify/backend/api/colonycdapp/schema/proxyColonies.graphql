@@ -1,0 +1,24 @@
+"""
+Table representing a deployed proxy colony
+"""
+type ProxyColony @model {
+  """
+  id in the format of colonyAddress_chainId
+  """
+  id: ID!
+  """
+  Address of the colony on the blockchain
+  """
+  colonyAddress: ID! @index(
+      name: "byColonyAddress"
+      queryField: "getProxyColoniesByColonyAddress"
+    )
+  """
+  The chainId it's deployed on
+  """
+  chainId: String!
+  """
+  A flag that tells us if the proxy is active or not
+  """
+  isActive: Boolean!
+}

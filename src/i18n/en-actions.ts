@@ -58,6 +58,12 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens by {initiator}}
       ${ColonyActionType.FundExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
       ${ColonyActionType.MakeArbitraryTransaction} {Custom transactions by {initiator}}
+      ${ColonyActionType.AddProxyColony} {Add support for {chain} chain by {initiator}}
+      ${ColonyActionType.AddProxyColonyMotion} {Add support for {chain} chain by {initiator}}
+      ${ColonyActionType.AddProxyColonyMultisig} {Add support for {chain} chain by {initiator}}
+      ${ColonyActionType.RemoveProxyColony} {Remove support for {chain} chain by {initiator}}
+      ${ColonyActionType.RemoveProxyColonyMotion} {Remove support for {chain} chain by {initiator}}
+      ${ColonyActionType.RemoveProxyColonyMultisig} {Remove support for {chain} chain by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
@@ -122,6 +128,12 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokens} {Manage tokens}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens}
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens}
+      ${ColonyActionType.AddProxyColony} {Manage supported chains}
+      ${ColonyActionType.AddProxyColonyMotion} {Manage supported chains}
+      ${ColonyActionType.AddProxyColonyMultisig} {Manage supported chains}
+      ${ColonyActionType.RemoveProxyColony} {Manage supported chains}
+      ${ColonyActionType.RemoveProxyColonyMotion} {Manage supported chains}
+      ${ColonyActionType.RemoveProxyColonyMultisig} {Manage supported chains}
       ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}

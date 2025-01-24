@@ -12,7 +12,12 @@ import { canColonyBeUpgraded } from '~utils/checks/index.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
+import {
+  MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
+  ManageEntityOperation,
+} from '../consts.ts';
 import { useActiveActionType } from '../hooks/useActiveActionType.ts';
+import { useCheckOperationType } from '../hooks/useCheckOperationType.ts';
 import {
   type ClaimMintTokensActionParams,
   type FinalizeSuccessCallback,
@@ -42,10 +47,29 @@ const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.ArbitraryTxs]: 'button.createTransaction',
 };
 
+const useManageSupportedChainsSubmitButtonText = () => {
+  const isRemoveOperation = useCheckOperationType(
+    MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
+    ManageEntityOperation.Remove,
+  );
+
+  if (isRemoveOperation === null) {
+    return 'button.manageChains';
+  }
+
+  return isRemoveOperation ? 'button.removeChain' : 'button.addChain';
+};
+
 export const useSubmitButtonText = () => {
   const selectedAction = useActiveActionType();
-  const selectedActionText =
-    selectedAction && SUBMIT_BUTTON_TEXT_MAP[selectedAction];
+  const manageSupportedChainsText = useManageSupportedChainsSubmitButtonText();
+
+  const selectedActionText = useMemo(() => {
+    if (selectedAction === Action.ManageSupportedChains) {
+      return manageSupportedChainsText;
+    }
+    return selectedAction && SUBMIT_BUTTON_TEXT_MAP[selectedAction];
+  }, [selectedAction, manageSupportedChainsText]);
 
   return useMemo(
     () =>

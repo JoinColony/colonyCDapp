@@ -4,7 +4,10 @@ import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useFeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
-import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
+import {
+  type SearchSelectOptionProps,
+  type WithBadgesOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -15,8 +18,12 @@ const useActionsList = () => {
     featureFlags.ARBITRARY_TXS_ACTION?.isLoading ||
     featureFlags.ARBITRARY_TXS_ACTION?.isEnabled;
 
-  return useMemo((): SearchSelectOptionProps[] => {
-    const actionsListOptions: SearchSelectOptionProps[] = [
+  const isFeatureFlagSupportedChainsEnabled =
+    featureFlags.SUPPORTED_CHAINS_ACTION?.isLoading ||
+    featureFlags.SUPPORTED_CHAINS_ACTION?.isEnabled;
+
+  return useMemo((): SearchSelectOptionProps<WithBadgesOption>[] => {
+    const actionsListOptions: SearchSelectOptionProps<WithBadgesOption>[] = [
       {
         key: '1',
         title: { id: 'actions.payments' },
@@ -125,6 +132,11 @@ const useActionsList = () => {
             value: Action.EditColonyDetails,
           },
           {
+            label: { id: 'actions.manageSupportedChains' },
+            value: Action.ManageSupportedChains,
+            isNew: true,
+          },
+          {
             label: { id: 'actions.upgradeColonyVersion' },
             value: Action.UpgradeColonyVersion,
           },
@@ -152,6 +164,15 @@ const useActionsList = () => {
 
       actionsListOptions[4].options.splice(arbitraryTxsIndex, 1);
     }
+
+    if (!isFeatureFlagSupportedChainsEnabled) {
+      const manageSupportedChainsIndex =
+        actionsListOptions[4].options.findIndex(
+          ({ value }) => value === Action.ManageSupportedChains,
+        );
+      actionsListOptions[4].options.splice(manageSupportedChainsIndex, 1);
+    }
+
     if (!isStagedExpenditureEnabled) {
       const stagedPaymentIndex = actionsListOptions[0].options.findIndex(
         ({ value }) => value === Action.StagedPayment,
@@ -166,7 +187,12 @@ const useActionsList = () => {
       actionsListOptions[2].options[2].isDisabled = true;
     }
     return actionsListOptions;
-  }, [colony, isStagedExpenditureEnabled, isFeatureFlagArbitraryTxsEnabled]);
+  }, [
+    colony,
+    isStagedExpenditureEnabled,
+    isFeatureFlagArbitraryTxsEnabled,
+    isFeatureFlagSupportedChainsEnabled,
+  ]);
 };
 
 export default useActionsList;

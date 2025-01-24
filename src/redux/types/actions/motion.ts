@@ -18,6 +18,7 @@ import {
   type Address,
   type ManageVerifiedMembersOperation,
 } from '~types/index.ts';
+import { type ManageEntityOperation } from '~v5/common/ActionSidebar/consts.ts';
 import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
 
 import { type OneTxPaymentPayload } from './colonyActions.ts';
@@ -494,5 +495,46 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_ARBITRARY_TRANSACTION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_ARBITRARY_TRANSACTION_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_PROXY_COLONY_CREATE,
+      {
+        colonyAddress: Address;
+        customActionTitle: string;
+        annotationMessage?: string;
+        colonyRoles: ColonyRoleFragment[];
+        colonyDomains: Domain[];
+        foreignChainId: number;
+        creationSalt: string;
+        isMultiSig: boolean;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_PROXY_COLONY_CREATE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_PROXY_COLONY_CREATE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_PROXY_COLONY_ENABLE_DISABLE,
+      {
+        colonyAddress: Address;
+        customActionTitle: string;
+        annotationMessage?: string;
+        colonyDomains: Domain[];
+        foreignChainId: number;
+        operation: ManageEntityOperation;
+        colonyRoles: ColonyRoleFragment[];
+        isMultiSig?: boolean;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<
+      ActionTypes.MOTION_PROXY_COLONY_ENABLE_DISABLE_ERROR,
+      object
+    >
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_PROXY_COLONY_ENABLE_DISABLE_SUCCESS,
       MetaWithSetter<object>
     >;

@@ -898,6 +898,22 @@ enum ColonyActionType {
   MANAGE_TOKENS
   MANAGE_TOKENS_MOTION
   MANAGE_TOKENS_MULTISIG
+  """
+  An action related to arbitrary transaction
+  """
+  ARBITRARY_TX
+  """
+  An action related to creating a proxy colony
+  """
+  ADD_PROXY_COLONY
+  ADD_PROXY_COLONY_MOTION
+  ADD_PROXY_COLONY_MULTISIG
+  """
+  An action related to disabling a proxy colony
+  """
+  REMOVE_PROXY_COLONY
+  REMOVE_PROXY_COLONY_MOTION
+  REMOVE_PROXY_COLONY_MULTISIG
 }
 
 """
@@ -1529,6 +1545,17 @@ type ColonyContributor @model @searchable {
     @hasMany(indexName: "byTargetAddress", fields: ["contributorAddress"])
 }
 
+type ColonyCreateEvent {
+  """
+  The block number the colony was created at
+  """
+  blockNumber: Int!
+  """
+  The salt used during creation
+  """
+  creationSalt: String!
+}
+
 """
 Represents a Colony within the Colony Network
 """
@@ -1541,6 +1568,10 @@ type Colony @model {
   (Short) name of the Colony
   """
   name: String! @index(name: "byName", queryField: "getColonyByName")
+  """
+  Colony creation data
+  """
+  colonyCreateEvent: ColonyCreateEvent
   """
   The unique address of the native token of the Colony
   """
@@ -2875,6 +2906,18 @@ type ColonyMultiSig @model {
   """
   expenditureId: ID
     @index(name: "byExpenditureId", queryField: "getMultiSigByExpenditureId")
+  """
+  The action txHash that was triggered upon motion finalization
+  """
+  finalizationActionId: ID
+    @index(
+      name: "byFinalizationActionId"
+      queryField: "getColonyMultiSigByFinalizationActionId"
+    )
+  """
+  Expanded `ColonyAction`
+  """
+  finalizationActionData: ColonyAction @hasOne(fields: ["finalizationActionId"])
 }
 """
 Represents a Motion within a Colony
@@ -3010,6 +3053,18 @@ type ColonyMotion @model {
   the details of tokens and amounts to be funded
   """
   expenditureFunding: [ExpenditureFundingItem!]
+  """
+  The action txHash that was triggered upon motion finalization
+  """
+  finalizationActionId: ID
+    @index(
+      name: "byFinalizationActionId"
+      queryField: "getColonyMotionByFinalizationActionId"
+    )
+  """
+  Expanded `ColonyAction`
+  """
+  finalizationActionData: ColonyAction @hasOne(fields: ["finalizationActionId"])
 }
 
 type ExpenditureFundingItem {
@@ -3523,8 +3578,34 @@ type ColonyAction @model @searchable {
   Ids of the staged payment slots released by the action, if any
   """
   expenditureSlotIds: [Int!]
-
   arbitraryTransactions: [ColonyActionArbitraryTransaction!]
+  """
+  Multichain info if the action is bridged
+  """
+  multiChainInfo: MultiChainInfo
+  """
+  Target chain id if the action is on a proxy colony chain
+  """
+  targetChainId: Int
+  """
+  The motion action txHash that this action finalized
+  """
+  finalizedActionId: ID
+  """
+  Expanded `ColonyAction`
+  """
+  finalizedActionData: ColonyAction @hasOne(fields: ["finalizedActionId"])
+}
+
+type MultiChainInfo {
+  completed: Boolean!
+  wormholeInfo: ActionWormholeInfo
+}
+
+type ActionWormholeInfo {
+  emitterChainId: Int
+  emitterAddress: String!
+  sequence: String!
 }
 
 """
@@ -3818,6 +3899,11 @@ type IngestorStats @model {
   Unique identifier of the ingestor stats
   """
   id: ID!
+  """
+  The chain id the stats are generated on
+  """
+  chainId: String!
+    @index(name: "byChainId", queryField: "getIngestorStatsByChainId")
   """
   JSON string to pass custom, dynamic values
   """

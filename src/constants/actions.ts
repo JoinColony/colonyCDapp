@@ -32,6 +32,7 @@ export const PERMISSIONS_NEEDED_FOR_ACTION = {
   SplitPayment: [[ColonyRole.Administration]],
   StagedPayment: [[ColonyRole.Administration]],
   ArbitraryTxs: [[ColonyRole.Root]],
+  ManageSupportedChains: [[ColonyRole.Root]],
 };
 
 export enum Action {
@@ -65,6 +66,7 @@ export enum Action {
   UserPermissions = 'user-permissions',
   SimpleDiscussion = 'simple-discussion',
   ManageVerifiedMembers = 'manage-verified-members',
+  ManageSupportedChains = 'manage-supported-chains',
 }
 
 export const ACTIONS_WITH_NETWORK_FEE = new Set([

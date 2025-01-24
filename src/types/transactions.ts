@@ -114,4 +114,7 @@ export enum TRANSACTION_METHODS {
   Upgrade = 'upgrade',
   UpgradeExtension = 'upgradeExtension',
   VoteOnMultiSig = 'voteOnMultiSig',
+  // Proxy colonies
+  CreateProxyColony = 'createProxyColony',
+  RemoveProxyColony = 'removeProxyColony',
 }
