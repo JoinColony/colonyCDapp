@@ -101,7 +101,7 @@ const useStagedPaymentTableColumns = ({
             : undefined,
         }),
         columnHelper.accessor('amount', {
-          staticSize: '180px',
+          staticSize: '210px',
           enableSorting: false,
           header: () => formatText({ id: 'table.row.amount' }),
           cell: ({ row }) => (
@@ -134,7 +134,7 @@ const useStagedPaymentTableColumns = ({
           ? [
               columnHelper.display({
                 id: 'release',
-                staticSize: '96px',
+                staticSize: '60px',
                 enableSorting: false,
                 cell: ({ row }) => {
                   const { original } = row;
@@ -179,7 +179,14 @@ const useStagedPaymentTableColumns = ({
                     : undefined,
               }),
             ]
-          : []),
+          : [
+              columnHelper.display({
+                id: 'release',
+                staticSize: '60px',
+                enableSorting: false,
+                cell: () => null,
+              }),
+            ]),
       ];
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
