@@ -1947,6 +1947,11 @@ export type CreateStreamingPaymentMetadataInput = {
   limitAmount?: InputMaybe<Scalars['String']>;
 };
 
+export type CreateSupportedChainInput = {
+  id?: InputMaybe<Scalars['ID']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type CreateTokenExchangeRateInput = {
   date: Scalars['AWSDateTime'];
   id?: InputMaybe<Scalars['ID']>;
@@ -2221,6 +2226,10 @@ export type DeleteStreamingPaymentInput = {
 };
 
 export type DeleteStreamingPaymentMetadataInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteSupportedChainInput = {
   id: Scalars['ID'];
 };
 
@@ -4849,6 +4858,13 @@ export type ModelSubscriptionStringInput = {
   notIn?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type ModelSubscriptionSupportedChainFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionSupportedChainFilterInput>>>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  isActive?: InputMaybe<ModelSubscriptionBooleanInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionSupportedChainFilterInput>>>;
+};
+
 export type ModelSubscriptionTokenExchangeRateFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionTokenExchangeRateFilterInput>>>;
   date?: InputMaybe<ModelSubscriptionStringInput>;
@@ -4939,6 +4955,27 @@ export type ModelSubscriptionVoterRewardsHistoryFilterInput = {
   motionId?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionVoterRewardsHistoryFilterInput>>>;
   userAddress?: InputMaybe<ModelSubscriptionIdInput>;
+};
+
+export type ModelSupportedChainConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSupportedChainConditionInput>>>;
+  isActive?: InputMaybe<ModelBooleanInput>;
+  not?: InputMaybe<ModelSupportedChainConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSupportedChainConditionInput>>>;
+};
+
+export type ModelSupportedChainConnection = {
+  __typename?: 'ModelSupportedChainConnection';
+  items: Array<Maybe<SupportedChain>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelSupportedChainFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSupportedChainFilterInput>>>;
+  id?: InputMaybe<ModelIdInput>;
+  isActive?: InputMaybe<ModelBooleanInput>;
+  not?: InputMaybe<ModelSupportedChainFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSupportedChainFilterInput>>>;
 };
 
 export type ModelSupportedCurrenciesInput = {
@@ -5433,6 +5470,7 @@ export type Mutation = {
   createSafeTransactionData?: Maybe<SafeTransactionData>;
   createStreamingPayment?: Maybe<StreamingPayment>;
   createStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
+  createSupportedChain?: Maybe<SupportedChain>;
   createToken?: Maybe<Token>;
   createTokenExchangeRate?: Maybe<TokenExchangeRate>;
   createTransaction?: Maybe<Transaction>;
@@ -5482,6 +5520,7 @@ export type Mutation = {
   deleteSafeTransactionData?: Maybe<SafeTransactionData>;
   deleteStreamingPayment?: Maybe<StreamingPayment>;
   deleteStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
+  deleteSupportedChain?: Maybe<SupportedChain>;
   deleteToken?: Maybe<Token>;
   deleteTokenExchangeRate?: Maybe<TokenExchangeRate>;
   deleteTransaction?: Maybe<Transaction>;
@@ -5531,6 +5570,7 @@ export type Mutation = {
   updateSafeTransactionData?: Maybe<SafeTransactionData>;
   updateStreamingPayment?: Maybe<StreamingPayment>;
   updateStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
+  updateSupportedChain?: Maybe<SupportedChain>;
   updateToken?: Maybe<Token>;
   updateTokenExchangeRate?: Maybe<TokenExchangeRate>;
   updateTransaction?: Maybe<Transaction>;
@@ -5830,6 +5870,13 @@ export type MutationCreateStreamingPaymentArgs = {
 export type MutationCreateStreamingPaymentMetadataArgs = {
   condition?: InputMaybe<ModelStreamingPaymentMetadataConditionInput>;
   input: CreateStreamingPaymentMetadataInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateSupportedChainArgs = {
+  condition?: InputMaybe<ModelSupportedChainConditionInput>;
+  input: CreateSupportedChainInput;
 };
 
 
@@ -6161,6 +6208,13 @@ export type MutationDeleteStreamingPaymentMetadataArgs = {
 
 
 /** Root mutation type */
+export type MutationDeleteSupportedChainArgs = {
+  condition?: InputMaybe<ModelSupportedChainConditionInput>;
+  input: DeleteSupportedChainInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: DeleteTokenInput;
@@ -6484,6 +6538,13 @@ export type MutationUpdateStreamingPaymentArgs = {
 export type MutationUpdateStreamingPaymentMetadataArgs = {
   condition?: InputMaybe<ModelStreamingPaymentMetadataConditionInput>;
   input: UpdateStreamingPaymentMetadataInput;
+};
+
+
+/** Root mutation type */
+export type MutationUpdateSupportedChainArgs = {
+  condition?: InputMaybe<ModelSupportedChainConditionInput>;
+  input: UpdateSupportedChainInput;
 };
 
 
@@ -6904,6 +6965,7 @@ export type Query = {
   getSafeTransactionStatus?: Maybe<Array<Scalars['String']>>;
   getStreamingPayment?: Maybe<StreamingPayment>;
   getStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
+  getSupportedChain?: Maybe<SupportedChain>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   getTokenExchangeRate?: Maybe<TokenExchangeRate>;
@@ -6969,6 +7031,7 @@ export type Query = {
   listSafeTransactions?: Maybe<ModelSafeTransactionConnection>;
   listStreamingPaymentMetadata?: Maybe<ModelStreamingPaymentMetadataConnection>;
   listStreamingPayments?: Maybe<ModelStreamingPaymentConnection>;
+  listSupportedChains?: Maybe<ModelSupportedChainConnection>;
   listTokenExchangeRates?: Maybe<ModelTokenExchangeRateConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
   listTransactions?: Maybe<ModelTransactionConnection>;
@@ -7658,6 +7721,12 @@ export type QueryGetStreamingPaymentMetadataArgs = {
 
 
 /** Root query type */
+export type QueryGetSupportedChainArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** Root query type */
 export type QueryGetTokenArgs = {
   id: Scalars['ID'];
 };
@@ -8129,6 +8198,14 @@ export type QueryListStreamingPaymentMetadataArgs = {
 /** Root query type */
 export type QueryListStreamingPaymentsArgs = {
   filter?: InputMaybe<ModelStreamingPaymentFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
+export type QueryListSupportedChainsArgs = {
+  filter?: InputMaybe<ModelSupportedChainFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -8734,6 +8811,7 @@ export type Subscription = {
   onCreateSafeTransactionData?: Maybe<SafeTransactionData>;
   onCreateStreamingPayment?: Maybe<StreamingPayment>;
   onCreateStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
+  onCreateSupportedChain?: Maybe<SupportedChain>;
   onCreateToken?: Maybe<Token>;
   onCreateTokenExchangeRate?: Maybe<TokenExchangeRate>;
   onCreateTransaction?: Maybe<Transaction>;
@@ -8779,6 +8857,7 @@ export type Subscription = {
   onDeleteSafeTransactionData?: Maybe<SafeTransactionData>;
   onDeleteStreamingPayment?: Maybe<StreamingPayment>;
   onDeleteStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
+  onDeleteSupportedChain?: Maybe<SupportedChain>;
   onDeleteToken?: Maybe<Token>;
   onDeleteTokenExchangeRate?: Maybe<TokenExchangeRate>;
   onDeleteTransaction?: Maybe<Transaction>;
@@ -8824,6 +8903,7 @@ export type Subscription = {
   onUpdateSafeTransactionData?: Maybe<SafeTransactionData>;
   onUpdateStreamingPayment?: Maybe<StreamingPayment>;
   onUpdateStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
+  onUpdateSupportedChain?: Maybe<SupportedChain>;
   onUpdateToken?: Maybe<Token>;
   onUpdateTokenExchangeRate?: Maybe<TokenExchangeRate>;
   onUpdateTransaction?: Maybe<Transaction>;
@@ -9021,6 +9101,11 @@ export type SubscriptionOnCreateStreamingPaymentArgs = {
 
 export type SubscriptionOnCreateStreamingPaymentMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionStreamingPaymentMetadataFilterInput>;
+};
+
+
+export type SubscriptionOnCreateSupportedChainArgs = {
+  filter?: InputMaybe<ModelSubscriptionSupportedChainFilterInput>;
 };
 
 
@@ -9249,6 +9334,11 @@ export type SubscriptionOnDeleteStreamingPaymentMetadataArgs = {
 };
 
 
+export type SubscriptionOnDeleteSupportedChainArgs = {
+  filter?: InputMaybe<ModelSubscriptionSupportedChainFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
 };
@@ -9474,6 +9564,11 @@ export type SubscriptionOnUpdateStreamingPaymentMetadataArgs = {
 };
 
 
+export type SubscriptionOnUpdateSupportedChainArgs = {
+  filter?: InputMaybe<ModelSubscriptionSupportedChainFilterInput>;
+};
+
+
 export type SubscriptionOnUpdateTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
 };
@@ -9506,6 +9601,16 @@ export type SubscriptionOnUpdateUserTokensArgs = {
 
 export type SubscriptionOnUpdateVoterRewardsHistoryArgs = {
   filter?: InputMaybe<ModelSubscriptionVoterRewardsHistoryFilterInput>;
+};
+
+export type SupportedChain = {
+  __typename?: 'SupportedChain';
+  createdAt: Scalars['AWSDateTime'];
+  /** The chainId of the supported chain */
+  id: Scalars['ID'];
+  /** A flag that tells us if the supported chain is active or not */
+  isActive?: Maybe<Scalars['Boolean']>;
+  updatedAt: Scalars['AWSDateTime'];
 };
 
 /** Represents the currencies/tokens that users' balances can be converted to (for display purposes) */
@@ -10230,6 +10335,11 @@ export type UpdateStreamingPaymentMetadataInput = {
   limitAmount?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateSupportedChainInput = {
+  id: Scalars['ID'];
+  isActive?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type UpdateTokenExchangeRateInput = {
   date?: InputMaybe<Scalars['AWSDateTime']>;
   id: Scalars['ID'];
@@ -10625,6 +10735,8 @@ export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension',
 export type LiquidationAddressFragment = { __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId: string, notificationsDisabled: boolean, mutedColonyAddresses: Array<string>, paymentNotificationsDisabled: boolean, mentionNotificationsDisabled: boolean, adminNotificationsDisabled: boolean } | null } | null };
 
 export type ProxyColonyFragment = { __typename?: 'ProxyColony', id: string, colonyAddress: string, chainId: string, isActive: boolean };
+
+export type SupportedChainFragment = { __typename?: 'SupportedChain', id: string, isActive?: boolean | null };
 
 export type ColonyUserRoleFragment = { __typename?: 'ColonyRole', id: string, targetAddress: string, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, targetUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId: string, notificationsDisabled: boolean, mutedColonyAddresses: Array<string>, paymentNotificationsDisabled: boolean, mentionNotificationsDisabled: boolean, adminNotificationsDisabled: boolean } | null } | null };
 
@@ -11210,6 +11322,11 @@ export type GetProxyColoniesQueryVariables = Exact<{
 
 
 export type GetProxyColoniesQuery = { __typename?: 'Query', getProxyColoniesByColonyAddress?: { __typename?: 'ModelProxyColonyConnection', items: Array<{ __typename?: 'ProxyColony', id: string, colonyAddress: string, chainId: string, isActive: boolean } | null> } | null };
+
+export type GetSupportedChainsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSupportedChainsQuery = { __typename?: 'Query', listSupportedChains?: { __typename?: 'ModelSupportedChainConnection', items: Array<{ __typename?: 'SupportedChain', id: string, isActive?: boolean | null } | null> } | null };
 
 export type GetColonyHistoricRoleRolesQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -12005,6 +12122,12 @@ export const ProxyColonyFragmentDoc = gql`
   id
   colonyAddress
   chainId
+  isActive
+}
+    `;
+export const SupportedChainFragmentDoc = gql`
+    fragment SupportedChain on SupportedChain {
+  id
   isActive
 }
     `;
@@ -15464,6 +15587,42 @@ export function useGetProxyColoniesLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetProxyColoniesQueryHookResult = ReturnType<typeof useGetProxyColoniesQuery>;
 export type GetProxyColoniesLazyQueryHookResult = ReturnType<typeof useGetProxyColoniesLazyQuery>;
 export type GetProxyColoniesQueryResult = Apollo.QueryResult<GetProxyColoniesQuery, GetProxyColoniesQueryVariables>;
+export const GetSupportedChainsDocument = gql`
+    query GetSupportedChains {
+  listSupportedChains {
+    items {
+      ...SupportedChain
+    }
+  }
+}
+    ${SupportedChainFragmentDoc}`;
+
+/**
+ * __useGetSupportedChainsQuery__
+ *
+ * To run a query within a React component, call `useGetSupportedChainsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSupportedChainsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSupportedChainsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSupportedChainsQuery(baseOptions?: Apollo.QueryHookOptions<GetSupportedChainsQuery, GetSupportedChainsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSupportedChainsQuery, GetSupportedChainsQueryVariables>(GetSupportedChainsDocument, options);
+      }
+export function useGetSupportedChainsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSupportedChainsQuery, GetSupportedChainsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSupportedChainsQuery, GetSupportedChainsQueryVariables>(GetSupportedChainsDocument, options);
+        }
+export type GetSupportedChainsQueryHookResult = ReturnType<typeof useGetSupportedChainsQuery>;
+export type GetSupportedChainsLazyQueryHookResult = ReturnType<typeof useGetSupportedChainsLazyQuery>;
+export type GetSupportedChainsQueryResult = Apollo.QueryResult<GetSupportedChainsQuery, GetSupportedChainsQueryVariables>;
 export const GetColonyHistoricRoleRolesDocument = gql`
     query GetColonyHistoricRoleRoles($id: ID!) {
   getColonyHistoricRole(id: $id) {
