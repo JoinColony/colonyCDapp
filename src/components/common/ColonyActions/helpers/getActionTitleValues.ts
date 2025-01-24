@@ -8,7 +8,6 @@ import {
   type Colony,
   type Expenditure,
 } from '~types/graphql.ts';
-import { getFormatValuesArbitraryTransactions } from '~utils/arbitraryTxs.ts';
 import {
   getExtendedActionType,
   safeActionTypes,
@@ -211,14 +210,6 @@ const useGetActionTitleValues = ({
   const messageValues = generateMessageValues(updatedItem, keys, {
     actionType,
   });
-
-  if (actionType.includes(ColonyActionType.MakeArbitraryTransaction)) {
-    const arbitraryMessageValues =
-      getFormatValuesArbitraryTransactions(actionData);
-    messageValues.arbitraryTransactionsLength =
-      arbitraryMessageValues.arbitraryTransactionsLength;
-    messageValues.arbitraryMethod = arbitraryMessageValues.arbitraryMethod;
-  }
 
   return messageValues;
 };

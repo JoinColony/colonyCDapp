@@ -22,6 +22,7 @@ import {
   type ExpenditureStage,
   type ExpenditureSlot,
 } from '~types/graphql.ts';
+import { getFormatValuesArbitraryTransactions } from '~utils/arbitraryTxs.ts';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { getRecipientsNumber, getTokensNumber } from '~utils/expenditures.ts';
@@ -295,6 +296,9 @@ export const useMapColonyActionToExpectedFormat = ({
     colony,
   );
 
+  const { arbitraryTransactionsLength, arbitraryMethod } =
+    getFormatValuesArbitraryTransactions(actionData);
+
   return {
     ...actionData,
     [ActionTitleMessageKeys.Amount]: getFormattedValueWithFallback(
@@ -432,5 +436,8 @@ export const useMapColonyActionToExpectedFormat = ({
       ActionTitleMessageKeys.SplitAmount,
       !!expenditureData?.slots,
     ),
+    [ActionTitleMessageKeys.ArbitraryTransactionsLength]:
+      arbitraryTransactionsLength,
+    [ActionTitleMessageKeys.ArbitraryMethod]: arbitraryMethod,
   };
 };
