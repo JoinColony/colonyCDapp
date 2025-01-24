@@ -124,7 +124,7 @@ const Routes = () => {
           // Allow in use colony names
           .filter((route) => !['/meta', '/beta'].includes(route))
           .map((route) => (
-            <Route path={route} element={<NotFoundRoute />} />
+            <Route path={route} key={route} element={<NotFoundRoute />} />
           ))}
 
         {/* Colony routes */}
