@@ -64,22 +64,22 @@ function* claimMotionRewards({
       throw new Error('Could not retrieve motion from database');
     }
 
-    const userRewards = motionData.stakerRewards.find(
+    const userStakes = motionData.usersStakes.find(
       ({ address }) => address === userAddress,
     );
 
-    if (!userRewards) {
-      throw new Error('Could not find rewards for given user address');
+    if (!userStakes) {
+      throw new Error('Could not find stakes for given user address');
     }
 
-    const {
-      rewards: { yay, nay },
-    } = userRewards;
+    const { stakes } = userStakes ?? {};
+    const yayStake = stakes?.raw.yay;
+    const nayStake = stakes?.raw.nay;
 
-    const hasYayClaim = !BigNumber.from(yay).isZero();
-    const hasNayClaim = !BigNumber.from(nay).isZero();
+    const hasYayStake = !BigNumber.from(yayStake).isZero();
+    const hasNayStake = !BigNumber.from(nayStake).isZero();
 
-    if (!hasYayClaim && !hasNayClaim) {
+    if (!hasYayStake && !hasNayStake) {
       throw new Error('A motion with claims needs to be provided');
     }
 
@@ -89,7 +89,7 @@ function* claimMotionRewards({
     const channels: { [id: string]: ChannelDefinition } = yield call(
       createTransactionChannels,
       meta.id,
-      [...(hasYayClaim ? [YAY_ID] : []), ...(hasNayClaim ? [NAY_ID] : [])],
+      [...(hasYayStake ? [YAY_ID] : []), ...(hasNayStake ? [NAY_ID] : [])],
     );
 
     const BATCH_KEY = 'claimMotionRewards';
