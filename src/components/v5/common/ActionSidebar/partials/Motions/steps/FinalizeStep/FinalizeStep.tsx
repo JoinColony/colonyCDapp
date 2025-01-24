@@ -65,13 +65,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const previousIsMotionFinalized = usePrevious(isMotionFinalized);
   const isMotionFailedNotFinalizable =
     actionData.motionData.motionStateHistory.hasFailedNotFinalizable;
-  const isMotionFailed = actionData.motionData.motionStateHistory.hasFailed;
   const isMotionAgreement =
     actionData.type === ColonyActionType.CreateDecisionMotion;
   const isMotionClaimable =
-    ((isMotionFinalized || isMotionFailedNotFinalizable) &&
-      !isMotionFailed &&
-      !isMotionFailedNotFinalizable) ||
+    isMotionFinalized ||
+    isMotionFailedNotFinalizable ||
     (isMotionAgreement && !isClaimed);
 
   const handleSuccess = () => {
@@ -178,53 +176,70 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
               transform={isMotionClaimable ? claimPayload : finalizePayload}
               onSuccess={isMotionClaimable ? handleClaimSuccess : handleSuccess}
             >
-              {({ formState: { isSubmitting } }) => (
-                <>
-                  {items.length > 0 && (
-                    <>
-                      <div className="mb-2">
-                        <h4 className="mb-3 flex items-center justify-between text-1">
-                          {formatText({ id: 'motion.finalizeStep.title' })}
-                          {isClaimed && (
-                            <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
-                              {formatText({
-                                id: 'motion.finalizeStep.claimed',
-                              })}
-                            </PillsBase>
-                          )}
-                        </h4>
-                      </div>
-                      <DescriptionList
-                        items={items}
-                        className={clsx({
-                          'mb-6':
-                            !isMotionFailedNotFinalizable &&
-                            (!isMotionFinalized || !isClaimed),
-                        })}
-                      />
-                    </>
-                  )}
-                  {canInteract && (
-                    <>
-                      {(isPolling || isSubmitting) && !isClaimed && (
-                        <IconButton
-                          className="w-full"
-                          rounded="s"
-                          text={{ id: 'button.pending' }}
-                          icon={
-                            <span className="ml-1.5 flex shrink-0">
-                              <SpinnerGap size={14} className="animate-spin" />
-                            </span>
-                          }
-                          title={{ id: 'button.pending' }}
-                          ariaLabel={{ id: 'button.pending' }}
+              {({ formState: { isSubmitting } }) => {
+                const showPendingButton =
+                  (isPolling || isSubmitting) && !isClaimed;
+
+                const showFinalizeButton =
+                  !showPendingButton &&
+                  !isMotionFailedNotFinalizable &&
+                  !isMotionFinalized &&
+                  !isMotionAgreement;
+
+                const showClaimButton =
+                  !showPendingButton &&
+                  isMotionClaimable &&
+                  canClaimStakes &&
+                  !isClaimed;
+
+                return (
+                  <>
+                    {items.length > 0 && (
+                      <>
+                        <div className="mb-2">
+                          <h4 className="mb-3 flex items-center justify-between text-1">
+                            {formatText({ id: 'motion.finalizeStep.title' })}
+                            {isClaimed && canClaimStakes && (
+                              <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
+                                {formatText({
+                                  id: 'motion.finalizeStep.claimed',
+                                })}
+                              </PillsBase>
+                            )}
+                          </h4>
+                        </div>
+                        <DescriptionList
+                          items={items}
+                          className={clsx({
+                            'mb-6':
+                              canInteract &&
+                              (showPendingButton ||
+                                showFinalizeButton ||
+                                showClaimButton),
+                          })}
                         />
-                      )}
-                      {!isPolling &&
-                        !isSubmitting &&
-                        !isMotionFailedNotFinalizable &&
-                        !isMotionFinalized &&
-                        !isMotionAgreement && (
+                      </>
+                    )}
+                    {canInteract && (
+                      <>
+                        {showPendingButton && (
+                          <IconButton
+                            className="w-full"
+                            rounded="s"
+                            text={{ id: 'button.pending' }}
+                            icon={
+                              <span className="ml-1.5 flex shrink-0">
+                                <SpinnerGap
+                                  size={14}
+                                  className="animate-spin"
+                                />
+                              </span>
+                            }
+                            title={{ id: 'button.pending' }}
+                            ariaLabel={{ id: 'button.pending' }}
+                          />
+                        )}
+                        {showFinalizeButton && (
                           <Button
                             mode="primarySolid"
                             disabled={!isFinalizable || wrongMotionState}
@@ -235,12 +250,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                             type="submit"
                           />
                         )}
-                      {!isPolling &&
-                        !isSubmitting &&
-                        !isMotionFailedNotFinalizable &&
-                        isMotionClaimable &&
-                        !isClaimed &&
-                        canClaimStakes && (
+                        {showClaimButton && (
                           <Button
                             mode="primarySolid"
                             disabled={
@@ -257,10 +267,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                             type="submit"
                           />
                         )}
-                    </>
-                  )}
-                </>
-              )}
+                      </>
+                    )}
+                  </>
+                );
+              }}
             </ActionForm>
           ),
         },
