@@ -1,55 +1,81 @@
 import React, { type FC } from 'react';
 
-import MaskedAddress from '~shared/MaskedAddress/MaskedAddress.tsx';
-import { type ColonyAction } from '~types/graphql.ts';
-import { decodeArbitraryTransaction } from '~utils/arbitraryTxs.ts';
+import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
+import { formatText } from '~utils/intl.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
+
+import ArbitraryTransactionsTable from '../ArbitraryTransactionsTable/index.ts';
+import {
+  ActionDataGrid,
+  ActionSubtitle,
+  ActionTitle,
+} from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
+import {
+  ActionTypeRow,
+  CreatedInRow,
+  DecisionMethodRow,
+  DescriptionRow,
+} from '../rows/index.ts';
 
 interface ArbitraryTransactionProps {
   action: ColonyAction;
 }
 
 const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
-  // eslint-disable-next-line no-console
-  console.log('action:', action);
+  const {
+    customTitle = formatText(
+      {
+        id: 'action.type',
+      },
+      {
+        actionType: ColonyActionType.MakeArbitraryTransaction,
+      },
+    ),
+  } = action?.metadata || {};
+  const { initiatorUser, transactionHash } = action;
 
   return (
-    <div className="flex flex-col gap-4">
-      {action.arbitraryTransactions?.map((transaction) => {
-        const abi = action.metadata?.arbitraryTxAbis?.find(
-          (abiItem) => abiItem.contractAddress === transaction.contractAddress,
-        );
+    <>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        <MeatballMenu showRedoItem={false} transactionHash={transactionHash} />
+      </div>
+      <ActionSubtitle>
+        {formatText(
+          {
+            id: 'action.title',
+          },
+          {
+            actionType: ColonyActionType.MakeArbitraryTransaction,
+            initiator: initiatorUser ? (
+              <UserInfoPopover
+                walletAddress={initiatorUser.walletAddress}
+                user={initiatorUser}
+                withVerifiedBadge={false}
+              >
+                {initiatorUser.profile?.displayName}
+              </UserInfoPopover>
+            ) : null,
+          },
+        )}
+      </ActionSubtitle>
+      <ActionDataGrid>
+        <ActionTypeRow actionType={action.type} />
+        <DecisionMethodRow action={action} />
 
-        if (!abi) {
-          return <div>No ABI found</div>;
-        }
+        {action.motionData?.motionDomain.metadata && (
+          <CreatedInRow
+            motionDomainMetadata={action.motionData.motionDomain.metadata}
+          />
+        )}
+      </ActionDataGrid>
+      {action.annotation?.message && (
+        <DescriptionRow description={action.annotation.message} />
+      )}
 
-        const decodedTx = decodeArbitraryTransaction(
-          abi.jsonAbi,
-          transaction.encodedFunction,
-        );
-
-        if (!decodedTx) {
-          return <div>Failed to decode transaction</div>;
-        }
-
-        return (
-          <div className="flex flex-col gap-2 border-b-2">
-            <div>
-              Contract address:
-              <MaskedAddress address={transaction.contractAddress} />
-            </div>
-            Method: {decodedTx.method}
-            {decodedTx.args?.map((arg) => {
-              return (
-                <div key={arg.name}>
-                  {arg.name} ({arg.type}): {arg.value}
-                </div>
-              );
-            })}
-          </div>
-        );
-      })}
-    </div>
+      <ArbitraryTransactionsTable action={action} />
+    </>
   );
 };
 

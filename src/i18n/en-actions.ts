@@ -122,6 +122,9 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokens} {Manage tokens}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens}
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens}
+      ${ColonyActionType.MakeArbitraryTransaction} {Custom transactions}
+      ${ColonyActionType.MakeArbitraryTransactionsMotion} {Custom transactions}
+      ${ColonyActionType.MakeArbitraryTransactionsMultisig} {Custom transactions}
       ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
