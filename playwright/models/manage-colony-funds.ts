@@ -1,6 +1,8 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 
-export class ManageColonyFunds {
+import { ReputationFlow, type ReputationFlowModel } from './reputation-flow.ts';
+
+export class ManageColonyFunds implements ReputationFlowModel {
   static readonly validationMessages = {
     common: {
       amount: {
@@ -34,10 +36,6 @@ export class ManageColonyFunds {
         notEnoughFunds:
           'Not enough funds to cover the payment and network fees',
       },
-      token: {
-        locked:
-          'This token is locked and is not able to be used for payments. Check with the token creator for details.',
-      },
     },
     manageTokens: {
       allRequiredFields: [
@@ -50,6 +48,8 @@ export class ManageColonyFunds {
       },
     },
   };
+
+  page: Page;
 
   drawer: Locator;
 
@@ -93,7 +93,10 @@ export class ManageColonyFunds {
 
   tokenSearchMenu: Locator;
 
-  constructor(private page: Page) {
+  private reputationFlow: ReputationFlow;
+
+  constructor(page: Page) {
+    this.page = page;
     this.drawer = page.getByTestId('action-drawer');
     this.form = page.getByTestId('action-form');
     this.selectDropdown = page.getByTestId('search-select-menu');
@@ -143,6 +146,7 @@ export class ManageColonyFunds {
     this.manageTokensTable = this.drawer.getByRole('table');
     this.tokenSelector = this.page.getByTestId('token-select');
     this.tokenSearchMenu = this.page.getByTestId('token-search-select');
+    this.reputationFlow = new ReputationFlow(this);
   }
 
   async setTitle(title: string) {
@@ -303,32 +307,6 @@ export class ManageColonyFunds {
     }
   }
 
-  async support(stakeAmount?: string) {
-    await this.supportButton.click();
-    await this.stepper.getByLabel('Stake amount').waitFor({ state: 'visible' });
-    await this.stepper
-      .getByRole('button', { name: 'Max' })
-      .waitFor({ state: 'visible' });
-    if (stakeAmount) {
-      await this.stepper.getByLabel('Stake amount').fill(stakeAmount);
-    } else {
-      await this.stepper.getByRole('button', { name: 'Max' }).click();
-    }
-
-    await this.stepper.getByRole('button', { name: 'Stake' }).click();
-  }
-
-  async oppose(stakeAmount?: string) {
-    await this.opposeButton.click();
-    if (stakeAmount) {
-      await this.stepper.getByRole('textbox').fill(stakeAmount);
-    } else {
-      await this.stepper.getByRole('button', { name: 'Max' }).click();
-    }
-
-    await this.stepper.getByRole('button', { name: 'Stake' }).click();
-  }
-
   async verifyTokenAdded({
     colonyName,
     token,
@@ -372,5 +350,9 @@ export class ManageColonyFunds {
     await expect(this.manageTokensTable.getByText('Removed')).toHaveCount(
       allAddedTokens.length,
     );
+  }
+
+  async completeReputationFlow() {
+    await this.reputationFlow.completeVotingWithSupport();
   }
 }

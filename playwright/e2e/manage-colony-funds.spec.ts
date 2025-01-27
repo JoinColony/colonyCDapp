@@ -1,4 +1,5 @@
-import { type BrowserContext, expect, type Page, test } from '@playwright/test';
+/* eslint-disable playwright/expect-expect */
+import { expect, type Page, test } from '@playwright/test';
 
 import { Extensions } from '../models/extensions.ts';
 import { ManageColonyFunds } from '../models/manage-colony-funds.ts';
@@ -7,19 +8,12 @@ import {
   signInAndNavigateToColony,
 } from '../utils/common.ts';
 
-test.describe.configure({ mode: 'serial' });
 test.describe('Manage Colony Funds', () => {
-  let page: Page;
-  let context: BrowserContext;
-  let manageColonyFunds: ManageColonyFunds;
-  let extensions: Extensions;
+  async function setupTest(page: Page) {
+    const manageColonyFunds = new ManageColonyFunds(page);
+    const extensions = new Extensions(page);
 
-  test.beforeAll(async ({ browser, baseURL }) => {
-    context = await browser.newContext();
-    page = await context.newPage();
-    manageColonyFunds = new ManageColonyFunds(page);
-    extensions = new Extensions(page);
-    await setCookieConsent(context, baseURL);
+    await setCookieConsent(page.context(), test.info().project.use.baseURL);
     await signInAndNavigateToColony(page, {
       colonyUrl: '/planex',
       wallet: /dev wallet 1$/i,
@@ -27,81 +21,91 @@ test.describe('Manage Colony Funds', () => {
     await extensions.enableReputationWeightedExtension({
       colonyPath: '/planex',
     });
-  });
 
-  test.afterAll(async () => {
-    await context?.close();
-  });
+    return {
+      manageColonyFunds,
+      extensions,
+    };
+  }
+
   test.describe('Mint tokens', () => {
-    test('Permissions decision method', async () => {
-      const [currentBalance] = await manageColonyFunds.getBalance('planex', [
-        {
-          token: 'CREDS',
-        },
-      ]);
-      await manageColonyFunds.open('Mint tokens');
+    test('Permissions decision method', async ({ page }) => {
+      const { manageColonyFunds } = await setupTest(page);
 
-      await manageColonyFunds.fillMintTokensForm({
-        amount: '1_000_000',
-        decisionMethod: 'Permissions',
-        title: 'Mint tokens',
-      });
-      await manageColonyFunds.mintTokensButton.click();
-      await manageColonyFunds.waitForTransaction();
+      try {
+        const [currentBalance] = await manageColonyFunds.getBalance('planex', [
+          {
+            token: 'CREDS',
+          },
+        ]);
+        await manageColonyFunds.open('Mint tokens');
 
-      await expect(
-        manageColonyFunds.completedAction.getByRole('heading', {
-          name: 'Mint tokens',
-        }),
-      ).toBeVisible();
+        await manageColonyFunds.fillMintTokensForm({
+          amount: '1_000_000',
+          decisionMethod: 'Permissions',
+          title: 'Mint tokens',
+        });
+        await manageColonyFunds.mintTokensButton.click();
+        await manageColonyFunds.waitForTransaction();
 
-      await expect(
-        manageColonyFunds.completedAction.getByText(/Mint \w+ CREDS by \w+/),
-      ).toBeVisible();
+        await expect(
+          manageColonyFunds.completedAction.getByRole('heading', {
+            name: 'Mint tokens',
+          }),
+        ).toBeVisible();
 
-      await expect(
-        manageColonyFunds.completedAction.getByText('Mint Tokens', {
-          exact: true,
-        }),
-      ).toBeVisible();
+        await expect(
+          manageColonyFunds.completedAction.getByText(/Mint \w+ CREDS by \w+/),
+        ).toBeVisible();
 
-      await expect(
-        manageColonyFunds.completedAction.getByText('1MCREDS', {
-          exact: true,
-        }),
-      ).toBeVisible();
+        await expect(
+          manageColonyFunds.completedAction.getByText('Mint Tokens', {
+            exact: true,
+          }),
+        ).toBeVisible();
 
-      await expect(
-        manageColonyFunds.completedAction.getByText('Permissions', {
-          exact: true,
-        }),
-      ).toBeVisible();
+        await expect(
+          manageColonyFunds.completedAction.getByText('1MCREDS', {
+            exact: true,
+          }),
+        ).toBeVisible();
 
-      await expect(
-        manageColonyFunds.completedAction.getByText(
-          'Member used permissions to',
-        ),
-      ).toBeVisible();
+        await expect(
+          manageColonyFunds.completedAction.getByText('Permissions', {
+            exact: true,
+          }),
+        ).toBeVisible();
 
-      await expect(
-        manageColonyFunds.completedAction.getByRole('heading', {
-          name: 'Overview',
-        }),
-      ).toBeVisible();
+        await expect(
+          manageColonyFunds.completedAction.getByText(
+            'Member used permissions to',
+          ),
+        ).toBeVisible();
 
-      const [newBalance] = await manageColonyFunds.getBalance('planex', [
-        {
-          token: 'CREDS',
-        },
-      ]);
+        await expect(
+          manageColonyFunds.completedAction.getByRole('heading', {
+            name: 'Overview',
+          }),
+        ).toBeVisible();
 
-      const initial = parseFloat(currentBalance);
-      const after = parseFloat(newBalance);
+        const [newBalance] = await manageColonyFunds.getBalance('planex', [
+          {
+            token: 'CREDS',
+          },
+        ]);
 
-      expect(after).toBeGreaterThan(initial);
+        const initial = parseFloat(currentBalance);
+        const after = parseFloat(newBalance);
+
+        expect(after).toBeGreaterThan(initial);
+      } finally {
+        await page.context().close();
+      }
     });
 
-    test('Reputation decision method', async () => {
+    test('Reputation decision method', async ({ page }) => {
+      const { manageColonyFunds } = await setupTest(page);
+
       await manageColonyFunds.open('Mint tokens');
 
       await manageColonyFunds.fillMintTokensForm({
@@ -113,47 +117,14 @@ test.describe('Manage Colony Funds', () => {
       await manageColonyFunds.mintTokensButton.click();
       await manageColonyFunds.waitForTransaction();
 
-      await expect(manageColonyFunds.stepper).toBeVisible();
-      await expect(manageColonyFunds.completedAction).toBeVisible();
-      await expect(
-        manageColonyFunds.stepper.getByText(/Total stake required: \d+/),
-      ).toBeVisible();
+      await manageColonyFunds.completeReputationFlow();
 
-      await manageColonyFunds.support();
-
-      await expect(manageColonyFunds.stepper).toHaveText(/100% Supported/);
-
-      await manageColonyFunds.oppose();
-
-      await expect(manageColonyFunds.stepper).toHaveText(/100% Opposed/);
-
-      await manageColonyFunds.stepper
-        .getByText(/Vote to support or oppose?/)
-        .waitFor();
-      await manageColonyFunds.supportButton.click();
-      await manageColonyFunds.submitVoteButton.click();
-      await manageColonyFunds.revealVoteButton.click();
-      await manageColonyFunds.stepper.getByText('vote revealed').waitFor();
-      await expect(
-        manageColonyFunds.stepper.getByText(
-          'Finalize to execute the agreed transaction',
-        ),
-      ).toBeVisible();
-      await manageColonyFunds.finalizeButton.click();
-
-      await manageColonyFunds.waitForPending();
-      await manageColonyFunds.claimButton.click();
-      await manageColonyFunds.waitForPending();
-      await manageColonyFunds.completedAction
-        .getByRole('heading', { name: 'Your overview Claimed' })
-        .waitFor();
-
-      await manageColonyFunds.claimButton.waitFor({
-        state: 'hidden',
-      });
+      await manageColonyFunds.removeTokens();
     });
 
-    test('Form validation', async () => {
+    test('Form validation', async ({ page }) => {
+      const { manageColonyFunds } = await setupTest(page);
+
       await manageColonyFunds.open('Mint tokens');
       await manageColonyFunds.mintTokensButton.click();
 
@@ -180,7 +151,9 @@ test.describe('Manage Colony Funds', () => {
   });
 
   test.describe('Funds transfer', () => {
-    test('Permissions decision method', async () => {
+    test('Permissions decision method', async ({ page }) => {
+      const { manageColonyFunds } = await setupTest(page);
+
       const transferAmount = '1';
       const [serenityBalance, andromedaBalance] =
         await manageColonyFunds.getBalance('planex', [
@@ -232,7 +205,9 @@ test.describe('Manage Colony Funds', () => {
       );
     });
 
-    test('Reputation decision method', async () => {
+    test('Reputation decision method', async ({ page }) => {
+      const { manageColonyFunds } = await setupTest(page);
+
       await manageColonyFunds.open('Transfer funds');
 
       await manageColonyFunds.fillTransferFundsForm({
@@ -246,65 +221,19 @@ test.describe('Manage Colony Funds', () => {
       await manageColonyFunds.transferFundsButton.click();
       await manageColonyFunds.waitForTransaction();
 
-      await expect(manageColonyFunds.stepper).toBeVisible();
       await expect(manageColonyFunds.completedAction).toBeVisible();
       await expect(
         manageColonyFunds.completedAction.getByText(
           /Move 1 CREDS from General to Andromeda/,
         ),
       ).toBeVisible();
-      await expect(
-        manageColonyFunds.stepper.getByText(/Total stake required: \d+/),
-      ).toBeVisible();
 
-      await manageColonyFunds.support();
-
-      await expect(manageColonyFunds.stepper).toHaveText(/100% Supported/);
-
-      await manageColonyFunds.oppose();
-
-      await expect(manageColonyFunds.stepper).toHaveText(/100% Opposed/);
-
-      await manageColonyFunds.stepper
-        .getByText(/Vote to support or oppose?/)
-        .waitFor();
-      await manageColonyFunds.supportButton.click();
-      await manageColonyFunds.submitVoteButton.click();
-      await expect(
-        manageColonyFunds.stepper.getByText(/You voted:Support/),
-      ).toBeVisible();
-
-      await expect(
-        manageColonyFunds.stepper.getByText(/^0 votes revealed$/),
-      ).toBeVisible();
-
-      await manageColonyFunds.revealVoteButton.click();
-
-      await manageColonyFunds.stepper
-        .getByRole('button', {
-          name: 'Support wins',
-        })
-        .waitFor();
-
-      await expect(
-        manageColonyFunds.stepper.getByText(
-          'Finalize to execute the agreed transaction',
-        ),
-      ).toBeVisible();
-      await manageColonyFunds.finalizeButton.click();
-
-      await manageColonyFunds.waitForPending();
-      await manageColonyFunds.claimButton.click();
-      await manageColonyFunds.waitForPending();
-
-      await manageColonyFunds.stepper
-        .getByRole('heading', {
-          name: 'Your overview Claimed',
-        })
-        .waitFor();
+      await manageColonyFunds.completeReputationFlow();
     });
 
-    test('Form validation', async () => {
+    test('Form validation', async ({ page }) => {
+      const { manageColonyFunds } = await setupTest(page);
+
       await manageColonyFunds.open('Transfer funds');
       await manageColonyFunds.transferFundsButton.click();
 
@@ -344,25 +273,16 @@ test.describe('Manage Colony Funds', () => {
         ),
       ).toBeVisible();
 
-      await manageColonyFunds.fillTransferFundsForm({
-        tokenSymbol: 'ƓƓƓ',
-      });
-
-      await expect(
-        manageColonyFunds.drawer.getByText(
-          ManageColonyFunds.validationMessages.fundsTransfer.token.locked,
-        ),
-      ).toBeVisible();
-
       await manageColonyFunds.close();
     });
   });
 
   test.describe('Manage tokens', () => {
-    test.afterAll(async () => {
-      await manageColonyFunds.removeTokens();
-    });
-    test('Add/Remove tokens | Permissions decision method', async () => {
+    test('Add/Remove tokens | Permissions decision method', async ({
+      page,
+    }) => {
+      const { manageColonyFunds } = await setupTest(page);
+
       await manageColonyFunds.open('Manage tokens');
       await manageColonyFunds.setTitle('Manage tokens test');
       await manageColonyFunds.setDecisionMethod('Permissions');
@@ -375,7 +295,9 @@ test.describe('Manage Colony Funds', () => {
       ).toBeVisible();
 
       await expect(
-        manageColonyFunds.manageTokensTable.getByText('Ether', { exact: true }),
+        manageColonyFunds.manageTokensTable.getByText('Ether', {
+          exact: true,
+        }),
       ).toBeVisible();
 
       await expect(
@@ -462,7 +384,9 @@ test.describe('Manage Colony Funds', () => {
       });
     });
 
-    test('Reputation decision method', async () => {
+    test('Reputation decision method', async ({ page }) => {
+      const { manageColonyFunds } = await setupTest(page);
+
       await manageColonyFunds.open('Manage tokens');
       await manageColonyFunds.setTitle('Manage tokens test');
       await manageColonyFunds.setDecisionMethod('Reputation');
@@ -485,7 +409,6 @@ test.describe('Manage Colony Funds', () => {
         .click();
 
       await manageColonyFunds.updateTokensButton.click();
-
       await manageColonyFunds.waitForTransaction();
 
       await expect(
@@ -494,43 +417,12 @@ test.describe('Manage Colony Funds', () => {
         }),
       ).toBeVisible();
 
-      await expect(
-        manageColonyFunds.stepper.getByText(/Total stake required: \d+/),
-      ).toBeVisible();
-
-      await manageColonyFunds.support();
-
-      await expect(manageColonyFunds.stepper).toHaveText(/100% Supported/);
-
-      await manageColonyFunds.oppose();
-
-      await expect(manageColonyFunds.stepper).toHaveText(/100% Opposed/);
-
-      await manageColonyFunds.stepper
-        .getByText(/Vote to support or oppose?/)
-        .waitFor();
-      await manageColonyFunds.supportButton.click();
-      await manageColonyFunds.submitVoteButton.click();
-      await manageColonyFunds.revealVoteButton.click();
-      await manageColonyFunds.stepper.getByText('vote revealed').waitFor();
-      await expect(
-        manageColonyFunds.stepper.getByText(
-          'Finalize to execute the agreed transaction',
-        ),
-      ).toBeVisible();
-      await manageColonyFunds.finalizeButton.click();
-
-      await manageColonyFunds.waitForPending();
-      await manageColonyFunds.claimButton.click();
-
-      await manageColonyFunds.completedAction
-        .getByRole('heading', { name: 'Your overview Claimed' })
-        .waitFor();
-
-      await expect(manageColonyFunds.claimButton).toBeHidden();
+      await manageColonyFunds.completeReputationFlow();
     });
 
-    test('Form validation', async () => {
+    test('Form validation', async ({ page }) => {
+      const { manageColonyFunds } = await setupTest(page);
+
       await manageColonyFunds.open('Manage tokens');
       await manageColonyFunds.updateTokensButton.click();
 

@@ -173,6 +173,7 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
     <div className="flex-shrink-0">
       <div className="relative">
         <Button
+          testId="user-hub-button"
           mode="tertiary"
           size="large"
           isFullRounded
