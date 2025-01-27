@@ -5,7 +5,6 @@ const {
 const { providers, ContractFactory } = require('ethers');
 const readline = require('readline');
 const { graphqlRequest } = require('./utils/graphqlRequest');
-const { unlockMintTokens } = require('./utils/unlockMintTokens');
 
 const API_KEY = 'da2-fakeApiId123456';
 const GRAPHQL_URI =
@@ -164,8 +163,6 @@ const deployNativeTokenToChain = async (
     console.log(
       `Proxy token with address ${foreignToken.address} successfully deployed for colony with address ${colonyAddress}.`,
     );
-
-    return foreignToken;
   } catch (error) {
     console.error(
       `Error deploying proxy token for ${colonyAddress}: ${error.message}`,
@@ -210,34 +207,6 @@ const getArgumentsFromConsole = async () => {
   };
 };
 
-const furtherActionsOnToken = async (colonyAddress, foreignToken) => {
-  const unlockMintTokensAction = await promptQuestion(
-    'Do you want to unlock and mint tokens now? Y/N',
-  );
-
-  if (unlockMintTokensAction.toUpperCase() !== 'Y') {
-    console.log(
-      'Skipping token unlock and minting. If you change your mind, please use the mint-tokens-on-chain script.',
-    );
-    return;
-  }
-
-  const tokenAmount = await promptQuestion(
-    'Please provide a numeric tokenAmount. Press enter to default to 100',
-  );
-
-  if (tokenAmount && (isNaN(tokenAmount) || Number(tokenAmount) <= 0)) {
-    console.error('Error: Please enter a valid number greater than 0.');
-    process.exit(1);
-  }
-
-  await unlockMintTokens(
-    colonyAddress,
-    foreignToken,
-    !tokenAmount ? 100 : Number(tokenAmount),
-  );
-};
-
 const start = async () => {
   try {
     const { foreignChainId, foreignChainRpcUrl, colonyAddress } =
@@ -250,14 +219,12 @@ const start = async () => {
     );
 
     const { nativeToken: colonyNativeToken } = deployedColony;
-    const foreignToken = await deployNativeTokenToChain(
+    await deployNativeTokenToChain(
       tokenFactory,
       foreignChainId,
       colonyNativeToken,
       colonyAddress,
     );
-
-    await furtherActionsOnToken(colonyAddress, foreignToken);
   } catch (error) {
     console.error(
       `There was an error executing the deploy-token-to-chain script. Error: ${error.message}`,
