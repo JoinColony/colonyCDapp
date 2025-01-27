@@ -2,7 +2,7 @@ const { abi: metaTxAbi } = require('@colony/abis/versions/hmwss/MetaTxToken');
 const { utils, providers, Contract } = require('ethers');
 const readline = require('readline');
 
-const { unlockMintTokens } = require('./utils/unlockMintTokens');
+const { unlockToken, mintTokens } = require('./utils/unlockMintTokens');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -72,30 +72,45 @@ const getArgumentsFromConsole = async () => {
   }
 
   const tokenAmount = await promptQuestion(
-    'Please provide a numeric tokenAmount. Press enter to default to 100',
+    'Please provide a tokenAmount >= 0. Press enter to default to 100',
   );
 
   if (tokenAmount && (isNaN(tokenAmount) || Number(tokenAmount) <= 0)) {
-    console.error('Error: Please enter a valid number greater than 0.');
+    console.error('Error: Entered value is not a valid number greater than 0.');
     process.exit(1);
   }
+
+  const unlockTokenAction = await promptQuestion(
+    'Do you want to unlock the token? Y/N',
+  );
 
   return {
     foreignChainRpcUrl,
     colonyAddress,
     tokenAddress,
     tokenAmount: !tokenAmount ? 100 : Number(tokenAmount),
+    shouldUnlockToken: unlockTokenAction.toUpperCase() === 'Y',
   };
 };
 
 async function start() {
   try {
-    const { foreignChainRpcUrl, colonyAddress, tokenAddress, tokenAmount } =
-      await getArgumentsFromConsole();
+    const {
+      foreignChainRpcUrl,
+      colonyAddress,
+      tokenAddress,
+      tokenAmount,
+      shouldUnlockToken,
+    } = await getArgumentsFromConsole();
 
     const token = TokenConfig.getToken(tokenAddress, foreignChainRpcUrl);
 
-    await unlockMintTokens(colonyAddress, token, tokenAmount);
+    if (shouldUnlockToken) {
+      await unlockToken(token);
+    }
+
+    // The proxy colony address is the same as the main colony address
+    await mintTokens(colonyAddress, token, tokenAmount);
   } catch (error) {
     console.error(
       `There was an error executing the deploy-token-to-chain script. Error: ${error.message}`,
