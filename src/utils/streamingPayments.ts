@@ -17,7 +17,7 @@ interface GetStreamingPaymentAmountsLeftReturn {
 
 export const getStreamingPaymentCreatingActionId = (
   streamingPayment?: StreamingPaymentFragment | null,
-) => streamingPayment?.metadata?.changelog?.[0].transactionHash;
+) => streamingPayment?.creatingActions?.items?.[0]?.transactionHash ?? '';
 
 export const getStreamingPaymentLimit = ({
   streamingPayment,
