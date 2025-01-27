@@ -83,6 +83,7 @@ const TotalReputation: FC<TotalReputationProps> = ({
             className="text-sm"
             value={formattedReputationPoints}
             suffix=" pts"
+            testId="reputation-points"
           />
         </div>
       </div>

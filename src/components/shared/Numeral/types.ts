@@ -15,6 +15,7 @@ export interface NumeralProps extends HTMLAttributes<HTMLSpanElement> {
   prefix?: string;
   suffix?: string;
   className?: string;
+  testId?: string;
 
   /** If specified, the value will be shifted by the indicated decimals */
   decimals?: number;
