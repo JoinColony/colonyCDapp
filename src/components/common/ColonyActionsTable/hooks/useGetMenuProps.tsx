@@ -18,6 +18,7 @@ import {
 } from '~routes';
 import TransactionLink from '~shared/TransactionLink/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { setQueryParamOnUrl } from '~utils/urls.ts';
 import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import MeatballMenuCopyItem from '../partials/MeatballMenuCopyItem/index.ts';
@@ -59,7 +60,9 @@ export const useGetMenuProps = ({
           icon: FilePlus,
           onClick: () => {
             navigate(
-              `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionHash}`,
+              setQueryParamOnUrl({
+                params: { [TX_SEARCH_PARAM]: transactionHash },
+              }),
             );
           },
         },
