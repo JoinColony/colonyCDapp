@@ -15,7 +15,8 @@ const FileUpload: FC<FileUploadProps> = ({
   handleFileReject,
   handleFileRemove,
   errorCode,
-  isAvatarUploaded,
+  fallbackFileName,
+  isFileUploaded,
   isProgressContentVisible,
   isSimplified,
   fileOptions,
@@ -43,7 +44,7 @@ const FileUpload: FC<FileUploadProps> = ({
 
   const shouldShowDefaultContent =
     (showDefault && !errorCode) ||
-    (!isAvatarUploaded && !errorCode && !isProgressContentVisible);
+    (!isFileUploaded && !errorCode && !isProgressContentVisible);
 
   const shouldShowSuccessContent = !shouldShowDefaultContent && !errorCode;
 
@@ -70,7 +71,8 @@ const FileUpload: FC<FileUploadProps> = ({
       errorCode={errorCode}
       handleFileRemove={handleFileRemove}
       open={open}
-      processedFile={processedFiles?.[0]?.name}
+      processedFile={processedFiles?.[0]?.name ?? fallbackFileName}
+      fileOptions={fileOptions}
     />
   );
 

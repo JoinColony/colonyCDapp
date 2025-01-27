@@ -16,7 +16,10 @@ export type SuccessContentProps = Pick<
 export type HandleFileAccept = (file: FileReaderFile) => void;
 
 export interface ErrorContentProps
-  extends Pick<FileUploadProps, 'handleFileRemove' | 'errorCode'> {
+  extends Pick<
+    FileUploadProps,
+    'handleFileRemove' | 'errorCode' | 'fileOptions'
+  > {
   processedFile?: string;
   open: () => void;
 }
@@ -27,10 +30,16 @@ export interface FileUploadOptions {
   fileDimension: string;
 }
 
+export interface FileUploadMessageValues extends FileUploadOptions {
+  [key: string]: any;
+}
+
 export interface FileUploadProps {
   dropzoneOptions: DropzoneOptions;
-  isAvatarUploaded: boolean;
+  isFileUploaded: boolean;
   errorCode?: DropzoneErrors;
+  // Used to display the filename if the file is rejected during the upload handler but not by dropzone.
+  fallbackFileName?: string;
   handleFileAccept: HandleFileAccept;
   handleFileReject?: (
     fileRejections: FileRejection[],

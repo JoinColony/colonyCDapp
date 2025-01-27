@@ -61,7 +61,7 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
     handleFileReject,
     handleFileRemove,
     errorCode: uploadAvatarError,
-    isAvatarUploaded,
+    isFileUploaded: isAvatarUploaded,
     isProgressContentVisible: showProgress,
     SuccessComponent,
   };

@@ -125,7 +125,7 @@ const ColonyAvatarField: FC<ColonyAvatarFieldProps> = ({
               handleFileRemove={handleFileRemove}
               fileOptions={fileOptions}
               errorCode={avatarFileError}
-              isAvatarUploaded={!!modalValue}
+              isFileUploaded={!!modalValue}
             />
           </div>
         </div>
