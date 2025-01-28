@@ -156,7 +156,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         statusPill={
           action && !isLoading ? <ActionSidebarStatusPill /> : undefined
         }
-        maxSize={!!transactionId && !actionNotFound ? 'big' : 'small'}
+        transactionId={transactionId}
+        isMotion={isMotion}
+        actionNotFound={!!actionNotFound}
       >
         <div
           className={clsx('flex flex-grow overflow-y-auto', {

@@ -37,8 +37,10 @@ const ActionSidebarLayout = forwardRef<
       statusPill,
       shareButtonProps,
       isLoading,
-      maxSize,
       className,
+      isMotion,
+      transactionId,
+      actionNotFound,
     },
     ref,
   ) => {
@@ -96,17 +98,17 @@ const ActionSidebarLayout = forwardRef<
         exit="hidden"
         initial="hidden"
         animate="visible"
+        data-testid="action-drawer"
         className={clsx(
           className,
           `
           fixed
-          bottom-4
           right-0
-          top-0
+          top-[calc(var(--top-content-height))]
           isolate
           z-sidebar
           flex
-          h-full
+          h-[calc(100vh-var(--top-content-height))]
           w-full
           flex-col
           border
@@ -116,15 +118,17 @@ const ActionSidebarLayout = forwardRef<
           shadow-default
           transition-[max-width]
           md:bottom-0
-          md:top-4
-          md:h-[calc(100vh-2rem)]
-          md:w-[calc(100vw-8.125rem)]
+          md:top-[calc(var(--top-content-height)+16px)]
+          md:h-[calc(100vh-var(--top-content-height)-2rem)]
+          md:w-[calc(100vw-248px)]
           md:rounded-l-lg
         `,
           {
             'md:max-w-full': isSidebarFullscreen,
-            'md:max-w-[43.375rem]': !isSidebarFullscreen && maxSize === 'small',
-            'md:max-w-[67.3125rem]': !isSidebarFullscreen && maxSize === 'big',
+            'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
+            'md:max-w-[67.3125rem]':
+              (!isSidebarFullscreen && !!transactionId && !actionNotFound) ||
+              (!isSidebarFullscreen && !!transactionId && isLoading),
           },
         )}
         ref={ref}
