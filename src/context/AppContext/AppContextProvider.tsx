@@ -11,6 +11,7 @@ import React, {
   useEffect,
 } from 'react';
 
+import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useGetUserByAddressLazyQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useJoinedColonies from '~hooks/useJoinedColonies.ts';
@@ -203,6 +204,20 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
         if (!contextWallet) {
           const primaryWalletAddress = utils.getAddress(primaryWallet.address);
+
+          try {
+            if (primaryWallet?.connector.supportsNetworkSwitching()) {
+              await primaryWallet.switchNetwork(
+                parseInt(DEFAULT_NETWORK_INFO.chainId, 10),
+              );
+              debugLogging(
+                'WALLET AUTOMATICALLY SWITCHED NETWORK',
+                parseInt(DEFAULT_NETWORK_INFO.chainId, 10),
+              );
+            }
+          } catch (error) {
+            debugLogging('WALLET AUTOMATIC NETWORK SWITCH FAILED', error);
+          }
 
           await updateWallet();
 
