@@ -514,6 +514,8 @@ export type ColonyAction = {
   motionId?: Maybe<Scalars['ID']>;
   /** Multichain info if the action is bridged */
   multiChainInfo?: Maybe<MultiChainInfo>;
+  /** The id of the multichain info entry */
+  multiChainInfoId?: Maybe<Scalars['ID']>;
   /** Expanded `ColonyMultiSig` for the corresponding `multiSigId` */
   multiSigData?: Maybe<ColonyMultiSig>;
   /** The internal database id of the multiSig */
@@ -638,6 +640,8 @@ export enum ColonyActionType {
   AddVerifiedMembers = 'ADD_VERIFIED_MEMBERS',
   AddVerifiedMembersMotion = 'ADD_VERIFIED_MEMBERS_MOTION',
   AddVerifiedMembersMultisig = 'ADD_VERIFIED_MEMBERS_MULTISIG',
+  /** An action related to arbitrary transaction */
+  ArbitraryTx = 'ARBITRARY_TX',
   /** An action related to canceling an expenditure */
   CancelExpenditure = 'CANCEL_EXPENDITURE',
   /** An action related to a motion to cancel an expenditure */
@@ -1513,7 +1517,7 @@ export type CreateColonyActionInput = {
   members?: InputMaybe<Array<Scalars['ID']>>;
   motionDomainId?: InputMaybe<Scalars['Int']>;
   motionId?: InputMaybe<Scalars['ID']>;
-  multiChainInfo?: InputMaybe<MultiChainInfoInput>;
+  multiChainInfoId?: InputMaybe<Scalars['ID']>;
   multiSigId?: InputMaybe<Scalars['ID']>;
   networkFee?: InputMaybe<Scalars['String']>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
@@ -1853,6 +1857,13 @@ export type CreateMotionMessageInput = {
   vote?: InputMaybe<Scalars['String']>;
 };
 
+export type CreateMultiChainInfoInput = {
+  completedOnMainChain: Scalars['Boolean'];
+  completedOnProxyChain: Scalars['Boolean'];
+  id?: InputMaybe<Scalars['ID']>;
+  wormholeInfo?: InputMaybe<ActionWormholeInfoInput>;
+};
+
 export type CreateMultiSigUserSignatureInput = {
   colonyAddress: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
@@ -2186,6 +2197,10 @@ export type DeleteLiquidationAddressInput = {
 };
 
 export type DeleteMotionMessageInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteMultiChainInfoInput = {
   id: Scalars['ID'];
 };
 
@@ -2992,6 +3007,7 @@ export type ModelColonyActionConditionInput = {
   members?: InputMaybe<ModelIdInput>;
   motionDomainId?: InputMaybe<ModelIntInput>;
   motionId?: InputMaybe<ModelIdInput>;
+  multiChainInfoId?: InputMaybe<ModelIdInput>;
   multiSigId?: InputMaybe<ModelIdInput>;
   networkFee?: InputMaybe<ModelStringInput>;
   newColonyVersion?: InputMaybe<ModelIntInput>;
@@ -3040,6 +3056,7 @@ export type ModelColonyActionFilterInput = {
   members?: InputMaybe<ModelIdInput>;
   motionDomainId?: InputMaybe<ModelIntInput>;
   motionId?: InputMaybe<ModelIdInput>;
+  multiChainInfoId?: InputMaybe<ModelIdInput>;
   multiSigId?: InputMaybe<ModelIdInput>;
   networkFee?: InputMaybe<ModelStringInput>;
   newColonyVersion?: InputMaybe<ModelIntInput>;
@@ -3973,6 +3990,29 @@ export type ModelMotionMessageFilterInput = {
   vote?: InputMaybe<ModelStringInput>;
 };
 
+export type ModelMultiChainInfoConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelMultiChainInfoConditionInput>>>;
+  completedOnMainChain?: InputMaybe<ModelBooleanInput>;
+  completedOnProxyChain?: InputMaybe<ModelBooleanInput>;
+  not?: InputMaybe<ModelMultiChainInfoConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelMultiChainInfoConditionInput>>>;
+};
+
+export type ModelMultiChainInfoConnection = {
+  __typename?: 'ModelMultiChainInfoConnection';
+  items: Array<Maybe<MultiChainInfo>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelMultiChainInfoFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelMultiChainInfoFilterInput>>>;
+  completedOnMainChain?: InputMaybe<ModelBooleanInput>;
+  completedOnProxyChain?: InputMaybe<ModelBooleanInput>;
+  id?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelMultiChainInfoFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelMultiChainInfoFilterInput>>>;
+};
+
 export type ModelMultiSigUserSignatureConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelMultiSigUserSignatureConditionInput>>>;
   colonyAddress?: InputMaybe<ModelIdInput>;
@@ -4366,6 +4406,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   members?: InputMaybe<ModelSubscriptionIdInput>;
   motionDomainId?: InputMaybe<ModelSubscriptionIntInput>;
   motionId?: InputMaybe<ModelSubscriptionIdInput>;
+  multiChainInfoId?: InputMaybe<ModelSubscriptionIdInput>;
   multiSigId?: InputMaybe<ModelSubscriptionIdInput>;
   networkFee?: InputMaybe<ModelSubscriptionStringInput>;
   newColonyVersion?: InputMaybe<ModelSubscriptionIntInput>;
@@ -4735,6 +4776,14 @@ export type ModelSubscriptionMotionMessageFilterInput = {
   name?: InputMaybe<ModelSubscriptionStringInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionMotionMessageFilterInput>>>;
   vote?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
+export type ModelSubscriptionMultiChainInfoFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionMultiChainInfoFilterInput>>>;
+  completedOnMainChain?: InputMaybe<ModelSubscriptionBooleanInput>;
+  completedOnProxyChain?: InputMaybe<ModelSubscriptionBooleanInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionMultiChainInfoFilterInput>>>;
 };
 
 export type ModelSubscriptionMultiSigUserSignatureFilterInput = {
@@ -5371,13 +5420,13 @@ export type MotionStateHistoryInput = {
 
 export type MultiChainInfo = {
   __typename?: 'MultiChainInfo';
-  completed: Scalars['Boolean'];
+  completedOnMainChain: Scalars['Boolean'];
+  completedOnProxyChain: Scalars['Boolean'];
+  createdAt: Scalars['AWSDateTime'];
+  /** The format is txHash_chainId */
+  id: Scalars['ID'];
+  updatedAt: Scalars['AWSDateTime'];
   wormholeInfo?: Maybe<ActionWormholeInfo>;
-};
-
-export type MultiChainInfoInput = {
-  completed: Scalars['Boolean'];
-  wormholeInfo?: InputMaybe<ActionWormholeInfoInput>;
 };
 
 export type MultiSigDomainConfig = {
@@ -5460,6 +5509,7 @@ export type Mutation = {
   createIngestorStats?: Maybe<IngestorStats>;
   createLiquidationAddress?: Maybe<LiquidationAddress>;
   createMotionMessage?: Maybe<MotionMessage>;
+  createMultiChainInfo?: Maybe<MultiChainInfo>;
   createMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
   createNotificationsData?: Maybe<NotificationsData>;
   createPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
@@ -5510,6 +5560,7 @@ export type Mutation = {
   deleteIngestorStats?: Maybe<IngestorStats>;
   deleteLiquidationAddress?: Maybe<LiquidationAddress>;
   deleteMotionMessage?: Maybe<MotionMessage>;
+  deleteMultiChainInfo?: Maybe<MultiChainInfo>;
   deleteMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
   deleteNotificationsData?: Maybe<NotificationsData>;
   deletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
@@ -5560,6 +5611,7 @@ export type Mutation = {
   updateIngestorStats?: Maybe<IngestorStats>;
   updateLiquidationAddress?: Maybe<LiquidationAddress>;
   updateMotionMessage?: Maybe<MotionMessage>;
+  updateMultiChainInfo?: Maybe<MultiChainInfo>;
   updateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
   updateNotificationsData?: Maybe<NotificationsData>;
   updatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
@@ -5800,6 +5852,13 @@ export type MutationCreateLiquidationAddressArgs = {
 export type MutationCreateMotionMessageArgs = {
   condition?: InputMaybe<ModelMotionMessageConditionInput>;
   input: CreateMotionMessageInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateMultiChainInfoArgs = {
+  condition?: InputMaybe<ModelMultiChainInfoConditionInput>;
+  input: CreateMultiChainInfoInput;
 };
 
 
@@ -6138,6 +6197,13 @@ export type MutationDeleteMotionMessageArgs = {
 
 
 /** Root mutation type */
+export type MutationDeleteMultiChainInfoArgs = {
+  condition?: InputMaybe<ModelMultiChainInfoConditionInput>;
+  input: DeleteMultiChainInfoInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteMultiSigUserSignatureArgs = {
   condition?: InputMaybe<ModelMultiSigUserSignatureConditionInput>;
   input: DeleteMultiSigUserSignatureInput;
@@ -6468,6 +6534,13 @@ export type MutationUpdateLiquidationAddressArgs = {
 export type MutationUpdateMotionMessageArgs = {
   condition?: InputMaybe<ModelMotionMessageConditionInput>;
   input: UpdateMotionMessageInput;
+};
+
+
+/** Root mutation type */
+export type MutationUpdateMultiChainInfoArgs = {
+  condition?: InputMaybe<ModelMultiChainInfoConditionInput>;
+  input: UpdateMultiChainInfoInput;
 };
 
 
@@ -6944,6 +7017,7 @@ export type Query = {
   /** Get the timeout for the current period of a motion */
   getMotionTimeoutPeriods?: Maybe<GetMotionTimeoutPeriodsReturn>;
   getMotionVoterRewards?: Maybe<ModelVoterRewardsHistoryConnection>;
+  getMultiChainInfo?: Maybe<MultiChainInfo>;
   getMultiSigByColonyAddress?: Maybe<ModelColonyMultiSigConnection>;
   getMultiSigByExpenditureId?: Maybe<ModelColonyMultiSigConnection>;
   getMultiSigByTransactionHash?: Maybe<ModelColonyMultiSigConnection>;
@@ -7021,6 +7095,7 @@ export type Query = {
   listIngestorStats?: Maybe<ModelIngestorStatsConnection>;
   listLiquidationAddresses?: Maybe<ModelLiquidationAddressConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
+  listMultiChainInfos?: Maybe<ModelMultiChainInfoConnection>;
   listMultiSigUserSignatures?: Maybe<ModelMultiSigUserSignatureConnection>;
   listNotificationsData?: Maybe<ModelNotificationsDataConnection>;
   listPrivateBetaInviteCodes?: Maybe<ModelPrivateBetaInviteCodeConnection>;
@@ -7548,6 +7623,12 @@ export type QueryGetMotionVoterRewardsArgs = {
   motionId: Scalars['ID'];
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetMultiChainInfoArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -8122,6 +8203,14 @@ export type QueryListMotionMessagesArgs = {
 
 
 /** Root query type */
+export type QueryListMultiChainInfosArgs = {
+  filter?: InputMaybe<ModelMultiChainInfoFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
 export type QueryListMultiSigUserSignaturesArgs = {
   filter?: InputMaybe<ModelMultiSigUserSignatureFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -8428,6 +8517,7 @@ export enum SearchableColonyActionAggregateField {
   Members = 'members',
   MotionDomainId = 'motionDomainId',
   MotionId = 'motionId',
+  MultiChainInfoId = 'multiChainInfoId',
   MultiSigId = 'multiSigId',
   NetworkFee = 'networkFee',
   NewColonyVersion = 'newColonyVersion',
@@ -8483,6 +8573,7 @@ export type SearchableColonyActionFilterInput = {
   members?: InputMaybe<SearchableIdFilterInput>;
   motionDomainId?: InputMaybe<SearchableIntFilterInput>;
   motionId?: InputMaybe<SearchableIdFilterInput>;
+  multiChainInfoId?: InputMaybe<SearchableIdFilterInput>;
   multiSigId?: InputMaybe<SearchableIdFilterInput>;
   networkFee?: InputMaybe<SearchableStringFilterInput>;
   newColonyVersion?: InputMaybe<SearchableIntFilterInput>;
@@ -8530,6 +8621,7 @@ export enum SearchableColonyActionSortableFields {
   Members = 'members',
   MotionDomainId = 'motionDomainId',
   MotionId = 'motionId',
+  MultiChainInfoId = 'multiChainInfoId',
   MultiSigId = 'multiSigId',
   NetworkFee = 'networkFee',
   NewColonyVersion = 'newColonyVersion',
@@ -8801,6 +8893,7 @@ export type Subscription = {
   onCreateIngestorStats?: Maybe<IngestorStats>;
   onCreateLiquidationAddress?: Maybe<LiquidationAddress>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
+  onCreateMultiChainInfo?: Maybe<MultiChainInfo>;
   onCreateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
   onCreateNotificationsData?: Maybe<NotificationsData>;
   onCreatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
@@ -8847,6 +8940,7 @@ export type Subscription = {
   onDeleteIngestorStats?: Maybe<IngestorStats>;
   onDeleteLiquidationAddress?: Maybe<LiquidationAddress>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
+  onDeleteMultiChainInfo?: Maybe<MultiChainInfo>;
   onDeleteMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
   onDeleteNotificationsData?: Maybe<NotificationsData>;
   onDeletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
@@ -8893,6 +8987,7 @@ export type Subscription = {
   onUpdateIngestorStats?: Maybe<IngestorStats>;
   onUpdateLiquidationAddress?: Maybe<LiquidationAddress>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
+  onUpdateMultiChainInfo?: Maybe<MultiChainInfo>;
   onUpdateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
   onUpdateNotificationsData?: Maybe<NotificationsData>;
   onUpdatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
@@ -9051,6 +9146,11 @@ export type SubscriptionOnCreateLiquidationAddressArgs = {
 
 export type SubscriptionOnCreateMotionMessageArgs = {
   filter?: InputMaybe<ModelSubscriptionMotionMessageFilterInput>;
+};
+
+
+export type SubscriptionOnCreateMultiChainInfoArgs = {
+  filter?: InputMaybe<ModelSubscriptionMultiChainInfoFilterInput>;
 };
 
 
@@ -9284,6 +9384,11 @@ export type SubscriptionOnDeleteMotionMessageArgs = {
 };
 
 
+export type SubscriptionOnDeleteMultiChainInfoArgs = {
+  filter?: InputMaybe<ModelSubscriptionMultiChainInfoFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteMultiSigUserSignatureArgs = {
   filter?: InputMaybe<ModelSubscriptionMultiSigUserSignatureFilterInput>;
 };
@@ -9511,6 +9616,11 @@ export type SubscriptionOnUpdateLiquidationAddressArgs = {
 
 export type SubscriptionOnUpdateMotionMessageArgs = {
   filter?: InputMaybe<ModelSubscriptionMotionMessageFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateMultiChainInfoArgs = {
+  filter?: InputMaybe<ModelSubscriptionMultiChainInfoFilterInput>;
 };
 
 
@@ -9895,7 +10005,7 @@ export type UpdateColonyActionInput = {
   members?: InputMaybe<Array<Scalars['ID']>>;
   motionDomainId?: InputMaybe<Scalars['Int']>;
   motionId?: InputMaybe<Scalars['ID']>;
-  multiChainInfo?: InputMaybe<MultiChainInfoInput>;
+  multiChainInfoId?: InputMaybe<Scalars['ID']>;
   multiSigId?: InputMaybe<Scalars['ID']>;
   networkFee?: InputMaybe<Scalars['String']>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
@@ -10239,6 +10349,13 @@ export type UpdateMotionMessageInput = {
   motionId?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
   vote?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateMultiChainInfoInput = {
+  completedOnMainChain?: InputMaybe<Scalars['Boolean']>;
+  completedOnProxyChain?: InputMaybe<Scalars['Boolean']>;
+  id: Scalars['ID'];
+  wormholeInfo?: InputMaybe<ActionWormholeInfoInput>;
 };
 
 export type UpdateMultiSigUserSignatureInput = {

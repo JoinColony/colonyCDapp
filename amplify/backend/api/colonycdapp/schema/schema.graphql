@@ -3580,9 +3580,13 @@ type ColonyAction @model @searchable {
   expenditureSlotIds: [Int!]
   arbitraryTransactions: [ColonyActionArbitraryTransaction!]
   """
+  The id of the multichain info entry
+  """
+  multiChainInfoId: ID
+  """
   Multichain info if the action is bridged
   """
-  multiChainInfo: MultiChainInfo
+  multiChainInfo: MultiChainInfo @hasOne(fields: ["multiChainInfoId"])
   """
   Target chain id if the action is on a proxy colony chain
   """
@@ -3597,8 +3601,13 @@ type ColonyAction @model @searchable {
   finalizedActionData: ColonyAction @hasOne(fields: ["finalizedActionId"])
 }
 
-type MultiChainInfo {
-  completed: Boolean!
+type MultiChainInfo @model {
+  """
+  The format is txHash_chainId
+  """
+  id: ID!
+  completedOnMainChain: Boolean!
+  completedOnProxyChain: Boolean!
   wormholeInfo: ActionWormholeInfo
 }
 
