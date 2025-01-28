@@ -1,3 +1,5 @@
+import { isChildOf } from '~utils/checks/isChildOf.ts';
+import { getElementWithSelector } from '~utils/elements.ts';
 import { getPortalContainer } from '~v5/shared/Portal/utils.ts';
 
 export const isElementInsideModalOrPortal = (element: Element) => {
@@ -14,4 +16,20 @@ export const isElementInsideModalOrPortal = (element: Element) => {
   }
 
   return false;
+};
+
+export const isElementInsideDynamicXYZModal = (element: Element) => {
+  const dynamicWalletModal = getElementWithSelector('#dynamic-modal');
+  const dynamicSendTransactionModal = getElementWithSelector(
+    '#dynamic-send-transaction',
+  );
+  const dynamicSignMessageModal = getElementWithSelector(
+    '#dynamic-sign-message',
+  );
+
+  return [
+    dynamicWalletModal,
+    dynamicSendTransactionModal,
+    dynamicSignMessageModal,
+  ].some((modal) => isChildOf(modal, element));
 };
