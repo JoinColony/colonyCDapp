@@ -10,5 +10,7 @@ export interface ActionSidebarLayoutProps {
     onShareButtonClick: () => void;
   };
   isLoading?: boolean;
-  maxSize?: 'small' | 'big';
+  transactionId?: string;
+  isMotion: boolean;
+  actionNotFound?: boolean;
 }
