@@ -117,4 +117,5 @@ export enum TRANSACTION_METHODS {
   // Proxy colonies
   CreateProxyColony = 'createProxyColony',
   RemoveProxyColony = 'removeProxyColony',
+  ProxyColonyClaimFunds = 'proxyColonyClaimFunds',
 }
