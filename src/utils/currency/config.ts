@@ -46,6 +46,8 @@ const coinGeckoAssetPlatforms: { [key in Network]: string } = {
   [Network.Goerli]: 'ethereum',
   [Network.Mainnet]: 'ethereum',
   [Network.Polygon]: 'polygon-pos',
+  [Network.DevProxyChain1]: 'arbitrum-one',
+  [Network.DevProxyChain2]: 'arbitrum-one',
 };
 
 export const coinGeckoMappings = {

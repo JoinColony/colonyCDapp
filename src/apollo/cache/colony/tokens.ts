@@ -1,5 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-import { DEFAULT_NETWORK_TOKEN, ADDRESS_ZERO } from '~constants/index.ts';
+import {
+  DEFAULT_NETWORK_TOKEN,
+  ADDRESS_ZERO,
+  DEFAULT_NETWORK_INFO,
+} from '~constants/index.ts';
 import { TokenType } from '~gql';
 import { type UnaliasedColonyTokensItem } from '~types/graphql.ts';
 import { getNetworkByChainId } from '~utils/web3/index.ts';
@@ -14,9 +18,6 @@ const tokensFieldCache = {
       const cacheRepresentation = cache.extract();
 
       const proxyColonies = readField('proxyColonies');
-      const chainMetadata = readField('chainMetadata');
-
-      const { chainId: colonyChainId } = chainMetadata;
 
       const updatedTokens: UnaliasedColonyTokensItem[] = [
         {
@@ -30,13 +31,13 @@ const tokensFieldCache = {
             thumbnail: null,
             type: TokenType.Colony,
             chainMetadata: {
-              chainId: colonyChainId,
+              chainId: DEFAULT_NETWORK_INFO.chainId,
             },
           },
         },
       ];
 
-      proxyColonies.items.forEach((proxyColony) => {
+      proxyColonies?.items?.forEach((proxyColony) => {
         if (!proxyColony.isActive) {
           return;
         }
