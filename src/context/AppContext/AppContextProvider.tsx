@@ -180,6 +180,15 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     [setWallet, setUser, userLogout, handleLogOut],
   );
 
+  // Embedded Wallet Logout
+  useDynamicEvents('logout', async (...args) => {
+    // Only log out if a wallet is set, and if that wallet is embedded
+    if (wallet?.label === 'turnkeyhd') {
+      debugLogging('WALLET EMBEDDED LOGOUT', args);
+      await disconnectWallet();
+    }
+  });
+
   // Handle wallet connected
   useEffect(() => {
     const walletHandler = async () => {
