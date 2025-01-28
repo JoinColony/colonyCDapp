@@ -107,7 +107,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
           chains: [publicClient.chain, walletClient.chain],
         };
 
-        debugLogging('SETTING WALLET CONTEXT', dynamicWallet);
+        debugLogging('WALLET SETTING CONTEXT', dynamicWallet);
 
         setContext(ContextModule.Wallet, dynamicWallet);
 
@@ -152,14 +152,11 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
    */
   const connectWallet = useCallback(async () => {
     try {
-      setWalletConnecting(true);
       setShowAuthFlow(true);
     } catch (error) {
-      console.error('Could not connect wallet', error);
-    } finally {
-      setWalletConnecting(false);
+      debugLogging('WALLET COULD NOT BE CONNECTED', error);
     }
-  }, [setWalletConnecting, setShowAuthFlow]);
+  }, [setShowAuthFlow]);
 
   /*
    * Handle wallet disconnection
