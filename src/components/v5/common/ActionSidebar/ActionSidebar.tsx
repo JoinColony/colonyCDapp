@@ -17,12 +17,18 @@ import React, {
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  isElementInsideDynamicXYZModal,
+  isElementInsideModalOrPortal,
+} from '~context/ActionSidebarContext/utils.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
+import { isChildOf } from '~utils/checks/isChildOf.ts';
+import { getElementWithSelector } from '~utils/elements.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
@@ -65,9 +71,16 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const {
     actionSidebarToggle: [
       isActionSidebarOpen,
-      { toggle: toggleActionSidebarOff, registerContainerRef },
+      {
+        toggleOff: toggleActionSidebarOff,
+        registerContainerRef,
+        useRegisterOnBeforeCloseCallback,
+      },
     ],
-    cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
+    cancelModalToggle: [
+      isCancelModalOpen,
+      { toggleOff: toggleCancelModalOff, toggleOn: toggleCancelModalOn },
+    ],
     actionSidebarInitialValues,
   } = useActionSidebarContext();
   const actionType = mapActionTypeToAction(action);
@@ -105,6 +118,36 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
   const { getIsDraftAgreement } = useDraftAgreement({
     formContextOverride: formRef.current,
+  });
+
+  useRegisterOnBeforeCloseCallback((element) => {
+    const isClickedInside = isElementInsideModalOrPortal(element);
+    const isInsideDynamicXYZModal = isElementInsideDynamicXYZModal(element);
+    const navigationWrapper = getElementWithSelector('.modal-blur-navigation');
+
+    if (isClickedInside || isInsideDynamicXYZModal) {
+      return false;
+    }
+
+    const { dirtyFields } = formRef.current?.formState ?? {};
+
+    // Prevent closing if navigation was clicked, only if the form is not dirty
+    if (!dirtyFields && isChildOf(navigationWrapper, element)) {
+      return false;
+    }
+
+    if (
+      dirtyFields &&
+      Object.keys(dirtyFields).length > 0 &&
+      !isCancelModalOpen &&
+      !getIsDraftAgreement()
+    ) {
+      toggleCancelModalOn();
+      return false;
+    }
+
+    return undefined;
+    // Remove tx param
   });
 
   const { isCopied, handleClipboardCopy } = useCopyToClipboard();

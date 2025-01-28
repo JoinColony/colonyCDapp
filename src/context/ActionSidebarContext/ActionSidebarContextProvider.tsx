@@ -8,12 +8,9 @@ import React, {
 import { type FieldValues } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { useTablet } from '~hooks';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import useToggle from '~hooks/useToggle/index.ts';
 import { TX_SEARCH_PARAM } from '~routes/routeConstants.ts';
-import { isChildOf } from '~utils/checks/isChildOf.ts';
-import { getElementWithSelector } from '~utils/elements.ts';
 import { removeQueryParamFromUrl } from '~utils/urls.ts';
 import {
   FROM_FIELD_NAME,
@@ -33,7 +30,6 @@ import {
   ActionSidebarContext,
   type ActionSidebarContextValue,
 } from './ActionSidebarContext.ts';
-import { isElementInsideModalOrPortal } from './utils.ts';
 
 const OPEN_ACTION_PANEL_EVENT: AnalyticsEvent = {
   event: AnalyticsEventType.CUSTOM_EVENT,
@@ -43,10 +39,14 @@ const OPEN_ACTION_PANEL_EVENT: AnalyticsEvent = {
 };
 
 const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
+  const navigate = useNavigate();
+  const removeTxParamOnClose = useCallback(() => {
+    navigate(removeQueryParamFromUrl(window.location.href, TX_SEARCH_PARAM));
+  }, [navigate]);
+
   const [actionSidebarInitialValues, setActionSidebarInitialValues] =
     useState<FieldValues>();
   const cancelModalToggle = useToggle();
-  const isTablet = useTablet();
   const [
     isActionSidebarOpen,
     {
@@ -57,30 +57,12 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
         actionSidebarUseRegisterOnBeforeCloseCallback,
       registerContainerRef: actionSidebarRegisterContainerRef,
     },
-  ] = useToggle();
+  ] = useToggle({
+    onClose: removeTxParamOnClose,
+  });
   const { trackEvent } = useAnalyticsContext();
   const selectedDomain = useGetSelectedDomainFilter();
   const selectedDomainNativeId = selectedDomain?.nativeId ?? '';
-  const navigate = useNavigate();
-
-  const removeTxParamOnClose = useCallback(() => {
-    navigate(removeQueryParamFromUrl(window.location.href, TX_SEARCH_PARAM));
-  }, [navigate]);
-
-  actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
-    const isClickedInside = isElementInsideModalOrPortal(element);
-    const navigationWrapper = getElementWithSelector('.modal-blur-navigation');
-
-    if (
-      isClickedInside ||
-      (isChildOf(navigationWrapper, element) && !isTablet)
-    ) {
-      return false;
-    }
-
-    removeTxParamOnClose();
-    return undefined;
-  });
 
   const getSidebarInitialValues = useCallback(
     (initialValues = {}) => ({

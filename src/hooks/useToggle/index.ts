@@ -56,9 +56,11 @@ const documentMousedownHandler = (event: MouseEvent): void => {
 const useToggle = ({
   defaultToggleState = false,
   closeOnRouteChange = false,
+  onClose,
 }: {
   defaultToggleState?: boolean;
   closeOnRouteChange?: boolean;
+  onClose?: () => void;
 } = {}): UseToggleReturnType => {
   const [toggleState, setToggleState] = useState(defaultToggleState);
   const onBeforeCloseCallbacksRef = useRef<OnBeforeCloseCallback[]>([]);
@@ -67,15 +69,22 @@ const useToggle = ({
 
   const toggle = useCallback(() => {
     setTimeout(() => {
-      setToggleState((currentToggleState) => !currentToggleState);
+      setToggleState((currentToggleState) => {
+        if (currentToggleState) {
+          onClose?.();
+        }
+
+        return !currentToggleState;
+      });
     });
-  }, []);
+  }, [onClose]);
 
   const toggleOff = useCallback(() => {
     setTimeout(() => {
       setToggleState(false);
+      onClose?.();
     });
-  }, []);
+  }, [onClose]);
 
   const toggleOn = useCallback(() => {
     setTimeout(() => {
