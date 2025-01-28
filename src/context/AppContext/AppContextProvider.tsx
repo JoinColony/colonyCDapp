@@ -194,6 +194,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const walletHandler = async () => {
       if (primaryWallet) {
+        const primaryWalletAddress = utils.getAddress(primaryWallet.address);
         let contextWallet;
 
         try {
@@ -203,8 +204,6 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         }
 
         if (!contextWallet) {
-          const primaryWalletAddress = utils.getAddress(primaryWallet.address);
-
           try {
             if (primaryWallet?.connector.supportsNetworkSwitching()) {
               await primaryWallet.switchNetwork(
@@ -224,6 +223,23 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
           await updateUser(primaryWalletAddress);
 
           await setUserContextWithErrorFallback();
+
+          return;
+        }
+
+        // App crashed an have to recover
+        if (contextWallet?.address === primaryWalletAddress && !wallet) {
+          await updateWallet();
+
+          await updateUser(primaryWalletAddress);
+
+          await setUserContextWithErrorFallback();
+
+          debugLogging('WALLET RECOVER AFTER CRASH', {
+            primaryWallet,
+            contextWallet,
+            wallet,
+          });
         }
       }
     };
@@ -233,6 +249,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     setUserContextWithErrorFallback,
     updateUser,
     updateWallet,
+    wallet,
   ]);
 
   // Network changed
