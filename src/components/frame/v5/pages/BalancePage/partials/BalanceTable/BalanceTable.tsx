@@ -188,7 +188,10 @@ const BalanceTable: FC = () => {
       </TableHeader>
       <Table<BalanceTableFieldModel>
         overrides={{
-          getRowId: ({ token }) => (token ? token.tokenAddress : uniqueId()),
+          getRowId: ({ token }) =>
+            token
+              ? `${token.chainMetadata.chainId}_${token.tokenAddress}`
+              : uniqueId(),
           state: {
             sorting,
             rowSelection,

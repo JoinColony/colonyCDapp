@@ -94,6 +94,9 @@ fragment ColonyAction on ColonyAction {
       nativeTokenSymbol: symbol
       tokenAddress: id
       name
+      chainMetadata {
+        chainId
+      }
     }
     tokens {
       ...ColonyTokensConnection

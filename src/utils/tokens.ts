@@ -143,6 +143,9 @@ export const getNativeTokenByChainId = (chainId: string): Token => {
   return {
     tokenAddress: ADDRESS_ZERO,
     ...selectedNetwork.nativeToken,
+    chainMetadata: {
+      chainId: selectedNetwork.chainId,
+    },
   };
 };
 

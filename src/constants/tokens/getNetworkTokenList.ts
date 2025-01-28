@@ -13,6 +13,9 @@ interface ListToken {
   symbol: string;
   name: string;
   decimals: number;
+  chainMetadata: {
+    chainId: string;
+  };
 }
 
 interface FormattedListToken {
@@ -22,6 +25,9 @@ interface FormattedListToken {
     symbol: string;
     name: string;
     decimals: number;
+    chainMetadata: {
+      chainId: string;
+    };
   };
 }
 

@@ -2,6 +2,7 @@ import sub from 'date-fns/sub';
 
 import {
   ADDRESS_ZERO,
+  DEFAULT_NETWORK_INFO,
   DEFAULT_NETWORK_TOKEN,
   DEFAULT_TOKEN_DECIMALS,
 } from '~constants/index.ts';
@@ -29,6 +30,9 @@ export const makeLoadingRows = (pageSize: number): ActivityFeedColonyAction[] =>
           nativeTokenDecimals: DEFAULT_TOKEN_DECIMALS,
           nativeTokenSymbol: DEFAULT_NETWORK_TOKEN.symbol,
           name: '',
+          chainMetadata: {
+            chainId: DEFAULT_NETWORK_INFO.chainId,
+          },
         },
       },
       colonyAddress: ADDRESS_ZERO,
