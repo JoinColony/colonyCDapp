@@ -1275,7 +1275,7 @@ const userPayments = async (
             users[userIndex] ===
             utils.getAddress(Object.keys(ganacheAddresses)[0])
           ) {
-            amount = BigNumber.from(`50000000000000000000`);
+            amount = BigNumber.from(`30000000000000000000`);
           }
 
           const params = [
