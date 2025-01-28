@@ -69,6 +69,8 @@ const Entry = ({ store }: Props) => {
         ],
         overrides: {
           evmNetworks: (networks) => {
+            // Only needed for embedded wallets
+            // All the others have their own interface to manage the chain
             if (import.meta.env.DEV) {
               return mergeNetworks(
                 [
