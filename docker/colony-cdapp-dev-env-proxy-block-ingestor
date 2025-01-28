@@ -1,7 +1,7 @@
 FROM colony-cdapp-dev-env/base:latest
 
 # @TODO maybe add a PROXY_BLOCK_INGESTOR_HASH and fallback to BLOCK_INGESTOR_HASH
-ENV BLOCK_INGESTOR_HASH=4ac06d5744f8ada7b80047afd586da4d82898436
+ENV BLOCK_INGESTOR_HASH=71e266512315d2082bafa56f2bf01e00e7d0ef5f
 
 ENV CHAIN_RPC_ENDPOINTS='["http://network-contracts-remote:8545", "http://network-contracts-remote-2:8545"]'
 ENV STATS_PORTS='["10002", "10003"]'
