@@ -6,6 +6,9 @@ fragment Token on Token {
   type
   avatar
   thumbnail
+  chainMetadata {
+    chainId
+  }
 }
 
 fragment UserTokenBalanceData on GetUserTokenBalanceReturn {

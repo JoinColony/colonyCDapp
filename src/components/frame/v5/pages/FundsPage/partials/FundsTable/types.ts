@@ -6,6 +6,9 @@ export interface FundsTableModel {
     symbol: string;
     name: string;
     decimals: number;
+    chainMetadata: {
+      chainId: string;
+    };
   };
 }
 
@@ -36,6 +39,9 @@ export interface UseFundsTableProps {
       symbol: string;
       name: string;
       decimals: number;
+      chainMetadata: {
+        chainId: string;
+      };
     };
   }[];
 }

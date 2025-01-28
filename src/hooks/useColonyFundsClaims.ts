@@ -24,14 +24,20 @@ const useColonyFundsClaims = (): ColonyClaims[] => {
     return [];
   }
 
-  const chainClaimWithToken: ColonyChainClaimWithToken | null = chainFundsClaim
-    ? {
-        ...chainFundsClaim,
-        token: tokens?.items?.find(
-          (token) => token?.token?.tokenAddress === ADDRESS_ZERO,
-        )?.token,
-      }
-    : null;
+  const chainClaimWithToken: ColonyChainClaimWithToken[] = chainFundsClaim
+    ? chainFundsClaim.filter(notNull).map((item): ColonyChainClaimWithToken => {
+        const chainId = item.id.split('_')[0];
+
+        return {
+          ...item,
+          token: tokens?.items?.find(
+            (token) =>
+              token?.token?.tokenAddress === ADDRESS_ZERO &&
+              token?.token?.chainMetadata.chainId === chainId,
+          )?.token,
+        };
+      })
+    : [];
 
   /*
    * Claims data needs to be merged, both ERC20's and Native Chain Tokens
@@ -41,7 +47,7 @@ const useColonyFundsClaims = (): ColonyClaims[] => {
    * to do the sorting / merging here, rather than at the time we fetch data.
    * This kinda sucks!
    */
-  return [...claims, chainClaimWithToken]
+  return [...claims, ...chainClaimWithToken]
     .filter(notNull)
     .sort(
       (first, second) =>

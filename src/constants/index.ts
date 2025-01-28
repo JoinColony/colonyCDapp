@@ -254,6 +254,8 @@ export const ARBITRUM_SEPOLIA_NETWORK: NetworkInfo = {
 
 export const NETWORK_DATA: { [key: string]: NetworkInfo } = {
   [Network.Ganache]: GANACHE_NETWORK,
+  [Network.DevProxyChain1]: GANACHE_NETWORK_1,
+  [Network.DevProxyChain2]: GANACHE_NETWORK_2,
   [Network.Gnosis]: GNOSIS_NETWORK,
   [Network.GnosisFork]: GNOSIS_NETWORK,
   [Network.Goerli]: GOERLI_NETWORK,

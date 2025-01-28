@@ -10,6 +10,8 @@ export enum Network {
   Amoy = 'amoy',
   ArbitrumOne = 'arbitrumOne',
   ArbitrumSepolia = 'arbitrumSepolia',
+  DevProxyChain1 = 'devProxyChain1',
+  DevProxyChain2 = 'devProxyChain2',
 }
 
 export const ColonyJSNetworkMapping = {
