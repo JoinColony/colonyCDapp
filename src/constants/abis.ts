@@ -2076,6 +2076,1815 @@ export const colonyAddress =
 export const colonyConfig = { address: colonyAddress, abi: colonyAbi } as const;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ColonyFunding
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const colonyFundingAbi = [
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'txHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: true,
+      },
+      {
+        name: 'metadata',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+    ],
+    name: 'Annotation',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'user',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'skillId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'amount',
+        internalType: 'int256',
+        type: 'int256',
+        indexed: false,
+      },
+    ],
+    name: 'ArbitraryReputationUpdate',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'target',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      { name: 'data', internalType: 'bytes', type: 'bytes', indexed: false },
+      { name: 'success', internalType: 'bool', type: 'bool', indexed: false },
+    ],
+    name: 'ArbitraryTransaction',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'users',
+        internalType: 'address[]',
+        type: 'address[]',
+        indexed: false,
+      },
+      {
+        name: 'amounts',
+        internalType: 'int256[]',
+        type: 'int256[]',
+        indexed: false,
+      },
+    ],
+    name: 'ColonyBootstrapped',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      { name: 'fee', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'payoutRemainder',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'ColonyFundsClaimed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'fromPot',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'toPot',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'ColonyFundsMovedBetweenFundingPots',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'colonyNetwork',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'ColonyInitialised',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'metadata',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+    ],
+    name: 'ColonyMetadata',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'metadata',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+    ],
+    name: 'ColonyMetadataDelta',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'rewardInverse',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'ColonyRewardInverseSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+      {
+        name: 'domainId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      { name: 'role', internalType: 'uint8', type: 'uint8', indexed: true },
+      { name: 'setTo', internalType: 'bool', type: 'bool', indexed: false },
+    ],
+    name: 'ColonyRoleSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'oldVersion',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'newVersion',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'ColonyUpgraded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'domainId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'DomainAdded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'domainId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'deprecated',
+        internalType: 'bool',
+        type: 'bool',
+        indexed: false,
+      },
+    ],
+    name: 'DomainDeprecated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'domainId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      { name: 'fee', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'payoutRemainder',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'DomainFundsClaimed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'domainId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'metadata',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+    ],
+    name: 'DomainMetadata',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'ExpenditureAdded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'ExpenditureCancelled',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      { name: 'slot', internalType: 'uint256', type: 'uint256', indexed: true },
+      {
+        name: 'claimDelay',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'ExpenditureClaimDelaySet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'ExpenditureFinalized',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'globalClaimDelay',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'ExpenditureGlobalClaimDelaySet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'ExpenditureLocked',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'metadata',
+        internalType: 'string',
+        type: 'string',
+        indexed: false,
+      },
+    ],
+    name: 'ExpenditureMetadataSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      { name: 'slot', internalType: 'uint256', type: 'uint256', indexed: true },
+      {
+        name: 'payoutModifier',
+        internalType: 'int256',
+        type: 'int256',
+        indexed: false,
+      },
+    ],
+    name: 'ExpenditurePayoutModifierSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      { name: 'slot', internalType: 'uint256', type: 'uint256', indexed: true },
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'ExpenditurePayoutSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      { name: 'slot', internalType: 'uint256', type: 'uint256', indexed: true },
+      {
+        name: 'recipient',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'ExpenditureRecipientSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      { name: 'slot', internalType: 'uint256', type: 'uint256', indexed: true },
+      {
+        name: 'skillId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'ExpenditureSkillSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'storageSlot',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      { name: 'mask', internalType: 'bool[]', type: 'bool[]', indexed: false },
+      {
+        name: 'keys',
+        internalType: 'bytes32[]',
+        type: 'bytes32[]',
+        indexed: false,
+      },
+      {
+        name: 'value',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+    ],
+    name: 'ExpenditureStateChanged',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'expenditureId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'ExpenditureTransferred',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'fundingPotId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'FundingPotAdded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'localSkillId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'LocalSkillAdded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'localSkillId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'deprecated',
+        internalType: 'bool',
+        type: 'bool',
+        indexed: false,
+      },
+    ],
+    name: 'LocalSkillDeprecated',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'authority',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'LogSetAuthority',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'LogSetOwner',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'paymentId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'PaymentAdded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'paymentId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'PaymentFinalized',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'paymentId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'PaymentPayoutSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'paymentId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'recipient',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'PaymentRecipientSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'paymentId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'skillId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'PaymentSkillSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'fundingPotId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'PayoutClaimed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'slot',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'tokenPayout',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'PayoutClaimed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: '_chainId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: '_token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: '_amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'ProxyColonyFundsClaimed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'destinationChainId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'salt',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+    ],
+    name: 'ProxyColonyRequested',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'rewardPayoutId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'user',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      { name: 'fee', internalType: 'uint256', type: 'uint256', indexed: false },
+      {
+        name: 'rewardRemainder',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'RewardPayoutClaimed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'rewardPayoutId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'RewardPayoutCycleEnded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'rewardPayoutId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'RewardPayoutCycleStarted',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'taskId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'TaskAdded',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'taskId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'specificationHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+    ],
+    name: 'TaskBriefSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'taskId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'TaskCanceled',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'reviewerAddresses',
+        internalType: 'address[]',
+        type: 'address[]',
+        indexed: false,
+      },
+    ],
+    name: 'TaskChangedViaSignatures',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'taskId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'TaskCompleted',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'taskId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'deliverableHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+    ],
+    name: 'TaskDeliverableSubmitted',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'taskId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'dueDate',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'TaskDueDateSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'taskId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'TaskFinalized',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'taskId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'role',
+        internalType: 'enum ColonyDataTypes.TaskRole',
+        type: 'uint8',
+        indexed: false,
+      },
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'TaskPayoutSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'taskId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'role',
+        internalType: 'enum ColonyDataTypes.TaskRole',
+        type: 'uint8',
+        indexed: false,
+      },
+      { name: 'user', internalType: 'address', type: 'address', indexed: true },
+    ],
+    name: 'TaskRoleUserSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'taskId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'skillId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+    ],
+    name: 'TaskSkillSet',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'taskId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: true,
+      },
+      {
+        name: 'role',
+        internalType: 'enum ColonyDataTypes.TaskRole',
+        type: 'uint8',
+        indexed: false,
+      },
+      { name: 'rating', internalType: 'uint8', type: 'uint8', indexed: false },
+    ],
+    name: 'TaskWorkRatingRevealed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+    ],
+    name: 'TokenUnlocked',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'TokensBurned',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      { name: 'who', internalType: 'address', type: 'address', indexed: false },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'TokensMinted',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    name: 'DEPRECATED_taskWorkRatings',
+    outputs: [
+      { name: 'count', internalType: 'uint256', type: 'uint256' },
+      { name: 'timestamp', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'authority',
+    outputs: [
+      { name: '', internalType: 'contract DSAuthority', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'claimColonyFunds',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_token', internalType: 'address', type: 'address' }],
+    name: 'claimColonyFunds',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_token', internalType: 'address', type: 'address' },
+      { name: '_domainId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'claimDomainFunds',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_id', internalType: 'uint256', type: 'uint256' },
+      { name: '_slot', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'claimExpenditurePayout',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_id', internalType: 'uint256', type: 'uint256' },
+      { name: '_slot', internalType: 'uint256', type: 'uint256' },
+      { name: '_chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'claimExpenditurePayout',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    name: 'domains',
+    outputs: [
+      { name: 'skillId', internalType: 'uint256', type: 'uint256' },
+      { name: 'fundingPotId', internalType: 'uint256', type: 'uint256' },
+      { name: 'deprecated', internalType: 'bool', type: 'bool' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_domainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+      { name: '_add', internalType: 'bool', type: 'bool' },
+    ],
+    name: 'editAllowedDomainReputationReceipt',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_permissionDomainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_childSkillIndex', internalType: 'uint256', type: 'uint256' },
+      { name: '_domainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_txdata', internalType: 'bytes', type: 'bytes' },
+      { name: '_value', internalType: 'uint256', type: 'uint256' },
+      { name: '_chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'exchangeTokensViaLiFi',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_domainId', internalType: 'uint256', type: 'uint256' }],
+    name: 'getAllowedDomainReputationReceipt',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_fundingPotId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'getDomainFromFundingPot',
+    outputs: [{ name: 'domainId', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_id', internalType: 'uint256', type: 'uint256' },
+      { name: '_slot', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'getExpenditureSlotPayout',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_id', internalType: 'uint256', type: 'uint256' },
+      { name: '_slot', internalType: 'uint256', type: 'uint256' },
+      { name: 'chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'getExpenditureSlotPayout',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_potId', internalType: 'uint256', type: 'uint256' }],
+    name: 'getFundingPot',
+    outputs: [
+      {
+        name: 'associatedType',
+        internalType: 'enum ColonyDataTypes.FundingPotAssociatedType',
+        type: 'uint8',
+      },
+      { name: 'associatedTypeId', internalType: 'uint256', type: 'uint256' },
+      { name: 'payoutsWeCannotMake', internalType: 'uint256', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_potId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'getFundingPotBalance',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_potId', internalType: 'uint256', type: 'uint256' },
+      { name: '_chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'getFundingPotBalance',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'getFundingPotCount',
+    outputs: [{ name: 'count', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_potId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'getFundingPotPayout',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_token', internalType: 'address', type: 'address' }],
+    name: 'getNonRewardPotsTotal',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'getNonRewardPotsTotal',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'getRewardInverse',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_permissionDomainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_childSkillIndex', internalType: 'uint256', type: 'uint256' },
+      { name: '_domainId', internalType: 'uint256', type: 'uint256' },
+      {
+        name: '_fromChildSkillIndex',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      { name: '_toChildSkillIndex', internalType: 'uint256', type: 'uint256' },
+      { name: '_fromPot', internalType: 'uint256', type: 'uint256' },
+      { name: '_toPot', internalType: 'uint256', type: 'uint256' },
+      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'moveFundsBetweenPots',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_permissionDomainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_childSkillIndex', internalType: 'uint256', type: 'uint256' },
+      { name: '_domainId', internalType: 'uint256', type: 'uint256' },
+      {
+        name: '_fromChildSkillIndex',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      { name: '_toChildSkillIndex', internalType: 'uint256', type: 'uint256' },
+      { name: '_fromPot', internalType: 'uint256', type: 'uint256' },
+      { name: '_toPot', internalType: 'uint256', type: 'uint256' },
+      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+      { name: '_chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'moveFundsBetweenPots',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_permissionDomainId', internalType: 'uint256', type: 'uint256' },
+      {
+        name: '_fromChildSkillIndex',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      { name: '_toChildSkillIndex', internalType: 'uint256', type: 'uint256' },
+      { name: '_fromPot', internalType: 'uint256', type: 'uint256' },
+      { name: '_toPot', internalType: 'uint256', type: 'uint256' },
+      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+    ],
+    name: 'moveFundsBetweenPots',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+      { name: '_domainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'recordClaimedFundsFromBridge',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'authority_',
+        internalType: 'contract DSAuthority',
+        type: 'address',
+      },
+    ],
+    name: 'setAuthority',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_id', internalType: 'uint256', type: 'uint256' },
+      { name: '_slot', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'setExpenditurePayout',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_permissionDomainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_childSkillIndex', internalType: 'uint256', type: 'uint256' },
+      { name: '_id', internalType: 'uint256', type: 'uint256' },
+      { name: '_slot', internalType: 'uint256', type: 'uint256' },
+      { name: '_chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'setExpenditurePayout',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_id', internalType: 'uint256', type: 'uint256' },
+      { name: '_slot', internalType: 'uint256', type: 'uint256' },
+      { name: '_chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'setExpenditurePayout',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_permissionDomainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_childSkillIndex', internalType: 'uint256', type: 'uint256' },
+      { name: '_id', internalType: 'uint256', type: 'uint256' },
+      { name: '_slot', internalType: 'uint256', type: 'uint256' },
+      { name: '_token', internalType: 'address', type: 'address' },
+      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'setExpenditurePayout',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_id', internalType: 'uint256', type: 'uint256' },
+      { name: '_slots', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: '_token', internalType: 'address', type: 'address' },
+      { name: '_amounts', internalType: 'uint256[]', type: 'uint256[]' },
+    ],
+    name: 'setExpenditurePayouts',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'owner_', internalType: 'address', type: 'address' }],
+    name: 'setOwner',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'permissionDomainId', internalType: 'uint256', type: 'uint256' },
+      { name: 'childSkillIndex', internalType: 'uint256', type: 'uint256' },
+      { name: 'childDomainId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'validateDomainInheritance',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+] as const;
+
+export const colonyFundingAddress =
+  '0x777760996135f0791E2e1a74aFAa060711197779' as const;
+
+export const colonyFundingConfig = {
+  address: colonyFundingAddress,
+  abi: colonyFundingAbi,
+} as const;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ColonyNetwork
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2953,4 +4762,231 @@ export const colonyNetworkAddress =
 export const colonyNetworkConfig = {
   address: colonyNetworkAddress,
   abi: colonyNetworkAbi,
+} as const;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ProxyColony
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const proxyColonyAbi = [
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'domainId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'balance',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'DomainFundsClaimed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'authority',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'LogSetAuthority',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'LogSetOwner',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'userAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'relayerAddress',
+        internalType: 'address payable',
+        type: 'address',
+        indexed: false,
+      },
+      { name: 'payload', internalType: 'bytes', type: 'bytes', indexed: false },
+    ],
+    name: 'MetaTransactionExecuted',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'token',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'user',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'amount',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'TransferMade',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'authority',
+    outputs: [
+      { name: '', internalType: 'contract DSAuthority', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_token', internalType: 'address', type: 'address' }],
+    name: 'claimColonyFunds',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_token', internalType: 'address', type: 'address' },
+      { name: '_domainId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'claimDomainFunds',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_user', internalType: 'address', type: 'address' },
+      { name: '_payload', internalType: 'bytes', type: 'bytes' },
+      { name: '_sigR', internalType: 'bytes32', type: 'bytes32' },
+      { name: '_sigS', internalType: 'bytes32', type: 'bytes32' },
+      { name: '_sigV', internalType: 'uint8', type: 'uint8' },
+    ],
+    name: 'executeMetaTransaction',
+    outputs: [{ name: 'returnData', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_user', internalType: 'address', type: 'address' }],
+    name: 'getMetatransactionNonce',
+    outputs: [{ name: 'nonce', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_target', internalType: 'address', type: 'address' },
+      { name: '_payload', internalType: 'bytes', type: 'bytes' },
+    ],
+    name: 'makeArbitraryTransaction',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes[]', type: 'bytes[]' }],
+    name: 'multicall',
+    outputs: [{ name: 'results', internalType: 'bytes[]', type: 'bytes[]' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'authority_',
+        internalType: 'contract DSAuthority',
+        type: 'address',
+      },
+    ],
+    name: 'setAuthority',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'owner_', internalType: 'address', type: 'address' }],
+    name: 'setOwner',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_token', internalType: 'address', type: 'address' },
+      { name: '_recipient', internalType: 'address', type: 'address' },
+      { name: '_amount', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'transferFromBridge',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_user', internalType: 'address', type: 'address' },
+      { name: '_nonce', internalType: 'uint256', type: 'uint256' },
+      { name: '_chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_payload', internalType: 'bytes', type: 'bytes' },
+      { name: '_sigR', internalType: 'bytes32', type: 'bytes32' },
+      { name: '_sigS', internalType: 'bytes32', type: 'bytes32' },
+      { name: '_sigV', internalType: 'uint8', type: 'uint8' },
+    ],
+    name: 'verify',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+] as const;
+
+export const proxyColonyAddress =
+  '0x777760996135F0791E2E1a74AFaA060711197781' as const;
+
+export const proxyColonyConfig = {
+  address: proxyColonyAddress,
+  abi: proxyColonyAbi,
 } as const;

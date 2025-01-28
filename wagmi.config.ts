@@ -22,6 +22,16 @@ const contracts: Contract[] = [
     address: '0x777760996135F0791E2e1a74aFAa060711197778',
     path: 'colony/Colony.sol/Colony.json',
   },
+  {
+    name: 'ColonyFunding',
+    path: 'colony/ColonyFunding.sol/ColonyFunding.json',
+    address: '0x777760996135F0791E2e1a74aFAa060711197779',
+  },
+  {
+    name: 'ProxyColony',
+    address: '0x777760996135F0791E2e1a74aFAa060711197781',
+    path: 'bridging/ProxyColony.sol/ProxyColony.json',
+  },
 ];
 
 export default defineConfig({

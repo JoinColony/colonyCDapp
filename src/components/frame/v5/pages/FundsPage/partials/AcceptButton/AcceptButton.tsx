@@ -13,6 +13,8 @@ const AcceptButton: FC<AcceptButtonProps> = ({
   tokenAddresses,
   children,
   disabled,
+  chainId,
+  actionType = ActionTypes.CLAIM_TOKEN,
   ...rest
 }) => {
   const { colony, canInteractWithColony } = useColonyContext();
@@ -32,6 +34,7 @@ const AcceptButton: FC<AcceptButtonProps> = ({
     return {
       colonyAddress: colony?.colonyAddress,
       tokenAddresses,
+      chainId,
     };
   };
 
@@ -42,10 +45,11 @@ const AcceptButton: FC<AcceptButtonProps> = ({
 
   const isBtnDisabled =
     disabled || !canInteractWithColony || isClaimed || isAcceptLoading;
+  // @Note: need to check how to differentiate between the ActionTypes.PROXY_COLONY_CLAIM_TOKEN and ActionTypes.CLAIM_TOKEN
   return (
     <ActionButton
       {...rest}
-      actionType={ActionTypes.CLAIM_TOKEN}
+      actionType={actionType}
       onSuccess={handleClaimSuccess}
       onError={reset}
       disabled={isBtnDisabled}
