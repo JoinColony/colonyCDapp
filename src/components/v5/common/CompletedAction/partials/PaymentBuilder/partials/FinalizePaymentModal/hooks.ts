@@ -1,6 +1,6 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import { type UserRoleMeta } from '~constants/permissions.ts';
+import { UserRole, type UserRoleMeta } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { DecisionMethod } from '~types/actions.ts';
@@ -19,8 +19,8 @@ export const useGetFinalizeDecisionMethodItems = (
   const userIsCreator = user?.walletAddress === expenditure.ownerAddress;
 
   const hasUserPermissions =
-    userRole?.role === 'payer' ||
-    (userRole?.role === 'custom' &&
+    userRole?.role === UserRole.Payer ||
+    (userRole?.role === UserRole.Custom &&
       userRole.permissions.some(
         (permission) => permission === ColonyRole.Arbitration,
       ));

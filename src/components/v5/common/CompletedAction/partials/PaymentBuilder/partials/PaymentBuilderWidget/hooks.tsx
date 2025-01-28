@@ -147,6 +147,9 @@ export const useGetFinalizeStep = ({
             {selectedFinalizeAction && !selectedFinalizeMotion && (
               <FinalizeByPaymentCreatorInfo
                 userAdddress={selectedFinalizeAction.initiatorAddress}
+                userIsCreator={
+                  selectedFinalizeAction.initiatorAddress === ownerAddress
+                }
               />
             )}
 
