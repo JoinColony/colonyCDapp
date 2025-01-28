@@ -97,7 +97,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
 
   const tokenData = getSelectedToken(
     colony,
-    expenditure?.slots?.[0].payouts?.[0].tokenAddress ?? '',
+    expenditure?.slots?.[0].payouts?.[0]?.tokenAddress ?? '',
   );
 
   const {
