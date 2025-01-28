@@ -18,7 +18,7 @@ const displayName =
 const MSG = defineMessages({
   manageEmbedded: {
     id: `${displayName}.manageEmbedded`,
-    defaultMessage: 'Manage Embedded Wallet',
+    defaultMessage: 'Manage wallet',
   },
 });
 
