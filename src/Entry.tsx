@@ -67,6 +67,13 @@ const Entry = ({ store }: Props) => {
             label: 'Recommended',
           },
         ],
+        // Since we can't use the shadow Dom override for css styling, since that breaks the skeleton loader
+        // we have to resort to this method to override the css, which is very verbose
+        cssOverrides: isDarkMode ? (
+          <link rel="stylesheet" href="/src/styles/dynamicOverridesDark.css" />
+        ) : (
+          <link rel="stylesheet" href="/src/styles/dynamicOverridesLight.css" />
+        ),
         overrides: {
           evmNetworks: (networks) => {
             // Only needed for embedded wallets
