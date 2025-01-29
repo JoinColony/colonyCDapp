@@ -4,6 +4,7 @@ import React, { type FC } from 'react';
 
 import { DomainColor } from '~gql';
 import { useMobile } from '~hooks/index.ts';
+import MaskedAddress from '~shared/MaskedAddress/MaskedAddress.tsx';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamColor } from '~utils/teams.ts';
@@ -12,6 +13,8 @@ import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.t
 import { sortDisabled } from '~v5/shared/SearchSelect/utils.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
+
+import { SearchItemLabelText } from '../SearchItemLabelText/index.tsx';
 
 import { type CheckboxSearchItemProps } from './types.ts';
 
@@ -123,13 +126,23 @@ const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
                       size={20}
                     />
                   )}
-                  {isLabelVisible && labelText}
+
+                  {isLabelVisible && (
+                    <span className="truncate">
+                      <SearchItemLabelText labelText={labelText} />
+                    </span>
+                  )}
                   {isVerified && (
                     <span className="ml-1 flex text-blue-400">
                       <SealCheck size={14} />
                     </span>
                   )}
-                  {!label && <span className="truncate">{walletAddress}</span>}
+                  {!label && (
+                    <span className="truncate">
+                      <MaskedAddress address={walletAddress} />
+                    </span>
+                  )}
+
                   {firstDisabledOption?.value === value && (
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 transform">
                       <ExtensionsStatusBadge
