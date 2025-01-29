@@ -61,7 +61,7 @@ export const useValidationSchema = () => {
           )
           .test(
             'enough-tokens',
-            formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
+            formatText({ id: 'errors.amount.notEnoughTokens' }),
             (value, context) =>
               hasEnoughFundsValidation({
                 value,
@@ -75,7 +75,7 @@ export const useValidationSchema = () => {
           .required()
           .test(
             'token-unlocked',
-            formatText({ id: 'errors.amount.tokenIsLocked' }) || '',
+            formatText({ id: 'errors.amount.tokenIsLocked' }),
             (value) =>
               !shouldPreventPaymentsWithTokenInColony(
                 value || '',
@@ -87,13 +87,9 @@ export const useValidationSchema = () => {
         team: number()
           .required()
           .typeError(formatText({ id: 'errors.domain' })),
-        decisionMethod: string()
-          .test(
-            'is-defined',
-            formatText({ id: 'errors.decisionMethod.defined' }),
-            (value) => value !== undefined,
-          )
-          .required(),
+        decisionMethod: string().required(
+          formatText({ id: 'errors.decisionMethod.required' }),
+        ),
         distributionMethod: string()
           .test(
             'is-defined',
@@ -139,7 +135,7 @@ export const useValidationSchema = () => {
                   const index = getLastIndexFromPath(path);
 
                   return formatText(
-                    { id: 'errors.recipient.required' },
+                    { id: 'errors.recipient.requiredIn' },
                     { paymentIndex: index === undefined ? 1 : index + 1 },
                   );
                 }),

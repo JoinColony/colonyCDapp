@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+import { isNaN } from 'lodash';
 import { useMemo } from 'react';
 import { type DeepPartial } from 'utility-types';
 import { type InferType, array, number, object, string } from 'yup';
@@ -61,10 +62,12 @@ export const useValidationSchema = () => {
               );
             })
             .address(),
-          [FROM_FIELD_NAME]: number().required(
-            formatText({ id: 'errors.fundFrom.required' }),
+          [FROM_FIELD_NAME]: number()
+            .transform((value) => (isNaN(value) ? undefined : value))
+            .required(formatText({ id: 'errors.fundFrom.required' })),
+          [DECISION_METHOD_FIELD_NAME]: string().required(
+            formatText({ id: 'errors.decisionMethod.required' }),
           ),
-          [DECISION_METHOD_FIELD_NAME]: string().defined(),
           [CREATED_IN_FIELD_NAME]: number().defined(),
           stages: array()
             .of(

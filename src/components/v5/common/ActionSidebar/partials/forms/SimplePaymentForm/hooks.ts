@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+import { isNaN } from 'lodash';
 import { useCallback, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
@@ -81,17 +82,23 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                 ),
             ),
           createdIn: number().defined(),
-          recipient: string().address().required(),
-          from: number().required(),
-          decisionMethod: string().defined(),
+          recipient: string()
+            .address()
+            .required(formatText({ id: 'errors.recipient.required' })),
+          from: number()
+            .transform((value) => (isNaN(value) ? undefined : value))
+            .required(formatText({ id: 'errors.from.required' })),
+          decisionMethod: string().required(
+            formatText({ id: 'errors.decisionMethod.required' }),
+          ),
           payments: array()
             .of(
               object()
                 .shape({
                   recipient: string().required(),
                   amount: number()
-                    .required(() => formatText({ id: 'errors.amount' }))
                     .transform((value) => toFinite(value))
+                    .required(() => formatText({ id: 'errors.amount' }))
                     .moreThan(0, ({ path }) => {
                       const index = getLastIndexFromPath(path);
 

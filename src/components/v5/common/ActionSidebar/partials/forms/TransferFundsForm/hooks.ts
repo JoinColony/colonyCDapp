@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+import { isNaN } from 'lodash';
 import { useCallback, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
@@ -68,16 +69,18 @@ export const useValidationSchema = () => {
                 ),
             ),
           createdIn: number().defined(),
-          from: number().required(),
+          from: number()
+            .transform((value) => (isNaN(value) ? undefined : value))
+            .required(formatText({ id: 'errors.from.required' })),
           to: number()
-            .required()
-            .when('from', (from, schema) =>
-              schema.notOneOf(
-                [from],
-                formatText({ id: 'errors.cantMoveToTheSameTeam' }),
-              ),
+            .required(formatText({ id: 'errors.to.required' }))
+            .notOneOf(
+              [selectedTeam],
+              formatText({ id: 'errors.cantMoveToTheSameTeam' }),
             ),
-          decisionMethod: string().defined(),
+          decisionMethod: string().required(
+            formatText({ id: 'errors.decisionMethod.required' }),
+          ),
         })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
