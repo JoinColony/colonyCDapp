@@ -53,13 +53,11 @@ export const useStreamingTableColumns = (loading: boolean) => {
       }),
       helper.display({
         id: 'amount',
-        staticSize: '13rem',
+        staticSize: loading ? '0px' : '208px',
         enableSorting: false,
         header: () => null,
         cell: ({ row }) =>
-          loading ? (
-            <div className="h-5 w-10 skeleton" />
-          ) : (
+          loading ? null : (
             <UserStreams
               items={row.original.tokenTotalsPerMonth}
               toggleExpanded={row.toggleExpanded}
@@ -68,12 +66,15 @@ export const useStreamingTableColumns = (loading: boolean) => {
       }),
       helper.display({
         id: 'expander',
-        staticSize: '2.25rem',
+        staticSize: loading ? '50%' : '2.25rem',
         header: () => null,
         enableSorting: false,
         cell: ({ row: { getIsExpanded, toggleExpanded } }) =>
           loading ? (
-            <div className="h-4 w-4 skeleton" />
+            <div className="flex items-center justify-end gap-[.625rem] pr-[1.125rem] sm:gap-[1.875rem]">
+              <div className="h-5 w-[6.25rem] rounded-sm skeleton" />
+              <CaretDown size={18} className="text-gray-100" />
+            </div>
           ) : (
             <button
               type="button"

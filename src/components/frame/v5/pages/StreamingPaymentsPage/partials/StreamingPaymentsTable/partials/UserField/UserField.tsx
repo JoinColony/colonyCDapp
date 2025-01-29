@@ -21,8 +21,12 @@ const UserField: FC<UserFieldProps> = ({
 
   return isUserLoading || isLoading ? (
     <div className="flex items-center gap-4 pl-[1.125rem]">
-      <div className="h-6 w-6 overflow-hidden rounded-full skeleton" />
-      <div className="h-5 w-1/4 overflow-hidden skeleton" />
+      <div>
+        <div className="h-6 w-6 overflow-hidden rounded-full skeleton" />
+      </div>
+      <div className="flex-1">
+        <div className="h-5 w-[100%] max-w-[15.625rem] overflow-hidden skeleton" />
+      </div>
     </div>
   ) : (
     <button

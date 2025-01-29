@@ -109,7 +109,7 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
       columns={columns}
       renderCellWrapper={isMobile ? undefined : renderRowLink}
       className={clsx(
-        '[&_td:first-child]:!pl-0 [&_td>a]:px-[1.125rem] [&_td>a]:py-2 [&_td>div]:px-[1.125rem] [&_td>div]:py-2 [&_td]:border-b [&_td]:border-gray-100 [&_td]:!pr-0 [&_th:not(:first-child)]:sm:text-center [&_th]:!rounded-none [&_th]:!border-b [&_th]:!border-solid [&_th]:border-gray-200 [&_tr.expanded-below_td]:border-none sm:[&_tr:hover]:bg-gray-25 [&_tr:last-child_td]:border-none',
+        'rounded-none border-none [&_td:first-child]:!pl-0 [&_td>a]:px-[1.125rem] [&_td>a]:py-2 [&_td>div]:px-[1.125rem] [&_td>div]:py-2 [&_td]:border-b [&_td]:border-gray-100 [&_td]:!pr-0 [&_th:not(:first-child)]:sm:text-center [&_th]:!rounded-none [&_th]:!border-b [&_th]:!border-solid [&_th]:border-gray-200 [&_tr.expanded-below_td]:border-none sm:[&_tr:hover]:bg-gray-25 [&_tr:last-child_td]:border-none',
         {
           '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_th:not(:first-child)]:pl-0':
             !isTablet,
