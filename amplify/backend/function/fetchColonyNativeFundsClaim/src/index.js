@@ -92,7 +92,7 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
       chainId,
       constants.AddressZero,
     );
-    const unclaimedBalance = balance
+    const unclaimedBalance = balanceOnMainChain
       .sub(colonyNonRewardsPotsTotal)
       .sub(colonyRewardsPotTotal);
 
