@@ -78,7 +78,7 @@ const SaveDraftButton: FC = () => {
       isFullSize={isMobile}
       disabled={isDisabled}
     >
-      {!isDraftSaved && <FileDashed size={18} className="mr-2" />}
+      {!isDraftSaved && <FileDashed size={18} />}
       {formatText({
         id: isDraftSaved ? 'button.draftSaved' : 'button.saveDraft',
       })}

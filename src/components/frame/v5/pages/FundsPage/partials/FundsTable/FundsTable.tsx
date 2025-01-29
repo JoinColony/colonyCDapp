@@ -10,6 +10,7 @@ import { IncomingFundsLoadingContextProvider } from '~frame/v5/pages/FundsPage/c
 import { useMobile } from '~hooks';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { formatText } from '~utils/intl.ts';
+import { formatMessage } from '~utils/yup/tests/helpers.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import { Table } from '~v5/common/Table/Table.tsx';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
@@ -78,6 +79,7 @@ const FundsTable: FC = () => {
             unclaimedClaims={allUnclaimedClaims}
             isButtonDisabled={!searchedTokens.length}
             shouldShowButton={unclaimedClaims.length > 0}
+            buttonText={formatMessage({ id: 'allFilters' })}
           />
         </div>
       </TableHeader>
