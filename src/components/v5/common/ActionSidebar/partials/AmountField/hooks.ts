@@ -1,28 +1,27 @@
 import { type FormatNumeralOptions } from 'cleave-zen';
 import { useMemo } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { notNull } from '~utils/arrays/index.ts';
-import {
-  getSelectedToken,
-  getTokenDecimalsWithFallback,
-} from '~utils/tokens.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import { CHAIN_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 export const useAmountField = (selectedTokenAddress: string | undefined) => {
-  const {
-    colony,
-    colony: { nativeToken },
-  } = useColonyContext();
+  const { colony } = useColonyContext();
+  const { watch } = useFormContext();
+  const chainId = watch(CHAIN_FIELD_NAME);
 
   const colonyTokens =
     colony.tokens?.items
       .filter(notNull)
+      .filter((token) => token.token.chainMetadata.chainId === chainId)
       .map((colonyToken) => colonyToken.token) || [];
 
-  const selectedToken = getSelectedToken(
-    colony,
-    selectedTokenAddress || nativeToken.tokenAddress,
-  );
+  const selectedToken =
+    colonyTokens.find(
+      (token) => token?.tokenAddress === selectedTokenAddress,
+    ) || colonyTokens[0];
 
   const formattingOptions: FormatNumeralOptions = useMemo(
     () => ({

@@ -1,17 +1,20 @@
-import { UserFocus } from '@phosphor-icons/react';
+import { UserFocus, UsersThree } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useAmountLessFee } from '~hooks/useAmountLessFee.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
+import { findSupportedChain } from '~utils/proxyColonies.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import {
   getNumeralTokenAmount,
+  getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 import {
@@ -26,6 +29,8 @@ import {
   TOKEN_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
+import ChainBadge from '~v5/common/Pills/ChainBadge/ChainBadge.tsx';
+import TeamBadge from '~v5/common/Pills/TeamBadge/TeamBadge.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
@@ -42,7 +47,6 @@ import {
   CreatedInRow,
   DecisionMethodRow,
   DescriptionRow,
-  TeamFromRow,
 } from '../rows/index.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.SimplePayment';
@@ -60,9 +64,14 @@ const MSG = defineMessages({
     id: `${displayName}.subtitle`,
     defaultMessage: 'Pay {recipient} {amount} {token} by {user}',
   },
+  unknownChain: {
+    id: `${displayName}.unknownChain`,
+    defaultMessage: 'Unknown',
+  },
 });
 
 const SimplePayment = ({ action }: SimplePaymentProps) => {
+  const { colony } = useColonyContext();
   const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
@@ -71,16 +80,24 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
     initiatorUser,
     recipientAddress: actionRecipientAddress = '',
     recipientUser: actionRecipientUser,
-    token,
+    tokenAddress,
+    token: actionToken,
     transactionHash,
     fromDomain,
     isMotion,
     motionData,
     annotation,
+    targetChainId,
   } = action;
+  // @NOTE the chain's native token isn't in the DB but it's in the colony
+  const tokenFromColony = tokenAddress
+    ? getSelectedToken(colony, tokenAddress)
+    : undefined;
+  const token = actionToken ?? tokenFromColony;
 
   const amountLessFee = useAmountLessFee(amount, networkFee);
 
+  const chainInfo = findSupportedChain(targetChainId);
   const formattedAmount = getNumeralTokenAmount(amountLessFee, token?.decimals);
   const convertedValue = convertToDecimal(
     amountLessFee,
@@ -141,11 +158,29 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
-
         {action.fromDomain?.metadata && (
-          <TeamFromRow
-            teamMetadata={action.fromDomain.metadata}
-            actionType={action.type}
+          <ActionData
+            rowLabel={formatText({ id: 'actionSidebar.from' })}
+            tooltipContent={formatText({
+              id: 'actionSidebar.tooltip.simplePayment.from',
+            })}
+            RowIcon={UsersThree}
+            rowContent={
+              <div className="flex flex-row flex-wrap items-center gap-2">
+                <TeamBadge
+                  className="w-full sm:w-auto"
+                  name={action.fromDomain.metadata.name}
+                  color={action.fromDomain.metadata.color}
+                />
+                <p className="text-md font-normal">
+                  {formatText({ id: 'on' })}
+                </p>
+                <ChainBadge
+                  text={chainInfo?.name || formatText(MSG.unknownChain)}
+                  icon={chainInfo?.icon}
+                />
+              </div>
+            }
           />
         )}
         <ActionData
@@ -161,7 +196,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
             id: 'actionSidebar.tooltip.simplePayment.recipient',
           })}
         />
-        <AmountRow amount={amountLessFee} token={action.token || undefined} />
+        <AmountRow amount={amountLessFee} token={token} />
 
         <DecisionMethodRow action={action} />
 

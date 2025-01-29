@@ -1,3 +1,4 @@
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import { useDeployedChainIds } from '~hooks/proxyColonies/useDeployedChainIds.ts';
 import {
   type SearchSelectOption,
@@ -21,9 +22,15 @@ export const useFilterChainSelectField = () => {
     filterFn: (deployedProxyColony) => deployedProxyColony?.isActive,
   });
 
-  const filterFn = ({ value: chainId }: SearchSelectOption<IconOption>) =>
-    isRemoveOperation
+  const filterFn = ({ value: chainId }: SearchSelectOption<IconOption>) => {
+    // remove the default chain from the select
+    if (chainId === DEFAULT_NETWORK_INFO.chainId) {
+      return false;
+    }
+
+    return isRemoveOperation
       ? activeProxyColoniesChainIds.includes(chainId.toString())
       : !activeProxyColoniesChainIds.includes(chainId.toString());
+  };
   return filterFn;
 };

@@ -16,6 +16,7 @@ import { type TeamSelectProps } from './types.ts';
 const displayName = 'v5.common.ActionsContent.partials.TeamsSelect';
 
 const TeamsSelect: FC<TeamSelectProps> = ({
+  className,
   name,
   readonly: readonlyProp,
   filterOptionsFn,
@@ -59,7 +60,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({
   }, [field.value, name, resetField, selectedOption]);
 
   return (
-    <div className="w-full sm:relative">
+    <div className={clsx('sm:relative', className)}>
       {readonly || readonlyProp ? (
         <TeamBadge
           name={

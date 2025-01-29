@@ -4,6 +4,7 @@ import {
 } from '~v5/shared/SearchSelect/types.ts';
 
 export interface TeamSelectProps {
+  className?: string;
   name: string;
   readonly?: boolean;
   filterOptionsFn?: (option: SearchSelectOption<TeamOption>) => boolean;
