@@ -1,6 +1,7 @@
 import React, { type FC } from 'react';
 
 import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
+import { getFormatValuesArbitraryTransactions } from '~utils/arbitraryTxs.ts';
 import { formatText } from '~utils/intl.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
@@ -35,6 +36,8 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
   } = action?.metadata || {};
   const { initiatorUser, transactionHash } = action;
 
+  const arbitraryMessageValues = getFormatValuesArbitraryTransactions(action);
+
   return (
     <>
       <div className="flex items-center justify-between gap-2">
@@ -57,6 +60,7 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
                 {initiatorUser.profile?.displayName}
               </UserInfoPopover>
             ) : null,
+            ...arbitraryMessageValues,
           },
         )}
       </ActionSubtitle>
