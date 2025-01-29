@@ -22,6 +22,10 @@ const getHtmlElement = (): HTMLElement | null => {
 };
 
 const documentMousedownHandler = (event: MouseEvent): void => {
+  // Only toggle on 'main button' (left mouse click) events.
+  if (event.button !== 0) {
+    return;
+  }
   refsRegistry.forEach(
     ({ element, toggleOff, toggleState, onBeforeCloseCallbacksRef }) => {
       if (!(event.target instanceof Element)) {
