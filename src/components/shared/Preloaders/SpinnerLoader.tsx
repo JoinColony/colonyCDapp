@@ -29,7 +29,10 @@ const SpinnerLoader = ({
   textValues,
 }: Props) => {
   return (
-    <div className={getMainClasses(appearance, styles)}>
+    <div
+      data-testid="spinner-loader"
+      className={getMainClasses(appearance, styles)}
+    >
       <div className={styles.loader} />
       {loadingText && (
         <div className={styles.loadingTextContainer}>

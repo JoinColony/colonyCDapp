@@ -16,7 +16,10 @@ test.describe('Preferences section', () => {
 
     await selectWallet(page);
 
-    await page.getByTestId('user-navigation-hamburger').click();
+    await page
+      .getByRole('banner')
+      .getByTestId('user-navigation-hamburger')
+      .click();
 
     await page.getByTestId('user-menu').waitFor({ state: 'visible' });
 

@@ -193,7 +193,6 @@ export class SimplePayment {
     await this.selectDropdown.getByRole('button', { name: newType }).click();
   }
 
-  // Locator getters for assertions in test files
   getValidationMessage(message: string) {
     return this.drawer.getByText(message);
   }
