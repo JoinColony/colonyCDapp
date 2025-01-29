@@ -57,6 +57,7 @@ export const getSimplePaymentPayload = (
     tokenAddress,
     recipient,
     decisionMethod,
+    chain,
   } = values;
   const fromDomainId = Number(from);
   const createdInDomainId = Number(createdIn);
@@ -65,6 +66,7 @@ export const getSimplePaymentPayload = (
     colonyName: colony.name,
     colonyAddress: colony.colonyAddress,
     domainId: fromDomainId,
+    chainId: chain,
     payments: [
       getPaymentPayload({
         colony,

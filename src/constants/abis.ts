@@ -2068,12 +2068,12 @@ export const colonyAbi = [
     ],
     stateMutability: 'pure',
   },
-] as const;
+] as const
 
 export const colonyAddress =
-  '0x777760996135F0791E2e1a74aFAA060711197778' as const;
+  '0x777760996135F0791E2e1a74aFAA060711197778' as const
 
-export const colonyConfig = { address: colonyAddress, abi: colonyAbi } as const;
+export const colonyConfig = { address: colonyAddress, abi: colonyAbi } as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ColonyFunding
@@ -3874,15 +3874,15 @@ export const colonyFundingAbi = [
     outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
     stateMutability: 'view',
   },
-] as const;
+] as const
 
 export const colonyFundingAddress =
-  '0x777760996135f0791E2e1a74aFAa060711197779' as const;
+  '0x777760996135f0791E2e1a74aFAa060711197779' as const
 
 export const colonyFundingConfig = {
   address: colonyFundingAddress,
   abi: colonyFundingAbi,
-} as const;
+} as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ColonyNetwork
@@ -4754,15 +4754,363 @@ export const colonyNetworkAbi = [
     outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
     stateMutability: 'view',
   },
-] as const;
+] as const
 
 export const colonyNetworkAddress =
-  '0x777760996135F0791E2e1a74aFAa060711197777' as const;
+  '0x777760996135F0791E2e1a74aFAa060711197777' as const
 
 export const colonyNetworkConfig = {
   address: colonyNetworkAddress,
   abi: colonyNetworkAbi,
-} as const;
+} as const
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// OneTxPayment
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const oneTxPaymentAbi = [
+  { type: 'event', anonymous: false, inputs: [], name: 'ExtensionInitialised' },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'authority',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'LogSetAuthority',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'owner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'LogSetOwner',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'userAddress',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'relayerAddress',
+        internalType: 'address payable',
+        type: 'address',
+        indexed: false,
+      },
+      { name: 'payload', internalType: 'bytes', type: 'bytes', indexed: false },
+    ],
+    name: 'MetaTransactionExecuted',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
+        name: 'fundamentalId',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+      {
+        name: 'nPayouts',
+        internalType: 'uint256',
+        type: 'uint256',
+        indexed: false,
+      },
+    ],
+    name: 'OneTxPaymentMade',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'authority',
+    outputs: [
+      { name: '', internalType: 'contract DSAuthority', type: 'address' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_deprecated', internalType: 'bool', type: 'bool' }],
+    name: 'deprecate',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_user', internalType: 'address', type: 'address' },
+      { name: '_payload', internalType: 'bytes', type: 'bytes' },
+      { name: '_sigR', internalType: 'bytes32', type: 'bytes32' },
+      { name: '_sigS', internalType: 'bytes32', type: 'bytes32' },
+      { name: '_sigV', internalType: 'uint8', type: 'uint8' },
+    ],
+    name: 'executeMetaTransaction',
+    outputs: [{ name: 'returnData', internalType: 'bytes', type: 'bytes' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'finishUpgrade',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_sig', internalType: 'bytes4', type: 'bytes4' }],
+    name: 'getCapabilityRoles',
+    outputs: [{ name: '_roles', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'getColony',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'getDeprecated',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_user', internalType: 'address', type: 'address' }],
+    name: 'getMetatransactionNonce',
+    outputs: [{ name: 'nonce', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'identifier',
+    outputs: [
+      { name: '_identifier', internalType: 'bytes32', type: 'bytes32' },
+    ],
+    stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '_colony', internalType: 'address', type: 'address' }],
+    name: 'install',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_permissionDomainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_childSkillIndex', internalType: 'uint256', type: 'uint256' },
+      {
+        name: '_callerPermissionDomainId',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      {
+        name: '_callerChildSkillIndex',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      {
+        name: '_workers',
+        internalType: 'address payable[]',
+        type: 'address[]',
+      },
+      { name: '_chainIds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: '_tokens', internalType: 'address[]', type: 'address[]' },
+      { name: '_amounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: '_domainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_skillId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'makePayment',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_permissionDomainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_childSkillIndex', internalType: 'uint256', type: 'uint256' },
+      {
+        name: '_callerPermissionDomainId',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      {
+        name: '_callerChildSkillIndex',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      {
+        name: '_workers',
+        internalType: 'address payable[]',
+        type: 'address[]',
+      },
+      { name: '_tokens', internalType: 'address[]', type: 'address[]' },
+      { name: '_amounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: '_domainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_skillId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'makePayment',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_permissionDomainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_childSkillIndex', internalType: 'uint256', type: 'uint256' },
+      {
+        name: '_callerPermissionDomainId',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      {
+        name: '_callerChildSkillIndex',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      {
+        name: '_workers',
+        internalType: 'address payable[]',
+        type: 'address[]',
+      },
+      { name: '_tokens', internalType: 'address[]', type: 'address[]' },
+      { name: '_amounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: '_domainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_skillId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'makePaymentFundedFromDomain',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_permissionDomainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_childSkillIndex', internalType: 'uint256', type: 'uint256' },
+      {
+        name: '_callerPermissionDomainId',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      {
+        name: '_callerChildSkillIndex',
+        internalType: 'uint256',
+        type: 'uint256',
+      },
+      {
+        name: '_workers',
+        internalType: 'address payable[]',
+        type: 'address[]',
+      },
+      { name: '_chainIds', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: '_tokens', internalType: 'address[]', type: 'address[]' },
+      { name: '_amounts', internalType: 'uint256[]', type: 'uint256[]' },
+      { name: '_domainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_skillId', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'makePaymentFundedFromDomain',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'data', internalType: 'bytes[]', type: 'bytes[]' }],
+    name: 'multicall',
+    outputs: [{ name: 'results', internalType: 'bytes[]', type: 'bytes[]' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'owner',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: 'authority_',
+        internalType: 'contract DSAuthority',
+        type: 'address',
+      },
+    ],
+    name: 'setAuthority',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'owner_', internalType: 'address', type: 'address' }],
+    name: 'setOwner',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'uninstall',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '_user', internalType: 'address', type: 'address' },
+      { name: '_nonce', internalType: 'uint256', type: 'uint256' },
+      { name: '_chainId', internalType: 'uint256', type: 'uint256' },
+      { name: '_payload', internalType: 'bytes', type: 'bytes' },
+      { name: '_sigR', internalType: 'bytes32', type: 'bytes32' },
+      { name: '_sigS', internalType: 'bytes32', type: 'bytes32' },
+      { name: '_sigV', internalType: 'uint8', type: 'uint8' },
+    ],
+    name: 'verify',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'version',
+    outputs: [{ name: '_version', internalType: 'uint256', type: 'uint256' }],
+    stateMutability: 'pure',
+  },
+] as const
+
+export const oneTxPaymentAddress =
+  '0x777760996135f0791e2E1A74AFaA060711197782' as const
+
+export const oneTxPaymentConfig = {
+  address: oneTxPaymentAddress,
+  abi: oneTxPaymentAbi,
+} as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ProxyColony
@@ -4981,12 +5329,12 @@ export const proxyColonyAbi = [
     outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
     stateMutability: 'view',
   },
-] as const;
+] as const
 
 export const proxyColonyAddress =
-  '0x777760996135F0791E2E1a74AFaA060711197781' as const;
+  '0x777760996135F0791E2E1a74AFaA060711197781' as const
 
 export const proxyColonyConfig = {
   address: proxyColonyAddress,
   abi: proxyColonyAbi,
-} as const;
+} as const

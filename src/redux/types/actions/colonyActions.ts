@@ -30,6 +30,7 @@ export type OneTxPaymentPayload = {
   colonyAddress: Address;
   domainId: number;
   customActionTitle: string;
+  chainId: string;
   payments: {
     recipientAddress: string;
     amount: string;
