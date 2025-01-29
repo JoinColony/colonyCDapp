@@ -35,7 +35,7 @@ const GANACHE_NETWORK_1 = {
 };
 
 const GANACHE_NETWORK_2 = {
-  chainId: '265669101',
+  chainId: '265669102',
   rpcUrl: 'http://network-contracts-remote-2:8545',
 };
 
