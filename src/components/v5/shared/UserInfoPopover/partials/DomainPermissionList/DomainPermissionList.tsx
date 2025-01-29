@@ -36,7 +36,7 @@ const DomainPermissionList: FC<DomainPermissionListProps> = ({
   return (
     <div
       className={clsx(`flex flex-col pr-6 sm:overflow-hidden sm:pr-3.5`, {
-        'pl-[22px]': isTopContributorType,
+        'pl-5.5': isTopContributorType,
         'pl-[23px]': !isTopContributorType,
       })}
     >

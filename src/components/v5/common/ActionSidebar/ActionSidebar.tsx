@@ -184,7 +184,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           isolate
           z-sidebar
           flex
-          h-[calc(100vh-var(--top-content-height))]
+          h-[calc(100dvh-var(--top-content-height))]
           w-full
           flex-col
           border
@@ -195,7 +195,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           transition-[max-width]
           md:bottom-0
           md:top-[calc(var(--top-content-height)+16px)]
-          md:h-[calc(100vh-var(--top-content-height)-2rem)]
+          md:h-[calc(100dvh-var(--top-content-height)-2rem)]
           md:w-[calc(100vw-248px)]
           md:rounded-l-lg
         `,

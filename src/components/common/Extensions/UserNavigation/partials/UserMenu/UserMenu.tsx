@@ -70,11 +70,11 @@ const UserMenu: FC<UserMenuProps> = ({
       tooltipProps={tooltipProps}
       withTooltipStyles={!isTablet}
       className={clsx(
-        'w-full overflow-hidden bg-base-white p-6 md:w-80 md:rounded-lg md:border md:border-gray-100 md:shadow-default',
+        '!h-dynamic-screen w-full overflow-auto bg-base-white p-6 sm:h-auto md:w-80 md:rounded-lg md:border md:border-gray-100 md:shadow-default',
         {
-          '!top-[calc(var(--header-nav-section-height))] h-[calc(100vh-var(--top-content-height))] !translate-y-0':
+          '!top-[calc(var(--header-nav-section-height))] !translate-y-0':
             isTablet && isActionSidebarOpen,
-          '!top-[calc(var(--header-nav-section-height)+var(--top-content-height))] h-[calc(100vh-var(--top-content-height))] !translate-y-0':
+          '!top-[calc(var(--header-nav-section-height)+var(--top-content-height))] !translate-y-0':
             isTablet && !isActionSidebarOpen,
         },
       )}

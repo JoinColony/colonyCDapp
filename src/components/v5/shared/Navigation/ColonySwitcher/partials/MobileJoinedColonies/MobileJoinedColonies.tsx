@@ -54,7 +54,7 @@ const MobileJoinedColonies = () => {
           /** Unfortunately, it's a bit tricky to string interpolate tailwind classes */
           className={clsx(
             'top-[calc(var(--header-nav-section-height)+var(--top-content-height))]',
-            'fixed left-0 z-userNavModal flex h-[calc(100vh-var(--header-nav-section-height)-var(--top-content-height))] w-full flex-col justify-between rounded-none bg-base-white',
+            'fixed left-0 z-userNavModal flex h-dynamic-screen w-full flex-col justify-between rounded-none bg-base-white',
           )}
         >
           <div className="flex h-fit w-full flex-col overflow-y-auto">
