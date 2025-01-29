@@ -10,6 +10,7 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
+import useLocalStorage from 'use-local-storage';
 
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useGetUserByAddressLazyQuery } from '~gql';
@@ -32,8 +33,15 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   // and the first render is important here
   const [walletConnecting, setWalletConnecting] = useState(false);
   const { setShowAuthFlow, handleLogOut, primaryWallet } = useDynamicContext();
-
   const [getUserByAddress] = useGetUserByAddressLazyQuery();
+  const [autoConnectedWalletType] = useLocalStorage(
+    'dynamic_connected_wallets',
+    undefined,
+  );
+  const [autoConnectedWalletAddress] = useLocalStorage(
+    'dynamic_connected_wallet_ns',
+    undefined,
+  );
 
   const {
     joinedColonies,
@@ -294,6 +302,8 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       joinedColonies,
       joinedColoniesLoading,
       refetchJoinedColonies,
+      willWalletAutoConnect:
+        autoConnectedWalletType && autoConnectedWalletAddress,
     }),
     [
       wallet,
@@ -307,6 +317,8 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       joinedColonies,
       joinedColoniesLoading,
       refetchJoinedColonies,
+      autoConnectedWalletType,
+      autoConnectedWalletAddress,
     ],
   );
 
