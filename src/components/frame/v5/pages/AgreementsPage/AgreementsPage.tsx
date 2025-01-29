@@ -1,13 +1,14 @@
 import { Binoculars, FilePlus } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import React, { type FC } from 'react';
+import { useSelector } from 'react-redux';
 
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
-import { getDraftDecisionFromLocalStorage } from '~utils/decisions.ts';
+import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
@@ -42,9 +43,8 @@ const AgreementsPage: FC = () => {
     !!activeFilters.motionStates ||
     !!activeFilters.search;
 
-  const draftAgreement = getDraftDecisionFromLocalStorage(
-    user?.walletAddress || '',
-    colonyAddress,
+  const draftAgreement = useSelector(
+    getDraftDecisionFromStore(user?.walletAddress || '', colonyAddress),
   );
 
   const passedAgreements = searchedAgreements.filter(
