@@ -9,8 +9,12 @@ import { type FileReaderFile } from '~utils/fileReader/types.ts';
 import {
   DropzoneErrors,
   getFileRejectionErrors,
+  validateMinimumFileDimensions,
 } from '~v5/common/AvatarUploader/utils.ts';
 
+/**
+ * @todo Investigate if it's sensible to unify useAvatarUploader & useChangeColonyAvatar
+ */
 export const useChangeColonyAvatar = () => {
   const [modalValue, setModalValue] = useState<{
     image: string;
@@ -27,26 +31,31 @@ export const useChangeColonyAvatar = () => {
   const handleFileAccept = async (uploadedFile: FileReaderFile) => {
     if (!uploadedFile) return;
 
-    setAvatarFileError(undefined);
-
     try {
+      const { file } = uploadedFile;
+
+      setAvatarFileError(undefined);
       setIsLoading(true);
 
-      const optimisedImage = await getOptimisedAvatarUnder300KB(
-        uploadedFile.file,
-      );
-      const optimisedThumbnail = await getOptimisedThumbnail(uploadedFile.file);
+      const optimisedImage = await getOptimisedAvatarUnder300KB(file);
+      const optimisedThumbnail = await getOptimisedThumbnail(file);
 
       if (!optimisedImage) {
         return;
       }
 
+      await validateMinimumFileDimensions(file);
+
       setModalValue({
         image: optimisedImage,
         thumbnail: optimisedThumbnail,
       });
-    } catch (e) {
-      setAvatarFileError(DropzoneErrors.DEFAULT);
+    } catch (error) {
+      if (error.message === DropzoneErrors.DIMENSIONS_TOO_SMALL) {
+        setAvatarFileError(DropzoneErrors.DIMENSIONS_TOO_SMALL);
+      } else {
+        setAvatarFileError(DropzoneErrors.DEFAULT);
+      }
     } finally {
       setIsLoading(false);
     }

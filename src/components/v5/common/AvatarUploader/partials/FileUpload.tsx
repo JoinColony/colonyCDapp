@@ -27,7 +27,7 @@ const FileUpload: FC<FileUploadProps> = ({
     getRootProps,
     open,
     isDragReject,
-    fileRejections,
+    processedFiles,
     isDragAccept,
   } = useDropzoneWithFileReader({
     dropzoneOptions: {
@@ -70,7 +70,7 @@ const FileUpload: FC<FileUploadProps> = ({
       errorCode={errorCode}
       handleFileRemove={handleFileRemove}
       open={open}
-      fileRejections={fileRejections?.[0]?.file?.name}
+      processedFile={processedFiles?.[0]?.name}
     />
   );
 

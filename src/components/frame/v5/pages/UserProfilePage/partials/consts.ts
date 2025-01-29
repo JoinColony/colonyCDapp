@@ -1,6 +1,6 @@
 export const profileFileOptions = {
   fileFormat: ['.PNG', '.JPG', '.SVG'],
-  fileDimension: '250x250px',
+  fileDimension: '120x120px',
   fileSize: '1MB',
 };
 

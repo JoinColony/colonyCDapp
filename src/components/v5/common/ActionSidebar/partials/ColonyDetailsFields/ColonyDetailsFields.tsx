@@ -62,7 +62,7 @@ const ColonyDetailsFields: FC = () => {
             name="avatar"
             fileOptions={{
               fileFormat: ['.PNG', '.JPG', '.SVG'],
-              fileDimension: '250x250px',
+              fileDimension: '120x120px',
               fileSize: '1MB',
             }}
             disabled={hasNoDecisionMethods}
