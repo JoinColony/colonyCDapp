@@ -24,6 +24,10 @@ import motionStatesMessages from './i18n/en-motion-states.ts';
 import systemMessages from './i18n/en-system-messages.ts';
 import messages from './i18n/en.json';
 import Routes from './routes/index.ts';
+import {
+  dynamicCssOverridesLight,
+  dynamicCssOverridesDark,
+} from './styles/dynamicOverrides.ts';
 
 interface Props {
   store: any;
@@ -69,11 +73,9 @@ const Entry = ({ store }: Props) => {
         ],
         // Since we can't use the shadow Dom override for css styling, since that breaks the skeleton loader
         // we have to resort to this method to override the css, which is very verbose
-        cssOverrides: isDarkMode ? (
-          <link rel="stylesheet" href="/src/styles/dynamicOverridesDark.css" />
-        ) : (
-          <link rel="stylesheet" href="/src/styles/dynamicOverridesLight.css" />
-        ),
+        cssOverrides: isDarkMode
+          ? dynamicCssOverridesDark
+          : dynamicCssOverridesLight,
         overrides: {
           evmNetworks: (networks) => {
             // Only needed for embedded wallets
