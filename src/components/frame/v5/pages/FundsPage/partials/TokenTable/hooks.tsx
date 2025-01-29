@@ -2,8 +2,6 @@ import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { BigNumber } from 'ethers';
 import React, { useCallback, useMemo } from 'react';
 
-import { DEFAULT_NETWORK_INFO } from '~constants';
-import { ActionTypes } from '~redux';
 import Numeral from '~shared/Numeral/index.ts';
 import { type ColonyClaims } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
@@ -23,18 +21,14 @@ export const useTokenTableColumns = (): ColumnDef<ColonyClaims, string>[] => {
     }
 
     if (!BigNumber.from(claim.amount).isZero()) {
-      const claimChainId = claim.token?.chainMetadata.chainId;
-      const isClaimForDefaultNetworkChain =
-        !claimChainId || DEFAULT_NETWORK_INFO.chainId === claimChainId;
       return (
         <AcceptButton
-          actionType={
-            isClaimForDefaultNetworkChain
-              ? ActionTypes.CLAIM_TOKEN
-              : ActionTypes.PROXY_COLONY_CLAIM_TOKEN
-          }
-          chainId={claimChainId}
-          tokenAddresses={[claim.token?.tokenAddress || '']}
+          tokenAddressesGroupedByChain={[
+            {
+              chainId: claim.token?.chainMetadata.chainId,
+              tokenAddresses: [claim.token?.tokenAddress || ''],
+            },
+          ]}
         >
           {formatText({ id: 'button.accept' })}
         </AcceptButton>

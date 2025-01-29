@@ -38,7 +38,10 @@ export interface FilterProps<TValue extends FilterValue> {
 
 export interface ExtendedFilterProps<TValue extends FilterValue>
   extends FilterProps<TValue> {
-  unclaimedClaims: string[];
+  tokenAddressesGroupedByChain: {
+    chainId: string;
+    tokenAddresses: string[];
+  }[];
   isButtonDisabled?: boolean;
   shouldShowButton?: boolean;
 }

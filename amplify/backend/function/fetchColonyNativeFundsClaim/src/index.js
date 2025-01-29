@@ -63,7 +63,7 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
     provider,
   );
 
-  const colonyFundsClaim = {
+  let colonyFundsClaim = {
     __typeName: 'ColonyFundsClaim',
     amount: BigNumber.from(0).toString(),
     id: `${chainId}_${constants.AddressZero}_0`,

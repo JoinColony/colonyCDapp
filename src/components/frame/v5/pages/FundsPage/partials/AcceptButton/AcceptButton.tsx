@@ -1,24 +1,32 @@
-import React, { type FC, useState } from 'react';
+import React, { type FC, type PropsWithChildren, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useIncomingFundsLoadingContext } from '~frame/v5/pages/FundsPage/context/IncomingFundsLoadingContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
-
-import { type AcceptButtonProps } from './types.ts';
+import { type ButtonProps } from '~v5/shared/Button/types.ts';
 
 const displayName = 'pages.FundsPage.partials.AcceptButton';
 
-const AcceptButton: FC<AcceptButtonProps> = ({
-  tokenAddresses,
+interface AcceptButtonProps extends Pick<ButtonProps, 'disabled'> {
+  tokenAddressesGroupedByChain: {
+    chainId?: string;
+    tokenAddresses: string[];
+  }[];
+}
+
+const AcceptButton: FC<AcceptButtonProps & PropsWithChildren> = ({
+  tokenAddressesGroupedByChain,
   children,
   disabled,
-  chainId,
-  actionType = ActionTypes.CLAIM_TOKEN,
-  ...rest
 }) => {
   const { colony, canInteractWithColony } = useColonyContext();
   const [isClaimed, setIsClaimed] = useState(false);
+  const allTokenAddresses = [
+    ...new Set(
+      tokenAddressesGroupedByChain.flatMap((group) => group.tokenAddresses),
+    ),
+  ];
 
   const {
     isAcceptLoading,
@@ -33,23 +41,21 @@ const AcceptButton: FC<AcceptButtonProps> = ({
 
     return {
       colonyAddress: colony?.colonyAddress,
-      tokenAddresses,
-      chainId,
+      tokenAddressesGroupedByChain,
     };
   };
 
   const handleClaimSuccess = () => {
     setIsClaimed(true);
-    setPendingFundsTokenAddresses(tokenAddresses);
+    setPendingFundsTokenAddresses(allTokenAddresses);
   };
 
   const isBtnDisabled =
     disabled || !canInteractWithColony || isClaimed || isAcceptLoading;
-  // @Note: need to check how to differentiate between the ActionTypes.PROXY_COLONY_CLAIM_TOKEN and ActionTypes.CLAIM_TOKEN
+
   return (
     <ActionButton
-      {...rest}
-      actionType={actionType}
+      actionType={ActionTypes.CLAIM_TOKENS_ON_CHAINS}
       onSuccess={handleClaimSuccess}
       onError={reset}
       disabled={isBtnDisabled}
