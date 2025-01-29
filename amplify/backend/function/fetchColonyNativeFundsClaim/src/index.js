@@ -125,10 +125,6 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
         id: `${proxyChainId}_${constants.AddressZero}_0`,
         createdAt: now,
         updatedAt: now,
-        // @TODO: should this use the proxy chain block or main chain block?
-        // I think in the case of native chain tokens it does not matter as it is only used to
-        // order claims in the incoming funds table, but native chain tokens are summed together anyway
-        // We should align this with how we handle other token claims in the block-ingestor once that is done
         createdAtBlock: proxyBlock,
       };
 
