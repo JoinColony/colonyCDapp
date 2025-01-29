@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+import { isNaN } from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { type InferType, number, object, string } from 'yup';
@@ -62,12 +63,14 @@ export const useValidationSchema = () => {
     () =>
       object()
         .shape({
-          member: string().required(),
+          member: string().required(
+            formatText({ id: 'errors.member.required' }),
+          ),
           amount: string()
-            .required()
+            .required(formatText({ id: 'errors.value.greaterThanZero' }))
             .test(
               'more-than-zero',
-              formatText({ id: 'errors.amount' }),
+              formatText({ id: 'errors.value.greaterThanZero' }),
               (value) => moreThanZeroAmountValidation(value, colony),
             )
             .test(
@@ -87,9 +90,15 @@ export const useValidationSchema = () => {
                 });
               },
             ),
-          modification: string().required(),
-          team: number().required(),
-          decisionMethod: string().defined(),
+          modification: string().required(
+            formatText({ id: 'errors.modification.required' }),
+          ),
+          team: number()
+            .transform((value) => (isNaN(value) ? undefined : value))
+            .required(formatText({ id: 'errors.domain' })),
+          decisionMethod: string().required(
+            formatText({ id: 'errors.decisionMethod.required' }),
+          ),
           createdIn: number().required(),
           description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
         })

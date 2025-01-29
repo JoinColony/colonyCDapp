@@ -16,6 +16,7 @@ import ActionFormRow from '../ActionFormRow/index.ts';
 import { ACTION_TYPE_FIELD_NAME, NON_RESETTABLE_FIELDS } from './consts.ts';
 import useActionsList from './hooks/useActionsList.ts';
 import { useActiveActionType } from './hooks/useActiveActionType.ts';
+import { useInputsOrderContext } from './partials/ActionSidebarContent/InputsOrderContext/InputsOrderContext.ts';
 import { translateAction } from './utils.ts';
 
 const displayName = 'v5.common.ActionTypeSelect';
@@ -26,6 +27,7 @@ interface ActionTypeSelectProps {
 
 const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
   const actionsList = useActionsList();
+  const { unregisterInputs } = useInputsOrderContext();
   const [nextActionType, setNextActionType] = useState<string | undefined>(
     undefined,
   );
@@ -132,6 +134,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
                   }
 
                   onChange(action);
+                  unregisterInputs();
                 }}
               />
             )}
@@ -148,6 +151,8 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
         onConfirm={() => {
           reset(defaultValues);
           setNextActionType(undefined);
+          onChange(nextActionType);
+          unregisterInputs();
         }}
         icon={WarningCircle}
         buttonMode="primarySolid"

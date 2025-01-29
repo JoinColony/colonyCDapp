@@ -10,7 +10,7 @@ export const validationSchema = object()
   .shape({
     createdIn: number().defined(),
     decisionMethod: string().required(
-      formatText({ id: 'errors.decisionMethod.defined' }),
+      formatText({ id: 'errors.decisionMethod.required' }),
     ),
     selectedTokenAddresses: array()
       .of(

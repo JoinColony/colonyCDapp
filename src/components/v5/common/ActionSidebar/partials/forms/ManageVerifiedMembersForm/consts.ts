@@ -26,14 +26,16 @@ export const getManageMembersOptions = (): {
 export const validationSchema = object()
   .shape({
     createdIn: number().defined(),
-    decisionMethod: string().defined(),
+    decisionMethod: string().required(
+      formatText({ id: 'errors.decisionMethod.required' }),
+    ),
     description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
     members: array().of(
       object().shape({
         value: string().required('Please select a member'),
       }),
     ),
-    manageMembers: string().defined(),
+    manageMembers: string().required(),
   })
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);

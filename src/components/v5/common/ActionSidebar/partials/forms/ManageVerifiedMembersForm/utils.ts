@@ -24,7 +24,9 @@ export const getValidationSchema = (
   object()
     .shape({
       createdIn: number().defined(),
-      decisionMethod: string().defined(),
+      decisionMethod: string().required(
+        formatText({ id: 'errors.decisionMethod.required' }),
+      ),
       description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
       members: array().of(
         object()
@@ -40,7 +42,9 @@ export const getValidationSchema = (
             return !addressBlacklist.includes(value.value);
           }),
       ),
-      manageMembers: string().defined(),
+      manageMembers: string().required(
+        formatText({ id: 'errors.manageMembers.required' }),
+      ),
     })
     .defined()
     .concat(ACTION_BASE_VALIDATION_SCHEMA);

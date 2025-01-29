@@ -8,7 +8,9 @@ export const validationSchema = object()
     title: string()
       .trim()
       .required(() => 'Please enter a title.'),
-    decisionMethod: string().defined(),
+    decisionMethod: string().required(
+      formatText({ id: 'errors.decisionMethod.required' }),
+    ),
     transactions: array()
       .of(
         object()
@@ -29,7 +31,7 @@ export const validationSchema = object()
           })
           .defined(),
       )
-      .required(),
+      .required(formatText({ id: 'errors.transactions.required' })),
   })
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);
