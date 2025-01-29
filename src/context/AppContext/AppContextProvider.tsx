@@ -25,6 +25,17 @@ import { TokenActivationProvider } from '../TokenActivationContext/TokenActivati
 
 import { AppContext, type AppContextValue } from './AppContext.ts';
 
+enum DynamicLocalStorageKeys {
+  CONNECTED_WALLETS = 'dynamic_connected_wallets',
+  CONNECTED_WALLET_NS = 'dynamic_connected_wallet_ns',
+  STORE = 'dynamic_store',
+  SOCIAL_STORAGE = 'dynamic_social_storage',
+  LAST_USED_WALLET = 'dynamic_last_used_wallet',
+  DEVICE_FINGERPRINT = 'dynamic_device_fingerprint',
+  CONTEXT_SESSION_SETTINGS = 'dynamic_context_session_settings',
+  TURNKEY_LAST_USED_CHAIN_ID = 'turnkey-last-used-chain-id',
+}
+
 const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [wallet, setWallet] = useState<AppContextValue['wallet']>();
   const [user, setUser] = useState<AppContextValue['user']>();
@@ -35,12 +46,15 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const { setShowAuthFlow, handleLogOut, primaryWallet } = useDynamicContext();
   const [getUserByAddress] = useGetUserByAddressLazyQuery();
   const [autoConnectedWalletType] = useLocalStorage(
-    'dynamic_connected_wallets',
+    DynamicLocalStorageKeys.CONNECTED_WALLETS,
     undefined,
   );
   const [autoConnectedWalletAddress] = useLocalStorage(
-    'dynamic_connected_wallet_ns',
+    DynamicLocalStorageKeys.CONNECTED_WALLET_NS,
     undefined,
+  );
+  const [willWalletAutoConnect, setWillWalletAutoConnect] = useState(
+    (autoConnectedWalletType && autoConnectedWalletAddress) || false,
   );
 
   const {
@@ -121,6 +135,8 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
         setWallet(dynamicWallet);
 
+        setWillWalletAutoConnect(true);
+
         setWalletConnecting(false);
       }
     } catch (error) {
@@ -155,16 +171,33 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [setupUserContext, setWallet, setUser, setWalletConnecting, handleLogOut]);
 
+  const clearDynamicWalletStorage = useCallback(() => {
+    localStorage.removeItem(DynamicLocalStorageKeys.STORE);
+    localStorage.removeItem(DynamicLocalStorageKeys.SOCIAL_STORAGE);
+    localStorage.removeItem(DynamicLocalStorageKeys.LAST_USED_WALLET);
+    localStorage.removeItem(DynamicLocalStorageKeys.DEVICE_FINGERPRINT);
+    localStorage.removeItem(DynamicLocalStorageKeys.CONTEXT_SESSION_SETTINGS);
+    localStorage.removeItem(DynamicLocalStorageKeys.TURNKEY_LAST_USED_CHAIN_ID);
+    debugLogging('WALLET STORAGE CLEARED');
+  }, []);
+
+  const clearDynamicWalletAutoLogin = useCallback(() => {
+    localStorage.removeItem(DynamicLocalStorageKeys.CONNECTED_WALLETS);
+    localStorage.removeItem(DynamicLocalStorageKeys.CONNECTED_WALLET_NS);
+    debugLogging('WALLET AUTOLOGIN CLEARED');
+  }, []);
+
   /*
-   * Trigger wallet connection
+   * Manually Trigger Wallet Connection by pressing the "Connect Wallet" button
    */
   const connectWallet = useCallback(async () => {
     try {
+      clearDynamicWalletStorage();
       setShowAuthFlow(true);
     } catch (error) {
       debugLogging('WALLET COULD NOT BE CONNECTED', error);
     }
-  }, [setShowAuthFlow]);
+  }, [clearDynamicWalletStorage, setShowAuthFlow]);
 
   /*
    * Handle wallet disconnection
@@ -173,8 +206,11 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     async ({ shouldRemoveWalletContext = true } = {}) => {
       try {
         setWalletConnecting(true);
+        clearDynamicWalletAutoLogin();
+        setWillWalletAutoConnect(false);
         await userLogout({ shouldRemoveWalletContext });
         await handleLogOut();
+
         setWalletConnecting(false);
       } catch (error) {
         console.error('Could not disconnect wallet', error);
@@ -183,7 +219,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       setWallet(null);
       setUser(null);
     },
-    [setWallet, setUser, userLogout, handleLogOut],
+    [clearDynamicWalletAutoLogin, userLogout, handleLogOut],
   );
 
   // Embedded Wallet Logout
@@ -302,8 +338,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       joinedColonies,
       joinedColoniesLoading,
       refetchJoinedColonies,
-      willWalletAutoConnect:
-        autoConnectedWalletType && autoConnectedWalletAddress,
+      willWalletAutoConnect,
     }),
     [
       wallet,
@@ -317,8 +352,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       joinedColonies,
       joinedColoniesLoading,
       refetchJoinedColonies,
-      autoConnectedWalletType,
-      autoConnectedWalletAddress,
+      willWalletAutoConnect,
     ],
   );
 
