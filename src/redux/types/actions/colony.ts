@@ -30,6 +30,23 @@ export type ColonyActionTypes =
       object
     >
   | UniqueActionType<
+      ActionTypes.CLAIM_TOKENS_ON_CHAINS,
+      {
+        tokenAddressesGroupedByChain: {
+          chainId?: string;
+          tokenAddresses: `0x${string}`[];
+        }[];
+        colonyAddress: Address;
+      },
+      object
+    >
+  | ErrorActionType<ActionTypes.CLAIM_TOKENS_ON_CHAINS_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.CLAIM_TOKENS_ON_CHAINS_SUCCESS,
+      { params: { tokenAddresses: Address[] } },
+      object
+    >
+  | UniqueActionType<
       ActionTypes.CREATE,
       {
         colonyName: string;

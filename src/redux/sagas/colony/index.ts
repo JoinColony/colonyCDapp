@@ -16,6 +16,7 @@ import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 export { default as colonyCreateSaga } from './colonyCreate.ts';
 export { default as colonyFinishCreate } from './colonyFinishCreate.ts';
 
+// @TODO this might need to be removed in favour of colonyClaimFunds saga, though it implies some refactoring
 function* colonyClaimToken({
   payload: { colonyAddress, tokenAddresses },
   meta,
