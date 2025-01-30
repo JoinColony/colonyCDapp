@@ -1,7 +1,17 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
-import { type ColonyManager } from '~context/index.ts';
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
+import {
+  ContextModule,
+  getContext,
+  type ColonyManager,
+} from '~context/index.ts';
+import {
+  type UpdateColonyActionMutation,
+  type UpdateColonyActionMutationVariables,
+  UpdateColonyActionDocument,
+} from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { transactionSetParams } from '~state/transactionState.ts';
 
@@ -165,12 +175,6 @@ function* createExpenditure({
         }),
     });
 
-    if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, {
-        customTitle: customActionTitle,
-      });
-    }
-
     if (isStaged) {
       yield takeFrom(
         setExpenditureStaged.channel,
@@ -189,6 +193,32 @@ function* createExpenditure({
         txChannel: annotateMakeExpenditure,
         message: annotationMessage,
         txHash,
+      });
+    }
+
+    const apolloClient = getContext(ContextModule.ApolloClient);
+
+    // By default, actions with the CREATE_EXPENDITURE type are not shown in the actions list.
+    // If an action is being made in this saga and has reached this state (i.e. was successfully created) then it should be shown.
+    // This stops half formed expenditures from showing in the actions list, and also stops expenditures made for funding from being shown.
+    yield mutateWithAuthRetry(() =>
+      apolloClient.mutate<
+        UpdateColonyActionMutation,
+        UpdateColonyActionMutationVariables
+      >({
+        mutation: UpdateColonyActionDocument,
+        variables: {
+          input: {
+            id: txHash,
+            showInActionsList: true,
+          },
+        },
+      }),
+    );
+
+    if (customActionTitle) {
+      yield createActionMetadataInDB(txHash, {
+        customTitle: customActionTitle,
       });
     }
 
