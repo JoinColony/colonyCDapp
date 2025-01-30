@@ -113,6 +113,23 @@ export type StreamingPaymentsMotionEditPayload = EditStreamingPaymentPayload & {
   annotationMessage?: string;
 };
 
+export type StreamingPaymentsMotionCreatePayload = {
+  colonyAddress: Address;
+  createdInDomain: Domain;
+  recipientAddress: Address;
+  tokenAddress: Address;
+  tokenDecimals: number;
+  amount: string;
+  startTimestamp: string;
+  endTimestamp?: string;
+  interval: number;
+  endCondition: StreamingPaymentEndCondition;
+  limitAmount?: string;
+  annotationMessage?: string;
+  votingReputationAddress: Address;
+  motionDomainId: number;
+};
+
 export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_STAKE,
@@ -541,22 +558,12 @@ export type MotionActionTypes =
     >
   | UniqueActionType<
       ActionTypes.MOTION_STREAMING_PAYMENT_CREATE,
-      {
-        colonyAddress: Address;
-        createdInDomain: Domain;
-        recipientAddress: Address;
-        tokenAddress: Address;
-        tokenDecimals: number;
-        amount: string;
-        startTimestamp: number;
-        endTimestamp?: number;
-        interval: number;
-        endCondition: StreamingPaymentEndCondition;
-        limitAmount?: string;
-        annotationMessage?: string;
-        votingReputationAddress: Address;
-        motionDomainId: number;
-      },
+      StreamingPaymentsMotionCreatePayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_SUCCESS,
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_ERROR, object>

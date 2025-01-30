@@ -26,7 +26,7 @@ import { type Action } from '~redux/types/index.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 export type CreateStreamingPaymentMotionPayload =
-  Action<ActionTypes.MOTION_CREATE_STREAMING_PAYMENT>['payload'];
+  Action<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE>['payload'];
 
 // @TODO: Figure out a more appropriate way of getting this
 const TIMESTAMP_IN_FUTURE = 2_000_000_000;
@@ -48,7 +48,7 @@ function* createStreamingPaymentMotion({
   },
   meta,
   meta: { setTxHash },
-}: Action<ActionTypes.MOTION_CREATE_STREAMING_PAYMENT>) {
+}: Action<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE>) {
   const batchKey = 'createMotion';
 
   const { createMotion, annotateMotion } = yield call(
@@ -139,7 +139,7 @@ function* createStreamingPaymentMotion({
         params: [
           motionDomainId,
           childSkillIndex,
-          ADDRESS_ZERO,
+          streamingPaymentsClient.address,
           encodedAction,
           key,
           value,
@@ -168,9 +168,10 @@ function* createStreamingPaymentMotion({
     }
 
     const {
-      type,
-      payload: { transactionHash: txHash },
-    } = yield call(waitForTxResult, createMotion.channel);
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(createMotion.channel);
 
     setTxHash?.(txHash);
 
@@ -182,29 +183,21 @@ function* createStreamingPaymentMotion({
       });
     }
 
-    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS>>({
-        type: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS,
-        meta,
-      });
+    yield put({
+      type: ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_SUCCESS,
+      meta,
+    });
 
-      // @TODO: Remove during advanced payments UI wiring
-      // eslint-disable-next-line no-console
-      console.log(
-        `Create Streaming Payment Motion URL: ${APP_URL}${window.location.pathname.slice(
-          1,
-        )}?tx=${txHash}`,
-      );
-    }
-
-    window.history.replaceState(
-      {},
-      '',
-      `${APP_URL}${window.location.pathname.slice(1)}?tx=${txHash}`,
+    // @TODO: Remove during advanced payments UI wiring
+    // eslint-disable-next-line no-console
+    console.log(
+      `Create Streaming Payment Motion URL: ${APP_URL}${window.location.pathname.slice(
+        1,
+      )}?tx=${txHash}`,
     );
   } catch (e) {
     console.error(e);
-    yield putError(ActionTypes.MOTION_CREATE_STREAMING_PAYMENT_ERROR, e, meta);
+    yield putError(ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_ERROR, e, meta);
   } finally {
     createMotion.channel.close();
     annotateMotion.channel.close();
@@ -213,7 +206,7 @@ function* createStreamingPaymentMotion({
 
 export default function* createStreamingPaymentMotionSaga() {
   yield takeEvery(
-    ActionTypes.MOTION_CREATE_STREAMING_PAYMENT,
+    ActionTypes.MOTION_STREAMING_PAYMENT_CREATE,
     createStreamingPaymentMotion,
   );
 }
