@@ -30,6 +30,10 @@ const MSG = defineMessages({
     id: `${displayName}.customError`,
     defaultMessage: 'Upload failed, please try again',
   },
+  contentTooLarge: {
+    id: `${displayName}.contentTooLarge`,
+    defaultMessage: 'File exceeds {fileDimension}. Reduce and try again',
+  },
   wrongStructure: {
     id: `${displayName}.wrongStructure`,
     defaultMessage: 'File structure is incorrect, please try again',
@@ -40,7 +44,7 @@ const MSG = defineMessages({
   },
   fileMinDimensionsError: {
     id: `${displayName}.fileMinDimensionsError`,
-    defaultMessage: 'Image dimensions should be at least 120x120px',
+    defaultMessage: 'Image dimensions should be at least {fileDimension}',
   },
 });
 
@@ -54,6 +58,7 @@ export enum DropzoneErrors {
   TOO_LARGE = 'file-too-large',
   // TOO_SMALL = 'file-too-small', // wire in as needed
   // TOO_MANY = 'too-many-files',
+  CONTENT_TOO_LARGE = 'content-too-large',
   STRUCTURE = 'wrong-structure',
   CUSTOM = 'custom-error',
   DEFAULT = 'default',
@@ -76,6 +81,9 @@ export const getErrorMessage = (errorCode: DropzoneErrors) => {
     }
     case DropzoneErrors.CUSTOM: {
       return MSG.customError;
+    }
+    case DropzoneErrors.CONTENT_TOO_LARGE: {
+      return MSG.contentTooLarge;
     }
     case DropzoneErrors.STRUCTURE: {
       return MSG.wrongStructure;

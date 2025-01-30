@@ -40,6 +40,7 @@ const FileUploadModal: FC<FileUploadModalProps> = ({
     handleFileRemove,
     progress,
     file,
+    previouslyAttemptedFileName,
   } = useUploadCSVFile(handleFileUpload);
 
   return (
@@ -99,7 +100,8 @@ const FileUploadModal: FC<FileUploadModalProps> = ({
             fileSize: '2MB',
           }}
           errorCode={fileError}
-          isAvatarUploaded={!!parsedFileValue}
+          fallbackFileName={previouslyAttemptedFileName}
+          isFileUploaded={!!parsedFileValue}
         />
       )}
       {progress === 100 && (

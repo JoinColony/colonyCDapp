@@ -1866,7 +1866,7 @@
     "milestoneModal.paymentCreatorDescription": "This will use your temporary permissions as the payment creator to immediately make the selected milestone payments.",
     "milestoneModal.multiSig": "This will start the approval process using multi-sig permissions to make the decision, for making the selected milestone payments.",
     "fileUploadModal.title": "Upload CSV",
-    "fileUploadModal.description": "Bulk upload recipients using a CSV. Use the template to ensure the correct structure, be sure to remove the sample data.",
+    "fileUploadModal.description": "Bulk upload up to 400 recipients using a CSV. Use the template to ensure the correct structure, be sure to remove the sample data.",
     "fileUploadModal.uploadFile": "Upload CSV File",
     "fileUploadModal.downloadTemplate": "Download .CSV template",
     "fileUploadModal.warningImportant": "Important: ",

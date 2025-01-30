@@ -4,7 +4,10 @@ import { useIntl } from 'react-intl';
 
 import { TextButton } from '~v5/shared/Button/index.ts';
 
-import { type ErrorContentProps } from '../types.ts';
+import {
+  type ErrorContentProps,
+  type FileUploadMessageValues,
+} from '../types.ts';
 import { DropzoneErrors, getErrorMessage } from '../utils.ts';
 
 const displayName = 'v5.common.AvatarUploader.partials.ErrorContent';
@@ -14,6 +17,7 @@ const ErrorContent: FC<ErrorContentProps> = ({
   handleFileRemove,
   open,
   processedFile,
+  fileOptions,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -34,7 +38,10 @@ const ErrorContent: FC<ErrorContentProps> = ({
       <div className="flex w-full flex-col gap-1">
         <div className="items-top flex justify-between gap-2">
           <span className=" text-left text-negative-400 text-1">
-            {formatMessage(errorMessage)}
+            {formatMessage(
+              errorMessage,
+              fileOptions as FileUploadMessageValues,
+            )}
           </span>
           <button
             type="button"

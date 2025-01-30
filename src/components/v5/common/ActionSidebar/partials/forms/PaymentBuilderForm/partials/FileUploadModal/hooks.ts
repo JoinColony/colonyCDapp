@@ -1,5 +1,5 @@
 import Papa, { type ParseResult } from 'papaparse';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type FileRejection } from 'react-dropzone';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -73,9 +73,17 @@ export const useUploadCSVFile = (
 ) => {
   const [progress, setProgress] = useState(0);
   const [file, setFile] = useState<FileReaderFile | undefined>();
+  const [previouslyAttemptedFileName, setPreviouslyAttemptedFileName] =
+    useState<string | undefined>();
   const [parsedFileValue, setParsedFileValue] =
     useState<ParseResult<ExpenditurePayoutFieldValue> | null>(null);
   const [fileError, setFileError] = useState<DropzoneErrors>();
+
+  useEffect(() => {
+    return () => {
+      setPreviouslyAttemptedFileName(undefined);
+    };
+  }, []);
 
   const handleFileRemove = async () => {
     setParsedFileValue(null);
@@ -98,6 +106,7 @@ export const useUploadCSVFile = (
 
     try {
       setFile(uploadedFile);
+      setPreviouslyAttemptedFileName(uploadedFile.name);
 
       Papa.parse(uploadedFile.file, {
         complete: (result: ParseResult<CSVFileItem>) => {
@@ -110,7 +119,7 @@ export const useUploadCSVFile = (
 
           // Max number of payments is 400, but the format requires two header rows
           if (truncatedData.length > 402) {
-            setError(DropzoneErrors.STRUCTURE);
+            setError(DropzoneErrors.CONTENT_TOO_LARGE);
             return;
           }
 
@@ -168,6 +177,7 @@ export const useUploadCSVFile = (
     handleFileRemove,
     progress,
     file,
+    previouslyAttemptedFileName,
   };
 };
 
