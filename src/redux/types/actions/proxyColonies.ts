@@ -45,19 +45,4 @@ export type ProxyColoniesActionTypes =
     >
   | ErrorActionType<ActionTypes.PROXY_COLONY_ENABLE_ERROR, object>
   | UniqueActionType<ActionTypes.PROXY_COLONY_ENABLE_SUCCESS, object, object>
-  | UniqueActionType<ActionTypes.PROXY_COLONY_ENABLE_SUCCESS, object, object>
-  | UniqueActionType<
-      ActionTypes.PROXY_COLONY_CLAIM_TOKEN,
-      {
-        tokenAddresses: `0x${string}`[];
-        colonyAddress: Address;
-        chainId: string;
-      },
-      MetaWithSetter<object>
-    >
-  | ErrorActionType<ActionTypes.PROXY_COLONY_CLAIM_TOKEN_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.PROXY_COLONY_CLAIM_TOKEN_SUCCESS,
-      { params: { tokenAddresses: Address[] } },
-      object
-    >;
+  | UniqueActionType<ActionTypes.PROXY_COLONY_ENABLE_SUCCESS, object, object>;

@@ -46,8 +46,6 @@ function* colonyClaimFunds({
     const colonyFundingContract: CustomContract<typeof colonyFundingAbi> =
       colonyManager.getCustomContract(colonyAddress, colonyFundingAbi);
 
-    // console.log(tokenAddressesGroupedByChain);
-
     const encodedTransactions = yield all(
       tokenAddressesGroupedByChain.flatMap((group) => {
         const { chainId, tokenAddresses } = group;
@@ -57,7 +55,6 @@ function* colonyClaimFunds({
           !chainId || chainId === DEFAULT_NETWORK_INFO.chainId;
 
         if (isOnMainChain) {
-          //   console.log(chainId, uniqueTokenAddresses);
           return uniqueTokenAddresses.map((tokenAddress) =>
             colonyFundingContract
               // This is necessary because there are multiple claimColonyFunds functions with different signatures
@@ -69,8 +66,6 @@ function* colonyClaimFunds({
               .encode(),
           );
         }
-
-        // console.log(chainId, uniqueTokenAddresses);
 
         return uniqueTokenAddresses.map((tokenAddress) =>
           colonyFundingContract
@@ -85,8 +80,6 @@ function* colonyClaimFunds({
         );
       }),
     );
-
-    // console.log(encodedTransactions);
 
     yield fork(createTransaction, claimFundsMulticall.id, {
       context: ClientType.ColonyClient,
