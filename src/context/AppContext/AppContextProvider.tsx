@@ -154,7 +154,12 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   const setUserContextWithErrorFallback = useCallback(async () => {
     try {
+      // Temporary! (Like all other permanant solutions)
+      // This will put the app in a loading state preventing the user from interacting
+      // with anything until they have authenticated with the auth proxy
+      setWalletConnecting(true);
       await setupUserContext(undefined);
+      setWalletConnecting(false);
     } catch (error) {
       // In case of error clear out the wallet and user (in the local state)
       // All the others are cleared by the `userLogout` saga call which is called
