@@ -1,38 +1,30 @@
 require('cross-fetch/polyfill');
-const { getColonyNetworkClient, Network } = require('@colony/colony-js');
 const {
   providers,
   utils: { Logger },
   constants: { AddressZero },
+  Contract,
 } = require('ethers');
 
 const { graphqlRequest } = require('./utils');
-const { getColony } = require('./queries');
+const { getColony, getProxyColonies } = require('./queries');
+const basicColonyAbi = require('./basicColonyAbi.json');
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
-let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
-let network = Network.Custom;
-let networkAddress;
+let rpcURL = 'http://network-contracts:8545';
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
   if (ENV === 'qa' || ENV === 'prod') {
     const { getParams } = require('/opt/nodejs/getParams');
-    [networkAddress, apiKey, graphqlURL, rpcURL, network] = await getParams([
-      'networkContractAddress',
+    [apiKey, graphqlURL, rpcURL] = await getParams([
       'appsyncApiKey',
       'graphqlUrl',
       'chainRpcEndpoint',
-      'chainNetwork',
     ]);
-  } else {
-    const {
-      etherRouterAddress,
-    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-    networkAddress = etherRouterAddress;
   }
 };
 
@@ -54,13 +46,35 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
       return { items: [] };
     }
 
-    const provider = new providers.StaticJsonRpcProvider(rpcURL);
-    const networkClient = getColonyNetworkClient(network, provider, {
-      networkAddress,
-      disableVersionCheck: true,
-    });
+    // Fetch proxy colony details
+    const getProxyColoniesResponse = await graphqlRequest(
+      getProxyColonies,
+      { colonyAddress },
+      graphqlURL,
+      apiKey,
+    );
 
-    const colonyClient = await networkClient.getColonyClient(colonyAddress);
+    if (getProxyColoniesResponse.errors || !getProxyColoniesResponse.data) {
+      const [error] = getProxyColoniesResponse.errors;
+      throw new Error(
+        error?.message || 'Could not fetch proxy colony data from DynamoDB',
+      );
+    }
+
+    const { items: proxyColonies } =
+      getProxyColoniesResponse?.data?.getProxyColoniesByColonyAddress;
+
+    const activeProxyColonies = proxyColonies.filter(
+      (proxyColony) => proxyColony.isActive,
+    );
+
+    const provider = new providers.StaticJsonRpcProvider(rpcURL);
+
+    const lightColonyClient = new Contract(
+      colonyAddress,
+      basicColonyAbi,
+      provider,
+    );
 
     const { chainId } = colony?.chainMetadata || {};
     const { items: domains = [] } = colony.domains || {};
@@ -71,8 +85,9 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
 
       // Native chain token. Ie: address 0x0000...0000
       balances.push(async () => {
-        const rewardsPotTotal = await colonyClient.getFundingPotBalance(
+        const rewardsPotTotal = await lightColonyClient.getFundingPotBalance(
           nativeFundingPotId,
+          chainId,
           AddressZero,
         );
         /*
@@ -89,6 +104,9 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
             symbol: '',
             decimals: 18,
             type: 'CHAIN_NATIVE',
+            chainMetadata: {
+              chainId,
+            },
           },
           balance: rewardsPotTotal.toString(),
         };
@@ -98,8 +116,9 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
         const { id: tokenAddress } = token;
 
         balances.push(async () => {
-          const rewardsPotTotal = await colonyClient.getFundingPotBalance(
+          const rewardsPotTotal = await lightColonyClient.getFundingPotBalance(
             nativeFundingPotId,
+            chainId,
             tokenAddress,
           );
           /*
@@ -112,6 +131,68 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
             token,
             balance: rewardsPotTotal.toString(),
           };
+        });
+      });
+    });
+
+    activeProxyColonies.map(async (proxyColony) => {
+      const proxyChainId = proxyColony.chainId;
+
+      domains.map(async (domain) => {
+        const { nativeId, nativeFundingPotId } = domain;
+
+        // Native chain token. Ie: address 0x0000...0000
+        balances.push(async () => {
+          const rewardsPotTotal = await lightColonyClient.getFundingPotBalance(
+            nativeFundingPotId,
+            proxyChainId,
+            AddressZero,
+          );
+
+          /*
+           * We're using this patters so that we could parallelize all calls at once
+           * since this is in essence a multi dimensional array (of async data)
+           */
+          return {
+            id: `${proxyChainId}_${colonyAddress}_${nativeId}_${AddressZero}_balance`,
+            domain,
+            token: {
+              ...tokens[0].token,
+              id: AddressZero,
+              name: '',
+              symbol: '',
+              decimals: 18,
+              type: 'CHAIN_NATIVE',
+              chainMetadata: {
+                chainId: proxyChainId,
+              },
+            },
+            balance: rewardsPotTotal.toString(),
+          };
+        });
+
+        tokens.map(async ({ token }) => {
+          const { id: tokenAddress } = token;
+
+          balances.push(async () => {
+            const rewardsPotTotal =
+              await lightColonyClient.getFundingPotBalance(
+                nativeFundingPotId,
+                proxyChainId,
+                tokenAddress,
+              );
+
+            /*
+             * We're using this patters so that we could parallelize all calls at once
+             * since this is in essence a multi dimensional array (of async data)
+             */
+            return {
+              id: `${proxyChainId}_${colonyAddress}_${nativeId}_${tokenAddress}_balance`,
+              domain,
+              token,
+              balance: rewardsPotTotal.toString(),
+            };
+          });
         });
       });
     });

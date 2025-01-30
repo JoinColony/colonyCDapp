@@ -2,7 +2,7 @@ import { Extension, Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { ADDRESS_ZERO } from '~constants/index.ts';
+import { ADDRESS_ZERO, DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
@@ -31,6 +31,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
     amount,
     fromDomain,
     tokenAddress,
+    targetChainId,
   } = actionData;
   const {
     colony: { colonyAddress, balances },
@@ -42,11 +43,14 @@ export const useFinalizeStep = (actionData: MotionAction) => {
     ? getIsMotionOlderThanAWeek(actionData.createdAt, currentBlockTime * 1000)
     : false;
 
-  const domainBalance = getBalanceForTokenAndDomain(
+  const domainBalance = getBalanceForTokenAndDomain({
     balances,
-    tokenAddress ?? '',
-    fromDomain?.nativeId || Id.RootDomain,
-  );
+    tokenAddress: tokenAddress ?? '',
+    // eslint-disable-next-line no-warning-comments
+    // TODO: Check if targetChainId should be passed in here
+    tokenChainId: String(targetChainId) ?? DEFAULT_NETWORK_INFO.chainId,
+    domainId: fromDomain?.nativeId || Id.RootDomain,
+  });
 
   const requiresDomainFunds: boolean =
     !!fromDomain &&

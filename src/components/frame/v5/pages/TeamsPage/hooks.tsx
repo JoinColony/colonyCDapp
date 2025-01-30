@@ -113,21 +113,23 @@ export const useTeams = () => {
           isMembersListLoading: membersLoading,
           reputation: reputationPercentage ? Number(reputationPercentage) : 0,
           balanceValue: convertToDecimal(
-            getBalanceForTokenAndDomain(
+            getBalanceForTokenAndDomain({
               balances,
-              nativeToken?.tokenAddress || '',
-              nativeId,
-            ) || 0,
+              tokenAddress: nativeToken?.tokenAddress || '',
+              tokenChainId: nativeToken?.chainMetadata.chainId,
+              domainId: nativeId,
+            }) || 0,
             nativeToken?.decimals || 0,
           )?.toNumber(),
           balance: (
             <Numeral
               value={
-                getBalanceForTokenAndDomain(
+                getBalanceForTokenAndDomain({
                   balances,
-                  nativeToken?.tokenAddress || '',
-                  nativeId,
-                ) || 0
+                  tokenAddress: nativeToken?.tokenAddress || '',
+                  tokenChainId: nativeToken?.chainMetadata.chainId,
+                  domainId: nativeId,
+                }) || 0
               }
               decimals={nativeToken?.decimals}
               suffix={` ${nativeToken?.symbol}`}

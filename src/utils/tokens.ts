@@ -19,16 +19,24 @@ import { type Address } from '~types/index.ts';
 import { notNull } from './arrays/index.ts';
 import { convertToDecimal } from './convertToDecimal.ts';
 
-export const getBalanceForTokenAndDomain = (
-  balances: ColonyBalances | null | undefined,
-  tokenAddress: Address,
-  domainId: number = COLONY_TOTAL_BALANCE_DOMAIN_ID,
-) => {
+export const getBalanceForTokenAndDomain = ({
+  balances,
+  tokenAddress,
+  tokenChainId,
+  domainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
+}: {
+  balances: ColonyBalances | null | undefined;
+  tokenAddress: Address;
+  tokenChainId: string;
+  domainId?: number;
+}) => {
   const currentDomainBalance = balances?.items
-    ?.filter((domainBalance) =>
-      domainId === COLONY_TOTAL_BALANCE_DOMAIN_ID
-        ? domainBalance?.domain === null
-        : domainBalance?.domain?.nativeId === domainId,
+    ?.filter(
+      (domainBalance) =>
+        (domainId === COLONY_TOTAL_BALANCE_DOMAIN_ID
+          ? domainBalance?.domain === null
+          : domainBalance?.domain?.nativeId === domainId) &&
+        domainBalance?.token?.chainMetadata?.chainId === tokenChainId,
     )
     .find(
       (domainBalance) => domainBalance?.token?.tokenAddress === tokenAddress,
