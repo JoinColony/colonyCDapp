@@ -146,6 +146,7 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
     dropdownMenuProps: {
       groups: menuItems,
       showSubMenuInPopover: !isMobile,
+      className: 'relative',
     },
   };
 };
