@@ -25,6 +25,7 @@ import {
 import {
   type StreamingPaymentsMotionEditPayload,
   type StreamingPaymentsMotionCancelPayload,
+  type StreamingPaymentsMotionCreatePayload,
 } from '~redux/types/actions/motion.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { getStreamingPaymentDatabaseId } from '~utils/databaseId.ts';
@@ -452,6 +453,15 @@ const TmpStreamingPayments = () => {
     await editStreamingPaymentMotion(payload);
   };
 
+  const createStreamingPaymentMotionPayload: StreamingPaymentsMotionCreatePayload =
+    {
+      ...createStreamingPaymentPayload,
+      motionDomainId: Id.RootDomain,
+      votingReputationAddress: votingReputationAddress ?? '',
+      annotationMessage: annotation,
+      startTimestamp: '0',
+    };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap gap-4 rounded-lg bg-gray-100 p-3">
@@ -579,6 +589,14 @@ const TmpStreamingPayments = () => {
             values={createStreamingPaymentPayload}
           >
             Create streaming payment
+          </ActionButton>
+
+          <ActionButton
+            actionType={ActionTypes.MOTION_STREAMING_PAYMENT_CREATE}
+            values={createStreamingPaymentMotionPayload}
+            disabled={!votingReputationAddress}
+          >
+            Create via motion
           </ActionButton>
         </div>
         <div className="flex w-full gap-2">
