@@ -540,7 +540,7 @@ export type MotionActionTypes =
       MetaWithSetter<object>
     >
   | UniqueActionType<
-      ActionTypes.MOTION_CREATE_STREAMING_PAYMENT,
+      ActionTypes.MOTION_STREAMING_PAYMENT_CREATE,
       {
         colonyAddress: Address;
         createdInDomain: Domain;
@@ -559,8 +559,8 @@ export type MotionActionTypes =
       },
       MetaWithSetter<object>
     >
-  | ErrorActionType<ActionTypes.MOTION_CREATE_STREAMING_PAYMENT_ERROR, object>
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_ERROR, object>
   | ActionTypeWithMeta<
-      ActionTypes.MOTION_CREATE_STREAMING_PAYMENT_SUCCESS,
+      ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_SUCCESS,
       MetaWithSetter<object>
     >;
