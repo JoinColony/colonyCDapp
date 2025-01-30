@@ -1689,7 +1689,7 @@
     "errors.sumOfPercentageMustBe100": "The sum of percentages must be 100",
     "errors.reputation.smite.notEnoughPoints": "Amount of reputation to remove is greater than the current reputation.",
     "errors.recipient.required": "Recipient is required",
-    "errors.recipient.requiredIn": "Recipient is required in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment",
+    "errors.recipient.requiredInPayment": "Recipient is required in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment",
     "errors.percent.required": "Percent is required in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment",
     "errors.percent.lessOrEqual100": "Percent must be less than or equal to 100 in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} payment.",
     "errors.milestone.required": "Name is required in {paymentIndex, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} milestone",

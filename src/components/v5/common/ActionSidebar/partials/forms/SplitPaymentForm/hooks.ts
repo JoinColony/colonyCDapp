@@ -135,7 +135,7 @@ export const useValidationSchema = () => {
                   const index = getLastIndexFromPath(path);
 
                   return formatText(
-                    { id: 'errors.recipient.requiredIn' },
+                    { id: 'errors.recipient.requiredInPayment' },
                     { paymentIndex: index === undefined ? 1 : index + 1 },
                   );
                 }),
