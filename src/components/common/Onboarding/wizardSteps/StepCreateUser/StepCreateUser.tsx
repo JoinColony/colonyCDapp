@@ -1,3 +1,4 @@
+import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate } from 'react-router-dom';
@@ -39,6 +40,7 @@ const StepCreateUser = ({
   },
 }: Props) => {
   const { user, updateUser } = useAppContext();
+  const { user: dynamicWalletUser } = useDynamicContext();
 
   if (user) {
     return <Navigate to={LANDING_PAGE_ROUTE} />;
@@ -53,7 +55,7 @@ const StepCreateUser = ({
       validationSchema={validationSchema}
       defaultValues={{
         username,
-        emailAddress,
+        emailAddress: dynamicWalletUser?.email || emailAddress,
       }}
       mode="onChange"
       actionType={ActionTypes.USERNAME_CREATE}
