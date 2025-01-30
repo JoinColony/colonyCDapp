@@ -1,9 +1,9 @@
 import { ClientType } from '@colony/colony-js';
-import { type CustomContract } from '@colony/sdk';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { colonyFundingAbi } from '~constants/abis.ts';
+import type ColonyManager from '~context/ColonyManager.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
@@ -41,10 +41,12 @@ function* colonyClaimFunds({
   ];
 
   try {
-    const colonyManager = yield getColonyManager();
+    const colonyManager: ColonyManager = yield getColonyManager();
 
-    const colonyFundingContract: CustomContract<typeof colonyFundingAbi> =
-      colonyManager.getCustomContract(colonyAddress, colonyFundingAbi);
+    const colonyFundingContract = colonyManager.getCustomContract(
+      colonyAddress,
+      colonyFundingAbi,
+    );
 
     const encodedTransactions = yield all(
       tokenAddressesGroupedByChain.flatMap((group) => {
