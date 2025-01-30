@@ -17,7 +17,7 @@ const MSG = defineMessages({
     id: `${displayName}.info`,
     defaultMessage: `{userIsCreator, select,
       true {Payment creator released the payment.}
-      other {Member used permissions to create this action.}
+      other {Member used permissions to release this payment.}
     }`,
   },
   overview: {
