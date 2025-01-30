@@ -147,7 +147,7 @@ const UninstallButton = ({
 
   const canRemoveExtension =
     !isStreamingPaymentsExtension ||
-    (isStreamingPaymentsExtension && (!hasActiveStream || !hasUnclaimedFunds));
+    (isStreamingPaymentsExtension && !hasActiveStream && !hasUnclaimedFunds);
 
   return (
     <>

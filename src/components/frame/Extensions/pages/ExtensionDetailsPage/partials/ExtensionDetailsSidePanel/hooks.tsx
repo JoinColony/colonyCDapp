@@ -1,20 +1,19 @@
 import { type Extension } from '@colony/colony-js';
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
 import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
-import { useGetStreamingPaymentsByColonyQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import { useColonyStreamingPayments } from '~hooks/useColonyStreamingPayments.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { type StreamingPaymentItems } from '~shared/StreamingPayments/types.ts';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
-import { notNull } from '~utils/arrays/index.ts';
 import {
   getStreamingPaymentAmountsLeft,
   getStreamingPaymentStatus,
@@ -139,42 +138,9 @@ export const useGetActiveAndUnclaimedStreams = () => {
   const { colony } = useColonyContext();
   const { currentBlockTime: blockTime } = useCurrentBlockTime();
 
-  const { data, fetchMore } = useGetStreamingPaymentsByColonyQuery({
-    variables: {
-      colonyId: colony.colonyAddress,
-    },
-    onCompleted: (receivedData) => {
-      if (receivedData?.getStreamingPaymentsByColony?.nextToken) {
-        fetchMore({
-          variables: {
-            nextToken: receivedData.getStreamingPaymentsByColony.nextToken,
-          },
-          updateQuery: (prev, { fetchMoreResult }) => {
-            if (!fetchMoreResult) return prev;
-
-            return {
-              ...prev,
-              getStreamingPaymentsByColony: {
-                ...prev.getStreamingPaymentsByColony,
-                items: [
-                  ...(prev?.getStreamingPaymentsByColony?.items || []),
-                  ...(fetchMoreResult?.getStreamingPaymentsByColony?.items ||
-                    []),
-                ],
-                nextToken:
-                  fetchMoreResult?.getStreamingPaymentsByColony?.nextToken,
-              },
-            };
-          },
-        });
-      }
-    },
+  const { streamingPayments } = useColonyStreamingPayments({
+    colonyId: colony.colonyAddress,
   });
-
-  const streamingPayments = useMemo(
-    () => data?.getStreamingPaymentsByColony?.items?.filter(notNull) || [],
-    [data?.getStreamingPaymentsByColony?.items],
-  );
 
   const getTotalActiveStreamingPayments = (items: StreamingPaymentItems) => {
     const activeStreams = items.filter((item) => {
