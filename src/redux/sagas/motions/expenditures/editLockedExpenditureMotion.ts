@@ -20,7 +20,6 @@ import {
   getColonyManager,
   initiateTransaction,
   getEditLockedExpenditureMulticallData,
-  uploadAnnotation,
   getResolvedPayouts,
   putError,
   takeFrom,
@@ -40,7 +39,6 @@ function* editLockedExpenditureMotion({
     motionDomainId,
   },
   meta,
-  meta: { setTxHash },
 }: Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE>) {
   const colonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(
@@ -153,27 +151,12 @@ function* editLockedExpenditureMotion({
       );
     }
 
-    const {
-      type,
-      payload: { transactionHash: txHash },
-    } = yield call(waitForTxResult, createMotion.channel);
+    yield waitForTxResult(createMotion.channel);
 
-    setTxHash?.(txHash);
-
-    if (annotationMessage) {
-      yield uploadAnnotation({
-        txChannel: annotateEditLockedExpenditure,
-        message: annotationMessage,
-        txHash,
-      });
-    }
-
-    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS>>({
-        type: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS,
-        meta,
-      });
-    }
+    yield put<Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS>>({
+      type: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS,
+      meta,
+    });
   } catch (e) {
     console.error(e);
     yield putError(ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR, e, meta);
