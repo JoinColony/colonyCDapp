@@ -10655,6 +10655,11 @@ export type OnCreateColonyActionMetadataSubscriptionVariables = Exact<{ [key: st
 
 export type OnCreateColonyActionMetadataSubscription = { __typename?: 'Subscription', onCreateColonyActionMetadata?: { __typename?: 'ColonyActionMetadata', updatedAt: string } | null };
 
+export type OnUpdateColonyMotionSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OnUpdateColonyMotionSubscription = { __typename?: 'Subscription', onUpdateColonyAction?: { __typename?: 'ColonyAction', motionData?: { __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, transactionHash: string, createdAt: string, createdBy: string, expenditureSlotIds?: Array<number> | null, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRewards?: { __typename?: 'ModelVoterRewardsHistoryConnection', items: Array<{ __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId: string, notificationsDisabled: boolean, mutedColonyAddresses: Array<string>, paymentNotificationsDisabled: boolean, mentionNotificationsDisabled: boolean, adminNotificationsDisabled: boolean } | null } } | null> } | null, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean, yaySideFullyStakedAt?: string | null, naySideFullyStakedAt?: string | null, allVotesSubmittedAt?: string | null, allVotesRevealedAt?: string | null, endedAt?: string | null, finalizedAt?: string | null }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId: string, notificationsDisabled: boolean, mutedColonyAddresses: Array<string>, paymentNotificationsDisabled: boolean, mentionNotificationsDisabled: boolean, adminNotificationsDisabled: boolean } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null } | null };
+
 export type GetDomainBalanceQueryVariables = Exact<{
   input: DomainBalanceArguments;
 }>;
@@ -13595,6 +13600,37 @@ export function useOnCreateColonyActionMetadataSubscription(baseOptions?: Apollo
       }
 export type OnCreateColonyActionMetadataSubscriptionHookResult = ReturnType<typeof useOnCreateColonyActionMetadataSubscription>;
 export type OnCreateColonyActionMetadataSubscriptionResult = Apollo.SubscriptionResult<OnCreateColonyActionMetadataSubscription>;
+export const OnUpdateColonyMotionDocument = gql`
+    subscription OnUpdateColonyMotion {
+  onUpdateColonyAction {
+    motionData {
+      ...ColonyMotion
+    }
+  }
+}
+    ${ColonyMotionFragmentDoc}`;
+
+/**
+ * __useOnUpdateColonyMotionSubscription__
+ *
+ * To run a query within a React component, call `useOnUpdateColonyMotionSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnUpdateColonyMotionSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnUpdateColonyMotionSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOnUpdateColonyMotionSubscription(baseOptions?: Apollo.SubscriptionHookOptions<OnUpdateColonyMotionSubscription, OnUpdateColonyMotionSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<OnUpdateColonyMotionSubscription, OnUpdateColonyMotionSubscriptionVariables>(OnUpdateColonyMotionDocument, options);
+      }
+export type OnUpdateColonyMotionSubscriptionHookResult = ReturnType<typeof useOnUpdateColonyMotionSubscription>;
+export type OnUpdateColonyMotionSubscriptionResult = Apollo.SubscriptionResult<OnUpdateColonyMotionSubscription>;
 export const GetDomainBalanceDocument = gql`
     query GetDomainBalance($input: DomainBalanceArguments!) {
   getDomainBalance(input: $input) {

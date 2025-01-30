@@ -2,6 +2,7 @@ import { type MutableRefObject, useEffect, useRef, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useColonyTriggersContext } from '~context/GlobalTriggersContext/ColonyTriggersContext.ts';
 import { type MotionStakes, useGetMotionTimeoutPeriodsQuery } from '~gql';
 import { type TimerValueProps } from '~shared/TimerValue/TimerValue.tsx';
 import { MotionState } from '~utils/colonyMotions.ts';
@@ -64,6 +65,8 @@ export const useMotionCountdown = ({
   );
 
   const [timeLeft, setTimeLeft] = useState<number>(-1);
+
+  const { setActionsTableTriggers } = useColonyTriggersContext();
 
   const prevStateRef: MutableRefObject<MotionState | null> = useRef(null);
   const isStakingPhaseState =
@@ -137,7 +140,14 @@ export const useMotionCountdown = ({
     if (timeLeft === 0) {
       clearInterval(timer);
 
-      motionStatePollTimer = setInterval(refetchMotionState, pollInterval);
+      motionStatePollTimer = setInterval(() => {
+        refetchMotionState();
+
+        setActionsTableTriggers((triggers) => ({
+          ...triggers,
+          shouldRefetchMotionStates: true,
+        }));
+      }, pollInterval);
     }
 
     return () => {
@@ -154,7 +164,7 @@ export const useMotionCountdown = ({
     motionId,
     user,
     refetchMotionState,
-    state,
+    setActionsTableTriggers,
   ]);
 
   useEffect(() => {
