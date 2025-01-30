@@ -3,7 +3,6 @@ import {
   CaretDown,
   CaretLeft,
   CaretRight,
-  CirclesThreePlus,
   List,
   Plugs,
 } from '@phosphor-icons/react';
@@ -20,7 +19,6 @@ import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import ThemeSwitcher from '~v5/common/ThemeSwitcher/ThemeSwitcher.tsx';
 import Button from '~v5/shared/Button/index.ts';
-import Link from '~v5/shared/Link/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 import UserDetails from '~v5/shared/UserDetails/index.ts';
@@ -143,14 +141,6 @@ const UserMenu: FC<UserMenuProps> = ({
             className="pb-2"
           />
           <ul className="text-left">
-            <li className="-ml-4 mb-2 w-[calc(100%+2rem)] rounded hover:bg-gray-50 sm:mb-0">
-              <Link to="/" className="navigation-link">
-                <CirclesThreePlus size={iconSize} />
-                <p className="ml-2">
-                  {formatText({ id: 'userMenu.getStartedTitle' })}
-                </p>
-              </Link>
-            </li>
             {filteredUserMenuItems.map(({ id, icon: Icon, name: itemName }) => (
               <li
                 key={id}
