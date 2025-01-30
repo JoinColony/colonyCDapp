@@ -45,16 +45,12 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [walletConnecting, setWalletConnecting] = useState(false);
   const { setShowAuthFlow, handleLogOut, primaryWallet } = useDynamicContext();
   const [getUserByAddress] = useGetUserByAddressLazyQuery();
-  const [autoConnectedWalletType] = useLocalStorage(
-    DynamicLocalStorageKeys.CONNECTED_WALLETS,
-    undefined,
-  );
   const [autoConnectedWalletAddress] = useLocalStorage(
     DynamicLocalStorageKeys.CONNECTED_WALLET_NS,
     undefined,
   );
   const [willWalletAutoConnect, setWillWalletAutoConnect] = useState(
-    (autoConnectedWalletType && autoConnectedWalletAddress) || false,
+    autoConnectedWalletAddress || false,
   );
 
   const {
@@ -182,7 +178,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const clearDynamicWalletAutoLogin = useCallback(() => {
-    localStorage.removeItem(DynamicLocalStorageKeys.CONNECTED_WALLETS);
+    localStorage.removeItem(DynamicLocalStorageKeys.CONNECTED_WALLETS); // will not exist for embedded wallets
     localStorage.removeItem(DynamicLocalStorageKeys.CONNECTED_WALLET_NS);
     debugLogging('WALLET AUTOLOGIN CLEARED');
   }, []);
