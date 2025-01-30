@@ -19,13 +19,13 @@ export const useGetFormActionErrors = () => {
 
   const { inputsOrder } = useInputsOrderContext();
 
-  const sortedFlatFormErrors = flatFormErrors.sort((a, b) => {
-    const aIndex = inputsOrder.findIndex((fieldName) => a.key === fieldName);
-    const bIndex = inputsOrder.findIndex((fieldName) => b.key === fieldName);
+  const orderMap = new Map<string, number>(
+    inputsOrder.map((fieldName, index) => [fieldName, index]),
+  );
 
-    if (aIndex === -1 && bIndex === -1) return 0;
-    if (aIndex === -1) return 1;
-    if (bIndex === -1) return -1;
+  const sortedFlatFormErrors = flatFormErrors.sort((a, b) => {
+    const aIndex = orderMap.get(a.key.toString()) ?? Infinity;
+    const bIndex = orderMap.get(b.key.toString()) ?? Infinity;
 
     return aIndex - bIndex;
   });

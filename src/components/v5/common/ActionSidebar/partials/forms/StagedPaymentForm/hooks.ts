@@ -57,7 +57,7 @@ export const useValidationSchema = () => {
                 return formatText({ id: 'errors.recipient.required' });
               }
               return formatText(
-                { id: 'errors.recipient.requiredIn' },
+                { id: 'errors.recipient.requiredInPayment' },
                 { paymentIndex: index + 1 },
               );
             })
