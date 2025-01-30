@@ -19,7 +19,6 @@ import {
   initiateTransaction,
   putError,
   takeFrom,
-  uploadAnnotation,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
 import { getExpenditureCreatingActionId } from '~utils/expenditures.ts';
@@ -31,16 +30,13 @@ function* fundExpenditureMotion({
     fromDomainFundingPotId,
     colonyDomains,
     colonyRoles,
-    annotationMessage,
     motionDomainId,
   },
   meta,
 }: Action<ActionTypes.MOTION_EXPENDITURE_FUND>) {
-  const { createMotion, annotateMotion } = yield call(
-    createTransactionChannels,
-    meta.id,
-    ['createMotion', 'annotateMotion'],
-  );
+  const { createMotion } = yield call(createTransactionChannels, meta.id, [
+    'createMotion',
+  ]);
 
   try {
     const balances = getExpenditureBalancesByTokenAddress(expenditure);
@@ -158,40 +154,11 @@ function* fundExpenditureMotion({
       associatedActionId: getExpenditureCreatingActionId(expenditure),
     });
 
-    if (annotationMessage) {
-      yield fork(createTransaction, annotateMotion.id, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index: 1,
-        },
-        ready: false,
-      });
-    }
-
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
-    if (annotationMessage) {
-      yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
-    }
 
     yield initiateTransaction(createMotion.id);
 
-    const {
-      payload: {
-        receipt: { transactionHash: txHash },
-      },
-    } = yield call(waitForTxResult, createMotion.channel);
-
-    if (annotationMessage) {
-      yield uploadAnnotation({
-        txChannel: annotateMotion,
-        message: annotationMessage,
-        txHash,
-      });
-    }
+    yield waitForTxResult(createMotion.channel);
 
     yield put<Action<ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS>>({
       type: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
@@ -205,7 +172,6 @@ function* fundExpenditureMotion({
     );
   } finally {
     createMotion.channel.close();
-    annotateMotion.channel.close();
   }
 
   return null;

@@ -16,6 +16,7 @@ import {
   editLockedExpenditureMotionSaga,
   cancelExpenditureMotionSaga,
   finalizeExpenditureMotionSaga,
+  createStreamingPaymentMotionSaga,
 } from './expenditures/index.ts';
 import finalizeMotionSaga from './finalizeMotion.ts';
 import initiateSafeTransactionMotionSaga from './initiateSafeTransactionMotion.ts';
@@ -52,6 +53,7 @@ export default function* actionsSagas() {
     call(releaseExpenditureStagesMotionSaga),
     call(editLockedExpenditureMotionSaga),
     call(editStreamingPaymentMotionSaga),
+    call(createStreamingPaymentMotionSaga),
     call(finalizeExpenditureMotionSaga),
     call(paymentMotionSaga),
     // call(escalateMotionSaga),

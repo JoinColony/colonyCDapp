@@ -94,7 +94,7 @@ function* createStreamingPaymentAction({
         colonyClient.networkClient,
         colonyClient,
         createdInDomain.nativeId,
-        ColonyRole.Arbitration,
+        ColonyRole.Funding,
       );
 
     // Get permissions proof of the caller's Admin permission
@@ -103,7 +103,7 @@ function* createStreamingPaymentAction({
         colonyClient.networkClient,
         colonyClient,
         createdInDomain.nativeId,
-        ColonyRole.Arbitration,
+        ColonyRole.Administration,
       );
 
     const amountInWei = moveDecimal(amount, tokenDecimals) as string;
