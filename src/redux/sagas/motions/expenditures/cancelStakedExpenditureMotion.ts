@@ -23,7 +23,6 @@ import {
 
 function* cancelStakedExpenditureMotion({
   meta,
-  meta: { setTxHash },
   payload: {
     colonyAddress,
     stakedExpenditureAddress,
@@ -148,19 +147,12 @@ function* cancelStakedExpenditureMotion({
 
     yield initiateTransaction(createMotion.id);
 
-    const {
-      type,
-      payload: { transactionHash: txHash },
-    } = yield call(waitForTxResult, createMotion.channel);
+    yield waitForTxResult(createMotion.channel);
 
-    setTxHash?.(txHash);
-
-    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<Action<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS>>({
-        type: ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
-        meta,
-      });
-    }
+    yield put<Action<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS>>({
+      type: ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
+      meta,
+    });
   } catch (e) {
     console.error(e);
     yield putError(ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR, e, meta);
