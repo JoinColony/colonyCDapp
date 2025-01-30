@@ -25,7 +25,10 @@ import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormB
 import { useShowCreateStakedExpenditureModal } from '~v5/common/ActionSidebar/partials/CreateStakedExpenditureModal/hooks.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
-import { getSplitPaymentPayload } from './utils.ts';
+import {
+  getSplitPaymentPayload,
+  getUnevenSplitPaymentTotalPercentage,
+} from './utils.ts';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
@@ -209,12 +212,12 @@ export const useValidationSchema = () => {
                 return true;
               }
 
-              const sum = value.reduce(
-                (acc, curr) => acc + (curr?.percent || 0),
-                0,
+              const percentage = getUnevenSplitPaymentTotalPercentage(
+                Number(parent?.amount || 0),
+                value,
               );
 
-              return sum === 100;
+              return percentage === 100;
             },
           )
           .test(

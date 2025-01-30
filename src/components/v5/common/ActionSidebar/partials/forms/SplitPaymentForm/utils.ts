@@ -11,6 +11,7 @@ import { findDomainByNativeId } from '~utils/domains.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 
 import { type SplitPaymentFormValues } from './hooks.ts';
+import { type SplitPaymentRecipientsFieldModel } from './partials/SplitPaymentRecipientsField/types.ts';
 
 export const getSplitPaymentPayload = (
   colony: Colony,
@@ -61,4 +62,22 @@ export const getSplitPaymentPayload = (
         tokenDecimals,
       })) || [],
   };
+};
+
+export const getUnevenSplitPaymentTotalPercentage = (
+  amount: number,
+  recipients: SplitPaymentRecipientsFieldModel[],
+) => {
+  if (!amount) {
+    return 0;
+  }
+
+  const total =
+    recipients?.reduce((acc, recipient) => {
+      return acc + Number(recipient.amount);
+    }, 0) || 0;
+
+  const percentage = (100 * total) / amount;
+
+  return Number(percentage.toFixed(4));
 };

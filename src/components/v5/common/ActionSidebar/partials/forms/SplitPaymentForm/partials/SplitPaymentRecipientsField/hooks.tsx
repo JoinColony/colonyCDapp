@@ -19,6 +19,7 @@ import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { type ColonyContributor, type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
+import { getUnevenSplitPaymentTotalPercentage } from '~v5/common/ActionSidebar/partials/forms/SplitPaymentForm/utils.ts';
 import UserSelect, {
   type UserSearchSelectOption,
 } from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
@@ -156,16 +157,10 @@ export const useRecipientsFieldTableColumns = ({
               />
               {isTablet && (
                 <span className="text-md font-medium text-gray-900">
-                  {parseFloat(
-                    (
-                      dataRef.current?.reduce(
-                        (acc, _, index) =>
-                          Number(acc) + Number(getPercentValue(index)),
-                        0,
-                      ) || 0
-                    ).toFixed(4),
-                  )}
-                  %
+                  {distributionMethodRef?.current ===
+                  SplitPaymentDistributionType.Equal
+                    ? '100%'
+                    : `${getUnevenSplitPaymentTotalPercentage(Number(amount || 0), dataRef.current)}%`}
                 </span>
               )}
             </div>
@@ -219,15 +214,7 @@ export const useRecipientsFieldTableColumns = ({
                     {distributionMethodRef?.current ===
                     SplitPaymentDistributionType.Equal
                       ? '100%'
-                      : `${Number(
-                          dataRef.current
-                            ?.reduce(
-                              (acc, _, index) =>
-                                Number(acc) + Number(getPercentValue(index)),
-                              0,
-                            )
-                            .toFixed(4) || 0,
-                        )}%`}
+                      : `${getUnevenSplitPaymentTotalPercentage(Number(amount || 0), dataRef.current)}%`}
                   </span>
                 );
               }
