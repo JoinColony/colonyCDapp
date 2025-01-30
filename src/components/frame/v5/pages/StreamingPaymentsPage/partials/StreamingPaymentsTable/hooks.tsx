@@ -2,13 +2,14 @@ import { CaretDown } from '@phosphor-icons/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { useSearchStreamingPaymentsQuery } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import {
@@ -156,11 +157,24 @@ export const useStreamingPaymentTable = () => {
     fetchPolicy: 'network-only',
   });
 
-  const { currentBlockTime: blockTime } = useCurrentBlockTime();
+  const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
+    useCurrentBlockTime();
   const { totalMembers: members } = useMemberContext();
   const allTokens = useGetAllTokens();
 
-  const groupedStreamingPayments = (data?.searchStreamingPayments?.items || [])
+  const nativeDomainId = useGetSelectedDomainFilter()?.nativeId;
+
+  const filteredByDomainId = useMemo(
+    () =>
+      nativeDomainId
+        ? data?.searchStreamingPayments?.items.filter(
+            (item) => item?.nativeDomainId === nativeDomainId,
+          )
+        : data?.searchStreamingPayments?.items,
+    [data?.searchStreamingPayments?.items, nativeDomainId],
+  );
+
+  const groupedStreamingPayments = (filteredByDomainId || [])
     .filter(notNull)
     .map((item) => {
       const { amountAvailableToClaim, amountClaimedToDate } =
@@ -263,6 +277,10 @@ export const useStreamingPaymentTable = () => {
     () => sortStreamingPayments(filteredActions, activeFilters),
     [filteredActions, activeFilters],
   );
+
+  useEffect(() => {
+    fetchCurrentBlockTime();
+  }, [data, fetchCurrentBlockTime]);
 
   return {
     items: sortedActions,

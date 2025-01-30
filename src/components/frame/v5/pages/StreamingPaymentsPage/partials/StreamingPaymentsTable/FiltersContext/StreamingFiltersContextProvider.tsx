@@ -84,26 +84,33 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
     },
     [tokenTypes],
   );
+  const resetDateFilters = (
+    filters: DateOptions,
+    date?: [Date | null, Date | null],
+  ) => {
+    const custom = date ?? undefined;
+    return Object.keys(filters).reduce((acc, key) => {
+      acc[key] = key === 'custom' ? custom : false;
+      return acc;
+    }, {} as DateOptions);
+  };
   const handleDateFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const isChecked = event.target.checked;
       const name = event.target.name as keyof DateOptions;
-
-      if (isChecked) {
-        setDateFilters({ ...dateFilters, [name]: true });
-      } else {
-        setDateFilters({ ...dateFilters, [name]: false });
-      }
+      const resetFields = resetDateFilters(dateFilters);
+      setDateFilters({ ...resetFields, [name]: isChecked });
     },
     [dateFilters],
   );
   const handleCustomDateFilterChange = useCallback(
     (date: [Date | null, Date | null]) => {
       const [newStartDate, newEndDate] = date;
+      const resetFields = resetDateFilters(dateFilters, date);
 
       if (newStartDate && newEndDate) {
         setDateFilters({
-          ...dateFilters,
+          ...resetFields,
           custom:
             !newStartDate && !newEndDate
               ? undefined
