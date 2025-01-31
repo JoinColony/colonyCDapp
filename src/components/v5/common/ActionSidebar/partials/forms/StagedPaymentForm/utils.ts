@@ -1,5 +1,7 @@
 import { Id } from '@colony/colony-js';
 
+import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
+import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
 import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -11,7 +13,7 @@ export const getStagedPaymentPayload = (
   colony: Colony,
   values: StagedPaymentFormValues,
   networkInverseFee: string,
-) => {
+): CreateExpenditurePayload | CreateStakedExpenditurePayload | null => {
   const colonyTokens = colony.tokens?.items.filter(notNull);
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   const createdInDomain =

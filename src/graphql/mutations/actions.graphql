@@ -3,3 +3,9 @@ mutation CreateColonyActionMetadata($input: CreateColonyActionMetadataInput!) {
     id
   }
 }
+
+mutation UpdateColonyAction($input: UpdateColonyActionInput!) {
+  updateColonyAction(input: $input) {
+    id
+  }
+}
