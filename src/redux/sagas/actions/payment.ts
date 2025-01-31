@@ -1,24 +1,32 @@
 import { ClientType, ColonyRole } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
+import { type CustomContract } from '@colony/sdk';
+import { BigNumber, utils } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { type ColonyManager } from '~context/index.ts';
+import { oneTxPaymentAbi } from '~constants/abis.ts';
+import {
+  ContextModule,
+  getContext,
+  type ColonyManager,
+} from '~context/index.ts';
+import {
+  transactionHashReceived,
+  transactionReceiptReceived,
+  transactionSent,
+  transactionSucceeded,
+} from '~redux/actionCreators/transactions.ts';
 import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
 import { type OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
-import {
-  transactionSetParams,
-  transactionSetPending,
-} from '~state/transactionState.ts';
+import { addTransactionToDb } from '~state/transactionState.ts';
+import { TransactionStatus } from '~types/graphql.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
-  waitForTxResult,
 } from '../transactions/index.ts';
 import {
-  initiateTransaction,
   putError,
   takeFrom,
   uploadAnnotation,
@@ -32,6 +40,7 @@ function* createPaymentAction({
   payload: {
     colonyAddress,
     domainId,
+    chainId,
     payments,
     annotationMessage,
     customActionTitle,
@@ -64,12 +73,32 @@ function* createPaymentAction({
       }
     }
 
+    txChannel = yield call(getTxChannel, metaId);
+
+    const oneTxPaymentClient = yield colonyManager.getClient(
+      ClientType.OneTxPaymentClient,
+      colonyAddress,
+    );
+
+    const oneTxPaymentContract: CustomContract<typeof oneTxPaymentAbi> =
+      colonyManager.getCustomContract(
+        oneTxPaymentClient.address,
+        oneTxPaymentAbi,
+      );
+
+    const { address } = getContext(ContextModule.Wallet);
+
+    const walletAddress = utils.getAddress(address);
+
     const payouts = yield adjustPayoutsAddresses(payments, network);
     const sortedCombinedPayments = sortAndCombinePayments(payouts);
 
     const tokenAddresses = sortedCombinedPayments.map(
       ({ tokenAddress }) => tokenAddress,
     );
+
+    // we don't use multiple payments, but let's add the chainId for each payment just in case
+    const chainIds = sortedCombinedPayments.map(() => chainId);
 
     const amounts = sortedCombinedPayments.map(({ amount }) => amount);
 
@@ -83,23 +112,53 @@ function* createPaymentAction({
      */
     const batchKey = TRANSACTION_METHODS.Payment;
 
-    const { paymentAction, annotatePaymentAction } =
-      yield createTransactionChannels(metaId, [
-        'paymentAction',
-        'annotatePaymentAction',
-      ]);
+    const { annotatePaymentAction } = yield createTransactionChannels(metaId, [
+      'annotatePaymentAction',
+    ]);
 
-    yield fork(createTransaction, paymentAction.id, {
-      context: ClientType.OneTxPaymentClient,
+    const [extensionPDID, extensionCSI] = yield getMultiPermissionProofs({
+      colonyAddress,
+      domainId,
+      roles: [ColonyRole.Funding, ColonyRole.Administration],
+      customAddress: oneTxPaymentClient.address,
+    });
+    const [userPDID, userCSI] = yield getMultiPermissionProofs({
+      colonyAddress,
+      domainId,
+      roles: [ColonyRole.Funding, ColonyRole.Administration],
+    });
+
+    // @TODO type these
+    const params = [
+      extensionPDID,
+      extensionCSI,
+      userPDID,
+      userCSI,
+      recipientAddresses,
+      chainIds,
+      tokenAddresses,
+      amounts,
+      domainId,
+      /*
+       * NOTE Always make the payment in the global skill 0
+       * This will make it so that the user only receives reputation in the
+       * above domain, but none in the skill itself.
+       */
+      0,
+    ];
+
+    yield addTransactionToDb(metaId, {
+      context: ClientType.ColonyClient, // @NOTE we want to add a new context type
+      createdAt: new Date(),
       methodName: 'makePaymentFundedFromDomain',
-      identifier: colonyAddress,
-      params: [],
+      from: walletAddress,
+      params,
+      status: TransactionStatus.Ready,
       group: {
         key: batchKey,
         id: metaId,
         index: 0,
       },
-      ready: false,
     });
 
     if (annotationMessage) {
@@ -117,7 +176,37 @@ function* createPaymentAction({
       });
     }
 
-    yield takeFrom(paymentAction.channel, ActionTypes.TRANSACTION_CREATED);
+    const [transaction, waitForMined] = yield oneTxPaymentContract
+      .createTxCreator(
+        'makePaymentFundedFromDomain(uint256,uint256,uint256,uint256,address[],uint256[],address[],uint256[],uint256,uint256)' as any,
+        // we ignore that because the params break due to the signature being untyped:waitForMined
+        // @ts-ignore
+        params,
+      )
+      .tx()
+      .send({
+        gasLimit: BigInt(10_000_000),
+      });
+
+    put(transactionSent(metaId));
+
+    if (!transaction || !transaction.blockHash || !transaction.blockNumber) {
+      throw new Error('Invalid transaction'); // @TODO add more info
+    }
+
+    put(
+      transactionHashReceived(metaId, {
+        hash: transaction.hash,
+        blockNumber: transaction.blockNumber,
+        blockHash: transaction.blockHash,
+        params,
+      }),
+    );
+
+    const [eventData, receipt] = yield waitForMined();
+
+    put(transactionReceiptReceived(metaId, { params, receipt }));
+    put(transactionSucceeded(metaId, { eventData, receipt, params }));
 
     if (annotationMessage) {
       yield takeFrom(
@@ -126,61 +215,19 @@ function* createPaymentAction({
       );
     }
 
-    yield transactionSetPending(paymentAction.id);
-
-    const oneTxPaymentClient = yield colonyManager.getClient(
-      ClientType.OneTxPaymentClient,
-      colonyAddress,
-    );
-
-    const [extensionPDID, extensionCSI] = yield getMultiPermissionProofs({
-      colonyAddress,
-      domainId,
-      roles: [ColonyRole.Funding, ColonyRole.Administration],
-      customAddress: oneTxPaymentClient.address,
+    yield createActionMetadataInDB(transaction.hash, {
+      customTitle: customActionTitle,
     });
-    const [userPDID, userCSI] = yield getMultiPermissionProofs({
-      colonyAddress,
-      domainId,
-      roles: [ColonyRole.Funding, ColonyRole.Administration],
-    });
-
-    yield transactionSetParams(paymentAction.id, [
-      extensionPDID,
-      extensionCSI,
-      userPDID,
-      userCSI,
-      recipientAddresses,
-      tokenAddresses,
-      amounts,
-      domainId,
-      /*
-       * NOTE Always make the payment in the global skill 0
-       * This will make it so that the user only receives reputation in the
-       * above domain, but none in the skill itself.
-       */
-      0,
-    ]);
-
-    yield initiateTransaction(paymentAction.id);
-
-    const {
-      payload: {
-        receipt: { transactionHash: txHash },
-      },
-    } = yield waitForTxResult(paymentAction.channel);
-
-    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({
         txChannel: annotatePaymentAction,
         message: annotationMessage,
-        txHash,
+        txHash: transaction.hash,
       });
     }
 
-    setTxHash?.(txHash);
+    setTxHash?.(transaction.hash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS,
