@@ -71,18 +71,22 @@ const getAllDomainBalancesFromRefs = (
 const getTotalTokenBalances = (allDomainBalances) =>
   allDomainBalances.reduce((totals, balance) => {
     const {
-      token: { id: currentToken },
+      token: {
+        id: tokenAddress,
+        chainMetadata: { chainId: tokenChainId },
+      },
       balance: currentBalance,
     } = balance;
-    if (totals[currentToken]) {
+    if (totals[`${tokenChainId}_${tokenAddress}`]) {
       return {
         ...totals,
-        [currentToken]: totals[currentToken].add(currentBalance),
+        [`${tokenChainId}_${tokenAddress}`]:
+          totals[`${tokenChainId}_${tokenAddress}`].add(currentBalance),
       };
     }
     return {
       ...totals,
-      [currentToken]: BigNumber.from(currentBalance),
+      [`${tokenChainId}_${tokenAddress}`]: BigNumber.from(currentBalance),
     };
   }, {});
 
@@ -116,7 +120,10 @@ const balancesFieldCache = {
               domain: null,
               id: `${colonyChainId}_${colonyAddress}_${COLONY_TOTAL_BALANCE_DOMAIN_ID}_${token.id}_balance`,
               token,
-              balance: totalTokenBalances[token.id]?.toString(),
+              balance:
+                totalTokenBalances[
+                  `${token.chainMetadata.chainId}_${token.id}`
+                ]?.toString(),
             }),
           ),
         ],

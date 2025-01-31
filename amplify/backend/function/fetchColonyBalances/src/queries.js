@@ -57,6 +57,7 @@ module.exports = {
     ${domainFragment}
     query GetColony($address: ID!) {
       getColony(id: $address) {
+        version
         chainMetadata {
           chainId
           network
@@ -72,6 +73,16 @@ module.exports = {
               ...Token
             }
           }
+        }
+      }
+    }
+  `,
+  getProxyColonies: /* GraphQL */ `
+    query GetProxyColonies($colonyAddress: ID!) {
+      getProxyColoniesByColonyAddress(colonyAddress: $colonyAddress) {
+        items {
+          chainId
+          isActive
         }
       }
     }

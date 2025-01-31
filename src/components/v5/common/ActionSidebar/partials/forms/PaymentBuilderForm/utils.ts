@@ -2,7 +2,7 @@ import { Id } from '@colony/colony-js';
 import { unformatNumeral } from 'cleave-zen';
 import { type TestContext } from 'yup';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { DEFAULT_NETWORK_INFO, DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
 import { DecisionMethod } from '~types/actions.ts';
@@ -72,7 +72,9 @@ export const allTokensAmountValidation = ({
   } = context;
   const { formValues } = formContext || {};
   const { from, _tokenSums } = formValues || {};
-  const { tokenAddress: fieldTokenAddress } = parent || {};
+  // @TODO: Implement token chain id
+  const { tokenAddress: fieldTokenAddress, chainId: fieldChainId } =
+    parent || {};
 
   if (!fieldTokenAddress || !from || !_tokenSums) {
     return false;
@@ -111,11 +113,13 @@ export const allTokensAmountValidation = ({
 
   const tokenAmountSum = _tokenSums[fieldTokenAddress];
 
-  const tokenBalance = getBalanceForTokenAndDomain(
-    colony.balances,
-    fieldTokenAddress,
-    from || Id.RootDomain,
-  );
+  const tokenBalance = getBalanceForTokenAndDomain({
+    balances: colony.balances,
+    tokenAddress: fieldTokenAddress,
+    // @TODO: Implement token chain id
+    tokenChainId: fieldChainId ?? DEFAULT_NETWORK_INFO.chainId,
+    domainId: from || Id.RootDomain,
+  });
 
   if (!tokenAmountSum?.lte(tokenBalance)) {
     return context.createError({

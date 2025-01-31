@@ -50,11 +50,12 @@ export const hasEnoughFundsValidation = ({
     return false;
   }
 
-  const tokenBalance = getBalanceForTokenAndDomain(
-    colony.balances,
-    selectedToken.tokenAddress,
-    domainId || Id.RootDomain,
-  );
+  const tokenBalance = getBalanceForTokenAndDomain({
+    balances: colony.balances,
+    tokenAddress: selectedToken.tokenAddress,
+    tokenChainId: selectedToken.chainMetadata.chainId,
+    domainId: domainId || Id.RootDomain,
+  });
 
   const tokenDecimals = getTokenDecimalsWithFallback(selectedToken.decimals);
 

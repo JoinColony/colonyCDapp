@@ -1,7 +1,10 @@
 const { constants, providers, Contract, BigNumber } = require('ethers');
 const { graphqlRequest, getRpcUrlByChainId } = require('./utils');
-const { getProxyColonies } = require('./graphql');
+const { getColony, getProxyColonies } = require('./queries');
 const basicColonyAbi = require('./basicColonyAbi.json');
+const basicUpdatedColonyAbi = require('./basicUpdatedColonyAbi.json');
+
+const FIRST_COLONY_VERSION_WITH_PROXY_COLONIES = 18;
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
@@ -25,6 +28,18 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
     await setEnvVariables();
   } catch (e) {
     throw new Error('Unable to set environment variables. Reason:', e);
+  }
+
+  const response = await graphqlRequest(
+    getColony,
+    { address: colonyAddress },
+    graphqlURL,
+    apiKey,
+  );
+  const { getColony: colony } = response?.data || {};
+
+  if (!colony) {
+    return { items: [] };
   }
 
   // Fetch proxy colony details
@@ -57,9 +72,14 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
   const block = await provider.getBlockNumber();
   const now = new Date();
 
+  const { version: colonyVersion } = colony;
+
+  const colonyVersionSupportsProxies =
+    colonyVersion >= FIRST_COLONY_VERSION_WITH_PROXY_COLONIES;
+
   const lightColonyClient = new Contract(
     colonyAddress,
-    basicColonyAbi,
+    colonyVersionSupportsProxies ? basicUpdatedColonyAbi : basicColonyAbi,
     provider,
   );
 
@@ -79,19 +99,38 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
    * If balance is 0, then no incoming transfers have been made
    */
   if (balanceOnMainChain.gt(0)) {
-    const colonyNonRewardsPotsTotal =
-      await lightColonyClient.getNonRewardPotsTotal(
+    let colonyNonRewardsPotsTotal;
+    if (colonyVersionSupportsProxies) {
+      colonyNonRewardsPotsTotal = await lightColonyClient.getNonRewardPotsTotal(
         chainId,
         constants.AddressZero,
       );
-    const colonyRewardsPotTotal = await lightColonyClient.getFundingPotBalance(
-      /*
-       * Root domain, since all initial transfers go in there
-       */
-      0,
-      chainId,
-      constants.AddressZero,
-    );
+    } else {
+      colonyNonRewardsPotsTotal = await lightColonyClient.getNonRewardPotsTotal(
+        constants.AddressZero,
+      );
+    }
+
+    let colonyRewardsPotTotal;
+    if (colonyVersionSupportsProxies) {
+      colonyRewardsPotTotal = await lightColonyClient.getFundingPotBalance(
+        /*
+         * Root domain, since all initial transfers go in there
+         */
+        0,
+        chainId,
+        constants.AddressZero,
+      );
+    } else {
+      colonyRewardsPotTotal = await lightColonyClient.getFundingPotBalance(
+        /*
+         * Root domain, since all initial transfers go in there
+         */
+        0,
+        constants.AddressZero,
+      );
+    }
+
     const unclaimedBalance = balanceOnMainChain
       .sub(colonyNonRewardsPotsTotal)
       .sub(colonyRewardsPotTotal);
@@ -105,7 +144,7 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
   }
 
   // Return early if no proxy colonies
-  if (activeProxyColonies.length < 1) {
+  if (!colonyVersionSupportsProxies || activeProxyColonies.length < 1) {
     // If the balance is 0, or unclaimed balance is 0, still return a claim with amount zero.
     // This is because we want to always show native chain tokens in the incoming funds table.
     return [colonyFundsClaim];
