@@ -1,4 +1,3 @@
-import { defineMessages } from 'react-intl';
 import { array, type InferType, number, object, string } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
@@ -10,12 +9,9 @@ import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 
-const MSG = defineMessages({
-  membersRequired: {
-    id: 'v5.common.ActionSidebar.partials.ManageVerifiedMembersForm.errors.member.required',
-    defaultMessage: 'Please select a member',
-  },
-});
+interface MemberItem {
+  value: string;
+}
 
 export const getValidationSchema = (
   addressBlacklist: string[],
@@ -28,20 +24,28 @@ export const getValidationSchema = (
         formatText({ id: 'errors.decisionMethod.required' }),
       ),
       description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
-      members: array().of(
-        object()
-          .shape({
-            value: string().required(formatText(MSG.membersRequired)),
-          })
-          .test('can-manage-member', errorMessage, (value) => {
-            // if no value entered, skip this validation and fallback to required validation
-            if (!value?.value) {
-              return true;
-            }
+      members: array<MemberItem>().when('manageMembers', {
+        is: (value: string) =>
+          value === ManageVerifiedMembersOperation.Add ||
+          value === ManageVerifiedMembersOperation.Remove,
+        then: array().of(
+          object()
+            .shape({
+              value: string().required(
+                formatText({ id: 'errors.member.required' }),
+              ),
+            })
+            .test('can-manage-member', errorMessage, (value) => {
+              // if no value entered, skip this validation and fallback to required validation
+              if (!value?.value) {
+                return true;
+              }
 
-            return !addressBlacklist.includes(value.value);
-          }),
-      ),
+              return !addressBlacklist.includes(value.value);
+            }),
+        ),
+        otherwise: array().notRequired(),
+      }),
       manageMembers: string().required(
         formatText({ id: 'errors.manageMembers.required' }),
       ),

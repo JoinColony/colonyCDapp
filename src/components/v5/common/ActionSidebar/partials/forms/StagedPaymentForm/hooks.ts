@@ -88,15 +88,14 @@ export const useValidationSchema = () => {
                     .required(({ path }) => {
                       const index = getLastIndexFromPath(path);
                       if (index === undefined) {
-                        return formatText({ id: 'errors.amount' });
+                        return formatText({ id: 'errors.milestone.required' });
                       }
                       return formatText(
-                        { id: 'errors.milestone.required' },
+                        { id: 'errors.milestone.requiredIn' },
                         { paymentIndex: index + 1 },
                       );
                     }),
                   [AMOUNT_FIELD_NAME]: string()
-                    .required(formatText({ id: 'errors.amount' }))
                     .test(
                       'more-than-zero',
                       ({ path }) => {
@@ -124,7 +123,8 @@ export const useValidationSchema = () => {
                         context,
                         colony,
                       }),
-                    ),
+                    )
+                    .required(formatText({ id: 'errors.amount' })),
                   [TOKEN_FIELD_NAME]: string()
                     .test(
                       'token-unlocked',
