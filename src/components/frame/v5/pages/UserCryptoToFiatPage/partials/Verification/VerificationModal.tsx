@@ -73,6 +73,31 @@ const VerificationModal: FC<VerificationModalProps> = ({
     return () => window.removeEventListener('message', handler);
   }, [kycLink, onTermsAcceptance]);
 
+  const handlePersonalDetailsSubmit = async ({
+    email,
+    firstName,
+    lastName,
+  }: any) => {
+    const response = await createKycLinks({
+      variables: {
+        email,
+        fullName: `${firstName} ${lastName}`,
+      },
+    });
+
+    const responseTermsLink = response.data?.bridgeXYZMutation?.tos_link;
+    const responseKycLink = response.data?.bridgeXYZMutation?.kyc_link;
+
+    if (responseTermsLink && responseKycLink) {
+      setTermsLink(responseTermsLink);
+      setKycLink(responseKycLink);
+
+      setActiveTab(TabId.Terms);
+    } else {
+      // Notify the user via a Toast or something
+    }
+  };
+
   return (
     <Modal
       isFullOnMobile={false}
@@ -93,28 +118,7 @@ const VerificationModal: FC<VerificationModalProps> = ({
               content: (
                 <div>
                   <PersonalDetailsForm
-                    onSubmit={async ({ email, firstName, lastName }) => {
-                      const response = await createKycLinks({
-                        variables: {
-                          email,
-                          fullName: `${firstName} ${lastName}`,
-                        },
-                      });
-
-                      const responseTermsLink =
-                        response.data?.bridgeXYZMutation?.tos_link;
-                      const responseKycLink =
-                        response.data?.bridgeXYZMutation?.kyc_link;
-
-                      if (responseTermsLink && responseKycLink) {
-                        setTermsLink(responseTermsLink);
-                        setKycLink(responseKycLink);
-
-                        setActiveTab(TabId.Terms);
-                      } else {
-                        // Notify the user via a Toast or something
-                      }
-                    }}
+                    onSubmit={handlePersonalDetailsSubmit}
                     onClose={onClose}
                   />
                 </div>
