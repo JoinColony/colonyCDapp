@@ -9,6 +9,7 @@ import { formatText } from '~utils/intl.ts';
 import RowItem from '../RowItem/index.ts';
 
 import { MSG, displayName, getBadgeProps, getCTAProps } from './consts.ts';
+import { parsePersonaURL } from './helpers.ts';
 import VerificationModal from './VerificationModal.tsx';
 
 const Verification = () => {
@@ -31,16 +32,18 @@ const Verification = () => {
   const handleTermsAcceptance = (kycLink: string) => {
     handleClose();
 
-    const url = new URL(kycLink);
-    const searchParams = new URLSearchParams(url.search);
+    const personaParams = parsePersonaURL(kycLink);
+    if (!personaParams) {
+      return;
+    }
 
-    const templateId = searchParams.get('inquiry-template-id') ?? '';
-    const referenceId = searchParams.get('reference-id') ?? '';
+    const { templateId, referenceId, fields } = personaParams;
 
     const personaClient = new PersonaClient({
       templateId,
       referenceId,
       environmentId: import.meta.env.PERSONA_ENVIRONMENT_ID,
+      fields,
       async onComplete() {
         await updateProfile({
           variables: {
