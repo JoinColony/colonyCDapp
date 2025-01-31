@@ -79,13 +79,12 @@ export const getStreamingPaymentAmountsLeft = (
       ? endTime.sub(startTime) // End time has already passed, the whole duration can be claimed.
       : BigNumber.from(currentTimestamp).sub(startTime); // End time has not passed, calculate duration to be claimed.
 
-    const PRECISION = BigNumber.from(10).pow(18);
-    const intervalBigNumber = BigNumber.from(interval);
-
+    // Convert to WAD arithmetic to match Solidity implementation
+    const WAD = BigNumber.from(10).pow(18);
+    const intervalsToClaim = durationToClaim.mul(WAD).div(interval);
     const amountAvailableSinceStart = BigNumber.from(amount)
-      .mul(durationToClaim)
-      .mul(PRECISION)
-      .div(intervalBigNumber.mul(PRECISION));
+      .mul(intervalsToClaim)
+      .div(WAD); // Divide by WAD to get back to normal scale
 
     const difference = amountAvailableSinceStart.sub(amountClaimedToDate);
 
