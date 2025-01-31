@@ -28,19 +28,23 @@ export const getBalanceForTokenAndDomain = ({
   balances: ColonyBalances | null | undefined;
   tokenAddress: Address;
   tokenChainId: string;
-  domainId?: number;
+  domainId?: number | '';
 }) => {
   const currentDomainBalance = balances?.items
-    ?.filter(
-      (domainBalance) =>
-        (domainId === COLONY_TOTAL_BALANCE_DOMAIN_ID
-          ? domainBalance?.domain === null
-          : domainBalance?.domain?.nativeId === domainId) &&
-        domainBalance?.token?.chainMetadata?.chainId === tokenChainId,
+    ?.filter((domainBalance) =>
+      domainId === COLONY_TOTAL_BALANCE_DOMAIN_ID || domainId === ''
+        ? domainBalance?.domain === null
+        : domainBalance?.domain?.nativeId === domainId,
     )
-    .find(
-      (domainBalance) => domainBalance?.token?.tokenAddress === tokenAddress,
-    );
+    .find((domainBalance) => {
+      const isMatchingChainId =
+        domainBalance?.token?.chainMetadata?.chainId === tokenChainId;
+
+      const isMatchTokenAddress =
+        domainBalance?.token?.tokenAddress === tokenAddress;
+
+      return isMatchingChainId && isMatchTokenAddress;
+    });
 
   return BigNumber.from(currentDomainBalance?.balance ?? 0);
 };

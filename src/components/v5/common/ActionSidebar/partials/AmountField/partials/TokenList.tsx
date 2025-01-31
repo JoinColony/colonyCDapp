@@ -33,7 +33,7 @@ export const TokenList: FC<TokenListProps> = ({
 
         return (
           <li
-            key={colonyToken.tokenAddress}
+            key={`${colonyToken.chainMetadata.chainId}_${colonyToken.tokenAddress}`}
             className="mb-1 last:mb-0"
             data-testid="token-list-item"
           >
