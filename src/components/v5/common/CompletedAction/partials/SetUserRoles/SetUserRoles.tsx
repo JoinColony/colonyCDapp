@@ -9,8 +9,14 @@ import { ColonyActionType, useGetColonyHistoricRoleRolesQuery } from '~gql';
 import { getUserRolesForDomain } from '~transformers';
 import { Authority } from '~types/authority.ts';
 import { type ColonyAction } from '~types/graphql.ts';
-import { formatRolesTitle } from '~utils/colonyActions.ts';
-import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import {
+  formatRolesTitle,
+  normalizeRolesForAction,
+} from '~utils/colonyActions.ts';
+import {
+  extractColonyRoles,
+  transformApiRolesToArray,
+} from '~utils/colonyRoles.ts';
 import { getHistoricRolesDatabaseId } from '~utils/databaseId.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
@@ -42,11 +48,6 @@ import {
   TeamFromRow,
 } from '../rows/index.ts';
 
-import {
-  getIsPermissionsRemoval,
-  transformActionRolesToColonyRoles,
-} from './utils.ts';
-
 const displayName = 'v5.common.CompletedAction.partials.SetUserRoles';
 
 interface Props {
@@ -72,13 +73,14 @@ const SetUserRoles = ({ action }: Props) => {
     transactionHash,
     fromDomain,
     annotation,
+    rolesAreMultiSig,
     blockNumber,
     colonyAddress,
-    rolesAreMultiSig,
-    motionData,
-    multiSigData,
+    isMotion,
+    isMultiSig,
   } = action;
   const areRolesMultiSig = !!rolesAreMultiSig;
+  const isActionMotion = isMotion || isMultiSig;
 
   const roleAuthority = rolesAreMultiSig
     ? Authority.ViaMultiSig
@@ -106,33 +108,37 @@ const SetUserRoles = ({ action }: Props) => {
     constraint: 'excludeInheritedRoles',
   });
 
-  const actionRoles = transformActionRolesToColonyRoles(roles);
-  // in case of motions, no historic roles are created so we just assume we are modifying their current roles (which contract wise we are)
+  const oldRoles = historicRoles?.getColonyHistoricRole
+    ? transformApiRolesToArray(historicRoles.getColonyHistoricRole)
+    : currentUserRoles;
 
-  const dbPermissionsOld =
-    actionRoles.filter(Boolean).length > 0 // if we didnt just remove all the roles
-      ? actionRoles
-      : currentUserRoles;
+  if (!roles) {
+    console.warn('No roles present in action');
+    return null;
+  }
 
-  const { role: dbRoleForDomainOld } = getRole(
-    dbPermissionsOld,
+  const normalizedRoles = normalizeRolesForAction(roles);
+  const isRemovingRoles =
+    normalizedRoles.filter((role) => role.setTo).length === 0;
+
+  /*
+   * This probably seems so confusing but dropping a here be dragons comment for future developers
+   * When you create a motion, there is no historic roles created, that's created when a setUserRoles contract passes
+   * when you do it via permissions, it 100% reflects the roles the user currently holds
+   * The roles on the action are just a diff, so if we add just 1 role, only that one is there, the same when we remove it
+   * Motions however modify the user's current roles in the colony, so we use those
+   */
+  const newRoles = isActionMotion
+    ? normalizedRoles.filter((role) => role.setTo === true).map(({ id }) => id)
+    : oldRoles;
+
+  const { name: newRoleName, role: newUserRole } = getRole(
+    newRoles,
     areRolesMultiSig,
   );
-
-  const dbPermissionsNew = transformActionRolesToColonyRoles(
-    historicRoles?.getColonyHistoricRole || roles,
-    {
-      isMotion: !!motionData || !!multiSigData,
-    },
-  );
-
-  const { name: dbRoleNameNew, role: dbRoleForDomainNew } = getRole(
-    dbPermissionsNew,
-    areRolesMultiSig,
-  );
+  const { role: oldUserRole } = getRole(oldRoles, areRolesMultiSig);
 
   const metadata = action.motionData?.motionDomain.metadata;
-
   const rolesTitle = formatRolesTitle(roles);
 
   return (
@@ -146,15 +152,13 @@ const SetUserRoles = ({ action }: Props) => {
             [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             member: recipientAddress,
             authority: roleAuthority,
-            role: getIsPermissionsRemoval(roles)
-              ? UserRoleModifier.Remove
-              : dbRoleForDomainNew,
+            role: isRemovingRoles ? UserRoleModifier.Remove : newUserRole,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
           showRedoItem={
-            !!dbPermissionsNew.length ||
+            !isRemovingRoles ||
             (!!action.motionData && !action.motionData?.isFinalized) ||
             (!!action.multiSigData && !action.multiSigData?.isExecuted)
           }
@@ -231,8 +235,8 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.permissions' })}
           rowContent={
-            dbPermissionsNew.length
-              ? dbRoleNameNew
+            !isRemovingRoles
+              ? newRoleName
               : formatText({
                   id: 'actionSidebar.managePermissions.roleSelect.remove.title',
                 })
@@ -249,11 +253,11 @@ const SetUserRoles = ({ action }: Props) => {
         <DescriptionRow description={action.annotation.message} />
       )}
       <PermissionsTableRow
-        dbPermissionsOld={dbPermissionsOld}
-        dbPermissionsNew={dbPermissionsNew}
+        dbPermissionsOld={oldRoles}
+        dbRoleForDomainOld={oldUserRole}
+        dbPermissionsNew={newRoles}
+        dbRoleForDomainNew={newUserRole}
         domainId={action.fromDomain?.nativeId}
-        dbRoleForDomainNew={dbRoleForDomainNew}
-        dbRoleForDomainOld={dbRoleForDomainOld}
       />
     </>
   );

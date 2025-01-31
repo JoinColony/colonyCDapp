@@ -77,10 +77,9 @@ export const getRole = (
     );
   }
 
-  // Multi-sig does not use the Mod role
   return (
-    USER_ROLES.filter((role) => role.role !== UserRole.Mod).find(
-      ({ permissions }) => isEqual(permissions.sort(), permissionsList.sort()),
+    USER_ROLES.find(({ permissions }) =>
+      isEqual(permissions.sort(), permissionsList.sort()),
     ) || {
       ...CUSTOM_USER_ROLE,
       permissions: permissionsList,
