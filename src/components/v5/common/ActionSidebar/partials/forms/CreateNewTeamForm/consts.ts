@@ -4,6 +4,7 @@ import {
   MAX_COLONY_DISPLAY_NAME,
   MAX_DOMAIN_PURPOSE_LENGTH,
 } from '~constants/index.ts';
+import { formatText } from '~utils/intl.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 
 export const validationSchema = object()
@@ -11,11 +12,15 @@ export const validationSchema = object()
     teamName: string()
       .trim()
       .max(MAX_COLONY_DISPLAY_NAME)
-      .required(() => 'Team name required.'),
+      .required(formatText({ id: 'errors.teamName.required' })),
     domainPurpose: string().trim().max(MAX_DOMAIN_PURPOSE_LENGTH).notRequired(),
-    domainColor: string().defined(),
+    domainColor: string().required(
+      formatText({ id: 'errors.domainColor.required' }),
+    ),
     createdIn: number().defined(),
-    decisionMethod: string().defined(),
+    decisionMethod: string().required(
+      formatText({ id: 'errors.decisionMethod.required' }),
+    ),
   })
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);

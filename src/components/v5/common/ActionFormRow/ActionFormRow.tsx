@@ -1,10 +1,12 @@
 import { CaretRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useController } from 'react-hook-form';
 
 import useToggle from '~hooks/useToggle/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+
+import { useInputsOrderContext } from '../ActionSidebar/partials/ActionSidebarContent/InputsOrderContext/InputsOrderContext.ts';
 
 import { LABEL_CLASSNAME } from './consts.ts';
 import { type ActionFormRowProps } from './types.ts';
@@ -26,6 +28,13 @@ const ActionFormRow = <T,>(
   const {
     fieldState: { error },
   } = useController({ name: fieldName || '' });
+  const { registerInput } = useInputsOrderContext();
+
+  useEffect(() => {
+    if (fieldName) {
+      registerInput(fieldName);
+    }
+  }, [fieldName, registerInput]);
   const rowToggle = useToggle();
   const [isExpanded, { toggle }] = rowToggle;
   const isError = !!error;
@@ -52,7 +61,7 @@ const ActionFormRow = <T,>(
             'text-gray-900': !isDisabled && !isError,
             'text-gray-300': isDisabled,
           },
-          'ml-2 flex items-center gap-2 text-md',
+          'ml-2 flex cursor-pointer items-center gap-2 text-md',
         )}
       >
         {title}
