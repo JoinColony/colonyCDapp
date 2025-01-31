@@ -246,18 +246,27 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         }
 
         if (!contextWallet) {
-          try {
-            if (primaryWallet?.connector.supportsNetworkSwitching()) {
-              await primaryWallet.switchNetwork(
-                parseInt(DEFAULT_NETWORK_INFO.chainId, 10),
+          if (primaryWallet?.connector.supportsNetworkSwitching()) {
+            try {
+              const currentPrimaryWalletChainId =
+                await primaryWallet.getNetwork();
+              const requiredChainId = parseInt(
+                DEFAULT_NETWORK_INFO.chainId,
+                10,
               );
-              debugLogging(
-                'WALLET AUTOMATICALLY SWITCHED NETWORK',
-                parseInt(DEFAULT_NETWORK_INFO.chainId, 10),
-              );
+              // Only swith the chain if not already on it
+              if (currentPrimaryWalletChainId !== requiredChainId) {
+                await primaryWallet.switchNetwork(
+                  parseInt(DEFAULT_NETWORK_INFO.chainId, 10),
+                );
+                debugLogging(
+                  'WALLET AUTOMATICALLY SWITCHED NETWORK',
+                  parseInt(DEFAULT_NETWORK_INFO.chainId, 10),
+                );
+              }
+            } catch (error) {
+              debugLogging('WALLET AUTOMATIC NETWORK SWITCH FAILED', error);
             }
-          } catch (error) {
-            debugLogging('WALLET AUTOMATIC NETWORK SWITCH FAILED', error);
           }
 
           await updateWallet();
