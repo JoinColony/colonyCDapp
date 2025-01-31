@@ -44,4 +44,5 @@ export type ProxyColoniesActionTypes =
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.PROXY_COLONY_ENABLE_ERROR, object>
+  | UniqueActionType<ActionTypes.PROXY_COLONY_ENABLE_SUCCESS, object, object>
   | UniqueActionType<ActionTypes.PROXY_COLONY_ENABLE_SUCCESS, object, object>;

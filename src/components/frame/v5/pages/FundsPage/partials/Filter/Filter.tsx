@@ -32,7 +32,7 @@ function Filter<TValue extends FilterValue>({
   searchInputPlaceholder,
   filtersHeader = 'filters',
   buttonText,
-  unclaimedClaims,
+  tokenAddressesGroupedByChain,
   isButtonDisabled,
   shouldShowButton,
 }: ExtendedFilterProps<TValue>) {
@@ -100,7 +100,7 @@ function Filter<TValue extends FilterValue>({
           )}
           {shouldShowButton && (
             <AcceptButton
-              tokenAddresses={unclaimedClaims}
+              tokenAddressesGroupedByChain={tokenAddressesGroupedByChain}
               disabled={isButtonDisabled}
             >
               {formatText({ id: 'incomingFundsPage.table.claimAllFunds' })}

@@ -58,6 +58,12 @@ fragment Colony on Colony {
     invitesRemaining
   }
   lastUpdatedContributorsWithReputation
+  proxyColonies {
+    items {
+      chainId
+      isActive
+    }
+  }
 }
 
 fragment PublicColony on Colony {

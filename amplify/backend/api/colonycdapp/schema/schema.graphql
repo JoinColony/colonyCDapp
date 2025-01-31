@@ -899,10 +899,6 @@ enum ColonyActionType {
   MANAGE_TOKENS_MOTION
   MANAGE_TOKENS_MULTISIG
   """
-  An action related to arbitrary transaction
-  """
-  ARBITRARY_TX
-  """
   An action related to creating a proxy colony
   """
   ADD_PROXY_COLONY
@@ -1606,7 +1602,7 @@ type Colony @model {
   Native chain token claim (e.g., Token 0x0000...0000: ETH, xDAI, etc.)
   This is not an array since only a single token type can be returned
   """
-  chainFundsClaim: ColonyChainFundsClaim
+  chainFundsClaim: [ColonyChainFundsClaim]
     @function(name: "fetchColonyNativeFundsClaim-${env}")
   """
   Type of the Colony (Regular or Metacolony)
@@ -1680,6 +1676,10 @@ type Colony @model {
   """
   colonyMemberInvite: ColonyMemberInvite
     @hasOne(fields: ["colonyMemberInviteCode"])
+  """
+  List of proxy colonies related to this colony
+  """
+  proxyColonies: [ProxyColony] @hasMany(indexName: "byColonyAddress", fields: ["id"])
 }
 
 input ValidateUserInviteInput {

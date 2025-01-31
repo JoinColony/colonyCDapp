@@ -19,6 +19,7 @@ import Filter from '../Filter/index.ts';
 
 import { useFundsTable, useFundsTableColumns } from './hooks.tsx';
 import { type FundsTableModel } from './types.ts';
+import { getGroupedUnclaimedClaimsByChain } from './utils.ts';
 
 const displayName = 'pages.FundsPage.partials.FundsTable';
 
@@ -28,9 +29,9 @@ const FundsTable: FC = () => {
   const { filters, searchedTokens, activeFilters } = useFundsTable();
   const claims = useColonyFundsClaims();
   const unclaimedClaims = claims.filter((claim) => !claim.isClaimed);
-  const allUnclaimedClaims = Array.from(
-    new Set(unclaimedClaims.map((claim) => claim.token?.tokenAddress || '')),
-  );
+
+  const tokenAddressesGroupedByChain =
+    getGroupedUnclaimedClaimsByChain(unclaimedClaims);
 
   return (
     <IncomingFundsLoadingContextProvider>
@@ -75,7 +76,7 @@ const FundsTable: FC = () => {
             )}
           <Filter
             {...filters}
-            unclaimedClaims={allUnclaimedClaims}
+            tokenAddressesGroupedByChain={tokenAddressesGroupedByChain}
             isButtonDisabled={!searchedTokens.length}
             shouldShowButton={unclaimedClaims.length > 0}
           />

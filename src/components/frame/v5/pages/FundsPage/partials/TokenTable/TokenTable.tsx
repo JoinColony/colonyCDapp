@@ -45,7 +45,9 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
   } = useColonyContext();
   const claims = useColonyFundsClaims();
   const currentClaims = claims.filter(
-    ({ token: currentClaimToken }) => currentClaimToken?.name === token?.name,
+    ({ token: currentClaimToken }) =>
+      currentClaimToken?.name === token?.name &&
+      currentClaimToken?.chainMetadata.chainId === token?.chainMetadata.chainId,
   );
   const claimsAmount =
     currentClaims.reduce((acc, { amount, isClaimed }) => {
@@ -113,7 +115,8 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
                   'text-blue-400': isTokenInfoShown,
                 })}
               >
-                {token.name}
+                {/* @TODO: Temporary UI: Show chainId next to token name */}
+                {`${token.name} - ${token.chainMetadata.chainId}`}
               </span>
             </button>
             <div className="flex items-center gap-2">

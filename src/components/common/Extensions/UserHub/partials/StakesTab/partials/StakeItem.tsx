@@ -44,6 +44,7 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
         symbol: nativeToken.nativeTokenSymbol,
         tokenAddress: nativeToken.tokenAddress,
         name: nativeToken.name,
+        chainMetadata: nativeToken.chainMetadata,
       },
       metadata,
     };

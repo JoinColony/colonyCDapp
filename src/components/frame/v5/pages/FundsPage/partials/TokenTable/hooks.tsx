@@ -22,7 +22,14 @@ export const useTokenTableColumns = (): ColumnDef<ColonyClaims, string>[] => {
 
     if (!BigNumber.from(claim.amount).isZero()) {
       return (
-        <AcceptButton tokenAddresses={[claim.token?.tokenAddress || '']}>
+        <AcceptButton
+          tokenAddressesGroupedByChain={[
+            {
+              chainId: claim.token?.chainMetadata.chainId,
+              tokenAddresses: [claim.token?.tokenAddress || ''],
+            },
+          ]}
+        >
           {formatText({ id: 'button.accept' })}
         </AcceptButton>
       );
