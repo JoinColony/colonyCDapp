@@ -57,6 +57,7 @@ module.exports = {
     ${domainFragment}
     query GetColony($address: ID!) {
       getColony(id: $address) {
+        version
         chainMetadata {
           chainId
           network

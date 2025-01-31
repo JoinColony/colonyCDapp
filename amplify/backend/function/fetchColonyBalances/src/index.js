@@ -9,6 +9,9 @@ const {
 const { graphqlRequest } = require('./utils');
 const { getColony, getProxyColonies } = require('./queries');
 const basicColonyAbi = require('./basicColonyAbi.json');
+const basicUpdatedColonyAbi = require('./basicUpdatedColonyAbi.json');
+
+const FIRST_COLONY_VERSION_WITH_PROXY_COLONIES = 18;
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
@@ -70,9 +73,14 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
 
     const provider = new providers.StaticJsonRpcProvider(rpcURL);
 
+    const { version: colonyVersion } = colony;
+
+    const colonyVersionSupportsProxies =
+      colonyVersion >= FIRST_COLONY_VERSION_WITH_PROXY_COLONIES;
+
     const lightColonyClient = new Contract(
       colonyAddress,
-      basicColonyAbi,
+      colonyVersionSupportsProxies ? basicUpdatedColonyAbi : basicColonyAbi,
       provider,
     );
 
@@ -85,11 +93,19 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
 
       // Native chain token. Ie: address 0x0000...0000
       balances.push(async () => {
-        const rewardsPotTotal = await lightColonyClient.getFundingPotBalance(
-          nativeFundingPotId,
-          chainId,
-          AddressZero,
-        );
+        let rewardsPotTotal;
+        if (colonyVersionSupportsProxies) {
+          rewardsPotTotal = await lightColonyClient.getFundingPotBalance(
+            nativeFundingPotId,
+            chainId,
+            AddressZero,
+          );
+        } else {
+          rewardsPotTotal = await lightColonyClient.getFundingPotBalance(
+            nativeFundingPotId,
+            AddressZero,
+          );
+        }
         /*
          * We're using this patters so that we could parallelize all calls at once
          * since this is in essence a multi dimensional array (of async data)
@@ -116,11 +132,19 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
         const { id: tokenAddress } = token;
 
         balances.push(async () => {
-          const rewardsPotTotal = await lightColonyClient.getFundingPotBalance(
-            nativeFundingPotId,
-            chainId,
-            tokenAddress,
-          );
+          let rewardsPotTotal;
+          if (colonyVersionSupportsProxies) {
+            rewardsPotTotal = await lightColonyClient.getFundingPotBalance(
+              nativeFundingPotId,
+              chainId,
+              tokenAddress,
+            );
+          } else {
+            rewardsPotTotal = await lightColonyClient.getFundingPotBalance(
+              nativeFundingPotId,
+              tokenAddress,
+            );
+          }
           /*
            * We're using this patters so that we could parallelize all calls at once
            * since this is in essence a multi dimensional array (of async data)
@@ -134,6 +158,12 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
         });
       });
     });
+
+    if (!colonyVersionSupportsProxies) {
+      return {
+        items: await Promise.all(balances.map(async (resolve) => resolve())),
+      };
+    }
 
     activeProxyColonies.map(async (proxyColony) => {
       const proxyChainId = proxyColony.chainId;
