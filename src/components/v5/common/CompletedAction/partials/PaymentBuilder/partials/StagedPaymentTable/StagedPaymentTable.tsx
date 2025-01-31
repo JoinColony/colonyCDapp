@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 
 import { ADDRESS_ZERO } from '~constants';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import { useMobile, useTablet } from '~hooks';
+import { useTablet } from '~hooks';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { type Expenditure } from '~types/graphql.ts';
@@ -51,7 +51,7 @@ const useStagedPaymentTableColumns = ({
 }: StagedPaymentTableColumnsProps) => {
   const dataRef = useWrapWithRef(data);
   const hasMoreThanOneToken = dataRef.current.length > 1;
-  const isMobile = useMobile();
+  const isTablet = useTablet();
   const { toggleOnMilestoneModal: showModal, setSelectedMilestones } =
     usePaymentBuilderContext();
   const { stagedExpenditureAddress } = useEnabledExtensions();
@@ -66,6 +66,17 @@ const useStagedPaymentTableColumns = ({
     useMemo(() => {
       const columnHelper =
         createColumnHelper<StagedPaymentRecipientsFieldModel>();
+
+      const releaseTableSpacer = isTablet
+        ? []
+        : [
+            columnHelper.display({
+              id: 'release',
+              staticSize: '60px',
+              enableSorting: false,
+              cell: () => null,
+            }),
+          ];
 
       return [
         columnHelper.accessor('milestone', {
@@ -111,23 +122,25 @@ const useStagedPaymentTableColumns = ({
               isLoading={isLoading}
             />
           ),
-          footer: hasMoreThanOneToken
-            ? () => (
-                <>
-                  <PaymentBuilderPayoutsTotal
-                    data={dataRef.current}
-                    itemClassName="justify-end md:justify-start"
-                    buttonClassName="justify-end md:justify-start"
-                  />
-                  {isMobile &&
-                    isPaymentStep &&
-                    hasMoreThanOneMilestone &&
-                    isCorrectExtensionInstalled && (
-                      <ReleaseAllButton items={dataRef.current} />
-                    )}
-                </>
-              )
-            : undefined,
+          ...((!isTablet || !isPaymentStep) && {
+            footer: hasMoreThanOneToken
+              ? () => {
+                  return (
+                    <div
+                      className={clsx({
+                        'w-[calc(200%+35px)] min-w-[120px]': isTablet,
+                      })}
+                    >
+                      <PaymentBuilderPayoutsTotal
+                        data={dataRef.current}
+                        itemClassName={clsx({ 'justify-end': isTablet })}
+                        buttonClassName="justify-end md:justify-start"
+                      />
+                    </div>
+                  );
+                }
+              : undefined,
+          }),
         }),
         ...(isPaymentStep
           ? [
@@ -143,7 +156,11 @@ const useStagedPaymentTableColumns = ({
                   const isClaimed = currentMilestone?.isClaimed;
 
                   return isClaimed ? (
-                    <div className="flex items-center justify-end">
+                    <div
+                      className={clsx('flex items-center', {
+                        'justify-end': !isTablet,
+                      })}
+                    >
                       <PillsBase
                         className={clsx(
                           'bg-teams-blue-50 text-sm font-medium text-teams-blue-400',
@@ -179,26 +196,51 @@ const useStagedPaymentTableColumns = ({
                   );
                 },
                 footer:
-                  !isMobile &&
-                  hasMoreThanOneMilestone &&
-                  isCorrectExtensionInstalled
-                    ? () => <ReleaseAllButton items={dataRef.current} />
-                    : undefined,
+                  hasMoreThanOneMilestone && isCorrectExtensionInstalled
+                    ? () => (
+                        <div
+                          className={clsx({
+                            'w-[calc(200%+35px)] min-w-[120px]': isTablet,
+                          })}
+                        >
+                          {isTablet && (
+                            <div className="">
+                              <PaymentBuilderPayoutsTotal
+                                data={dataRef.current}
+                                itemClassName="justify-end md:justify-start"
+                                buttonClassName="justify-end md:justify-start"
+                              />
+                            </div>
+                          )}
+
+                          <ReleaseAllButton items={dataRef.current} />
+                        </div>
+                      )
+                    : () =>
+                        isTablet ? (
+                          <div
+                            className={clsx({
+                              'w-[calc(200%+35px)] min-w-[120px]': isTablet,
+                            })}
+                          >
+                            {isTablet && (
+                              <div className="">
+                                <PaymentBuilderPayoutsTotal
+                                  data={dataRef.current}
+                                  itemClassName="justify-end md:justify-start"
+                                  buttonClassName="justify-end md:justify-start"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        ) : undefined,
               }),
             ]
-          : [
-              columnHelper.display({
-                id: 'release',
-                staticSize: '60px',
-                enableSorting: false,
-                cell: () => null,
-              }),
-            ]),
+          : releaseTableSpacer),
       ];
     }, [
       hasMoreThanOneToken,
       isPaymentStep,
-      isMobile,
       hasMoreThanOneMilestone,
       isCorrectExtensionInstalled,
       isLoading,
@@ -206,6 +248,7 @@ const useStagedPaymentTableColumns = ({
       expenditure.finalizedAt,
       setSelectedMilestones,
       showModal,
+      isTablet,
     ]);
 
   return columns;

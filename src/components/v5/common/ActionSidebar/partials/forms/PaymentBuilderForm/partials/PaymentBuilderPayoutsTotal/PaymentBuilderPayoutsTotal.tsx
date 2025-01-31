@@ -89,7 +89,7 @@ const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
         )}
       >
         <Numeral value={payout.amount} decimals={tokenData?.decimals} />
-        <div className="flex items-center gap-1">
+        <div className="flex items-center justify-start gap-1">
           <TokenAvatar
             tokenAddress={tokenData.tokenAddress}
             tokenAvatarSrc={tokenData.avatar ?? undefined}
