@@ -15,7 +15,10 @@ const displayName =
 const MSG = defineMessages({
   info: {
     id: `${displayName}.info`,
-    defaultMessage: 'Payment creator released the payment.',
+    defaultMessage: `{userIsCreator, select,
+      true {Payment creator released the payment.}
+      other {Member used permissions to release this payment.}
+    }`,
   },
   overview: {
     id: `${displayName}.overview`,
@@ -29,6 +32,7 @@ const MSG = defineMessages({
 
 const FinalizeByPaymentCreatorInfo: FC<FinalizeByPaymentCreatorInfoProps> = ({
   userAdddress,
+  userIsCreator = true,
 }) => {
   return (
     <MenuWithStatusText
@@ -40,7 +44,9 @@ const FinalizeByPaymentCreatorInfo: FC<FinalizeByPaymentCreatorInfoProps> = ({
           iconSize={16}
           iconClassName="text-gray-500"
         >
-          {formatText(MSG.info)}
+          {formatText(MSG.info, {
+            userIsCreator,
+          })}
         </StatusText>
       }
       sections={[
