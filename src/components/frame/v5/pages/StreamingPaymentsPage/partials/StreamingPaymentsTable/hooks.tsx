@@ -185,7 +185,6 @@ export const useStreamingPaymentTable = () => {
       const paymentStatus = getStreamingPaymentStatus({
         streamingPayment: item,
         currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
-        amountAvailableToClaim,
       });
       const selectedToken = allTokens.find(
         (token) => token.token.tokenAddress === item.tokenAddress,
