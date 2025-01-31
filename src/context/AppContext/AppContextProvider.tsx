@@ -12,6 +12,7 @@ import React, {
 } from 'react';
 import useLocalStorage from 'use-local-storage';
 
+import { deauthenticateWallet } from '~auth/index.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useGetUserByAddressLazyQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
@@ -316,6 +317,10 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         const primaryWalletAddress = utils.getAddress(primaryWallet.address);
         if (primaryWalletAddress !== wallet.address) {
           debugLogging('WALLET ADDRESS CHANGED', primaryWallet);
+
+          setWalletConnecting(true);
+
+          await deauthenticateWallet();
 
           await updateWallet();
 
