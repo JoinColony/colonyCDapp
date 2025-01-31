@@ -14,10 +14,7 @@ import { ActionTypes } from '~redux/index.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { type StreamingPaymentItems } from '~shared/StreamingPayments/types.ts';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
-import {
-  getStreamingPaymentAmountsLeft,
-  getStreamingPaymentStatus,
-} from '~utils/streamingPayments.ts';
+import { getStreamingPaymentStatus } from '~utils/streamingPayments.ts';
 
 export const useUninstall = (extensionId: Extension) => {
   const {
@@ -144,16 +141,10 @@ export const useGetActiveAndUnclaimedStreams = () => {
 
   const getTotalActiveStreamingPayments = (items: StreamingPaymentItems) => {
     const activeStreams = items.filter((item) => {
-      const { amountAvailableToClaim } = getStreamingPaymentAmountsLeft(
-        item,
-        Math.floor(blockTime ?? Date.now() / 1000),
-      );
-
       return (
         getStreamingPaymentStatus({
           streamingPayment: item,
           currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
-          amountAvailableToClaim,
         }) === StreamingPaymentStatus.Active
       );
     });
