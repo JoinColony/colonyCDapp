@@ -1,12 +1,16 @@
-const { getColonyNetworkClient, Network } = require('@colony/colony-js');
 const {
   providers,
   constants: { AddressZero },
+  Contract,
 } = require('ethers');
 const EnvVarsConfig = require('../config/envVars');
 const { getStartOfDayFor } = require('../utils');
 const { DEFAULT_TOKEN_DECIMALS } = require('../consts');
-const { getDomains, getAllColonyTokens } = require('../api/graphql/operations');
+const {
+  getDomains,
+  getAllColonyTokens,
+  getAllProxyColonies,
+} = require('../api/graphql/operations');
 const ExchangeRatesService = require('./exchangeRates');
 const { getTotalFiatAmountFor } = require('./tokens');
 const { getTokensDatesMap } = require('./actions');
@@ -115,12 +119,33 @@ const findClosestPastBlock = async ({
   });
 };
 
-const getTokensWithDefaults = async (colonyAddress) => {
+const getColonyTokens = async (colonyAddress) => {
   const tokensData = await getAllColonyTokens(colonyAddress);
+  return [...tokensData.map(({ token }) => token)];
+};
+
+const getFilteredTokensWithDefaults = (tokens, chainId) => {
   return [
-    { id: AddressZero, decimals: DEFAULT_TOKEN_DECIMALS },
-    ...tokensData.map(({ token }) => token),
+    {
+      id: AddressZero,
+      decimals: DEFAULT_TOKEN_DECIMALS,
+      chainMetadata: { chainId },
+    },
+    ...tokens.filter((token) => token.chainMetadata?.chainId === chainId),
   ];
+};
+
+const getClosestBlock = async (provider, averageBlockTime, targetDate) => {
+  const currentBlockNumber = await provider.getBlockNumber();
+  const closestBlockNumber = await findClosestPastBlock({
+    targetDate,
+    averageBlockTime,
+    currentBlockNumber,
+    provider,
+  });
+
+  console.log('Closest block to target date:', closestBlockNumber);
+  return provider.getBlock(closestBlockNumber);
 };
 
 const fetchBalances = async ({
@@ -135,6 +160,7 @@ const fetchBalances = async ({
       try {
         rewardsPotTotal = await colonyClient.getFundingPotBalance(
           nativeFundingPotId,
+          token.chainMetadata?.chainId,
           token.id,
           { blockTag: closestBlock.number },
         );
@@ -164,60 +190,120 @@ const fetchBalances = async ({
   );
 };
 
+const getDomainBalances = async ({
+  tokens,
+  domains,
+  domainId,
+  colonyClient,
+  closestBlock,
+}) => {
+  if (domainId) {
+    const domain = domains.find((d) => d.id === domainId);
+    return fetchBalances({
+      tokens,
+      colonyClient,
+      nativeFundingPotId: domain?.nativeFundingPotId,
+      closestBlock,
+    });
+  }
+
+  const allDomainBalances = await Promise.all(
+    domains.map((domain) =>
+      fetchBalances({
+        tokens,
+        colonyClient,
+        nativeFundingPotId: domain?.nativeFundingPotId,
+        closestBlock,
+      }),
+    ),
+  );
+  return allDomainBalances.flat();
+};
+
+const getProxyColonyBalances = async ({
+  colonyAddress,
+  colonyTokens,
+  domains,
+  domainId,
+  closestBlock,
+  colonyClient,
+}) => {
+  const proxyColonies = await getAllProxyColonies(colonyAddress);
+  const activeProxyColonies = proxyColonies.filter(
+    (proxyColony) => proxyColony.isActive,
+  );
+
+  const proxyBalances = await Promise.all(
+    activeProxyColonies.map(async (proxyColony) => {
+      const proxyChainId = proxyColony.chainId;
+
+      const proxyTokens = getFilteredTokensWithDefaults(
+        colonyTokens,
+        proxyChainId,
+      );
+      return getDomainBalances({
+        tokens: proxyTokens,
+        domainId,
+        domains,
+        colonyClient: colonyClient,
+        closestBlock,
+      });
+    }),
+  );
+
+  return proxyBalances.flat();
+};
+
 const getNetworkTotalBalance = async ({
   colonyAddress,
   domainId,
   timeframePeriodEndDate,
   selectedCurrency,
 }) => {
-  const { DEFAULT_NETWORK_INFO } = await NetworkConfig.getConfig();
+  const { DEFAULT_NETWORK_INFO, basicColonyAbi } =
+    await NetworkConfig.getConfig();
   const averageBlockTime = DEFAULT_NETWORK_INFO.blockTime;
-  const { network, networkAddress, rpcURL } = await EnvVarsConfig.getEnvVars();
+  const { rpcURL } = await EnvVarsConfig.getEnvVars();
+
   const provider = new providers.StaticJsonRpcProvider(rpcURL);
-  const networkClient = getColonyNetworkClient(network, provider, {
-    networkAddress,
-    disableVersionCheck: true,
-  });
-
-  const currentBlockNumber = await provider.getBlockNumber();
-  const closestBlockNumber = await findClosestPastBlock({
-    targetDate: timeframePeriodEndDate,
-    averageBlockTime,
-    currentBlockNumber,
+  const lightColonyClient = new Contract(
+    colonyAddress,
+    basicColonyAbi,
     provider,
-  });
-  console.log('Closest block to target date:', closestBlockNumber);
-  const closestBlock = await provider.getBlock(closestBlockNumber);
+  );
 
-  const colonyClient = await networkClient.getColonyClient(colonyAddress);
-  const tokens = await getTokensWithDefaults(colonyAddress);
-
+  const colonyTokens = await getColonyTokens(colonyAddress);
   const domains = await getDomains(colonyAddress);
-  let balances = [];
 
-  // If the "All teams" filter is selected, then domain will be undefined
-  if (domainId) {
-    const domain = domains.find((d) => d.id === domainId);
-    balances = await fetchBalances({
-      tokens,
-      colonyClient,
-      nativeFundingPotId: domain?.nativeFundingPotId,
-      closestBlock,
-    });
-  } else {
-    const allDomainsBalances = await Promise.all(
-      domains.map(async (domain) =>
-        fetchBalances({
-          tokens,
-          colonyClient,
-          nativeFundingPotId: domain?.nativeFundingPotId,
-          closestBlock,
-        }),
-      ),
-    );
+  const mainChainTokens = getFilteredTokensWithDefaults(
+    colonyTokens,
+    DEFAULT_NETWORK_INFO.chainId,
+  );
 
-    balances = allDomainsBalances.flat();
-  }
+  const closestBlock = await getClosestBlock(
+    provider,
+    averageBlockTime,
+    timeframePeriodEndDate,
+  );
+
+  const mainBalances = await getDomainBalances({
+    domains,
+    domainId,
+    tokens: mainChainTokens,
+    colonyClient: lightColonyClient,
+    closestBlock,
+  });
+
+  const proxyBalances = await getProxyColonyBalances({
+    colonyAddress,
+    colonyTokens,
+    domains,
+    domainId,
+    colonyClient: lightColonyClient,
+    closestBlock,
+  });
+
+  const balances = [...mainBalances, ...proxyBalances];
 
   const exchangeRates = await ExchangeRatesService.getExchangeRates(
     getTokensDatesMap(balances),

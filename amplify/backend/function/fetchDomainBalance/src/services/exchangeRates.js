@@ -7,7 +7,10 @@ const {
   saveExchangeRate,
 } = require('../api/graphql/operations');
 const { getStartOfDayFor } = require('../utils');
-const { SupportedCurrencies, SupportedNetwork } = require('../consts');
+const {
+  SupportedCurrencies,
+  CHAIN_ID_TO_SUPPORTED_NETWORK,
+} = require('../consts');
 
 const { constants: ethersConstants, utils: ethersUtils } = require('ethers');
 
@@ -185,19 +188,28 @@ const ExchangeRatesService = (() => {
 
   return {
     getExchangeRates: async (tokens, currency) => {
-      const { supportedNetwork } = await NetworkConfig.getConfig();
+      const { supportedNetwork: defaultSupportedNetwork } =
+        await NetworkConfig.getConfig();
       const tokensExchangeRate = await Promise.all(
-        Object.entries(tokens).map(async ([tokenAddress, dates]) => {
+        Object.entries(tokens).map(async ([tokenAddressChainId, dates]) => {
+          const [tokenAddress, chainId] = tokenAddressChainId.split('_');
           let checksummedTokenAddress = tokenAddress;
 
           if (ethersUtils.isAddress(tokenAddress)) {
             checksummedTokenAddress = ethersUtils.getAddress(tokenAddress);
           }
 
+          let supportedNetworkFromChainId;
+          if (chainId) {
+            supportedNetworkFromChainId =
+              CHAIN_ID_TO_SUPPORTED_NETWORK[chainId];
+          }
+
           return getExchangeRatesForToken({
             tokenAddress: checksummedTokenAddress,
             currency: currency ?? SupportedCurrencies.USD,
-            supportedNetwork,
+            supportedNetwork:
+              supportedNetworkFromChainId ?? defaultSupportedNetwork,
             dates,
           });
         }),
