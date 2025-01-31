@@ -26,6 +26,11 @@ fragment StreamingPayment on StreamingPayment {
     amount
     timestamp
   }
+  creatingActions: actions(filter: { type: { eq: CREATE_STREAMING_PAYMENT } }) {
+    items {
+      transactionHash: id
+    }
+  }
 }
 
 fragment StreamingPaymentChanges on StreamingPaymentChanges {

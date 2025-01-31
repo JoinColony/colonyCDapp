@@ -78,7 +78,6 @@ export const calculateTotalsFromStreams = async ({
       const paymentStatus = getStreamingPaymentStatus({
         streamingPayment: item,
         currentTimestamp,
-        amountAvailableToClaim,
       });
 
       const amountAvailableToClaimToCurrency = await calculateToCurrency({

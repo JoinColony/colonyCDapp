@@ -1,7 +1,10 @@
 import { BigNumber } from 'ethers';
 
 import { ONE_DAY_IN_SECONDS, ONE_HOUR_IN_SECONDS } from '~constants/time.ts';
-import { StreamingPaymentEndCondition } from '~gql';
+import {
+  StreamingPaymentEndCondition,
+  type StreamingPaymentFragment,
+} from '~gql';
 import { type StreamingPayment } from '~types/graphql.ts';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 
@@ -11,6 +14,10 @@ interface GetStreamingPaymentAmountsLeftReturn {
   amountClaimedToDate: string;
   amountAvailableToClaim: string;
 }
+
+export const getStreamingPaymentCreatingActionId = (
+  streamingPayment?: StreamingPaymentFragment | null,
+) => streamingPayment?.creatingActions?.items?.[0]?.transactionHash ?? '';
 
 export const getStreamingPaymentLimit = ({
   streamingPayment,
@@ -50,12 +57,10 @@ export const getStreamingPaymentAmountsLeft = (
 
   const amountClaimedToDate =
     streamingPayment.claims?.reduce((sum, claim) => {
-      const newAmount = BigNumber.from(claim.amount).add(sum);
+      return BigNumber.from(claim.amount).add(sum);
+    }, BigNumber.from(0)) ?? BigNumber.from(0);
 
-      return newAmount.toString();
-    }, '0') ?? '0';
-
-  let amountAvailableToClaim: BigNumber;
+  let amountAvailableToClaim = BigNumber.from(0);
 
   const {
     startTime: startTimeString,
@@ -74,19 +79,29 @@ export const getStreamingPaymentAmountsLeft = (
       ? endTime.sub(startTime) // End time has already passed, the whole duration can be claimed.
       : BigNumber.from(currentTimestamp).sub(startTime); // End time has not passed, calculate duration to be claimed.
 
+    const PRECISION = BigNumber.from(10).pow(18);
+    const intervalBigNumber = BigNumber.from(interval);
+
     const amountAvailableSinceStart = BigNumber.from(amount)
       .mul(durationToClaim)
-      .div(interval);
+      .mul(PRECISION)
+      .div(intervalBigNumber.mul(PRECISION));
 
-    amountAvailableToClaim = amountAvailableSinceStart.sub(amountClaimedToDate);
+    const difference = amountAvailableSinceStart.sub(amountClaimedToDate);
 
-    amountAvailableToClaim = amountAvailableToClaim.lt(0)
-      ? BigNumber.from(0)
-      : amountAvailableToClaim;
+    const tolerance = BigNumber.from(amount).div(BigNumber.from(10).pow(12));
+
+    if (difference.abs().lte(tolerance)) {
+      amountAvailableToClaim = BigNumber.from(0);
+    } else {
+      amountAvailableToClaim = difference.lt(0)
+        ? BigNumber.from(0)
+        : difference;
+    }
   }
 
   return {
-    amountClaimedToDate,
+    amountClaimedToDate: amountClaimedToDate.toString(),
     amountAvailableToClaim: amountAvailableToClaim.toString(),
   };
 };
@@ -132,6 +147,13 @@ export const checkIfStreamingPaymentEnded = ({
     };
   }
 
+  if (isCancelled) {
+    return {
+      ended: true,
+      status: StreamingPaymentStatus.Cancelled,
+    };
+  }
+
   switch (endCondition) {
     case StreamingPaymentEndCondition.LimitReached:
       return {
@@ -157,12 +179,10 @@ export const getStreamingPaymentStatus = ({
   streamingPayment,
   currentTimestamp,
   isMotion,
-  amountAvailableToClaim,
 }: {
   streamingPayment: StreamingPayment | null | undefined;
   currentTimestamp: number;
   isMotion?: boolean;
-  amountAvailableToClaim: string;
 }) => {
   if (!streamingPayment) {
     return StreamingPaymentStatus.NotStarted;
@@ -176,6 +196,12 @@ export const getStreamingPaymentStatus = ({
     startTime,
     currentTimestamp,
   });
+
+  const { amountAvailableToClaim } = getStreamingPaymentAmountsLeft(
+    streamingPayment,
+    currentTimestamp,
+  );
+
   const { ended, status } = checkIfStreamingPaymentEnded({
     amountAvailableToClaim,
     endCondition,
@@ -185,7 +211,7 @@ export const getStreamingPaymentStatus = ({
     currentTimestamp,
   });
 
-  if (!started) {
+  if (!started && !isCancelled) {
     return StreamingPaymentStatus.NotStarted;
   }
 
