@@ -78,9 +78,11 @@ export const DynamicInputs: React.FC = () => {
 
   useEffect(() => {
     // Initial render for "edit" state when we have defaultValues
-    if (jsonAbiField && selectedMethod) {
+    if (jsonAbiField) {
       methodOptionsSetter({ jsonAbi: jsonAbiField });
-      methodArgsSetter({ jsonAbi: jsonAbiField, method: selectedMethod });
+      if (selectedMethod) {
+        methodArgsSetter({ jsonAbi: jsonAbiField, method: selectedMethod });
+      }
     }
     // This hook is intentionally called only for the first render
     // Other updates will be handled in the "watch" subscription

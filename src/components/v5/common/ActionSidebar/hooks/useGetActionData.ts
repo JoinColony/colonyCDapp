@@ -11,6 +11,7 @@ import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
 import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { Authority } from '~types/authority.ts';
+import { getDecodedArbitraryTransactions } from '~utils/arbitraryTxs.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { convertPeriodToHours } from '~utils/extensions.ts';
@@ -23,6 +24,7 @@ import {
 import {
   ACTION_TYPE_FIELD_NAME,
   AMOUNT_FIELD_NAME,
+  ARBITRARY_TRANSACTIONS_FIELD_NAME,
   FROM_FIELD_NAME,
   RECIPIENT_FIELD_NAME,
   TEAM_FIELD_NAME,
@@ -70,6 +72,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       isMotion,
       roles,
       colony,
+      arbitraryTransactions,
     } = action;
 
     const { metadata: expenditureMetadata, slots } = expenditure || {};
@@ -381,6 +384,19 @@ const useGetActionData = (transactionId: string | undefined) => {
             : ModificationOption.AwardReputation,
           [TEAM_FIELD_NAME]: fromDomain?.nativeId,
           [AMOUNT_FIELD_NAME]: formattedAmount,
+          ...repeatableFields,
+        };
+      }
+      case ColonyActionType.MakeArbitraryTransaction:
+      case ColonyActionType.MakeArbitraryTransactionsMotion:
+      case ColonyActionType.MakeArbitraryTransactionsMultisig: {
+        const decodedArbitraryTransactions = getDecodedArbitraryTransactions(
+          arbitraryTransactions || [],
+          action,
+        );
+        return {
+          [ACTION_TYPE_FIELD_NAME]: Action.ArbitraryTxs,
+          [ARBITRARY_TRANSACTIONS_FIELD_NAME]: decodedArbitraryTransactions,
           ...repeatableFields,
         };
       }

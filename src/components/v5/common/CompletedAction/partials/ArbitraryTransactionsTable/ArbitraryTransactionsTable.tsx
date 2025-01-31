@@ -1,44 +1,31 @@
 import React, { type FC } from 'react';
 
-import {
-  type ColonyActionArbitraryTransaction,
-  type ColonyActionFragment,
-} from '~gql';
 import { useTablet } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { Table } from '~v5/common/Table/Table.tsx';
 
-import { useModifyArbitraryTransaction } from '../ArbitraryTransaction/hooks.ts';
+import { type CompletedArbitraryTransactions } from '../ArbitraryTransaction/hooks.ts';
 
 import { displayName } from './const.ts';
 import { useArbitraryTxsTableColumns } from './hooks.tsx';
 
-export type ArbitraryTransactionsTableItem =
-  ColonyActionArbitraryTransaction & {
-    action: ColonyActionFragment;
-  };
 interface ArbitraryTransactionsTableProps {
-  action: ColonyActionFragment;
+  data: CompletedArbitraryTransactions[];
 }
 
 const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
-  action,
+  data,
 }) => {
   const isTablet = useTablet();
 
   const columns = useArbitraryTxsTableColumns();
-
-  const data = useModifyArbitraryTransaction(
-    action.arbitraryTransactions || [],
-    action,
-  );
 
   return (
     <div className="pt-4">
       <h5 className="mb-4 text-2">
         {formatText({ id: 'actionSidebar.transactions' })}
       </h5>
-      <Table<ArbitraryTransactionsTableItem>
+      <Table<CompletedArbitraryTransactions>
         layout={isTablet ? 'vertical' : 'horizontal'}
         className="mb-6"
         columns={columns}
@@ -47,7 +34,7 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
           visible: true,
         }}
         rows={{ getRowClassName: () => 'align-top' }}
-        data={data.length === 0 ? [{} as ArbitraryTransactionsTableItem] : data}
+        data={data.length === 0 ? [{} as CompletedArbitraryTransactions] : data}
       />
     </div>
   );

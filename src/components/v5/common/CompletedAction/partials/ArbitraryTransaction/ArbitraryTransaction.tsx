@@ -1,8 +1,17 @@
 import React, { type FC } from 'react';
 
+import { Action } from '~constants/actions.ts';
 import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
 import { getFormatValuesArbitraryTransactions } from '~utils/arbitraryTxs.ts';
 import { formatText } from '~utils/intl.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  ARBITRARY_TRANSACTIONS_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  TITLE_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import ArbitraryTransactionsTable from '../ArbitraryTransactionsTable/index.ts';
@@ -19,11 +28,14 @@ import {
   DescriptionRow,
 } from '../rows/index.ts';
 
+import { useTransformArbitraryTransactions } from './hooks.ts';
+
 interface ArbitraryTransactionProps {
   action: ColonyAction;
 }
 
 const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
+  const decisionMethod = useDecisionMethod(action);
   const {
     customTitle = formatText(
       {
@@ -34,7 +46,12 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
       },
     ),
   } = action?.metadata || {};
-  const { initiatorUser, transactionHash } = action;
+  const { initiatorUser, transactionHash, annotation } = action;
+
+  const data = useTransformArbitraryTransactions(
+    action.arbitraryTransactions || [],
+    action,
+  );
 
   const arbitraryMessageValues = getFormatValuesArbitraryTransactions(action);
 
@@ -42,7 +59,16 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
     <>
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
-        <MeatballMenu showRedoItem={false} transactionHash={transactionHash} />
+        <MeatballMenu
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.ArbitraryTxs,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+            [ARBITRARY_TRANSACTIONS_FIELD_NAME]: data,
+          }}
+        />
       </div>
       <ActionSubtitle>
         {formatText(
@@ -78,7 +104,7 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
         <DescriptionRow description={action.annotation.message} />
       )}
 
-      <ArbitraryTransactionsTable action={action} />
+      <ArbitraryTransactionsTable data={data} />
     </>
   );
 };

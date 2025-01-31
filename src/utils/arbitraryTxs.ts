@@ -1,10 +1,13 @@
 import { Interface } from 'ethers/lib/utils';
 
-import { type ColonyActionFragment } from '~gql';
+import {
+  type ColonyActionArbitraryTransaction,
+  type ColonyActionFragment,
+} from '~gql';
 
 import { type ActionTitleMessageKeys } from '../components/common/ColonyActions/helpers/getActionTitleValues.ts';
 
-interface DecodedArbitraryTransaction {
+export interface DecodedArbitraryTransaction {
   method: string;
   args: Array<{ name: string; value: string; type: string }>;
 }
@@ -43,7 +46,7 @@ export const decodeArbitraryTransaction = (
     );
 
     return {
-      method: functionFragment.name,
+      method: `${functionFragment.name}(${functionFragment.inputs.map((input) => input.type).join(',')})`,
       args: decodedArgs.map((arg, index) => ({
         name: functionArgs[index].name,
         value: parseValue(arg),
@@ -56,21 +59,41 @@ export const decodeArbitraryTransaction = (
   }
 };
 
-export const getDecodedArbitraryTransaction = (transaction) => {
-  const abi = transaction.action.metadata?.arbitraryTxAbis?.find(
-    (abiItem) => abiItem.contractAddress === transaction.contractAddress,
+export const getDecodedArbitraryTransactions = (
+  data: ColonyActionArbitraryTransaction[],
+  action: ColonyActionFragment,
+) => {
+  const decodedArbitraryTransactions = data?.map(
+    ({ contractAddress, encodedFunction }) => {
+      const abi = action.metadata?.arbitraryTxAbis?.find(
+        (abiItem) => abiItem.contractAddress === contractAddress,
+      );
+      if (!abi) {
+        return {
+          contractAddress,
+          encodedFunction,
+        };
+      }
+
+      const decodedTx = decodeArbitraryTransaction(
+        abi.jsonAbi,
+        encodedFunction,
+      );
+      if (!decodedTx) {
+        return {
+          contractAddress,
+          encodedFunction,
+          jsonAbi: JSON.stringify(JSON.parse(abi.jsonAbi)),
+        };
+      }
+      return {
+        contractAddress,
+        jsonAbi: JSON.stringify(JSON.parse(abi.jsonAbi)),
+        ...decodedTx,
+      };
+    },
   );
-
-  if (!abi) {
-    return {};
-  }
-
-  const decodedTx = decodeArbitraryTransaction(
-    abi.jsonAbi,
-    transaction.encodedFunction,
-  );
-
-  return decodedTx;
+  return decodedArbitraryTransactions;
 };
 
 type ArbitraryFormatMessageValues = {
@@ -99,7 +122,10 @@ export const getFormatValuesArbitraryTransactions = (
         arbitraryTransactions[0].encodedFunction,
       );
       if (decoded?.method) {
-        messageValues.arbitraryMethod = decoded?.method;
+        messageValues.arbitraryMethod = decoded?.method.replace(
+          /\s*\([^)]*\)/g,
+          '',
+        );
       } else {
         messageValues.arbitraryTransactionsLength = 0;
         messageValues.arbitraryMethod = '';
