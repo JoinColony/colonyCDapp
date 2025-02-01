@@ -1,5 +1,7 @@
+import { Extension } from '@colony/colony-js';
 import React from 'react';
 
+import { useExtensionItem } from '~common/Extensions/ExtensionItem/hooks.ts';
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
@@ -7,6 +9,7 @@ import { useStreamingPaymentsTotalFunds } from '~shared/StreamingPayments/hooks.
 import { formatText } from '~utils/intl.ts';
 import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 
+import NoExtensionBanner from './partials/NoExtensionBanner/NoExtensionBanner.tsx';
 import StatsCards from './partials/StatsCards/StatsCards.tsx';
 
 const displayName = 'v5.pages.StreamingPaymentsPage';
@@ -27,16 +30,27 @@ const StreamingPaymentsPage = () => {
     nativeDomainId,
   });
 
+  const { isExtensionInstalled, extensionDataLoading } = useExtensionItem(
+    Extension.StreamingPayments,
+  );
+
   return (
     <ContentWithTeamFilter>
-      <StatsCards
-        streamingPerMonth={totalLastMonthStreaming}
-        totalActiveStreams={activeStreamingPayments}
-        totalStreamed={totalStreamed}
-        unclaimedFounds={totalFunds.totalAvailable}
-        prefix={currencySymbolMap[currency]}
-        suffix={currency}
-      />
+      <div className="pb-9">
+        <StatsCards
+          streamingPerMonth={totalLastMonthStreaming}
+          totalActiveStreams={activeStreamingPayments}
+          totalStreamed={totalStreamed}
+          unclaimedFounds={totalFunds.totalAvailable}
+          prefix={currencySymbolMap[currency]}
+          suffix={currency}
+        />
+      </div>
+      {!isExtensionInstalled && !extensionDataLoading && (
+        <div className="pb-9">
+          <NoExtensionBanner />
+        </div>
+      )}
     </ContentWithTeamFilter>
   );
 };
