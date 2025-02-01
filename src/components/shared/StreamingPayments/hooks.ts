@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
-import { useGetStreamingPaymentsByColonyQuery } from '~gql';
+import { useColonyStreamingPayments } from '~hooks/useColonyStreamingPayments.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
-import { notNull } from '~utils/arrays/index.ts';
 import { getStreamingPaymentStatus } from '~utils/streamingPayments.ts';
 
 import { type StreamingPaymentItems } from './types.ts';
@@ -26,49 +25,16 @@ export const useStreamingPaymentsTotalFunds = ({
   const { currentBlockTime: blockTime } = useCurrentBlockTime();
   const { colony } = useColonyContext();
 
-  const { data, loading, fetchMore } = useGetStreamingPaymentsByColonyQuery({
-    variables: {
-      ...(isFilteredByWalletAddress &&
-        walletAddress && {
-          recipientAddress: walletAddress,
-        }),
-      ...(nativeDomainId && {
-        domainId: nativeDomainId,
+  const { streamingPayments, fetchMore, loading } = useColonyStreamingPayments({
+    ...(isFilteredByWalletAddress &&
+      walletAddress && {
+        recipientAddress: walletAddress,
       }),
-      colonyId: colony.colonyAddress,
-    },
-    onCompleted: (receivedData) => {
-      if (receivedData?.getStreamingPaymentsByColony?.nextToken) {
-        fetchMore({
-          variables: {
-            nextToken: receivedData.getStreamingPaymentsByColony.nextToken,
-          },
-          updateQuery: (prev, { fetchMoreResult }) => {
-            if (!fetchMoreResult) return prev;
-
-            return {
-              ...prev,
-              getStreamingPaymentsByColony: {
-                ...prev.getStreamingPaymentsByColony,
-                items: [
-                  ...(prev?.getStreamingPaymentsByColony?.items || []),
-                  ...(fetchMoreResult?.getStreamingPaymentsByColony?.items ||
-                    []),
-                ],
-                nextToken:
-                  fetchMoreResult?.getStreamingPaymentsByColony?.nextToken,
-              },
-            };
-          },
-        });
-      }
-    },
+    ...(nativeDomainId && {
+      domainId: nativeDomainId,
+    }),
+    colonyId: colony.colonyAddress,
   });
-
-  const streamingPayments = useMemo(
-    () => data?.getStreamingPaymentsByColony?.items?.filter(notNull) || [],
-    [data?.getStreamingPaymentsByColony?.items],
-  );
 
   const { currency } = useCurrencyContext();
 
