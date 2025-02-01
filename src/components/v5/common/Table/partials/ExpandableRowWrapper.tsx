@@ -16,7 +16,7 @@ export const ExpandableRowWrapper: FC<ExpandableRowWrapperProps> = ({
   return showExpandableContent ? (
     <tr
       className={clsx({
-        '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
+        'expanded-item [&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
           !hasNarrowBorders,
       })}
     >

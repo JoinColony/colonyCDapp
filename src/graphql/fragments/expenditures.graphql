@@ -152,4 +152,7 @@ fragment ExpenditureAction on ColonyAction {
   multiSigData {
     ...ColonyMultiSig
   }
+  metadata {
+    customTitle
+  }
 }

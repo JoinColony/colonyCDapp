@@ -31,6 +31,7 @@ const RangeDatepicker: FC<RangeDatepickerProps> = ({
   popperClassName,
   minYear,
   maxYear,
+  withoutButtons,
   ...rest
 }) => {
   const isMobile = useMobile();
@@ -118,13 +119,18 @@ const RangeDatepicker: FC<RangeDatepickerProps> = ({
         const formattedEndDate = end ? addDays(subSeconds(end, 1), 1) : null;
         setStartDate(start);
         setEndDate(formattedEndDate);
+
+        if (withoutButtons && start && formattedEndDate) {
+          onChange([start, formattedEndDate], undefined);
+          calendarRef.current?.setOpen(false);
+        }
       }}
       startDate={startDate}
       endDate={endDate}
       onClickOutside={resetValues}
       {...rest}
     >
-      {startDate && endDate && (
+      {startDate && endDate && !withoutButtons && (
         <div className="flex w-full items-center justify-between gap-2 border-t border-t-gray-200 p-4">
           <Button
             {...cancelButtonProps}
