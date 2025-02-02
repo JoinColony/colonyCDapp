@@ -1,5 +1,6 @@
-import { type BrowserContext, type Page } from '@playwright/test';
 import fetch from 'node-fetch';
+
+import type { BrowserContext, Page } from '@playwright/test';
 
 export const acceptCookieConsentBanner = async (page: Page) => {
   // Check if the cookie banner is present on the page
@@ -106,74 +107,6 @@ export const signInAndNavigateToColony = async (
     .getByTestId('loading-skeleton')
     .last()
     .waitFor({ state: 'hidden' });
-};
-
-export const enableReputationWeightedExtension = async (
-  page: Page,
-  {
-    colonyPath,
-  }: {
-    colonyPath: string;
-  },
-) => {
-  await page.goto(`${colonyPath}/extensions/VotingReputation`);
-  await page.getByText('Loading colony').waitFor({ state: 'hidden' });
-
-  const installExtensionButton = page.getByRole('button', {
-    name: 'Install',
-  });
-
-  const enableExtensionButton = page.getByRole('button', {
-    name: 'Enable',
-  });
-
-  await installExtensionButton.click();
-
-  await page.getByRole('button', { name: 'Pending' }).waitFor({
-    state: 'hidden',
-  });
-
-  await page
-    .getByRole('listitem')
-    .filter({ hasText: 'Testing governance' })
-    .click();
-
-  await enableExtensionButton.click();
-
-  await page.getByRole('button', { name: 'Deprecate extension' }).waitFor();
-};
-
-export const uninstallReputationWeightedExtension = async (
-  page: Page,
-  {
-    colonyPath,
-  }: {
-    colonyPath: string;
-  },
-) => {
-  await page.goto(`${colonyPath}/extensions/VotingReputation`);
-  await page.getByText('Loading colony').waitFor({ state: 'hidden' });
-
-  await page.getByRole('button', { name: 'Deprecate extension' }).click();
-
-  await page
-    .getByRole('dialog')
-    .getByRole('button', { name: 'Deprecate' })
-    .click();
-
-  await page.getByRole('button', { name: 'Uninstall extension' }).click();
-
-  await page
-    .getByRole('dialog')
-    .getByText('I understand that there is a risk')
-    .click();
-
-  await page
-    .getByRole('dialog')
-    .getByRole('button', { name: 'Continue with uninstalling' })
-    .click();
-
-  await page.getByRole('button', { name: 'Install' }).waitFor();
 };
 
 /**

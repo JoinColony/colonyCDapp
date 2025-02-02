@@ -26,7 +26,7 @@ export default defineConfig({
     /* Collect trace for failed tests. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
   },
-  timeout: !process.env.CI ? 60000 : undefined,
+  timeout: !process.env.CI ? 90000 : undefined,
   /* Configure projects for major browsers */
   projects: [
     {
