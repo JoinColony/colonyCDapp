@@ -83,7 +83,7 @@ const UserHub: FC<Props> = ({
   return (
     <div
       className={clsx(
-        'mt-5.5 flex h-dynamic-screen flex-col sm:mt-0 sm:h-auto sm:w-[42.625rem] sm:flex-row',
+        'mt-5.5 h-dynamic-screen flex flex-col sm:mt-0 sm:h-auto sm:w-[42.625rem] sm:flex-row',
         {
           'sm:h-[27.75rem]':
             selectedTab !== UserHubTab.Balance &&
@@ -91,6 +91,7 @@ const UserHub: FC<Props> = ({
           'sm:min-h-[27.75rem]': selectedTab === UserHubTab.Balance,
         },
       )}
+      data-testid="user-hub"
     >
       <div className="sticky left-0 right-0 top-0 flex shrink-0 flex-col justify-between border-b border-b-gray-200 bg-base-white px-6 pb-6 sm:static sm:left-auto sm:right-auto sm:top-auto sm:w-[216px] sm:border-b-0 sm:border-r sm:border-gray-100 sm:bg-transparent sm:p-6 sm:px-6">
         {isMobile ? (

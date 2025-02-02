@@ -30,6 +30,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
       icon,
       iconSize = 18,
       isIconRight,
+      testId,
       ...rest
     },
     ref,
@@ -50,6 +51,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
           </div>
         ) : (
           <button
+            data-testid={testId}
             className={clsx(
               'flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-normal',
               `${isFullRounded ? 'rounded-full' : 'rounded-lg'}`,

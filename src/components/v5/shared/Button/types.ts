@@ -60,6 +60,7 @@ export interface CommonButtonProps
   title?: MessageDescriptor | string;
   ariaLabel?: MessageDescriptor | string;
   setTriggerRef?: Dispatch<SetStateAction<HTMLElement | null>>;
+  testId?: string;
 }
 
 export interface ButtonAppearanceCommonProps extends ButtonContentProps {

@@ -8,10 +8,11 @@ export const NumeralBase: FC<Props> = ({
   className,
   prefix,
   suffix,
+  testId,
   ...rest
 }) => {
   return (
-    <span className={className} {...rest}>
+    <span className={className} data-testid={testId} {...rest}>
       {prefix}
       {children}
       {suffix}

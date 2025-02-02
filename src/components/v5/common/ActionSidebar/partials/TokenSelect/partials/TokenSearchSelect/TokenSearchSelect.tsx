@@ -94,6 +94,7 @@ const TokenSearchSelect = React.forwardRef<
           hasShadow
           rounded="s"
           ref={ref}
+          testId="token-search-select"
         >
           <div
             className={clsx('px-3.5', {
