@@ -277,6 +277,7 @@ export class StagedPayment {
     await releaseDialog.waitFor({ state: 'hidden' });
     await this.completedAction
       .getByRole('button', { name: 'Pending' })
+      .last()
       .waitFor({ state: 'hidden' });
   }
 
@@ -359,27 +360,23 @@ export class StagedPayment {
     await this.form.getByRole('button', { name: 'Remove row' }).click();
   }
 
-  async support(stakeAmount?: string) {
-    await this.supportButton.click();
-    await this.stepper.getByRole('textbox').waitFor({ state: 'visible' });
-    if (stakeAmount) {
-      await this.stepper.getByRole('textbox').fill(stakeAmount);
-    } else {
-      await this.stepper.getByRole('button', { name: 'Max' }).click();
-    }
-    await this.stepper.getByRole('button', { name: 'Stake' }).waitFor();
-    await this.stepper.getByRole('button', { name: 'Stake' }).click();
-  }
+  async voteOnMotion(voteType: 'Support' | 'Oppose') {
+    await this.completedAction
+      .getByRole('heading', {
+        name: 'Total stake required',
+      })
+      .waitFor({ state: 'visible' });
+    await this.completedAction.getByTestId('countDownTimer').waitFor({
+      state: 'visible',
+    });
+    await this.completedAction.getByText(voteType, { exact: true }).click();
+    await this.completedAction.getByRole('button', { name: 'Max' }).click();
 
-  async oppose(stakeAmount?: string) {
-    await this.opposeButton.click();
-    if (stakeAmount) {
-      await this.stepper.getByRole('textbox').fill(stakeAmount);
-    } else {
-      await this.stepper.getByRole('button', { name: 'Max' }).click();
-    }
-    await this.stepper.getByRole('button', { name: 'Stake' }).waitFor();
-    await this.stepper.getByRole('button', { name: 'Stake' }).click();
+    await this.completedAction.getByRole('button', { name: 'Stake' }).click();
+
+    await this.completedAction.getByRole('button', { name: 'Stake' }).waitFor({
+      state: 'hidden',
+    });
   }
 }
 

@@ -208,16 +208,15 @@ test.describe('Staged Payment', () => {
       }),
     ).toBeVisible();
 
-    await stagedPayment.support();
+    await stagedPayment.voteOnMotion('Support');
+    await stagedPayment.stepper.getByText('100% Supported').waitFor();
 
     await stagedPayment.stepper
       .getByText('The action has been fully supported and will pass.')
       .waitFor();
 
-    await stagedPayment.oppose();
-
-    await expect(stagedPayment.stepper).toHaveText(/100% Opposed/);
-    await expect(stagedPayment.stepper).toHaveText(/100% Supported/);
+    await stagedPayment.voteOnMotion('Oppose');
+    await stagedPayment.stepper.getByText('100% Opposed').waitFor();
 
     await stagedPayment.supportButton.click();
 
