@@ -262,6 +262,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
                 );
                 debugLogging(
                   'WALLET AUTOMATICALLY SWITCHED NETWORK',
+                  currentPrimaryWalletChainId,
                   parseInt(DEFAULT_NETWORK_INFO.chainId, 10),
                 );
               }
