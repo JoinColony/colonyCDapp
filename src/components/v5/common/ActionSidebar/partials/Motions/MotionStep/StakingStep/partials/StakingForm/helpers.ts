@@ -48,16 +48,10 @@ export const getStakingTransformFn = ({
   });
 
 export const getHandleStakeSuccessFn =
-  (
-    setIsRefetching: SetStateFn,
-    startPollingMotion: (pollingInterval: number) => void,
-    pollLockedTokenBalance: () => void,
-  ) =>
+  (setIsRefetching: SetStateFn, pollLockedTokenBalance: () => void) =>
   (_, { reset }) => {
     reset();
     setIsRefetching(true);
-    /* On stake success, initiate db polling so ui updates */
-    startPollingMotion(1000);
     pollLockedTokenBalance();
   };
 

@@ -7,19 +7,18 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { MultiSigVote } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type VoteOnMultiSigActionPayload } from '~redux/sagas/multiSig/voteOnMultiSig.ts';
-import { type MultiSigAction } from '~types/motions.ts';
 import { getMotionAssociatedActionId } from '~utils/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
+import { type ICompletedMultiSigAction } from '~v5/common/ActionSidebar/partials/MultiSigSidebar/types.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import { LoadingBehavior, type ButtonProps } from '~v5/shared/Button/types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.VoteButton';
 
-interface VoteButtonProps {
-  action: MultiSigAction;
+interface VoteButtonProps extends ICompletedMultiSigAction {
   requiredRoles: ColonyRole[];
   voteType: Exclude<MultiSigVote, MultiSigVote.None>;
   handleLoadingChange: (isLoading: boolean) => void;
@@ -45,6 +44,7 @@ const VoteButton: FC<VoteButtonProps> = ({
   handleLoadingChange,
   isLoading,
   action,
+  multiSigData: { nativeMultiSigId, nativeMultiSigDomainId },
 }) => {
   const { colony } = useColonyContext();
 
@@ -55,10 +55,6 @@ const VoteButton: FC<VoteButtonProps> = ({
 
   const getVotePayload = (): VoteOnMultiSigActionPayload => {
     handleLoadingChange(true);
-
-    const {
-      multiSigData: { nativeMultiSigId, nativeMultiSigDomainId },
-    } = action;
 
     const associatedActionId = getMotionAssociatedActionId(action);
 

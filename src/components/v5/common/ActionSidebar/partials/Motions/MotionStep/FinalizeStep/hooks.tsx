@@ -12,26 +12,22 @@ import useExtensionData from '~hooks/useExtensionData.ts';
 import { type ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards.ts';
 import { type MotionFinalizePayload } from '~redux/types/actions/motion.ts';
 import Numeral from '~shared/Numeral/index.ts';
-import { type MotionAction } from '~types/motions.ts';
 import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
 import { getIsMotionOlderThanAWeek } from '~utils/dates.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSafePollingInterval } from '~utils/queries.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
+import { type ICompletedMotionAction } from '~v5/common/ActionSidebar/partials/Motions/types.ts';
 
 import { type DescriptionListItem } from '../VotingStep/partials/DescriptionList/types.ts';
 
-import { WinningsItems } from './types.ts';
+import { type FinalizeStepProps, WinningsItems } from './types.ts';
 
-export const useFinalizeStep = (actionData: MotionAction) => {
-  const {
-    motionData: { motionId, motionStateHistory },
-    type,
-    amount,
-    fromDomain,
-    tokenAddress,
-  } = actionData;
+export const useFinalizeStep = ({ action, motionData }: FinalizeStepProps) => {
+  const { type, amount, fromDomain, tokenAddress, createdAt } = action;
+
+  const { motionId, motionStateHistory } = motionData;
+
   const {
     colony: { colonyAddress, balances },
   } = useColonyContext();
@@ -39,7 +35,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
 
   const { currentBlockTime } = useCurrentBlockTime();
   const isMotionOlderThanWeek = currentBlockTime
-    ? getIsMotionOlderThanAWeek(actionData.createdAt, currentBlockTime * 1000)
+    ? getIsMotionOlderThanAWeek(createdAt, currentBlockTime * 1000)
     : false;
 
   const domainBalance = getBalanceForTokenAndDomain(
@@ -64,7 +60,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   const isFinalizable =
     hasEnoughFundsToFinalize && !motionStateHistory.hasFailedNotFinalizable;
 
-  const associatedActionId = getMotionAssociatedActionId(actionData);
+  const associatedActionId = getMotionAssociatedActionId(action);
 
   const transform = useMemo(
     () =>
@@ -93,25 +89,29 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   };
 };
 
-export const useClaimConfig = (
-  actionData: MotionAction,
-  startPollingAction: (pollingInterval: number) => void,
-) => {
+export const useClaimConfig = ({
+  action,
+  motionData,
+}: ICompletedMotionAction) => {
   const {
-    motionData: {
-      isFinalized: isMotionFinalized,
-      stakerRewards,
-      usersStakes,
-      voterRewards,
-      remainingStakes,
-    },
-    transactionHash,
-  } = actionData;
+    isFinalized: isMotionFinalized,
+    stakerRewards,
+    usersStakes,
+    voterRewards,
+    remainingStakes,
+    motionStateHistory,
+  } = motionData;
+
+  const { transactionHash, type: actionType } = action;
+
   const { user } = useAppContext();
+
   const {
     colony: { colonyAddress, nativeToken },
   } = useColonyContext();
+
   const { extensionData } = useExtensionData(Extension.VotingReputation);
+
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
   const [isClaimed, setIsClaimed] = useState(false);
@@ -120,7 +120,7 @@ export const useClaimConfig = (
   const nativeTokenDecimals = nativeToken.decimals;
   const nativeTokenSymbol = ` ${nativeToken.symbol}`;
   const isMotionFailedNotFinalizable =
-    actionData.motionData.motionStateHistory.hasFailedNotFinalizable;
+    motionStateHistory.hasFailedNotFinalizable;
 
   const userStake = usersStakes.find(({ address }) => address === userAddress);
   const stakerReward = stakerRewards.find(
@@ -180,11 +180,10 @@ export const useClaimConfig = (
   const canClaimStakes = userTotalStake ? !userTotalStake.isZero() : false;
   const handleClaimSuccess = () => {
     setIsClaimed(true);
-    startPollingAction(getSafePollingInterval());
     pollLockedTokenBalance();
   };
 
-  const associatedActionId = getMotionAssociatedActionId(actionData);
+  const associatedActionId = getMotionAssociatedActionId(action);
 
   const claimPayload = useMemo(
     () =>
@@ -211,7 +210,7 @@ export const useClaimConfig = (
 
   const getDescriptionItems = (): DescriptionListItem[] => {
     const isMotionAgreement =
-      actionData.type === ColonyActionType.CreateDecisionMotion;
+      actionType === ColonyActionType.CreateDecisionMotion;
 
     if (
       !isMotionFailedNotFinalizable &&

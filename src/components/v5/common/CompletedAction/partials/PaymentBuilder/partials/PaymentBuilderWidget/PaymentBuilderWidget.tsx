@@ -22,7 +22,6 @@ import {
   getExpenditureCreatingActionId,
 } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
-import { isMultiSig } from '~utils/multiSig/index.ts';
 import {
   CacheQueryKeys,
   getSafePollingInterval,
@@ -326,10 +325,11 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         return <MotionWidgetSkeleton />;
       }
 
-      if (isMultiSig(fundingAction)) {
+      if (fundingAction && fundingAction.multiSigData) {
         return (
           <MultiSigFunding
             action={fundingAction}
+            multiSigData={fundingAction.multiSigData}
             onMultiSigRejected={() => {
               setExpectedStepKey(null);
             }}

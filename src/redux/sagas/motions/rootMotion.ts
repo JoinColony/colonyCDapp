@@ -176,6 +176,7 @@ function* createRootMotionSaga({
     }
 
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
+
     if (annotationMessage) {
       yield takeFrom(
         annotateRootMotion.channel,

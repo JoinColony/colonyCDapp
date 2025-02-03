@@ -1,0 +1,17 @@
+subscription OnUpdateColonyMultiSig {
+  onUpdateColonyMultiSig {
+    ...ColonyMultiSig
+  }
+}
+
+subscription OnCreateMultiSigUserSignature {
+  onCreateMultiSigUserSignature {
+    ...MultiSigUserSignature
+  }
+}
+
+subscription OnDeleteMultiSigUserSignature {
+  onDeleteMultiSigUserSignature {
+    ...MultiSigUserSignature
+  }
+}

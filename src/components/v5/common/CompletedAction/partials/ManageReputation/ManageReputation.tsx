@@ -5,6 +5,7 @@ import React, { type FC } from 'react';
 
 import { ADDRESS_ZERO, DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { Action } from '~constants/actions.ts';
+import { useActionContext } from '~context/ActionContext/ActionContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
 import Numeral from '~shared/Numeral/Numeral.tsx';
@@ -24,7 +25,6 @@ import {
   TEAM_FIELD_NAME,
   AMOUNT_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
-import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
 import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/consts.ts';
 import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
@@ -54,8 +54,11 @@ const displayName = 'v5.common.CompletedAction.partials.ManageReputation';
 
 const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
   const decisionMethod = useDecisionMethod(action);
-  const { colony } = useColonyContext();
-  const { nativeToken } = colony;
+
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
+
   const {
     isMultiSig,
     isMotion,
@@ -70,7 +73,8 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     multiSigData,
   } = action;
 
-  const { networkMotionState } = useGetActionData(transactionHash);
+  const { networkMotionState } = useActionContext();
+
   const motionFinished =
     networkMotionState === NetworkMotionState.Finalizable ||
     networkMotionState === NetworkMotionState.Finalized ||

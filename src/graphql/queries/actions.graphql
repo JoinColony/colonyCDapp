@@ -94,10 +94,8 @@ subscription OnCreateColonyActionMetadata {
   }
 }
 
-subscription OnUpdateColonyMotion {
-  onUpdateColonyAction {
-    motionData {
-      ...ColonyMotion
-    }
+subscription OnUpdateColonyActionMetadata {
+  onUpdateColonyActionMetadata {
+    id
   }
 }

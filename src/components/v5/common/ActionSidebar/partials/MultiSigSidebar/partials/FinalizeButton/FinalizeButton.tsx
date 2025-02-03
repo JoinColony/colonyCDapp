@@ -6,22 +6,21 @@ import { defineMessages } from 'react-intl';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
-import { type MultiSigAction } from '~types/motions.ts';
 import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { useFinalizeSuccessCallback } from '~v5/common/ActionSidebar/partials/hooks.ts';
+import { type ICompletedMultiSigAction } from '~v5/common/ActionSidebar/partials/MultiSigSidebar/types.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.FinalizeButton';
 
-interface FinalizeButtonProps {
+interface FinalizeButtonProps extends ICompletedMultiSigAction {
   multiSigId: string;
   isPending: boolean;
   setIsPending: (isPending: boolean) => void;
   isMotionOlderThanAWeek: boolean;
-  action: MultiSigAction;
 }
 
 const MSG = defineMessages({

@@ -34,12 +34,16 @@ export const useStakingForm = () => {
   const { user } = useAppContext();
   const { pollLockedTokenBalance, tokenBalanceData } =
     useUserTokenBalanceContext();
-  const { motionAction, setIsRefetching, startPollingAction, isRefetching } =
+  const { action, motionData, setIsRefetching, isRefetching } =
     useMotionContext();
 
-  const { colony, motionData } = motionAction || {};
-  const { nativeToken } = colony || {};
-  const { nativeTokenDecimals, tokenAddress } = nativeToken || {};
+  const {
+    colony: {
+      colonyAddress,
+      nativeToken: { nativeTokenDecimals, tokenAddress },
+    },
+    transactionHash,
+  } = action;
   const tokenDecimals = getTokenDecimalsWithFallback(nativeTokenDecimals);
 
   const { motionId, remainingStakes } = motionData;
@@ -48,7 +52,7 @@ export const useStakingForm = () => {
     tokenBalanceData?.activeBalance ?? 0,
   ).add(tokenBalanceData?.inactiveBalance ?? 0);
 
-  const associatedActionId = getMotionAssociatedActionId(motionAction);
+  const associatedActionId = getMotionAssociatedActionId(action);
 
   const validationSchema: ObjectSchema<StakingFormValues> = object()
     .shape({
@@ -117,9 +121,9 @@ export const useStakingForm = () => {
   const transform = useMemo(
     () =>
       getStakingTransformFn({
-        actionId: motionAction.transactionHash,
+        actionId: transactionHash,
         userAddress: user?.walletAddress ?? '',
-        colonyAddress: colony?.colonyAddress ?? '',
+        colonyAddress: colonyAddress ?? '',
         motionId,
         nativeTokenDecimals: tokenDecimals,
         tokenAddress,
@@ -127,9 +131,9 @@ export const useStakingForm = () => {
         associatedActionId,
       }),
     [
-      motionAction.transactionHash,
+      transactionHash,
       user?.walletAddress,
-      colony?.colonyAddress,
+      colonyAddress,
       motionId,
       tokenDecimals,
       tokenAddress,
@@ -140,7 +144,6 @@ export const useStakingForm = () => {
 
   const handleSuccess = getHandleStakeSuccessFn(
     setIsRefetching,
-    startPollingAction,
     pollLockedTokenBalance,
   );
 

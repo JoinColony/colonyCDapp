@@ -1,15 +1,7 @@
 import { type SetStateFn } from '~types/index.ts';
-import { type MotionAction } from '~types/motions.ts';
+import { type ICompletedMotionAction } from '~v5/common/ActionSidebar/partials/Motions/types.ts';
 
-export interface MotionContextValues {
-  motionAction: MotionAction;
+export interface MotionContextValues extends ICompletedMotionAction {
   isRefetching: boolean;
   setIsRefetching: SetStateFn;
-  startPollingAction: (pollingInterval: number) => void;
-}
-
-export interface MotionProviderProps {
-  motionAction: MotionAction;
-  startPollingAction: (pollingInterval: number) => void;
-  stopPollingAction: () => void;
 }

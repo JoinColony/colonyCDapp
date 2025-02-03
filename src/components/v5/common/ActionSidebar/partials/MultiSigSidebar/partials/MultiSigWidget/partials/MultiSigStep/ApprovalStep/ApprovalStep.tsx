@@ -11,12 +11,13 @@ import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
-import { type MultiSigAction } from '~types/motions.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getDomainIdsForEligibleSignees } from '~utils/multiSig/index.ts';
 import CancelButton from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/CancelButton/CancelButton.tsx';
+import MultiSigPills from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/MultiSigWidget/partials/MultiSigPills/MultiSigPills.tsx';
+import ThresholdPassedBanner from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/MultiSigWidget/partials/ThresholdPassedBanner/ThresholdPassedBanner.tsx';
 import {
   getAllUserSignatures,
   getDomainIdForActionType,
@@ -30,23 +31,20 @@ import {
 import RemoveVoteButton from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/RemoveVoteButton/RemoveVoteButton.tsx';
 import Signees from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/Signees/Signees.tsx';
 import VoteButton from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/VoteButton/VoteButton.tsx';
+import { type ICompletedMultiSigAction } from '~v5/common/ActionSidebar/partials/MultiSigSidebar/types.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
 import ProgressBar from '~v5/shared/ProgressBar/ProgressBar.tsx';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 
-import MultiSigPills from '../MultiSigPills/MultiSigPills.tsx';
-import ThresholdPassedBanner from '../ThresholdPassedBanner/ThresholdPassedBanner.tsx';
-
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget.partials.ApprovalStep';
 
-interface ApprovalStepProps {
+interface ApprovalStepProps extends ICompletedMultiSigAction {
   thresholdPerRole: Threshold;
   requiredRoles: ColonyRole[];
   initiatorAddress: string;
   onMultiSigRejected?: () => void;
-  action: MultiSigAction;
 }
 
 const MSG = defineMessages({
@@ -117,8 +115,9 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   requiredRoles,
   onMultiSigRejected,
   action,
+  multiSigData,
 }) => {
-  const { multiSigData, type: actionType } = action;
+  const { type: actionType } = action;
   const { createdAt } = multiSigData;
   const { user } = useAppContext();
 
@@ -377,12 +376,14 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                           setIsRemovingVote(isLoading);
                         }}
                         action={action}
+                        multiSigData={multiSigData}
                       />
                     </>
                   ) : (
                     <div className="mt-6 flex flex-col gap-2">
                       <VoteButton
                         action={action}
+                        multiSigData={multiSigData}
                         isLoading={isApproving}
                         requiredRoles={requiredRoles}
                         handleLoadingChange={(isLoading) => {
@@ -396,6 +397,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                       {isOwner || isMotionOlderThanWeek ? (
                         <CancelButton
                           action={action}
+                          multiSigData={multiSigData}
                           isLoading={isRejecting}
                           multiSigId={multiSigData.nativeMultiSigId}
                           handleLoadingChange={(isLoading) => {
@@ -408,6 +410,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                       ) : (
                         <VoteButton
                           action={action}
+                          multiSigData={multiSigData}
                           isLoading={isRejecting}
                           requiredRoles={requiredRoles}
                           handleLoadingChange={(isLoading) => {

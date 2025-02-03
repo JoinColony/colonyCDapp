@@ -4,16 +4,15 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
-import { type MultiSigAction } from '~types/motions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
+import { type ICompletedMultiSigAction } from '~v5/common/ActionSidebar/partials/MultiSigSidebar/types.ts';
 import MotionWidgetSkeleton from '~v5/shared/MotionWidgetSkeleton/MotionWidgetSkeleton.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner.tsx';
 import Stepper from '~v5/shared/Stepper/Stepper.tsx';
 
-import ApprovalStep from './partials/ApprovalStep/ApprovalStep.tsx';
-import FinalizeStep from './partials/FinalizeStep/FinalizeStep.tsx';
+import { MultiSigStep } from './partials/MultiSigStep/index.ts';
 import { MultiSigState } from './types.ts';
 import {
   getDomainIdForActionType,
@@ -24,8 +23,7 @@ import {
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
 
-interface MultiSigWidgetProps {
-  action: MultiSigAction;
+export interface MultiSigWidgetProps extends ICompletedMultiSigAction {
   variant: 'stepper' | 'standalone';
   onMultiSigRejected?: () => void;
 }
@@ -48,9 +46,10 @@ const MSG = defineMessages({
 const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   action,
   variant,
+  multiSigData,
   onMultiSigRejected,
 }) => {
-  const { type: actionType, multiSigData } = action;
+  const { type: actionType } = action;
 
   // this is only because managing permissions in a subdomain requires signees in the parent domain
   const requiredRoles = useMemo(() => {
@@ -90,12 +89,13 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
       {
         key: MultiSigState.Approval,
         content: (
-          <ApprovalStep
+          <MultiSigStep.Approval
             thresholdPerRole={thresholdPerRole}
             requiredRoles={requiredRoles}
             initiatorAddress={action.initiatorAddress}
             onMultiSigRejected={onMultiSigRejected}
             action={action}
+            multiSigData={multiSigData}
           />
         ),
         heading: {
@@ -105,11 +105,11 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
       {
         key: MultiSigState.Finalize,
         content: (
-          <FinalizeStep
-            thresholdPerRole={thresholdPerRole}
+          <MultiSigStep.Finalize
+            action={action}
             multiSigData={multiSigData}
             initiatorAddress={action.initiatorAddress}
-            action={action}
+            thresholdPerRole={thresholdPerRole}
           />
         ),
         heading: {
