@@ -187,7 +187,7 @@ export const useRecipientsFieldTableColumns = ({
                         .toDecimalPlaces(
                           token.decimals || DEFAULT_TOKEN_DECIMALS,
                         )
-                        .toString();
+                        .toFixed();
 
                       if (
                         dataRef.current?.[row.index].amount === amountCalculated

@@ -27,7 +27,7 @@ const AmountRow = ({ amount, token }: AmountRowProps) => {
       RowIcon={Coins}
       rowContent={
         <div className="flex items-center gap-3">
-          {formattedAmount}
+          <span>{formattedAmount}</span>
           {token && (
             <div className="flex gap-1">
               <TokenAvatar
