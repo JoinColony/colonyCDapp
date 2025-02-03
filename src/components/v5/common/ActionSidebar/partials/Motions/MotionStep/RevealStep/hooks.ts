@@ -7,16 +7,12 @@ import { useGetVoterRewardsQuery } from '~gql';
 import { type RevealMotionPayload } from '~redux/sagas/motions/revealVoteMotion.ts';
 import { type OnSuccess } from '~shared/Fields/index.ts';
 import { type VoterRecord } from '~types/graphql.ts';
-import { type MotionAction } from '~types/motions.ts';
 import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
-import { getSafePollingInterval } from '~utils/queries.ts';
+import { type ICompletedMotionAction } from '~v5/common/ActionSidebar/partials/Motions/types.ts';
 
 import { getLocalStorageVoteValue } from '../VotingStep/utils.tsx';
 
-const useRevealWidgetUpdate = (
-  voterRecord: VoterRecord[],
-  stopPollingAction: () => void,
-) => {
+const useRevealWidgetUpdate = (voterRecord: VoterRecord[]) => {
   const { user } = useAppContext();
   const currentVotingRecord = voterRecord.find(
     ({ address }) => address === user?.walletAddress,
@@ -37,7 +33,6 @@ const useRevealWidgetUpdate = (
 
   /* Vote has been updated in db, stop polling */
   if (vote !== prevVote) {
-    stopPollingAction();
     setPrevVote(vote);
   }
 
@@ -45,19 +40,15 @@ const useRevealWidgetUpdate = (
 };
 
 export const useRevealStep = ({
-  actionData,
-  startPollingAction,
-  stopPollingAction,
-  transactionId,
+  action,
+  transactionHash,
   rootHash,
 }: {
-  actionData: MotionAction | undefined | null;
-  startPollingAction: (pollingInterval: number) => void;
-  stopPollingAction: () => void;
-  transactionId: string;
+  action: ICompletedMotionAction['action'];
+  transactionHash: string;
   rootHash: string | undefined;
 }) => {
-  const { motionData } = actionData || {};
+  const { motionData } = action;
   const { nativeMotionDomainId, voterRecord, motionId } = motionData || {};
   const { user } = useAppContext();
   const {
@@ -80,9 +71,9 @@ export const useRevealStep = ({
   const { reward: voterReward } = data?.getVoterRewards || {};
 
   const { vote, hasUserVoted, userVoteRevealed, setUserVoteRevealed } =
-    useRevealWidgetUpdate(voterRecord || [], stopPollingAction);
+    useRevealWidgetUpdate(voterRecord || []);
 
-  const associatedActionId = getMotionAssociatedActionId(actionData);
+  const associatedActionId = getMotionAssociatedActionId(action);
 
   const transform = useMemo(
     () =>
@@ -99,7 +90,6 @@ export const useRevealStep = ({
 
   const handleSuccess: OnSuccess<Record<string, number>> = (_, { reset }) => {
     reset();
-    startPollingAction(getSafePollingInterval());
     setUserVoteRevealed(true);
   };
 
@@ -108,7 +98,7 @@ export const useRevealStep = ({
     hasRevealed: voter.vote !== null,
   }));
   const userVote =
-    hasUserVoted && (vote || getLocalStorageVoteValue(transactionId));
+    hasUserVoted && (vote || getLocalStorageVoteValue(transactionHash));
   const revealProgress = useMemo(
     () =>
       (voterRecord || []).reduce(

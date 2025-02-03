@@ -1,19 +1,24 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
-import { FAILED_LOADING_DURATION as POLLING_TIMEOUT } from '~frame/LoadingTemplate/index.ts';
 import {
-  ColonyActionType,
   useGetColonyActionQuery,
   useGetMotionStateQuery,
+  useOnCreateAnnotationSubscription,
+  useOnCreateMultiSigUserSignatureSubscription,
+  useOnDeleteMultiSigUserSignatureSubscription,
+  useOnUpdateColonyMotionSubscription,
+  useOnUpdateColonyMultiSigSubscription,
 } from '~gql';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import { type OptionalValue } from '~types';
 import { MotionState, getMotionState } from '~utils/colonyMotions.ts';
 import { getMultiSigState } from '~utils/multiSig/index.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { isTransactionFormat } from '~utils/web3/index.ts';
+
+import { useGetExpenditureData } from './useGetExpenditureData.ts';
 
 export type RefetchMotionState = ReturnType<
   typeof useGetMotionStateQuery
@@ -23,20 +28,19 @@ export type RefetchAction = ReturnType<
   typeof useGetColonyActionQuery
 >['refetch'];
 
-const useGetColonyAction = (transactionHash?: string) => {
+const pollInterval = getSafePollingInterval();
+
+const useGetColonyAction = (transactionHash: OptionalValue<string>) => {
   const {
     colony: { colonyAddress },
-    refetchColony,
   } = useColonyContext();
-  const { refetchTokenBalances } = useUserTokenBalanceContext();
 
-  const isInvalidTx = !isTransactionFormat(transactionHash);
+  const isValidTx = isTransactionFormat(transactionHash);
+
   /* Unfortunately, we need to track polling state ourselves: https://github.com/apollographql/apollo-client/issues/9081#issuecomment-975722271 */
-  const [isPolling, setIsPolling] = useState(!isInvalidTx);
+  const [isPolling, setIsPolling] = useState(isValidTx);
 
-  const pollTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const pollInterval = getSafePollingInterval();
+  const [hasPendingAnnotation, setHasPendingAnnotation] = useState(false);
 
   const {
     data: actionData,
@@ -45,14 +49,17 @@ const useGetColonyAction = (transactionHash?: string) => {
     stopPolling,
     refetch: refetchAction,
   } = useGetColonyActionQuery({
-    skip: isInvalidTx,
+    skip: !isValidTx,
     variables: {
       transactionHash: transactionHash ?? '',
     },
-    pollInterval,
   });
 
   const action = actionData?.getColonyAction;
+
+  const { expenditure, loadingExpenditure } = useGetExpenditureData(
+    action?.expenditureId,
+  );
 
   const {
     loading: loadingExtensions,
@@ -66,78 +73,22 @@ const useGetColonyAction = (transactionHash?: string) => {
   const multiSigExtensionIsUninstalled =
     !loadingExtensions && !multiSigExtensionData;
 
-  const clearPollingCancellationTimer = () => {
-    if (pollTimerRef.current) {
-      clearTimeout(pollTimerRef.current);
-
-      pollTimerRef.current = null;
-    }
-  };
-
-  const startPollingForAction = useCallback(() => {
+  const startActionPoll = useCallback(() => {
     startPolling(pollInterval);
     setIsPolling(true);
-    refetchAction();
-  }, [pollInterval, startPolling, refetchAction]);
+  }, [startPolling]);
 
-  const stopPollingForAction = useCallback(() => {
+  const stopActionPoll = useCallback(() => {
     stopPolling();
     setIsPolling(false);
   }, [stopPolling]);
-
-  useEffect(() => {
-    const shouldPoll = !isInvalidTx && !action;
-
-    setIsPolling(shouldPoll);
-
-    if (!shouldPoll) {
-      if (action) {
-        if (action.type === ColonyActionType.Payment) {
-          refetchTokenBalances();
-        }
-
-        refetchColony();
-      }
-
-      return;
-    }
-
-    clearPollingCancellationTimer();
-
-    pollTimerRef.current = setTimeout(stopPollingForAction, POLLING_TIMEOUT);
-
-    startPollingForAction();
-  }, [
-    action,
-    pollInterval,
-    refetchColony,
-    refetchTokenBalances,
-    isInvalidTx,
-    startPollingForAction,
-    stopPollingForAction,
-  ]);
-
-  useEffect(() => {
-    return () => {
-      // The purpose of this is to isolate the concern of
-      // cleaning up the timeout scheduled for stopping the polling,
-      // and also to stop polling action polling altogether when the node unmounts.
-      // This effect should receive an empty array dependency to ensure that
-      // it only ever calls the return statement when its node unmounts,
-      // and not when any other state gets updated.
-      clearPollingCancellationTimer();
-
-      stopPollingForAction();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const {
     data: motionStateData,
     loading: loadingMotionState,
     refetch: refetchMotionState,
   } = useGetMotionStateQuery({
-    skip: !action?.motionData || isInvalidTx,
+    skip: !action?.motionData || !isValidTx,
     variables: {
       input: {
         colonyAddress,
@@ -186,29 +137,73 @@ const useGetColonyAction = (transactionHash?: string) => {
     votingReputationExtensionIsUninstalled,
   ]);
 
-  /* Ensures motion state is kept in sync with motion data */
-  useEffect(() => {
-    if (action?.motionData) {
-      refetchMotionState();
+  const updateAction = async () => {
+    const previousActionData = actionData?.getColonyAction;
+
+    const newActionData = (await refetchAction()).data.getColonyAction;
+
+    if (JSON.stringify(previousActionData) !== JSON.stringify(newActionData)) {
+      await refetchMotionState();
     }
-  }, [action?.motionData, refetchMotionState]);
+  };
+
+  useOnUpdateColonyMotionSubscription({
+    onData: updateAction,
+  });
+
+  useOnUpdateColonyMultiSigSubscription({
+    onData: updateAction,
+  });
+
+  useOnCreateMultiSigUserSignatureSubscription({
+    onData: updateAction,
+  });
+
+  useOnDeleteMultiSigUserSignatureSubscription({
+    onData: updateAction,
+  });
+
+  useOnCreateAnnotationSubscription({
+    onData: () => setHasPendingAnnotation(true),
+  });
+
+  useEffect(() => {
+    if (hasPendingAnnotation && !action?.annotation) {
+      startActionPoll();
+    } else {
+      setHasPendingAnnotation(false);
+      stopActionPoll();
+    }
+
+    return stopActionPoll;
+  }, [
+    action,
+    action?.annotation,
+    hasPendingAnnotation,
+    startActionPoll,
+    stopActionPoll,
+  ]);
 
   return {
-    isInvalidTransactionHash: isInvalidTx,
+    isValidTransactionHash: isValidTx,
+    isInvalidTransactionHash: !isValidTx,
     isUnknownTransaction:
-      !isInvalidTx && action?.colony?.colonyAddress !== colonyAddress,
+      isValidTx && action?.colony?.colonyAddress !== colonyAddress,
     loadingAction:
       loadingAction ||
+      hasPendingAnnotation ||
       (isPolling && !action) ||
       loadingMotionState ||
       loadingExtensions,
     action,
-    startPollingForAction,
-    stopPollingForAction,
+    startActionPoll,
+    stopActionPoll,
     networkMotionState,
     motionState,
     refetchMotionState,
     refetchAction,
+    expenditure,
+    loadingExpenditure,
   };
 };
 

@@ -33,10 +33,12 @@ const StakingForm: FC<StakingFormProps> = ({
   userInactivatedTokens,
   disableForm,
 }) => {
-  const { motionAction } = useMotionContext();
+  const {
+    action: { colony },
+    motionData,
+  } = useMotionContext();
   const { isDarkMode } = usePageThemeContext();
 
-  const { colony, motionData } = motionAction || {};
   const { nativeToken } = colony || {};
   const { nativeTokenDecimals, nativeTokenSymbol: tokenSymbol = '' } =
     nativeToken || {};

@@ -16,6 +16,7 @@ import React, {
 } from 'react';
 
 import { isFullScreen } from '~constants/index.ts';
+import { useActionContext } from '~context/ActionContext/ActionContext.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
@@ -31,7 +32,6 @@ import PillsBase from '../Pills/PillsBase.tsx';
 
 import { ACTION_TYPE_FIELD_NAME, actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
-import useGetActionData from './hooks/useGetActionData.ts';
 import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.tsx';
 import { ActionNotFound } from './partials/ActionNotFound.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
@@ -46,21 +46,21 @@ const displayName = 'v5.common.ActionSidebar';
 
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
-  transactionId,
   className,
 }) => {
   const {
+    transactionHash,
     action,
-    isInvalidTransactionHash,
+    isValidTransactionHash,
     loadingAction,
     isMotion,
     isMultiSig,
     motionState,
     expenditure,
     loadingExpenditure,
-    startPollingForAction,
-    stopPollingForAction,
-  } = useGetActionData(transactionId);
+    startActionPoll,
+    stopActionPoll,
+  } = useActionContext();
 
   const {
     actionSidebarToggle: [
@@ -92,14 +92,14 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     // If the action has not been found for 20 seconds, then assume transaction doesn't exist.
     if (loadingAction) {
       timeout.current = setTimeout(() => {
-        stopPollingForAction();
+        stopActionPoll();
       }, 20000);
     }
 
     return () => {
       clearTimeout(timeout.current);
     };
-  }, [loadingAction, stopPollingForAction]);
+  }, [loadingAction, stopActionPoll]);
 
   const { formRef, closeSidebarClick } = useCloseSidebarClick();
 
@@ -112,10 +112,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
   useDisableBodyScroll(isActionSidebarOpen);
 
-  const isLoading =
-    transactionId !== undefined && (loadingAction || loadingExpenditure);
+  const isLoading = !!transactionHash && (loadingAction || loadingExpenditure);
 
-  const actionNotFound = transactionId && !action;
+  const actionNotFound = transactionHash && !action;
 
   const getSidebarContent = () => {
     if (action) {
@@ -125,9 +124,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     if (actionNotFound) {
       return (
         <ActionNotFound
-          isInvalidTransactionHash={isInvalidTransactionHash}
+          isInvalidTransactionHash={!isValidTransactionHash}
           onCloseSidebar={toggleActionSidebarOff}
-          onRefetchAction={startPollingForAction}
+          onRefetchAction={startActionPoll}
         />
       );
     }
@@ -138,7 +137,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
     return (
       <ActionSidebarContent
-        transactionId={transactionId}
+        transactionHash={transactionHash}
         formRef={formRef}
         defaultValues={actionSidebarInitialValues}
         isMotion={!!isMotion}
@@ -147,7 +146,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   };
 
   const getShareButton = () =>
-    !!transactionId && (
+    !!transactionHash && (
       <Tooltip
         tooltipContent={formatText({ id: 'copy.urlCopied' })}
         isOpen={isCopied}
@@ -203,8 +202,8 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           'md:max-w-full': isSidebarFullscreen,
           'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
           'md:max-w-[67.3125rem]':
-            (!isSidebarFullscreen && !!transactionId && !actionNotFound) ||
-            (!isSidebarFullscreen && !!transactionId && isLoading),
+            (!isSidebarFullscreen && !!transactionHash && !actionNotFound) ||
+            (!isSidebarFullscreen && !!transactionHash && isLoading),
         },
       )}
       ref={registerContainerRef}
@@ -227,7 +226,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             {actionGroupType && (
               <GoBackButton
                 action={action}
-                onClick={transactionId ? closeSidebarClick : undefined}
+                onClick={transactionHash ? closeSidebarClick : undefined}
               />
             )}
             {!isMobile && (
@@ -279,15 +278,13 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           <div>{children}</div>
         </div>
       </div>
-      {isLoading && <ActionSidebarLoadingSkeleton />}
-      <div
-        className={clsx('flex flex-grow overflow-y-auto', {
-          hidden: isLoading,
-        })}
-      >
-        {getSidebarContent()}
-      </div>
-
+      {isLoading ? (
+        <ActionSidebarLoadingSkeleton />
+      ) : (
+        <div className="flex flex-grow overflow-y-auto">
+          {getSidebarContent()}
+        </div>
+      )}
       <Modal
         title={formatText({ id: 'actionSidebar.cancelModal.title' })}
         subTitle={formatText({

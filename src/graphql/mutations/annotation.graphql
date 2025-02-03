@@ -3,3 +3,9 @@ mutation CreateAnnotation($input: CreateAnnotationInput!) {
     id
   }
 }
+
+subscription OnCreateAnnotation {
+  onCreateAnnotation {
+    ...Annotation
+  }
+}

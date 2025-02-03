@@ -1,7 +1,8 @@
 import pipe from 'lodash/fp/pipe';
 
 import { type ActionTypes, type UniqueActionType } from '~redux/index.ts';
-import { type MotionAction, type MultiSigAction } from '~types/motions.ts';
+import { type OptionalValue } from '~types';
+import { type ColonyAction } from '~types/graphql.ts';
 
 export type ActionTransformFnType = (
   arg0: UniqueActionType<any, any, any>,
@@ -50,7 +51,7 @@ export const getFormAction = (
 ) => `${action}_${actionType}`;
 
 export const getMotionAssociatedActionId = (
-  action?: MotionAction | MultiSigAction | null,
+  action: OptionalValue<ColonyAction>,
 ) => {
   if (!action) return '';
 

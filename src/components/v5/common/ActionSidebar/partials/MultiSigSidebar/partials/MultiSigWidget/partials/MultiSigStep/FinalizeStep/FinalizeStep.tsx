@@ -5,7 +5,6 @@ import { FormattedDate, defineMessages } from 'react-intl';
 import { type ColonyMultiSigFragment } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import usePrevious from '~hooks/usePrevious.ts';
-import { type MultiSigAction } from '~types/motions.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -17,6 +16,7 @@ import {
   getSignaturesPerRole,
   hasWeekPassed,
 } from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/MultiSigWidget/utils.ts';
+import { type ICompletedMultiSigAction } from '~v5/common/ActionSidebar/partials/MultiSigSidebar/types.ts';
 import { handleMotionCompleted } from '~v5/common/ActionSidebar/utils.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
@@ -137,11 +137,10 @@ const formatDate = (value: string | undefined) => {
   );
 };
 
-interface FinalizeStepProps {
+interface FinalizeStepProps extends ICompletedMultiSigAction {
   multiSigData: ColonyMultiSigFragment;
   initiatorAddress: string;
   thresholdPerRole: Threshold;
-  action: MultiSigAction;
 }
 
 const FinalizeStep: FC<FinalizeStepProps> = ({
@@ -257,6 +256,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         setIsPending={setIsFinalizePending}
                         multiSigId={multiSigData.nativeMultiSigId}
                         action={action}
+                        multiSigData={multiSigData}
                       />
                     )}
                   </div>

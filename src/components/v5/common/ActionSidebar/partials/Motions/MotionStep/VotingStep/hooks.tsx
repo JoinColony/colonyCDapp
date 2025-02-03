@@ -13,10 +13,10 @@ import { type OnSuccess } from '~shared/Fields/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';
 import { type VoterRecord } from '~types/graphql.ts';
-import { type MotionAction } from '~types/motions.ts';
 import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
+import { type ICompletedMotionAction } from '~v5/common/ActionSidebar/partials/Motions/types.ts';
 
 import { type DescriptionListItem } from './partials/DescriptionList/types.ts';
 import { type VotingFormValues, VotingRewardsSections } from './types.ts';
@@ -25,10 +25,7 @@ import {
   setLocalStorageVoteValue,
 } from './utils.tsx';
 
-const useVotingWidgetUpdate = (
-  voterRecord: VoterRecord[],
-  stopPollingAction: () => void,
-) => {
+const useVotingWidgetUpdate = (voterRecord: VoterRecord[]) => {
   const { user } = useAppContext();
   const currentVotingRecord = voterRecord.find(
     ({ address }) => address === user?.walletAddress,
@@ -54,32 +51,22 @@ const useVotingWidgetUpdate = (
   // if user's vote count increased, db has been updated, stop polling
   useEffect(() => {
     if (currentVotingRecord?.voteCount !== prevRecord?.voteCount) {
-      stopPollingAction();
       setPrevRecord(currentVotingRecord);
     }
-  }, [currentVotingRecord, prevRecord, stopPollingAction]);
-
-  useEffect(() => stopPollingAction, [stopPollingAction]);
+  }, [currentVotingRecord, prevRecord]);
 
   return { hasUserVoted, setHasUserVoted };
 };
 
 export const useVotingStep = ({
-  actionData,
-  startPollingAction,
-  stopPollingAction,
-  transactionId,
-}: {
-  actionData: MotionAction;
-  startPollingAction: () => void;
-  stopPollingAction: () => void;
-  transactionId: string;
-}) => {
+  action,
+  motionData,
+}: ICompletedMotionAction) => {
   const {
     colony: { colonyAddress, nativeToken },
   } = useColonyContext();
   const { wallet, user } = useAppContext();
-  const { motionData, rootHash } = actionData;
+  const { rootHash, transactionHash } = action;
   const {
     motionId,
     voterRecord,
@@ -87,10 +74,7 @@ export const useVotingStep = ({
     repSubmitted,
     skillRep,
   } = motionData;
-  const { hasUserVoted, setHasUserVoted } = useVotingWidgetUpdate(
-    voterRecord,
-    stopPollingAction,
-  );
+  const { hasUserVoted, setHasUserVoted } = useVotingWidgetUpdate(voterRecord);
 
   const { extensionData } = useExtensionData(Extension.VotingReputation);
 
@@ -121,10 +105,10 @@ export const useVotingStep = ({
   const { max: maxReward, min: minReward } = data?.getVoterRewards || {};
 
   const [currentUserVote, setCurrentUserVote] = useState<MotionVote | null>(
-    getLocalStorageVoteValue(transactionId),
+    getLocalStorageVoteValue(transactionHash),
   );
 
-  const associatedActionId = getMotionAssociatedActionId(actionData);
+  const associatedActionId = getMotionAssociatedActionId(action);
 
   const transform = useMemo(
     () =>
@@ -152,11 +136,10 @@ export const useVotingStep = ({
   };
 
   const handleSuccess: OnSuccess<VotingFormValues> = ({ vote }, { reset }) => {
-    setLocalStorageVoteValue(transactionId, vote);
+    setLocalStorageVoteValue(transactionHash, vote);
     setCurrentUserVote(vote);
     setHasUserVoted(true);
     reset();
-    startPollingAction();
   };
 
   const validationSchema = object()
@@ -167,10 +150,9 @@ export const useVotingStep = ({
 
   const handleChangeVoteSuccess = () => {
     const changedVote = getChangedVote();
-    setLocalStorageVoteValue(transactionId, changedVote);
+    setLocalStorageVoteValue(transactionHash, changedVote);
     setCurrentUserVote(changedVote);
     setHasUserVoted(true);
-    startPollingAction();
   };
 
   const getChangeVotePayload = (): MotionVotePayload => {

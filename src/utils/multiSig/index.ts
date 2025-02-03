@@ -2,8 +2,7 @@ import { Id, type ColonyRole } from '@colony/colony-js';
 
 import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ColonyActionType, type ColonyActionFragment } from '~gql';
-import { type Colony, type ColonyAction } from '~types/graphql.ts';
-import { type MultiSigAction } from '~types/motions.ts';
+import { type Colony } from '~types/graphql.ts';
 
 import { MotionState } from '../colonyMotions.ts';
 import { extractColonyRoles } from '../colonyRoles.ts';
@@ -120,10 +119,6 @@ export const getMultiSigPayload = (
   colonyDomains: extractColonyDomains(colony.domains),
   isMultiSig: isMultiSigFlag,
 });
-
-export function isMultiSig(action: ColonyAction): action is MultiSigAction {
-  return !!action.multiSigData && !!action.multiSigId;
-}
 
 export const getDomainIdsForEligibleSignees = (domainId: number): number[] => {
   return domainId === Id.RootDomain

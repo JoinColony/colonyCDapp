@@ -2,31 +2,21 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import React, { type FC, useEffect, useState, useMemo } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
+import { MotionStep } from '~v5/common/ActionSidebar/partials/Motions/MotionStep/index.ts';
+import StakingStep from '~v5/common/ActionSidebar/partials/Motions/MotionStep/StakingStep/index.ts';
 import MotionProvider from '~v5/common/ActionSidebar/partials/Motions/partials/MotionProvider/index.ts';
-import FinalizeStep from '~v5/common/ActionSidebar/partials/Motions/steps/FinalizeStep/FinalizeStep.tsx';
-import RevealStep from '~v5/common/ActionSidebar/partials/Motions/steps/RevealStep/RevealStep.tsx';
-import StakingStep from '~v5/common/ActionSidebar/partials/Motions/steps/StakingStep/index.ts';
-import VotingStep from '~v5/common/ActionSidebar/partials/Motions/steps/VotingStep/VotingStep.tsx';
 import MotionWidgetSkeleton from '~v5/shared/MotionWidgetSkeleton/MotionWidgetSkeleton.tsx';
 
 import { type Steps, CustomStep, type MotionBoxProps } from './types.ts';
 
 const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
   const { canInteract } = useAppContext();
-  const {
-    action,
-    networkMotionState,
-    motionState,
-    loadingAction,
-    startPollingForAction,
-    stopPollingForAction,
-    refetchAction,
-  } = useGetColonyAction(transactionId);
+  const { action, networkMotionState, motionState, loadingAction } =
+    useGetColonyAction(transactionId);
 
-  const { motionData, rootHash } = action || {};
+  const { motionData } = action || {};
 
   const { motionStakes } = motionData || {};
 
@@ -38,18 +28,11 @@ const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
     networkMotionState === NetworkMotionState.Failed;
 
   useEffect(() => {
-    startPollingForAction();
     setActiveStepKey(networkMotionState);
     if (motionFinished) {
       setActiveStepKey(CustomStep.Finalize);
     }
-    return () => stopPollingForAction();
-  }, [
-    motionFinished,
-    networkMotionState,
-    startPollingForAction,
-    stopPollingForAction,
-  ]);
+  }, [motionFinished, networkMotionState]);
 
   const items = useMemo(() => {
     return [
@@ -64,41 +47,29 @@ const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
       },
       {
         key: NetworkMotionState.Submit,
-        content: (
-          <VotingStep
-            actionData={action as MotionAction}
-            startPollingAction={startPollingForAction}
-            stopPollingAction={stopPollingForAction}
-            transactionId={transactionId}
-          />
-        ),
+        content:
+          action && motionData ? (
+            <MotionStep.Voting action={action} motionData={motionData} />
+          ) : null,
         isVisible: motionState === MotionState.Voting && motionStakes,
       },
       {
         key: NetworkMotionState.Reveal,
-        content: (
-          <RevealStep
-            actionData={action as MotionAction}
-            motionState={networkMotionState}
-            startPollingAction={startPollingForAction}
-            stopPollingAction={stopPollingForAction}
-            transactionId={transactionId}
-            rootHash={rootHash}
-          />
-        ),
+        content: action ? (
+          <MotionStep.Reveal action={action} motionState={networkMotionState} />
+        ) : null,
         isVisible: activeStepKey === NetworkMotionState.Reveal && motionStakes,
       },
       {
         key: CustomStep.Finalize,
-        content: motionState && (
-          <FinalizeStep
-            actionData={action as MotionAction}
-            startPollingAction={startPollingForAction}
-            stopPollingAction={stopPollingForAction}
-            refetchAction={refetchAction}
-            motionState={motionState}
-          />
-        ),
+        content:
+          action && motionData && motionState ? (
+            <MotionStep.Finalize
+              action={action}
+              motionData={motionData}
+              motionState={motionState}
+            />
+          ) : null,
         isVisible:
           activeStepKey === CustomStep.Finalize && motionStakes && canInteract,
       },
@@ -107,22 +78,14 @@ const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
     action,
     activeStepKey,
     canInteract,
+    motionData,
     motionStakes,
     motionState,
     networkMotionState,
-    refetchAction,
-    rootHash,
-    startPollingForAction,
-    stopPollingForAction,
-    transactionId,
   ]);
 
-  return !loadingAction ? (
-    <MotionProvider
-      motionAction={action as MotionAction}
-      startPollingAction={startPollingForAction}
-      stopPollingAction={stopPollingForAction}
-    >
+  return !loadingAction && action && motionData ? (
+    <MotionProvider action={action} motionData={motionData}>
       {items.map(({ key, content, isVisible }) => (
         <React.Fragment key={key}>{isVisible && content}</React.Fragment>
       ))}

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate, Outlet, useParams } from 'react-router-dom';
 
+import ActionContextProvider from '~context/ActionContext/ActionContextProvider.tsx';
 import ActionSidebarContextProvider from '~context/ActionSidebarContext/ActionSidebarContextProvider.tsx';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useBreadcrumbsContext } from '~context/BreadcrumbsContext/BreadcrumbsContext.ts';
@@ -112,9 +113,11 @@ const ColonyRoute = () => {
                     <TokensModalContextProvider>
                       <TourContextProvider>
                         <PaymentBuilderContextProvider>
-                          <ColonyLayout>
-                            <Outlet />
-                          </ColonyLayout>
+                          <ActionContextProvider>
+                            <ColonyLayout>
+                              <Outlet />
+                            </ColonyLayout>
+                          </ActionContextProvider>
                         </PaymentBuilderContextProvider>
                       </TourContextProvider>
                     </TokensModalContextProvider>

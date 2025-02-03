@@ -4,17 +4,16 @@ import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { type MultiSigAction } from '~types/motions.ts';
 import { getMotionAssociatedActionId } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
+import { type ICompletedMultiSigAction } from '~v5/common/ActionSidebar/partials/MultiSigSidebar/types.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import { LoadingBehavior, type ButtonProps } from '~v5/shared/Button/types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.CancelButton';
 
-interface CancelButtonProps {
-  action: MultiSigAction;
+interface CancelButtonProps extends ICompletedMultiSigAction {
   multiSigId: string;
   handleLoadingChange: (isLoading: boolean) => void;
   isLoading: boolean;

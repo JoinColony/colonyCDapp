@@ -1,11 +1,9 @@
 import { Extension } from '@colony/colony-js';
-import { type FC } from 'react';
 import React from 'react';
 
+import { useActionContext } from '~context/ActionContext/ActionContext.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
-import { isMultiSig } from '~utils/multiSig/index.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
 
 import ActionSidebarWidgetLoadingSkeleton from '../ActionSidebarWidgetLoadingSkeleton/ActionSidebarWidgetLoadingSkeleton.tsx';
@@ -13,12 +11,9 @@ import ActionSidebarWidgetLoadingSkeleton from '../ActionSidebarWidgetLoadingSke
 import MultiSigWidget from './partials/MultiSigWidget/MultiSigWidget.tsx';
 
 const displayName = 'v5.common.ActionSidebar.partials.MultiSig';
-interface MultiSigSidebarProps {
-  transactionId: string;
-}
 
-const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
-  const { action, loadingAction } = useGetColonyAction(transactionId);
+const MultiSigSidebar = () => {
+  const { action, multiSigData, loadingAction } = useActionContext();
 
   const { extensionData, loading: loadingExtension } = useExtensionData(
     Extension.MultisigPermissions,
@@ -26,7 +21,7 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
 
   const isLoading = loadingAction || loadingExtension || !action;
 
-  if (action && !isMultiSig(action)) {
+  if (!multiSigData) {
     console.warn('Not a multisig action');
 
     return null;
@@ -44,9 +39,11 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
   }
 
   return (
-    <div>
-      <MultiSigWidget action={action} variant="stepper" />
-    </div>
+    <MultiSigWidget
+      action={action}
+      multiSigData={multiSigData}
+      variant="stepper"
+    />
   );
 };
 

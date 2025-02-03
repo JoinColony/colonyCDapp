@@ -4,19 +4,20 @@
 
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
+//* Hide Initially */
+// import { defineMessages } from 'react-intl';
+// import { PaperPlaneTilt } from '@phosphor-icons/react';
 import React, {
   type FC,
   type PropsWithChildren,
   useCallback,
   useEffect,
 } from 'react';
-import { useLocation, useSearchParams } from 'react-router-dom';
-//* Hide Initially */
-// import { defineMessages } from 'react-intl';
-// import { PaperPlaneTilt } from '@phosphor-icons/react';
+import { useLocation } from 'react-router-dom';
 
 import { UserHubTab } from '~common/Extensions/UserHub/types.ts';
 import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
+import { useActionContext } from '~context/ActionContext/ActionContext.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyCreatedModalContext } from '~context/ColonyCreateModalContext/ColonyCreatedModalContext.ts';
@@ -26,7 +27,6 @@ import { useTablet } from '~hooks';
 import useLocationKeyChange from '~hooks/useLocationKeyChange.ts';
 import useLocationPathnameChange from '~hooks/useLocationPathnameChange.ts';
 import usePrevious from '~hooks/usePrevious.ts';
-import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import ActionSidebar from '~v5/common/ActionSidebar/index.ts';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal/index.ts';
@@ -82,36 +82,40 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
 
   const { state: locationState } = useLocation();
   const hasRecentlyCreatedColony = locationState?.hasRecentlyCreatedColony;
-  const [searchParams] = useSearchParams();
-  const transactionId = searchParams?.get(TX_SEARCH_PARAM);
-  const previousTransactionId = usePrevious(transactionId);
+  const { transactionHash } = useActionContext();
+  const previousTransactionHash = usePrevious(transactionHash);
 
   const handleLocationPathnameChange = useCallback(() => {
-    if (!!previousTransactionId && !transactionId && isActionSidebarOpen) {
+    if (!!previousTransactionHash && !transactionHash && isActionSidebarOpen) {
       toggleActionSidebarOff();
     }
   }, [
-    previousTransactionId,
-    transactionId,
+    previousTransactionHash,
+    transactionHash,
     isActionSidebarOpen,
     toggleActionSidebarOff,
   ]);
 
   const handleLocationHistoryChange = useCallback(() => {
-    if (!transactionId && !actionType && isActionSidebarOpen) {
+    if (!transactionHash && !actionType && isActionSidebarOpen) {
       toggleActionSidebarOff();
     }
-  }, [transactionId, actionType, isActionSidebarOpen, toggleActionSidebarOff]);
+  }, [
+    transactionHash,
+    actionType,
+    isActionSidebarOpen,
+    toggleActionSidebarOff,
+  ]);
 
   useLocationPathnameChange(handleLocationPathnameChange);
 
   useLocationKeyChange(handleLocationHistoryChange);
 
   useEffect(() => {
-    if (transactionId) {
+    if (transactionHash) {
       toggleActionSidebarOn();
     }
-  }, [toggleActionSidebarOn, transactionId]);
+  }, [toggleActionSidebarOn, transactionHash]);
 
   useEffect(() => {
     if (hasRecentlyCreatedColony) {
@@ -189,10 +193,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       </PageLayout>
       <AnimatePresence>
         {isActionSidebarOpen && (
-          <ActionSidebar
-            transactionId={transactionId || undefined}
-            className="modal-blur"
-          >
+          <ActionSidebar className="modal-blur">
             {isTablet ? getUserNavigation() : undefined}
           </ActionSidebar>
         )}

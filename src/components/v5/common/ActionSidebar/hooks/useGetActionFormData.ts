@@ -35,23 +35,12 @@ import { ModificationOption } from '../partials/forms/ManageReputationForm/const
 import { calculatePercentageValue } from '../partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
 
 import useGetColonyAction from './useGetColonyAction.ts';
-import { useGetExpenditureData } from './useGetExpenditureData.ts';
 
-const useGetActionData = (transactionId: string | undefined) => {
-  const {
-    action,
-    isInvalidTransactionHash,
-    loadingAction,
-    networkMotionState,
-    motionState,
-    startPollingForAction,
-    stopPollingForAction,
-  } = useGetColonyAction(transactionId);
+const useGetActionFormData = (transactionId: string | undefined) => {
+  const { action, expenditure } = useGetColonyAction(transactionId);
 
-  const { expenditure, loadingExpenditure } = useGetExpenditureData(
-    action?.expenditureId,
-  );
   const allTokens = useGetAllTokens();
+
   const defaultValues = useMemo(() => {
     if (!action) {
       return undefined;
@@ -406,19 +395,8 @@ const useGetActionData = (transactionId: string | undefined) => {
   }, [action, expenditure, allTokens]);
 
   return {
-    action,
     defaultValues,
-    isInvalidTransactionHash,
-    loadingAction,
-    isMotion: !!action?.isMotion,
-    isMultiSig: !!action?.isMultiSig,
-    networkMotionState,
-    motionState,
-    expenditure,
-    loadingExpenditure,
-    startPollingForAction,
-    stopPollingForAction,
   };
 };
 
-export default useGetActionData;
+export default useGetActionFormData;

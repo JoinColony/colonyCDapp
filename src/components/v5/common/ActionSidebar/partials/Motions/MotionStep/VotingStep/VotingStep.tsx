@@ -1,6 +1,6 @@
 import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import React, { useMemo, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -9,6 +9,7 @@ import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
+import { type ICompletedMotionAction } from '~v5/common/ActionSidebar/partials/Motions/types.ts';
 import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons.tsx';
 import MotionVoteBadge from '~v5/common/Pills/MotionVoteBadge/index.ts';
 import Button, { ActionButton } from '~v5/shared/Button/index.ts';
@@ -20,11 +21,7 @@ import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 
 import { useVotingStep } from './hooks.tsx';
 import DescriptionList from './partials/DescriptionList/index.ts';
-import {
-  type VotingStepProps,
-  VotingStepSections,
-  type VotingFormValues,
-} from './types.ts';
+import { VotingStepSections, type VotingFormValues } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.VotingStep';
@@ -40,12 +37,7 @@ const MSG = defineMessages({
   },
 });
 
-const VotingStep: FC<VotingStepProps> = ({
-  actionData,
-  startPollingAction,
-  stopPollingAction,
-  transactionId,
-}) => {
+const VotingStep: FC<ICompletedMotionAction> = ({ action, motionData }) => {
   const {
     currentReputationPercent,
     currentUserVote,
@@ -58,20 +50,32 @@ const VotingStep: FC<VotingStepProps> = ({
     handleChangeVoteSuccess,
     getChangeVotePayload,
   } = useVotingStep({
-    actionData,
-    startPollingAction,
-    stopPollingAction,
-    transactionId,
+    action,
+    motionData,
   });
 
   const { isDarkMode } = usePageThemeContext();
 
+  const {
+    usersStakes,
+    voterRecord,
+    motionStateHistory: { inRevealPhase },
+  } = motionData;
+
   const { wallet, user } = useAppContext();
-  const isRevealPhase = actionData.motionData.motionStateHistory.inRevealPhase;
-  const canVote = !!wallet && !!user && !isRevealPhase;
+
+  const canVote = !!wallet && !!user && !inRevealPhase;
 
   const isSupportVote = currentUserVote === MotionVote.Yay;
   const isOpposeVote = currentUserVote === MotionVote.Nay;
+
+  const canChangeVote = useMemo(
+    () =>
+      usersStakes.length > 1 &&
+      voterRecord.length < usersStakes.length &&
+      voterRecord.find((voter) => voter.address === wallet?.address),
+    [usersStakes.length, voterRecord, wallet?.address],
+  );
 
   return (
     <MenuWithStatusText
@@ -134,7 +138,7 @@ const VotingStep: FC<VotingStepProps> = ({
                             </h4>
                             <MotionVoteBadge vote={currentUserVote} />
                           </div>
-                          {!isRevealPhase && (
+                          {!inRevealPhase && canChangeVote && (
                             <div className="mt-4 w-full">
                               <h4 className="mb-1 text-2">
                                 {formatText({
@@ -221,7 +225,7 @@ const VotingStep: FC<VotingStepProps> = ({
                   </>
                 )}
               </ActionForm>
-              {canVote && hasUserVoted && (
+              {canChangeVote && canVote && hasUserVoted && (
                 <div className="mt-6">
                   <ActionButton
                     actionType={ActionTypes.MOTION_VOTE}

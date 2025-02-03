@@ -12,7 +12,6 @@ import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSafePollingInterval } from '~utils/queries.ts';
 import { useFinalizeSuccessCallback } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import { handleMotionCompleted } from '~v5/common/ActionSidebar/utils.ts';
 import PillsBase from '~v5/common/Pills/index.ts';
@@ -38,20 +37,24 @@ const MSG = defineMessages({
 });
 
 const FinalizeStep: FC<FinalizeStepProps> = ({
-  actionData,
-  startPollingAction,
-  stopPollingAction,
+  action,
+  motionData,
   motionState,
 }) => {
   const { onFinalizeSuccessCallback } = useFinalizeSuccessCallback();
+
   const { canInteract } = useAppContext();
+
   const [isPolling, setIsPolling] = useState(false);
+
   const { refetchColony } = useColonyContext();
+
   const {
     isFinalizable,
     transform: finalizePayload,
     hasEnoughFundsToFinalize,
-  } = useFinalizeStep(actionData);
+  } = useFinalizeStep({ action, motionData });
+
   const {
     items,
     isClaimed,
@@ -60,35 +63,33 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     handleClaimSuccess,
     claimPayload,
     canClaimStakes,
-  } = useClaimConfig(actionData, startPollingAction);
+  } = useClaimConfig({ action, motionData });
+
+  const { type: actionType } = action;
+
+  const {
+    isFinalized: isMotionFinalized,
+    motionStateHistory: {
+      hasFailedNotFinalizable: isMotionFailedNotFinalizable,
+    },
+    transactionHash: motionTransactionHash,
+  } = motionData;
 
   const { setActionsTableTriggers } = useColonyTriggersContext();
 
-  const isMotionFinalized = actionData.motionData.isFinalized;
   const previousIsMotionFinalized = usePrevious(isMotionFinalized);
-  const isMotionFailedNotFinalizable =
-    actionData.motionData.motionStateHistory.hasFailedNotFinalizable;
   const isMotionAgreement =
-    actionData.type === ColonyActionType.CreateDecisionMotion;
+    actionType === ColonyActionType.CreateDecisionMotion;
+
   const isMotionClaimable =
     isMotionFinalized ||
     isMotionFailedNotFinalizable ||
     (isMotionAgreement && !isClaimed);
 
   const handleSuccess = () => {
-    startPollingAction(getSafePollingInterval());
     setIsPolling(true);
-    onFinalizeSuccessCallback(actionData);
+    onFinalizeSuccessCallback(action);
   };
-
-  /* Stop polling when mounted / dismounted */
-  useEffect(() => {
-    if (isClaimed) {
-      stopPollingAction();
-      setIsPolling(false);
-    }
-    return stopPollingAction;
-  }, [isClaimed, stopPollingAction]);
 
   /* Update colony object when motion gets finalized or is agreement. */
   useEffect(() => {
@@ -102,15 +103,16 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
         ...triggers,
         shouldRefetchMotionStates: true,
       }));
-      handleMotionCompleted(actionData);
+      handleMotionCompleted(action);
     }
   }, [
     isMotionAgreement,
     isMotionFinalized,
     previousIsMotionFinalized,
-    actionData,
+    motionData,
     refetchColony,
     setActionsTableTriggers,
+    action,
   ]);
 
   /*
@@ -164,7 +166,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
         ...(!hasEnoughFundsToFinalize
           ? [
               {
-                key: `${actionData.motionData.transactionHash}-not-enough-balance`,
+                key: `${motionTransactionHash}-not-enough-balance`,
                 content: (
                   <p className="text-sm">{formatText(MSG.finalizeError)}</p>
                 ),

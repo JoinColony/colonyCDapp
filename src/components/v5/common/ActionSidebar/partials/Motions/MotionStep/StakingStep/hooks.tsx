@@ -6,10 +6,10 @@ import useEnoughTokensForStaking from '~hooks/useEnoughTokensForStaking.ts';
 import { useMotionContext } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionProvider/hooks.ts';
 
 export const useStakingStep = () => {
-  const { motionAction } = useMotionContext();
+  const { action, motionData } = useMotionContext();
   const { user, userLoading, walletConnecting } = useAppContext();
 
-  const { colony, motionData, rootHash } = motionAction;
+  const { rootHash, colony } = action;
   const { nativeToken, colonyAddress } = colony;
   const { tokenAddress } = nativeToken;
 

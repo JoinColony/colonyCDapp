@@ -23,7 +23,11 @@ import {
   getTxChannel,
 } from '../transactions/index.ts';
 import { getColonyDecisionId } from '../utils/decisionMotion.ts';
-import { getColonyManager, initiateTransaction } from '../utils/index.ts';
+import {
+  createActionMetadataInDB,
+  getColonyManager,
+  initiateTransaction,
+} from '../utils/index.ts';
 
 function* createDecisionMotion({
   payload: {
@@ -79,11 +83,9 @@ function* createDecisionMotion({
     // setup batch ids and channels
     const batchKey = TRANSACTION_METHODS.CreateMotion;
 
-    const { createMotion /* annotateMotion */ } = yield call(
-      createTransactionChannels,
-      metaId,
-      ['createMotion' /* 'annotateMotion' */],
-    );
+    const { createMotion } = yield call(createTransactionChannels, metaId, [
+      'createMotion',
+    ]);
 
     // create transactions
     yield fork(createTransaction, createMotion.id, {
@@ -108,21 +110,7 @@ function* createDecisionMotion({
       ready: false,
     });
 
-    // yield fork(createTransaction, annotateMotion.id, {
-    //   context: ClientType.ColonyClient,
-    //   methodName: 'annotateTransaction',
-    //   identifier: colonyAddress,
-    //   params: [],
-    //   group: {
-    //     key: batchKey,
-    //     id: metaId,
-    //     index: 1,
-    //   },
-    //   ready: false,
-    // });
-
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
-    // yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
 
     yield initiateTransaction(createMotion.id);
 
@@ -154,19 +142,8 @@ function* createDecisionMotion({
       }),
     );
 
-    // yield transactionSetPending(annotateMotion.id);
+    yield createActionMetadataInDB(txHash, { customTitle: title });
 
-    // yield put(
-    //   transactionAddParams(annotateMotion.id, [
-    //     txHash,
-    //     JSON.stringify(decision),
-    //   ]),
-    // );
-
-    // yield put(transactionReady(annotateMotion.id));
-
-    // yield waitForTxResult(annotateMotion.channel);
-    //
     setTxHash?.(txHash);
 
     yield put<AllActions>({
