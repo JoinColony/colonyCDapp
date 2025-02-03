@@ -26,7 +26,7 @@ export const getPaymentBuilderPayload = (
   const createdInDomain =
     values.decisionMethod === DecisionMethod.Permissions
       ? undefined
-      : findDomainByNativeId(values.createdIn, colony) || rootDomain;
+      : findDomainByNativeId(values.from, colony) || rootDomain;
 
   return {
     colonyAddress: colony.colonyAddress,

@@ -22,7 +22,6 @@ export const getSplitPaymentPayload = (
   const {
     tokenAddress,
     distributionMethod,
-    createdIn,
     team,
     description,
     payments,
@@ -32,7 +31,7 @@ export const getSplitPaymentPayload = (
   const createdInDomain =
     decisionMethod === DecisionMethod.Permissions
       ? undefined
-      : findDomainByNativeId(createdIn, colony) || rootDomain;
+      : findDomainByNativeId(team, colony) || rootDomain;
 
   if (!payments.length) {
     return null;

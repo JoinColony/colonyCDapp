@@ -11,6 +11,35 @@ import { getPaymentBuilderPayload } from '../forms/PaymentBuilderForm/utils.ts';
 import { getSplitPaymentPayload } from '../forms/SplitPaymentForm/utils.ts';
 import { getStagedPaymentPayload } from '../forms/StagedPaymentForm/utils.ts';
 
+// Always create staked expenditures in the domain they are funded from
+export const getCreatedInDomain = ({
+  actionType,
+  colony,
+  formValues,
+}: {
+  actionType: Action;
+  colony: Colony;
+  formValues: any;
+}) => {
+  const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
+
+  switch (actionType) {
+    case Action.PaymentBuilder:
+    case Action.StagedPayment: {
+      return (
+        findDomainByNativeId(Number(formValues.from), colony) || rootDomain
+      );
+    }
+    case Action.SplitPayment: {
+      return (
+        findDomainByNativeId(Number(formValues.team), colony) || rootDomain
+      );
+    }
+    default:
+      return null;
+  }
+};
+
 export const getActionPayload = ({
   actionType,
   colony,
@@ -57,10 +86,11 @@ export const getCreateStakedExpenditurePayload = ({
     stakedExpenditureAddress,
   } = options;
 
-  const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
-  const createdInDomain =
-    findDomainByNativeId(Number(values.createdInDomainId), colony) ||
-    rootDomain;
+  const createdInDomain = getCreatedInDomain({
+    actionType,
+    colony,
+    formValues: values,
+  });
 
   if (!createdInDomain) {
     return null;
