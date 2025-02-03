@@ -5,11 +5,13 @@ const {
   saveTokenExchangeRate,
   getColonyActions,
   getColonyDomains,
+  getColony,
   getDomainExpenditures,
   getColonyExpenditures,
   getColonyFundsClaims,
   getColonyTokens,
   getToken,
+  getProxyColonies,
 } = require('./schemas.js');
 
 const EnvVarsConfig = require('../../config/envVars.js');
@@ -236,6 +238,32 @@ const getExchangeRate = async ({ tokenId, date }) => {
   return result.data?.tokenExhangeRateByTokenId?.items?.[0];
 };
 
+const getProxyColoniesData = async ({ colonyAddress, limit, nextToken }) => {
+  const result = await graphqlRequest(getProxyColonies, {
+    colonyAddress,
+    limit,
+    nextToken,
+  });
+
+  if (!result) {
+    console.warn('Could not find any proxy colonies in db.');
+  }
+
+  return result.data?.getProxyColoniesByColonyAddress;
+};
+
+const getAllProxyColonies = async (colonyAddress) => {
+  return getAllPages(getProxyColoniesData, { colonyAddress });
+};
+
+const getColonyVersion = async (colonyAddress) => {
+  const result = await graphqlRequest(getColony, {
+    colonyAddress,
+  });
+
+  return result.data?.getColony?.version;
+};
+
 module.exports = {
   getAllIncomingFunds,
   getAllExpenditures,
@@ -245,4 +273,6 @@ module.exports = {
   getExchangeRate,
   getTokensDecimalsFor,
   getAllColonyTokens,
+  getAllProxyColonies,
+  getColonyVersion,
 };
