@@ -91,7 +91,7 @@ const ReputationChart = () => {
 
   return (
     <div className="flex w-full flex-col items-start rounded-lg border px-5 py-6">
-      <div className="flex w-full justify-between">
+      <div className="relative flex w-full justify-between">
         <LoadingSkeleton
           className="h-6 w-[120px] rounded"
           isLoading={isDataLoading}

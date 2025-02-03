@@ -35,7 +35,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
         <div
           ref={setTooltipRef}
           {...getTooltipProps()}
-          className="z-dropdown w-full px-6 sm:w-auto sm:px-0"
+          className="z-dropdown w-dvw px-6 sm:w-auto sm:px-0"
         >
           <div className="flex w-full flex-col rounded-lg border border-gray-200 bg-base-white px-3 py-4 shadow-default sm:w-[14.25rem]">
             {children}
