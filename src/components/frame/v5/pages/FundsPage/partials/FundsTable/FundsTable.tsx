@@ -28,7 +28,9 @@ const FundsTable: FC = () => {
   const isMobile = useMobile();
   const { filters, searchedTokens, activeFilters } = useFundsTable();
   const claims = useColonyFundsClaims();
-  const unclaimedClaims = claims.filter((claim) => !claim.isClaimed);
+  const unclaimedClaims = claims.filter(
+    (claim) => !claim.isClaimed && claim.amount !== '0',
+  );
   const allUnclaimedClaims = Array.from(
     new Set(unclaimedClaims.map((claim) => claim.token?.tokenAddress || '')),
   );
