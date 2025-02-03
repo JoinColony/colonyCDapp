@@ -1,4 +1,4 @@
-import { type Extension } from '@colony/colony-js';
+import { Extension } from '@colony/colony-js';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -12,6 +12,7 @@ import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
+import { useStreamingPaymentsTotalFunds } from '~shared/StreamingPayments/hooks.ts';
 import { type StreamingPaymentItems } from '~shared/StreamingPayments/types.ts';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { getStreamingPaymentStatus } from '~utils/streamingPayments.ts';
@@ -153,12 +154,39 @@ export const useGetActiveAndUnclaimedStreams = () => {
 
   const activeStreams = getTotalActiveStreamingPayments(streamingPayments);
 
-  const unclaimedStreams = streamingPayments.filter(
-    (item) => item.claims === null && !item.isCancelled,
-  ).length;
+  const { totalFunds } = useStreamingPaymentsTotalFunds({
+    isFilteredByWalletAddress: false,
+  });
 
   return {
     hasActiveStream: activeStreams > 0,
-    hasUnclaimedFunds: unclaimedStreams > 0,
+    hasUnclaimedFunds: totalFunds.totalAvailable > 0,
+  };
+};
+
+export const useGetUninstallExtensionInfo = () => {
+  const { hasActiveStream, hasUnclaimedFunds } =
+    useGetActiveAndUnclaimedStreams();
+
+  const canRemoveExtension = (extensionId: Extension) => {
+    switch (extensionId) {
+      case Extension.StreamingPayments: {
+        const isStreamingPaymentsExtension =
+          extensionId === Extension.StreamingPayments;
+
+        return (
+          !isStreamingPaymentsExtension ||
+          (isStreamingPaymentsExtension &&
+            !hasActiveStream &&
+            !hasUnclaimedFunds)
+        );
+      }
+      default:
+        return true;
+    }
+  };
+
+  return {
+    canRemoveExtension,
   };
 };

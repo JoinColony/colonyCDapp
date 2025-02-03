@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import {
   type GetStreamingPaymentsByColonyQueryVariables,
@@ -38,27 +38,6 @@ export const useColonyStreamingPayments = (
       }
     },
   });
-
-  useEffect(() => {
-    fetchMore({
-      variables,
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
-
-        return {
-          ...prev,
-          getStreamingPaymentsByColony: {
-            ...prev.getStreamingPaymentsByColony,
-            items: [
-              ...(prev?.getStreamingPaymentsByColony?.items || []),
-              ...(fetchMoreResult?.getStreamingPaymentsByColony?.items || []),
-            ],
-            nextToken: fetchMoreResult?.getStreamingPaymentsByColony?.nextToken,
-          },
-        };
-      },
-    });
-  }, [fetchMore, variables]);
 
   const streamingPayments = useMemo(
     () => data?.getStreamingPaymentsByColony?.items?.filter(notNull) || [],

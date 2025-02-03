@@ -11,7 +11,7 @@ import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';
 
-import { useGetActiveAndUnclaimedStreams, useUninstall } from './hooks.tsx';
+import { useGetUninstallExtensionInfo, useUninstall } from './hooks.tsx';
 
 const displayName = 'pages.ExtensionDetailsPage.UninstallButton';
 
@@ -139,15 +139,10 @@ const UninstallButton = ({
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const { handleUninstall, isLoading } = useUninstall(extensionId);
   const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
-  const { hasActiveStream, hasUnclaimedFunds } =
-    useGetActiveAndUnclaimedStreams();
 
-  const isStreamingPaymentsExtension =
-    extensionId === Extension.StreamingPayments;
+  const { canRemoveExtension } = useGetUninstallExtensionInfo();
 
-  const canRemoveExtension =
-    !isStreamingPaymentsExtension ||
-    (isStreamingPaymentsExtension && !hasActiveStream && !hasUnclaimedFunds);
+  const isExtensionRemovable = canRemoveExtension(extensionId);
 
   return (
     <>
@@ -189,11 +184,11 @@ const UninstallButton = ({
             values={{
               ul: ListChunks,
               li: ListItemChunks,
-              hasActiveStream: hasActiveStream || hasUnclaimedFunds,
+              hasActiveStream: !isExtensionRemovable,
             }}
           />
         </div>
-        {canRemoveExtension && (
+        {isExtensionRemovable && (
           <Checkbox
             name="uninstall"
             id="uninstall"
