@@ -1,5 +1,6 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
+import { UserStakeType } from '~gql';
 import { type MotionStatesMap } from '~hooks/useNetworkMotionStates.ts';
 import { type VotingReputationByColonyAddress } from '~hooks/useNetworkMotionStatesAllColonies.ts';
 import { type UserStake } from '~types/graphql.ts';
@@ -36,7 +37,7 @@ export const getStakeStatus = (
     return UserStakeStatus.Claimed;
   }
 
-  if (stake.action?.expenditureId) {
+  if (stake.type === UserStakeType.StakedExpenditure) {
     return UserStakeStatus.Staking;
   }
 
