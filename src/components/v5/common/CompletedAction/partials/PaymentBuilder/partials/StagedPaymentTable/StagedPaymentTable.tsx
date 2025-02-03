@@ -173,7 +173,7 @@ const useStagedPaymentTableColumns = ({
                   ) : (
                     <>
                       {isCorrectExtensionInstalled ? (
-                        <div className="flex items-center justify-end gap-3">
+                        <div className="fflex items-center gap-3 md:justify-end">
                           <ReleaseButton
                             description={MSG.payNow}
                             items={currentMilestone ? [currentMilestone] : []}
@@ -188,29 +188,10 @@ const useStagedPaymentTableColumns = ({
                     </>
                   );
                 },
-                footer:
-                  hasMoreThanOneMilestone && isCorrectExtensionInstalled
-                    ? () => (
-                        <div
-                          className={clsx({
-                            'w-[calc(200%+35px)] min-w-[120px]': isTablet,
-                          })}
-                        >
-                          {isTablet && (
-                            <div className="">
-                              <PaymentBuilderPayoutsTotal
-                                data={dataRef.current}
-                                itemClassName="justify-end md:justify-start"
-                                buttonClassName="justify-end md:justify-start"
-                              />
-                            </div>
-                          )}
-
-                          <ReleaseAllButton items={dataRef.current} />
-                        </div>
-                      )
-                    : () =>
-                        isTablet ? (
+                ...(hasMoreThanOneToken && {
+                  footer:
+                    hasMoreThanOneMilestone && isCorrectExtensionInstalled
+                      ? () => (
                           <div
                             className={clsx({
                               'w-[calc(200%+35px)] min-w-[120px]': isTablet,
@@ -225,8 +206,29 @@ const useStagedPaymentTableColumns = ({
                                 />
                               </div>
                             )}
+
+                            <ReleaseAllButton items={dataRef.current} />
                           </div>
-                        ) : undefined,
+                        )
+                      : () =>
+                          isTablet ? (
+                            <div
+                              className={clsx({
+                                'w-[calc(200%+35px)] min-w-[120px]': isTablet,
+                              })}
+                            >
+                              {isTablet && (
+                                <div className="">
+                                  <PaymentBuilderPayoutsTotal
+                                    data={dataRef.current}
+                                    itemClassName="justify-end md:justify-start"
+                                    buttonClassName="justify-end md:justify-start"
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          ) : undefined,
+                }),
               }),
             ]
           : releaseTableSpacer),
