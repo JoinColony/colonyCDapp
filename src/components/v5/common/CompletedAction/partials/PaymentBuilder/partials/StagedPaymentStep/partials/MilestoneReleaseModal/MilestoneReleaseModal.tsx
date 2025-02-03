@@ -7,6 +7,7 @@ import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useStagedPaymentContext } from '~context/StagedPaymentContext/StagedPaymentContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ActionTypes } from '~redux';
@@ -101,6 +102,12 @@ const MilestoneModalContent: FC<MilestoneModalContentProps> = ({
     slotsWithActiveMotions.find((motionId) => motionId === slotId),
   );
 
+  const disableDuplicateMotion =
+    method &&
+    method.value &&
+    method.value === DecisionMethod.Reputation &&
+    hasMotionActive;
+
   return (
     <>
       <h5 className="mb-1.5 heading-5">{formatText(MSG.title)}</h5>
@@ -124,14 +131,11 @@ const MilestoneModalContent: FC<MilestoneModalContentProps> = ({
           options={milestoneReleaseDecisionMethods}
           name="decisionMethod"
         />
-        {method &&
-          method.value &&
-          method.value === DecisionMethod.Reputation &&
-          hasMotionActive && (
-            <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm font-medium text-negative-400">
-              {formatText(MSG.duplicatedMotion)}
-            </div>
-          )}
+        {disableDuplicateMotion && (
+          <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm font-medium text-negative-400">
+            {formatText(MSG.duplicatedMotion)}
+          </div>
+        )}
         {method && method.value && (
           <div className="mt-4 rounded border border-gray-300 bg-base-bg p-[1.125rem]">
             <p className="text-sm text-gray-600">
@@ -167,7 +171,12 @@ const MilestoneModalContent: FC<MilestoneModalContentProps> = ({
               }
             />
           ) : (
-            <Button mode="primarySolid" isFullSize type="submit">
+            <Button
+              mode="primarySolid"
+              disabled={disableDuplicateMotion}
+              isFullSize
+              type="submit"
+            >
               {formatText(
                 hasAllMilestonesReleased && items.length > 1
                   ? MSG.releaseAllPayments
@@ -188,13 +197,13 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
   hasAllMilestonesReleased,
   expenditure,
   slotsWithActiveMotions,
-  setIsWaitingForStagesRelease,
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const validationSchema = getValidationSchema();
   const { stagedExpenditureAddress, votingReputationAddress } =
     useEnabledExtensions();
+  const { setPendingState } = useStagedPaymentContext();
 
   const releaseExpenditureStageMotion = useAsyncFunction({
     submit: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES,
@@ -216,6 +225,8 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
       }
     });
 
+    const slotIds = items.map(({ slotId }) => slotId);
+
     try {
       const motionPayload: ReleaseExpenditureStagesMotionPayload = {
         colonyAddress: colony.colonyAddress,
@@ -223,7 +234,7 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
         stagedExpenditureAddress: stagedExpenditureAddress || '',
         votingReputationAddress: votingReputationAddress || '',
         expenditure,
-        slotIds: items.map(({ slotId }) => slotId),
+        slotIds,
         motionDomainId: expenditure.nativeDomainId,
         tokenAddresses,
       };
@@ -232,16 +243,16 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
         expenditure,
         tokenAddresses,
         stagedExpenditureAddress: stagedExpenditureAddress || '',
-        slotIds: items.map(({ slotId }) => slotId),
+        slotIds,
         userAddress: user?.walletAddress || '',
       };
 
-      setIsWaitingForStagesRelease(true);
+      const isReputationMotion =
+        decisionMethod && decisionMethod.value === DecisionMethod.Reputation;
 
-      if (
-        decisionMethod &&
-        decisionMethod.value === DecisionMethod.Reputation
-      ) {
+      setPendingState(true);
+
+      if (isReputationMotion) {
         await releaseExpenditureStageMotion(motionPayload);
       } else {
         await releaseExpenditureStage(payload);
