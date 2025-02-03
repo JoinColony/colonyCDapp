@@ -7,6 +7,7 @@ const EnvVarsConfig = require('../config/envVars');
 const { getStartOfDayFor } = require('../utils');
 const { DEFAULT_TOKEN_DECIMALS } = require('../consts');
 const {
+  getColonyVersion,
   getDomains,
   getAllColonyTokens,
   getAllProxyColonies,
@@ -15,6 +16,11 @@ const ExchangeRatesService = require('./exchangeRates');
 const { getTotalFiatAmountFor } = require('./tokens');
 const { getTokensDatesMap } = require('./actions');
 const NetworkConfig = require('../config/networkConfig');
+
+const FIRST_COLONY_VERSION_WITH_PROXY_COLONIES = 18;
+
+const hasProxyChainSupport = (version) =>
+  version >= FIRST_COLONY_VERSION_WITH_PROXY_COLONIES;
 
 // Helper function to fetch block timestamp in milliseconds
 const getBlockTimestamp = async (provider, blockNumber) => {
@@ -153,17 +159,26 @@ const fetchBalances = async ({
   colonyClient,
   nativeFundingPotId,
   closestBlock,
+  colonyVersionSupportsProxies,
 }) => {
   return Promise.all(
     tokens.map(async (token) => {
       let rewardsPotTotal;
       try {
-        rewardsPotTotal = await colonyClient.getFundingPotBalance(
-          nativeFundingPotId,
-          token.chainMetadata?.chainId,
-          token.id,
-          { blockTag: closestBlock.number },
-        );
+        if (colonyVersionSupportsProxies) {
+          rewardsPotTotal = await colonyClient.getFundingPotBalance(
+            nativeFundingPotId,
+            token.chainMetadata?.chainId,
+            token.id,
+            { blockTag: closestBlock.number },
+          );
+        } else {
+          rewardsPotTotal = await colonyClient.getFundingPotBalance(
+            nativeFundingPotId,
+            token.id,
+            { blockTag: closestBlock.number },
+          );
+        }
         return {
           amount: rewardsPotTotal,
           networkFee: 0,
@@ -196,6 +211,7 @@ const getDomainBalances = async ({
   domainId,
   colonyClient,
   closestBlock,
+  colonyVersionSupportsProxies,
 }) => {
   if (domainId) {
     const domain = domains.find((d) => d.id === domainId);
@@ -204,6 +220,7 @@ const getDomainBalances = async ({
       colonyClient,
       nativeFundingPotId: domain?.nativeFundingPotId,
       closestBlock,
+      colonyVersionSupportsProxies,
     });
   }
 
@@ -214,6 +231,7 @@ const getDomainBalances = async ({
         colonyClient,
         nativeFundingPotId: domain?.nativeFundingPotId,
         closestBlock,
+        colonyVersionSupportsProxies,
       }),
     ),
   );
@@ -227,6 +245,7 @@ const getProxyColonyBalances = async ({
   domainId,
   closestBlock,
   colonyClient,
+  colonyVersionSupportsProxies,
 }) => {
   const proxyColonies = await getAllProxyColonies(colonyAddress);
   const activeProxyColonies = proxyColonies.filter(
@@ -247,6 +266,7 @@ const getProxyColonyBalances = async ({
         domains,
         colonyClient: colonyClient,
         closestBlock,
+        colonyVersionSupportsProxies,
       });
     }),
   );
@@ -260,15 +280,18 @@ const getNetworkTotalBalance = async ({
   timeframePeriodEndDate,
   selectedCurrency,
 }) => {
-  const { DEFAULT_NETWORK_INFO, basicColonyAbi } =
+  const { DEFAULT_NETWORK_INFO, basicColonyAbi, basicUpdatedColonyAbi } =
     await NetworkConfig.getConfig();
   const averageBlockTime = DEFAULT_NETWORK_INFO.blockTime;
   const { rpcURL } = await EnvVarsConfig.getEnvVars();
 
+  const colonyVersion = await getColonyVersion(colonyAddress);
+  const colonyVersionSupportsProxies = hasProxyChainSupport(colonyVersion);
+
   const provider = new providers.StaticJsonRpcProvider(rpcURL);
   const lightColonyClient = new Contract(
     colonyAddress,
-    basicColonyAbi,
+    colonyVersionSupportsProxies ? basicUpdatedColonyAbi : basicColonyAbi,
     provider,
   );
 
@@ -292,16 +315,21 @@ const getNetworkTotalBalance = async ({
     tokens: mainChainTokens,
     colonyClient: lightColonyClient,
     closestBlock,
+    colonyVersionSupportsProxies,
   });
 
-  const proxyBalances = await getProxyColonyBalances({
-    colonyAddress,
-    colonyTokens,
-    domains,
-    domainId,
-    colonyClient: lightColonyClient,
-    closestBlock,
-  });
+  let proxyBalances = [];
+  if (colonyVersionSupportsProxies) {
+    proxyBalances = await getProxyColonyBalances({
+      colonyAddress,
+      colonyTokens,
+      domains,
+      domainId,
+      colonyClient: lightColonyClient,
+      closestBlock,
+      colonyVersionSupportsProxies,
+    });
+  }
 
   const balances = [...mainBalances, ...proxyBalances];
 

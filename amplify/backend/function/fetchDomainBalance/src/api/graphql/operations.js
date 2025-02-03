@@ -5,6 +5,7 @@ const {
   saveTokenExchangeRate,
   getColonyActions,
   getColonyDomains,
+  getColony,
   getDomainExpenditures,
   getColonyExpenditures,
   getColonyFundsClaims,
@@ -248,11 +249,19 @@ const getProxyColoniesData = async ({ colonyAddress, limit, nextToken }) => {
     console.warn('Could not find any proxy colonies in db.');
   }
 
-  return result.data.getProxyColoniesByColonyAddress;
+  return result.data?.getProxyColoniesByColonyAddress;
 };
 
 const getAllProxyColonies = async (colonyAddress) => {
   return getAllPages(getProxyColoniesData, { colonyAddress });
+};
+
+const getColonyVersion = async (colonyAddress) => {
+  const result = await graphqlRequest(getColony, {
+    colonyAddress,
+  });
+
+  return result.data?.getColony?.version;
 };
 
 module.exports = {
@@ -265,4 +274,5 @@ module.exports = {
   getTokensDecimalsFor,
   getAllColonyTokens,
   getAllProxyColonies,
+  getColonyVersion,
 };

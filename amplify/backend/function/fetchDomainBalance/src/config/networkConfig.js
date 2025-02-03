@@ -8,6 +8,7 @@ const {
 } = require('../consts');
 
 const basicColonyAbi = require('./basicColonyAbi.json');
+const basicUpdatedColonyAbi = require('./basicUpdatedColonyAbi.json');
 
 const DEFAULT_NETWORK = SupportedNetwork.ArbitrumOne;
 
@@ -39,6 +40,7 @@ const NetworkConfig = (() => {
         DEFAULT_NETWORK_INFO,
         supportedNetwork: resolvedNetwork || DEFAULT_NETWORK,
         basicColonyAbi,
+        basicUpdatedColonyAbi,
       };
     },
   };

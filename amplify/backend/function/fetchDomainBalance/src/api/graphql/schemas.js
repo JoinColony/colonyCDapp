@@ -250,6 +250,13 @@ module.exports = {
       }
     }
   `,
+  getColony: /* GraphQL */ `
+    query GetColonyVersion($colonyAddress: ID!) {
+      getColony(id: $colonyAddress) {
+        version
+      }
+    }
+  `,
   getProxyColonies: /* GraphQL */ `
     query GetProxyColonies($colonyAddress: ID!) {
       getProxyColoniesByColonyAddress(colonyAddress: $colonyAddress) {
