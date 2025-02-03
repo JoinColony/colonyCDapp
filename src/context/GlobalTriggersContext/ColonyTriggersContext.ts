@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import noop from '~utils/noop.ts';
+import { noop } from '~utils/noop.ts';
 
 import type React from 'react';
 

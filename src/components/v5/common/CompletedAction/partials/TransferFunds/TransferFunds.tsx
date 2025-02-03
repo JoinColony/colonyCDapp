@@ -11,7 +11,6 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
   AMOUNT_FIELD_NAME,
   CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
@@ -88,9 +87,9 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
         <ActionTitle>{customTitle}</ActionTitle>
         <MeatballMenu
           transactionHash={transactionHash}
+          action={Action.TransferFunds}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
             [FROM_FIELD_NAME]: fromDomain?.nativeId,
             [TO_FIELD_NAME]: toDomain?.nativeId,
             [AMOUNT_FIELD_NAME]: convertedValue?.toString(),

@@ -12,7 +12,7 @@ import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/Mana
 export const getPermissionsNeededForAction = (
   actionType: Action,
   formValues: Record<string, any>,
-): ColonyRole[][] | undefined => {
+): ColonyRole[][] => {
   switch (actionType) {
     case Action.SimplePayment:
       return PERMISSIONS_NEEDED_FOR_ACTION.SimplePayment;
@@ -111,7 +111,7 @@ export const getPermissionsNeededForAction = (
     }
 
     default:
-      return undefined;
+      return [];
   }
 };
 

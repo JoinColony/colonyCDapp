@@ -1,13 +1,12 @@
 import { type ColonyRole, Id } from '@colony/colony-js';
-import { useFormContext } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles, getUserRolesForDomain } from '~transformers';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import {
   actionsWithStakingDecisionMethod,
@@ -25,52 +24,50 @@ import {
 const useHasNoDecisionMethods = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
+  const { data } = useActionSidebarContext();
   const {
     isVotingReputationEnabled,
     isMultiSigEnabled,
     isStakedExpenditureEnabled,
   } = useEnabledExtensions();
+  const { action } = data;
 
-  const { watch } = useFormContext() || {};
-
-  if (!watch) {
+  if (!action) {
     return false;
   }
-
-  const actionType = watch(ACTION_TYPE_FIELD_NAME);
 
   if (!user) {
     return true;
   }
 
-  if (!isVotingReputationEnabled && actionType === Action.CreateDecision) {
+  if (!isVotingReputationEnabled && action === Action.CreateDecision) {
     return true;
   }
 
   // User can't use reputation to create certain actions
   if (
     isVotingReputationEnabled &&
-    !actionsWithoutReputationDecisionMethod.includes(actionType)
+    !actionsWithoutReputationDecisionMethod.includes(action)
   ) {
     return false;
   }
 
   if (
     isStakedExpenditureEnabled &&
-    actionsWithStakingDecisionMethod.includes(actionType)
+    actionsWithStakingDecisionMethod.includes(action)
   ) {
     return false;
   }
 
-  const requiredPermissions = getPermissionsNeededForAction(actionType, {});
+  const requiredPermissions = getPermissionsNeededForAction(action, {});
   if (!requiredPermissions) {
     return false;
   }
 
   const actionSupportsMultisig =
-    !actionsWithoutMultiSigDecisionMethod.includes(actionType);
+    !actionsWithoutMultiSigDecisionMethod.includes(action);
 
-  const requiredRolesDomain = getPermissionsDomainIdForAction(actionType, {});
+  const requiredRolesDomain = getPermissionsDomainIdForAction(action, {});
 
   const userRootRoles = getUserRolesForDomain({
     colonyRoles: extractColonyRoles(colony.roles),

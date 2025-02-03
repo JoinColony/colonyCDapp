@@ -44,8 +44,7 @@ const UserMenu: FC<UserMenuProps> = ({
   const [activeSubmenu, setActiveSubmenu] = useState<UserMenuItemName | null>(
     null,
   );
-  const { actionSidebarToggle } = useActionSidebarContext();
-  const [isActionSidebarOpen] = actionSidebarToggle;
+  const { isActionSidebarOpen } = useActionSidebarContext();
 
   const iconSize = isTablet ? 18 : 16;
   const { currency } = useCurrencyContext();

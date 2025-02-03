@@ -11,7 +11,10 @@ import {
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import {
@@ -21,7 +24,6 @@ import {
 import Tabs from '~shared/Extensions/Tabs/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Filter from '~v5/common/Filter/index.ts';
 import { FilterTypes } from '~v5/common/TableFiltering/types.ts';
 import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
@@ -44,9 +46,7 @@ const MembersPage: FC = () => {
   const {
     colony: { name: colonyName },
   } = useColonyContext();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
   const isMobile = useMobile();
 
   const titleAction = (
@@ -79,8 +79,8 @@ const MembersPage: FC = () => {
             id: 'members.subnav.permissions',
           }),
           onClick: () => {
-            toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+            showActionSidebar(ActionSidebarMode.CreateAction, {
+              action: Action.ManagePermissions,
             });
           },
         },

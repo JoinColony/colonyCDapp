@@ -1,4 +1,3 @@
-import { type Variants } from 'framer-motion';
 import { object, string } from 'yup';
 
 // Do not import these from `./hooks` to avoid circular dependencies
@@ -9,9 +8,6 @@ import { formatText } from '~utils/intl.ts';
 
 import { reputationValidationSchema } from './hooks/useReputationValidation.ts';
 
-export { REPUTATION_VALIDATION_FIELD_NAME } from './hooks/useReputationValidation.ts';
-
-export const ACTION_TYPE_FIELD_NAME = 'actionType';
 export const DECISION_METHOD_FIELD_NAME = 'decisionMethod';
 export const TITLE_FIELD_NAME = 'title';
 export const FROM_FIELD_NAME = 'from';
@@ -33,17 +29,9 @@ export const ARBITRARY_TRANSACTIONS_FIELD_NAME = 'transactions';
 export const COLONY_OBJECTIVE_TITLE_FIELD_NAME = 'colonyObjectiveTitle';
 export const COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME =
   'colonyObjectiveDescription';
+export const REPUTATION_VALIDATION_FIELD_NAME = 'isMissingReputation';
 
-export const NON_RESETTABLE_FIELDS = [TITLE_FIELD_NAME, ACTION_TYPE_FIELD_NAME];
-
-export const actionSidebarAnimation: Variants = {
-  hidden: {
-    x: '100%',
-  },
-  visible: {
-    x: 0,
-  },
-};
+export const NON_RESETTABLE_FIELDS = [TITLE_FIELD_NAME];
 
 function isValidDescriptionLength(description: string) {
   const strippedDescription = stripHTMLFromText(description);
@@ -75,3 +63,6 @@ export const ACTION_BASE_VALIDATION_SCHEMA = object()
   })
   .defined()
   .concat(reputationValidationSchema);
+
+// NOTE: this is intentionally not a form field!!
+export const ACTION_TYPE_PARAM_NAME = 'actionType';

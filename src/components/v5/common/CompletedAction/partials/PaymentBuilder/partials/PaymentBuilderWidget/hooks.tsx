@@ -4,11 +4,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { ExpenditureType } from '~gql';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
-import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
+import MotionCountDownTimer from '~v5/common/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 

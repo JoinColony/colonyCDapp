@@ -11,12 +11,12 @@ import { extractColonyDomains } from '~utils/domains.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { validationSchema } from './consts.ts';
 
 export const useCreateArbitraryTxs = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const {
     colony: { colonyAddress },

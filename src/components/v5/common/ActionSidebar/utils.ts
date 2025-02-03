@@ -1,9 +1,15 @@
+import { BigNumber } from 'ethers';
+
 import { apolloClient } from '~apollo';
 import { Action } from '~constants/actions.ts';
 import { SearchActionsDocument } from '~gql';
 import { type ColonyContributorFragment } from '~gql';
 import { ExtendedColonyActionType } from '~types/actions.ts';
-import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
+import {
+  type ColonyAction,
+  ColonyActionType,
+  type Expenditure,
+} from '~types/graphql.ts';
 import { isQueryActive } from '~utils/isQueryActive.ts';
 import {
   clearContributorsAndRolesCache,
@@ -229,5 +235,51 @@ export const formatMembersSelectOptions = (
       showAvatar: true,
       walletAddress: walletAddressValue,
     };
+  });
+};
+
+/**
+ * Returns a boolean indicating whether the expenditure is fully funded,
+ * i.e. the balance of each token is greater than or equal to the sum of its payouts
+ */
+export const isExpenditureFullyFunded = (expenditure?: Expenditure | null) => {
+  if (!expenditure) {
+    return false;
+  }
+
+  if (!expenditure.balances) {
+    return false;
+  }
+
+  const slotAmountsByToken = expenditure.slots.flatMap((slot) => {
+    const amounts: { tokenAddress: string; amount: BigNumber }[] = [];
+
+    slot.payouts?.forEach((payout) => {
+      if (!payout.isClaimed) {
+        const existingAmountIndex = amounts.findIndex(
+          (item) => item.tokenAddress === payout.tokenAddress,
+        );
+        if (existingAmountIndex !== -1) {
+          amounts[existingAmountIndex].amount = BigNumber.from(
+            amounts[existingAmountIndex].amount ?? 0,
+          ).add(payout.amount);
+        } else {
+          amounts.push({
+            tokenAddress: payout.tokenAddress,
+            amount: BigNumber.from(payout.amount),
+          });
+        }
+      }
+    });
+
+    return amounts;
+  });
+
+  return slotAmountsByToken.every(({ tokenAddress, amount }) => {
+    const tokenBalance = expenditure.balances?.find(
+      (balance) => balance.tokenAddress === tokenAddress,
+    );
+
+    return amount.lte(tokenBalance?.amount ?? 0);
   });
 };

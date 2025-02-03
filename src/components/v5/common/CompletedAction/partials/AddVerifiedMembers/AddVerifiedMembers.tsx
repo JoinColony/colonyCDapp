@@ -6,7 +6,6 @@ import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   TITLE_FIELD_NAME,
-  ACTION_TYPE_FIELD_NAME,
   MEMBERS_FIELD_NAME,
   MANAGE_MEMBERS_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
@@ -58,9 +57,9 @@ const AddVerifiedMembers = ({ action }: AddVerifiedMembersProps) => {
         <MeatballMenu
           showRedoItem={false}
           transactionHash={transactionHash}
+          action={Action.ManageVerifiedMembers}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.ManageVerifiedMembers,
             [MEMBERS_FIELD_NAME]: [],
             [MANAGE_MEMBERS_FIELD_NAME]: ManageVerifiedMembersOperation.Add,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,

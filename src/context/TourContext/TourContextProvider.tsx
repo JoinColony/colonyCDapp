@@ -17,9 +17,7 @@ const TourContextProvider: React.FC<TourContextProviderProps> = ({
   const [run, setRun] = useState(false);
   const [steps, setSteps] = useState<Step[]>([]);
   const [stepIndex, setStepIndex] = useState(0);
-  const {
-    actionSidebarToggle: [isSidebarOpen, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { isActionSidebarOpen, showActionSidebar } = useActionSidebarContext();
 
   const startTour = useCallback((tourSteps: Step[]) => {
     const stepsWithData = tourSteps.map((step) => ({
@@ -73,8 +71,8 @@ const TourContextProvider: React.FC<TourContextProviderProps> = ({
         if (currentStep.data?.triggerIdentifier) {
           switch (currentStep.data.triggerIdentifier) {
             case 'OPEN_ACTION_SIDEBAR':
-              if (!isSidebarOpen) {
-                toggleActionSidebarOn(currentStep.data.triggerPayload);
+              if (!isActionSidebarOpen) {
+                showActionSidebar(currentStep.data.triggerPayload);
               }
               break;
             // Handle other actions
@@ -95,7 +93,7 @@ const TourContextProvider: React.FC<TourContextProviderProps> = ({
 
       // Do not set stepIndex to index directly
     },
-    [stopTour, toggleActionSidebarOn, isSidebarOpen],
+    [stopTour, showActionSidebar, isActionSidebarOpen],
   );
 
   return (

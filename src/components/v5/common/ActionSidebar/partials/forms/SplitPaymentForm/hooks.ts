@@ -23,7 +23,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { useShowCreateStakedExpenditureModal } from '~v5/common/ActionSidebar/partials/CreateStakedExpenditureModal/hooks.tsx';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import {
   getSplitPaymentPayload,
@@ -240,7 +240,7 @@ export type SplitPaymentFormValues = InferType<
 >;
 
 export const useSplitPayment = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
