@@ -1,15 +1,17 @@
-import { CoinVertical, ShieldCheck } from '@phosphor-icons/react';
+import { CoinVertical, CubeFocus, ShieldCheck } from '@phosphor-icons/react';
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { isEqual } from 'lodash';
 import React, { useMemo, useState } from 'react';
 
 import { ADDRESS_ZERO } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useDeployedChainIds } from '~hooks/proxyColonies/useDeployedChainIds.ts';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
+import { useChainOptions } from '~v5/common/ActionSidebar/partials/ChainSelect/hooks.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { type FilterProps } from '../Filter/types.ts';
@@ -49,6 +51,11 @@ export const useFundsTableColumns = (): ColumnDef<
 export const useFundsTable = (): UseFundsTableProps => {
   const { colony } = useColonyContext();
   const claims = useColonyFundsClaims();
+  const activeProxyColoniesChainIds = useDeployedChainIds({
+    filterFn: (deployedProxyColony) => deployedProxyColony?.isActive,
+  });
+  const validChainFilters = useChainOptions();
+
   const colonyTokens = useMemo(
     () =>
       colony.tokens?.items.filter(notNull).sort((a, b) => {
@@ -149,11 +156,16 @@ export const useFundsTable = (): UseFundsTableProps => {
     return true;
   });
 
-  const searchedTokens = visibleTokens.filter(
-    ({ token }) =>
-      token?.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-      token?.symbol.toLowerCase().includes(searchValue.toLowerCase()),
-  );
+  const chainFilters = validChainFilters.map(({ icon: Icon, label }) => ({
+    name: label,
+    symbol: label,
+    label: (
+      <div className="flex items-start gap-2">
+        {Icon && <Icon size={20} />}
+        {label}
+      </div>
+    ),
+  }));
 
   const tokenTypeFilters = colonyTokens.map(({ token }) => ({
     name: token.tokenAddress,
@@ -214,6 +226,15 @@ export const useFundsTable = (): UseFundsTableProps => {
           },
         ],
       },
+      {
+        name: 'chain',
+        filterName: formatText({ id: 'incomingFundsPage.filter.chain' }),
+        label: formatText({ id: 'incomingFundsPage.filter.chain' }),
+        icon: CubeFocus,
+        title: formatText({ id: 'incomingFundsPage.filter.availableChains' }),
+        items: chainFilters,
+        containerClassName: 'sm:max-w-full',
+      },
     ],
   };
 
@@ -243,6 +264,38 @@ export const useFundsTable = (): UseFundsTableProps => {
       return undefined;
     })
     .filter(Boolean);
+
+  const searchedTokens = useMemo(() => {
+    const searchedChains = activeFilters.find(
+      (activeFilter) => activeFilter?.filterName === 'Chain',
+    )?.filters;
+
+    const searchedChainIds = validChainFilters
+      .filter(({ label }) => searchedChains?.includes(label))
+      ?.map(({ value }) => value);
+
+    const searchedTokensByChainIds = visibleTokens.filter(({ token }) =>
+      searchedChainIds?.length && token
+        ? [...searchedChainIds, ...activeProxyColoniesChainIds].includes(
+            token?.chainMetadata.chainId,
+          )
+        : true,
+    );
+
+    const searchResults = searchedTokensByChainIds.filter(
+      ({ token }) =>
+        token?.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        token?.symbol.toLowerCase().includes(searchValue.toLowerCase()),
+    );
+
+    return searchResults;
+  }, [
+    activeFilters,
+    activeProxyColoniesChainIds,
+    searchValue,
+    validChainFilters,
+    visibleTokens,
+  ]);
 
   return {
     filters,

@@ -7,19 +7,22 @@ import { formatText } from '~utils/intl.ts';
 import { ATTRIBUTE_FILTERS } from '../filters/AttributeFilters/consts.ts';
 import { useGetTokenTypeFilters } from '../filters/TokenFilters/hooks.ts';
 
+// The hook used to show enabled filters via the blue filter pills
 export const useActiveFilters = () => {
-  const { attributeFilters, tokenTypes, handleResetFilters } =
-    useFiltersContext();
+  const {
+    handleResetFilters,
+    filters: { attribute, token, chain },
+  } = useFiltersContext();
 
   const tokenTypesFilters = useGetTokenTypeFilters();
-  const tokenItems = tokenTypesFilters.map(({ token }) => ({
-    symbol: token.symbol,
-    name: token?.tokenAddress || '',
+  const tokenItems = tokenTypesFilters.map(({ token: tokenTypeFilter }) => ({
+    symbol: tokenTypeFilter.symbol,
+    name: tokenTypeFilter?.tokenAddress || '',
   }));
 
   const activeFiltersToDisplay = useMemo(() => {
     return [
-      ...(Object.values(tokenTypes).some((value) => value === true)
+      ...(Object.values(token).some((value) => value === true)
         ? [
             {
               filter: FiltersValues.TokenType,
@@ -27,12 +30,12 @@ export const useActiveFilters = () => {
                 id: 'balancePage.filter.type',
               }),
               items: tokenItems
-                .filter(({ name }) => tokenTypes[name])
+                .filter(({ name }) => token[name])
                 .map(({ symbol }) => symbol),
             },
           ]
         : []),
-      ...(Object.values(attributeFilters).some((value) => value === true)
+      ...(Object.values(attribute).some((value) => value === true)
         ? [
             {
               filter: FiltersValues.Attributes,
@@ -40,13 +43,24 @@ export const useActiveFilters = () => {
                 id: 'balancePage.filter.attributes',
               }),
               items: ATTRIBUTE_FILTERS.filter(
-                ({ name }) => attributeFilters[name],
+                ({ name }) => attribute[name],
               ).map(({ label }) => label),
             },
           ]
         : []),
+      ...(Object.values(chain).some((value) => value === true)
+        ? [
+            {
+              filter: FiltersValues.Chain,
+              category: formatText({
+                id: 'balancePage.filter.chain',
+              }),
+              items: Object.keys(chain),
+            },
+          ]
+        : []),
     ];
-  }, [attributeFilters, tokenTypes, tokenItems]);
+  }, [token, tokenItems, attribute, chain]);
 
   return { activeFiltersToDisplay, handleResetFilters };
 };

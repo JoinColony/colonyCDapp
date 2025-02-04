@@ -1,6 +1,7 @@
 export enum FiltersValues {
   TokenType = 'tokenType',
   Attributes = 'attributes',
+  Chain = 'chain',
 }
 
 export interface TokenTypes {
@@ -12,7 +13,11 @@ export interface AttributeFilters {
   reputation: boolean;
 }
 
-export interface BalanceTableFilters {
-  tokenTypes?: TokenTypes;
-  attributeFilters?: AttributeFilters;
-}
+export type BalanceFilterType = 'attribute' | 'chain' | 'token';
+
+export type BalanceTableFilters = {
+  search: string;
+  attribute: AttributeFilters;
+  chain: Record<string, boolean>;
+  token: Record<string, boolean>;
+};

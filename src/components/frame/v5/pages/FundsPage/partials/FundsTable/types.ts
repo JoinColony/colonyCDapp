@@ -20,6 +20,9 @@ export type FundsTableFilters = {
   type: {
     [key: string]: boolean;
   };
+  chain: {
+    [key: string]: boolean;
+  };
 };
 
 export interface UseFundsTableProps {

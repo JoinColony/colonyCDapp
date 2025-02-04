@@ -1,28 +1,24 @@
 import { createContext, useContext } from 'react';
 
 import {
-  type AttributeFilters,
   type FiltersValues,
-  type TokenTypes,
   type BalanceTableFilters,
+  type BalanceFilterType,
 } from './types.ts';
 
 import type React from 'react';
 
-interface FiltersContextValue {
+export interface FiltersContextValue {
   searchFilter: string;
   setSearchFilter: (searchValue: string) => void;
-  tokenTypes: TokenTypes;
-  attributeFilters: AttributeFilters;
   activeFilters: BalanceTableFilters;
   selectedFiltersCount: number;
-  handleAttributeFilterChange: (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => void;
-  handleTokenTypesFilterChange: (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => void;
   handleResetFilters: (filter: FiltersValues) => void;
+  filters: BalanceTableFilters;
+  handleFiltersChange: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    type: BalanceFilterType,
+  ) => void;
 }
 
 export const FiltersContext = createContext<FiltersContextValue | undefined>(

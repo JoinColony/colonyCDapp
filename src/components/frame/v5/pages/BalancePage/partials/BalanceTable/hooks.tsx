@@ -16,6 +16,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import { type NativeTokenStatus, type Token } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { getObjectValues } from '~utils/objects/index.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
 import {
   getBalanceForTokenAndDomain,
@@ -37,9 +38,11 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
     colony: { tokens: colonyTokens, balances, nativeToken },
   } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
-  const { attributeFilters, tokenTypes, searchFilter } = useFiltersContext();
+  const { filters, searchFilter } = useFiltersContext();
   const { balancesByToken: expenditureBalances, loading } =
     useColonyExpenditureBalances();
+
+  const { attribute: attributeFilters, token: tokenFilters } = filters;
 
   const tokensData = useMemo(
     () =>
@@ -79,19 +82,17 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
 
   const filteredTokens = tokensData?.filter((token) => {
     if (attributeFilters.native) {
-      if (
-        Object.values(tokenTypes).some((tokenTypeFilter) => tokenTypeFilter)
-      ) {
+      if (getObjectValues(tokenFilters).some((filter) => filter)) {
         return (
           token.token?.tokenAddress === nativeToken.tokenAddress &&
-          tokenTypes[token.token?.tokenAddress || 0]
+          tokenFilters[token.token?.tokenAddress || 0]
         );
       }
       return token.token?.tokenAddress === nativeToken.tokenAddress;
     }
 
-    if (Object.values(tokenTypes).some((tokenTypeFilter) => tokenTypeFilter)) {
-      return tokenTypes[token.token?.tokenAddress || 0];
+    if (getObjectValues(tokenFilters).some((filter) => filter)) {
+      return tokenFilters[token.token?.tokenAddress || 0];
     }
 
     return true;
@@ -102,6 +103,16 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
       token?.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
       token?.symbol.toLowerCase().includes(searchFilter.toLowerCase()),
   );
+
+  // const searchedChainIds = getObjectKeys(filters.chain).filter(
+  //   (chain) => filters.chain[chain],
+  // );
+
+  // const searchedTokensByChainIds = searchedTokens.filter(({ token }) =>
+  //   searchedChainIds?.length && token
+  //     ? searchedChainIds.includes(token?.chainMetadata.chainId)
+  //     : true,
+  // );
 
   const sortedTokens = useMemo(
     () =>
