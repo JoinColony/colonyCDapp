@@ -105,13 +105,13 @@ function* createProxyColony({
         gasLimit: BigInt(10_000_000),
       });
 
-    put(transactionSent(metaId));
+    yield put(transactionSent(metaId));
 
     if (!transaction || !transaction.blockHash || !transaction.blockNumber) {
       throw new Error('Invalid transaction'); // @TODO add more info
     }
 
-    put(
+    yield put(
       transactionHashReceived(metaId, {
         hash: transaction.hash,
         blockNumber: transaction.blockNumber,
@@ -124,8 +124,8 @@ function* createProxyColony({
 
     const [eventData, receipt] = yield waitForMined();
 
-    put(transactionReceiptReceived(metaId, { params, receipt }));
-    put(transactionSucceeded(metaId, { eventData, receipt, params }));
+    yield put(transactionReceiptReceived(metaId, { params, receipt }));
+    yield put(transactionSucceeded(metaId, { eventData, receipt, params }));
 
     if (annotationMessage) {
       yield takeFrom(
