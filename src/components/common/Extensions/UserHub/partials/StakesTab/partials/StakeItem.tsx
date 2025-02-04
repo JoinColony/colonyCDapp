@@ -1,8 +1,10 @@
-import React, { useMemo, type FC } from 'react';
+import React, { useMemo, type FC, useState } from 'react';
+import { useEffect } from 'react';
 import { FormattedDate, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useGetActionTitleValues } from '~common/ColonyActions/index.ts';
+import { UserStakeType } from '~gql';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
@@ -16,6 +18,9 @@ const displayName =
   'common.Extensions.UserHub.partials.StakesTab.partials.StakeItem';
 
 const StakeItem: FC<StakeItemProps> = ({ stake }) => {
+  const [stakeTxParam, setStakeTxParam] = useState(
+    stake.action?.transactionHash,
+  );
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const { expenditure } = useGetExpenditureData(stake.action?.expenditureId);
@@ -62,6 +67,18 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
     networkInverseFee,
   });
 
+  useEffect(() => {
+    if (stake.type === UserStakeType.Motion) {
+      setStakeTxParam(
+        stake.action?.expenditure?.creatingActions?.items[0]?.transactionHash,
+      );
+    }
+  }, [
+    stake.type,
+    setStakeTxParam,
+    stake.action?.expenditure?.creatingActions?.items,
+  ]);
+
   return (
     <li className="flex flex-col border-b border-gray-100 first:pt-2 last:pb-6 sm:first:pt-0 sm:last:border-none sm:last:pb-1.5">
       <button
@@ -71,7 +88,7 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
             setQueryParamOnUrl({
               path: navigatePath,
               params: {
-                [TX_SEARCH_PARAM]: stake.action?.transactionHash,
+                [TX_SEARCH_PARAM]: stakeTxParam,
               },
             }),
             {
