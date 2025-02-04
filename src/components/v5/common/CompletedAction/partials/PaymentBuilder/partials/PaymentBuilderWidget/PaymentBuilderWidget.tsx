@@ -17,7 +17,7 @@ import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpen
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { DecisionMethod } from '~types/actions.ts';
-import { type MotionAction } from '~types/motions.ts';
+import { type ColonyAction } from '~types/graphql.ts';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import {
@@ -809,7 +809,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           <CancelModal
             isOpen={isCancelModalOpen}
             expenditure={expenditure}
-            actionData={action.motionData as unknown as MotionAction}
+            actionData={action.motionData as unknown as ColonyAction}
             onClose={toggleOffCancelModal}
             refetchExpenditure={refetchExpenditure}
             isActionStaked={expenditure.isStaked}

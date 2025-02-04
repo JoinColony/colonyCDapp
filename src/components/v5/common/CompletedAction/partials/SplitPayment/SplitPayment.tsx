@@ -25,7 +25,6 @@ import Numeral from '~shared/Numeral/Numeral.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
-import { type MotionAction } from '~types/motions.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
@@ -309,7 +308,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
         onClose={toggleCancelModalOff}
         refetchExpenditure={refetchExpenditure}
         isActionStaked={expenditure.isStaked}
-        actionData={action.motionData as unknown as MotionAction}
+        actionData={action.motionData as unknown as ColonyAction}
       />
     </>
   );
