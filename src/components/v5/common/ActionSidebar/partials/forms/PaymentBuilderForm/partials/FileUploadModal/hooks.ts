@@ -55,7 +55,7 @@ const prepareStructure = (file: CSVFileItem[]) => {
   return file
     .filter((item) => item !== emptyRow)
     .map((item) => ({
-      recipientAddress: item.address || defaultValues.address,
+      recipientAddress: item.address,
       tokenAddress:
         item.tokenContractAddress || defaultValues.tokenContractAddress,
       amount:
