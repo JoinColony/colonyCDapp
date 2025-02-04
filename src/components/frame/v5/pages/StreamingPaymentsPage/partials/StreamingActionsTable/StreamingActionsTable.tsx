@@ -30,6 +30,7 @@ import {
 import { useStreamingActionsTableColumns } from './hooks.tsx';
 import useRenderSubComponent from './partials/StreamingActionMobileItem/hooks.tsx';
 import useRenderRowLink from './useRenderRowLink.tsx';
+import { orderActions } from './utils.ts';
 
 const displayName =
   'pages.StreamingPaymentsPage.partials.StreamingActionsTable.StreamingActionsTable';
@@ -103,9 +104,11 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
   });
   const renderRowLink = useRenderRowLink(isLoading);
 
+  const orderedActions = orderActions(original.actions, sorting);
+
   return (
     <Table<StreamingActionTableFieldModel>
-      data={isLoading ? [] : original.actions}
+      data={isLoading ? [] : orderedActions}
       columns={columns}
       renderCellWrapper={isMobile ? undefined : renderRowLink}
       className={clsx(

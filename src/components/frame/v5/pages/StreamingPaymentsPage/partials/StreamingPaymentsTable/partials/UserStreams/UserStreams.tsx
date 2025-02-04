@@ -10,9 +10,12 @@ import React, {
 import { calculateToCurrency } from '~common/Extensions/UserHub/partials/BalanceTab/partials/StreamsInfoRow/utils.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
+import { type StreamingActionTableFieldModel } from '~frame/v5/pages/StreamingPaymentsPage/partials/StreamingPaymentsTable/types.ts';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { NumeralCurrency } from '~shared/Numeral/NumeralCurrency.tsx';
+import { calculateTotalsFromStreams } from '~shared/StreamingPayments/utils.ts';
 
 export interface UserStreamsItem {
   amount: string;
@@ -24,15 +27,22 @@ interface UserStreamsProps {
   items: {
     [tokenAddress: string]: UserStreamsItem;
   };
+  actions: StreamingActionTableFieldModel[];
   toggleExpanded: (expanded?: boolean | undefined) => void;
 }
 
-const UserStreams: FC<UserStreamsProps> = ({ items, toggleExpanded }) => {
+const UserStreams: FC<UserStreamsProps> = ({
+  items,
+  actions,
+  toggleExpanded,
+}) => {
   const { currency } = useCurrencyContext();
   const { colony } = useColonyContext();
   const [calculatedAmountPerToken, setCalculatedAmountPerToken] = useState<{
     [tokenAddress: string]: Decimal;
   }>({});
+  const [lastMonthStreamed, setLastMonthStreamed] = useState(0);
+
   const tokenTotals = useMemo(
     () =>
       Object.entries(items).map(([tokenAddress, item]) => ({
@@ -41,6 +51,7 @@ const UserStreams: FC<UserStreamsProps> = ({ items, toggleExpanded }) => {
       })),
     [items],
   );
+  const { currentBlockTime: blockTime } = useCurrentBlockTime();
 
   const calculateFunds = useCallback(async () => {
     const accumulatedAmounts: { [tokenAddress: string]: Decimal } = {};
@@ -69,9 +80,23 @@ const UserStreams: FC<UserStreamsProps> = ({ items, toggleExpanded }) => {
     setCalculatedAmountPerToken(accumulatedAmounts);
   }, [colony, currency, tokenTotals]);
 
+  const getTotalFunds = useCallback(async () => {
+    const { lastMonthStreaming } = await calculateTotalsFromStreams({
+      streamingPayments: actions,
+      currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
+      currency,
+      colony,
+    });
+    setLastMonthStreamed(lastMonthStreaming);
+  }, [actions, blockTime, currency, colony]);
+
   useEffect(() => {
     calculateFunds();
   }, [calculateFunds]);
+
+  useEffect(() => {
+    getTotalFunds();
+  }, [getTotalFunds]);
 
   const calculatedAmountArray = Object.entries(calculatedAmountPerToken).map(
     ([tokenAddress, amount]) => ({ tokenAddress, amount }),
@@ -84,7 +109,7 @@ const UserStreams: FC<UserStreamsProps> = ({ items, toggleExpanded }) => {
   const shouldShowTooltip = calculatedAmountArray.length > 0;
   const content = (
     <div className="flex w-full items-center justify-end gap-[0.125rem] text-1">
-      {currency} <NumeralCurrency value={totalFunds} /> {' /month'}
+      {currency} <NumeralCurrency value={lastMonthStreamed} /> {' /month'}
     </div>
   );
 

@@ -6,12 +6,13 @@ import { type StreamingPaymentFilters, type DateOptions } from './types.ts';
 
 export const getDateFilter = (
   dateFilter: DateOptions | undefined,
+  currentDate?: Date,
 ): Pick<StreamingPaymentFilters, 'dateFrom' | 'dateTo'> | undefined => {
   if (!dateFilter) {
     return undefined;
   }
 
-  const now = new Date();
+  const now = currentDate ?? new Date();
   const baseFilter = {
     dateTo: now,
   };
