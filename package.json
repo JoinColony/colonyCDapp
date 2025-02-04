@@ -159,7 +159,7 @@
   "dependencies": {
     "@apollo/client": "3.7.14",
     "@colony/abis": "^1.6.0",
-    "@colony/colony-js": "^8.0.0-next.1",
+    "@colony/colony-js": "^8.1.0",
     "@colony/events": "^4.0.0-next.1",
     "@colony/redux-promise-listener": "^1.2.0",
     "@colony/sdk": "^3.1.1",
