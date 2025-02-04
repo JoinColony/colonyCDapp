@@ -192,7 +192,7 @@ const ExchangeRatesService = (() => {
         await NetworkConfig.getConfig();
       const tokensExchangeRate = await Promise.all(
         Object.entries(tokens).map(async ([tokenAddressChainId, dates]) => {
-          const [tokenAddress, chainId] = tokenAddressChainId.split('_');
+          const [chainId, tokenAddress] = tokenAddressChainId.split('_');
           let checksummedTokenAddress = tokenAddress;
 
           if (ethersUtils.isAddress(tokenAddress)) {

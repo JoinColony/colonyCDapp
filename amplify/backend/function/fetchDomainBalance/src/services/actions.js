@@ -56,7 +56,7 @@ const getTokensDatesMap = (actions) => {
       return;
     }
 
-    const tokenAddressChainId = `${tokenAddress}_${tokenChainId}`;
+    const tokenAddressChainId = `${tokenChainId}_${tokenAddress}`;
 
     if (!tokens[tokenAddressChainId]) {
       tokens[tokenAddressChainId] = [];
