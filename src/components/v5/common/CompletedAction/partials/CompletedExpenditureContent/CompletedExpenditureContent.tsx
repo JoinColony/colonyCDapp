@@ -75,7 +75,7 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
 
     return {
       milestone: stage.name,
-      amount: currentSlot?.payouts?.[0].amount,
+      amount: currentSlot?.payouts?.[0].amount || 0,
       tokenAddress: currentSlot?.payouts?.[0].tokenAddress,
     };
   });

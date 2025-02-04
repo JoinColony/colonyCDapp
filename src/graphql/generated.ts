@@ -10390,6 +10390,13 @@ export type CreateColonyActionMetadataMutationVariables = Exact<{
 
 export type CreateColonyActionMetadataMutation = { __typename?: 'Mutation', createColonyActionMetadata?: { __typename?: 'ColonyActionMetadata', id: string } | null };
 
+export type UpdateColonyActionMutationVariables = Exact<{
+  input: UpdateColonyActionInput;
+}>;
+
+
+export type UpdateColonyActionMutation = { __typename?: 'Mutation', updateColonyAction?: { __typename?: 'ColonyAction', id: string } | null };
+
 export type CreateAnnotationMutationVariables = Exact<{
   input: CreateAnnotationInput;
 }>;
@@ -12332,6 +12339,39 @@ export function useCreateColonyActionMetadataMutation(baseOptions?: Apollo.Mutat
 export type CreateColonyActionMetadataMutationHookResult = ReturnType<typeof useCreateColonyActionMetadataMutation>;
 export type CreateColonyActionMetadataMutationResult = Apollo.MutationResult<CreateColonyActionMetadataMutation>;
 export type CreateColonyActionMetadataMutationOptions = Apollo.BaseMutationOptions<CreateColonyActionMetadataMutation, CreateColonyActionMetadataMutationVariables>;
+export const UpdateColonyActionDocument = gql`
+    mutation UpdateColonyAction($input: UpdateColonyActionInput!) {
+  updateColonyAction(input: $input) {
+    id
+  }
+}
+    `;
+export type UpdateColonyActionMutationFn = Apollo.MutationFunction<UpdateColonyActionMutation, UpdateColonyActionMutationVariables>;
+
+/**
+ * __useUpdateColonyActionMutation__
+ *
+ * To run a mutation, you first call `useUpdateColonyActionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateColonyActionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateColonyActionMutation, { data, loading, error }] = useUpdateColonyActionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateColonyActionMutation(baseOptions?: Apollo.MutationHookOptions<UpdateColonyActionMutation, UpdateColonyActionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateColonyActionMutation, UpdateColonyActionMutationVariables>(UpdateColonyActionDocument, options);
+      }
+export type UpdateColonyActionMutationHookResult = ReturnType<typeof useUpdateColonyActionMutation>;
+export type UpdateColonyActionMutationResult = Apollo.MutationResult<UpdateColonyActionMutation>;
+export type UpdateColonyActionMutationOptions = Apollo.BaseMutationOptions<UpdateColonyActionMutation, UpdateColonyActionMutationVariables>;
 export const CreateAnnotationDocument = gql`
     mutation CreateAnnotation($input: CreateAnnotationInput!) {
   createAnnotation(input: $input) {
