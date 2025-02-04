@@ -7,9 +7,12 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useColonyTriggersContext } from '~context/GlobalTriggersContext/ColonyTriggersContext.ts';
 import { ColonyActionType } from '~gql';
+import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
+import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { getMotionAssociatedActionId } from '~utils/actions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { useFinalizeSuccessCallback } from '~v5/common/ActionSidebar/partials/hooks.ts';
@@ -46,9 +49,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const { canInteract } = useAppContext();
 
   const [isPolling, setIsPolling] = useState(false);
-
-  const { refetchColony } = useColonyContext();
-
+  const { refetchColony, colony } = useColonyContext();
   const {
     isFinalizable,
     transform: finalizePayload,
@@ -65,7 +66,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     canClaimStakes,
   } = useClaimConfig({ action, motionData });
 
-  const { type: actionType } = action;
+  const { type: actionType, expenditure } = action;
 
   const {
     isFinalized: isMotionFinalized,
@@ -85,10 +86,31 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     isMotionFinalized ||
     isMotionFailedNotFinalizable ||
     (isMotionAgreement && !isClaimed);
+  const reclaimExpenditureStake = useAsyncFunction({
+    submit: ActionTypes.RECLAIM_EXPENDITURE_STAKE,
+    error: ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR,
+    success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
+  });
 
-  const handleSuccess = () => {
+  const handleSuccess = async () => {
     setIsPolling(true);
     onFinalizeSuccessCallback(action);
+
+    const associatedActionId = getMotionAssociatedActionId(action);
+
+    if (
+      actionType === ColonyActionType.CancelExpenditureMotion &&
+      !motionData.willPunishExpenditureStaker &&
+      expenditure?.isStaked
+    ) {
+      const payload: ReclaimExpenditureStakePayload = {
+        colonyAddress: colony.colonyAddress,
+        nativeExpenditureId: expenditure.nativeId,
+        associatedActionId,
+      };
+
+      await reclaimExpenditureStake(payload);
+    }
   };
 
   /* Update colony object when motion gets finalized or is agreement. */
