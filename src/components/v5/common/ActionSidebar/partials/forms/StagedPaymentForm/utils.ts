@@ -17,7 +17,7 @@ export const getStagedPaymentPayload = (
   const colonyTokens = colony.tokens?.items.filter(notNull);
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   const createdInDomain =
-    findDomainByNativeId(values.createdIn, colony) || rootDomain;
+    findDomainByNativeId(values.from, colony) || rootDomain;
 
   if (!createdInDomain) {
     return null;
@@ -26,7 +26,7 @@ export const getStagedPaymentPayload = (
   return {
     colonyAddress: colony.colonyAddress,
     createdInDomain,
-    fundFromDomainId: 1,
+    fundFromDomainId: values.from,
     payouts: values.stages.map((stage) => ({
       recipientAddress: values.recipient,
       tokenAddress: stage.tokenAddress,
