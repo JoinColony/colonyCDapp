@@ -8,25 +8,25 @@ import React, {
 
 import { useRefetchColonyData, useFundsStateUpdater } from './hooks.ts';
 import { IncomingFundsLoadingContext } from './IncomingFundsLoadingContext.ts';
+import { type PendingFundsChainTokens } from './types.ts';
 
 export const IncomingFundsLoadingContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
   const [isAcceptLoading, setIsAcceptLoading] = useState(false);
-  const [pendingFundsTokenAddresses, setPendingFundsTokenAddresses] = useState<
-    string[]
-  >([]);
+  const [pendingFundsChainTokens, setPendingFundsChainTokens] =
+    useState<PendingFundsChainTokens>([]);
 
   const enableAcceptLoading = useCallback(() => setIsAcceptLoading(true), []);
 
   const reset = useCallback(() => {
-    setPendingFundsTokenAddresses([]);
+    setPendingFundsChainTokens([]);
     setIsAcceptLoading(false);
   }, []);
 
-  useFundsStateUpdater(pendingFundsTokenAddresses, reset);
+  useFundsStateUpdater(pendingFundsChainTokens, reset);
   useRefetchColonyData(
-    isAcceptLoading && !!pendingFundsTokenAddresses.length,
+    isAcceptLoading && !!pendingFundsChainTokens.length,
     reset,
   );
 
@@ -34,15 +34,10 @@ export const IncomingFundsLoadingContextProvider: FC<PropsWithChildren> = ({
     () => ({
       isAcceptLoading,
       enableAcceptLoading,
-      setPendingFundsTokenAddresses,
+      setPendingFundsChainTokens,
       reset,
     }),
-    [
-      isAcceptLoading,
-      enableAcceptLoading,
-      setPendingFundsTokenAddresses,
-      reset,
-    ],
+    [isAcceptLoading, enableAcceptLoading, setPendingFundsChainTokens, reset],
   );
 
   return (

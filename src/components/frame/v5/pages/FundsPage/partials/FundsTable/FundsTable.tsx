@@ -9,6 +9,7 @@ import React, { type FC } from 'react';
 import { IncomingFundsLoadingContextProvider } from '~frame/v5/pages/FundsPage/context/IncomingFundsLoadingContextProvider.tsx';
 import { useMobile } from '~hooks';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
+import { getGroupedUnclaimedClaimsByChain } from '~utils/claims.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import { Table } from '~v5/common/Table/Table.tsx';
@@ -19,7 +20,6 @@ import Filter from '../Filter/index.ts';
 
 import { useFundsTable, useFundsTableColumns } from './hooks.tsx';
 import { type FundsTableModel } from './types.ts';
-import { getGroupedUnclaimedClaimsByChain } from './utils.ts';
 
 const displayName = 'pages.FundsPage.partials.FundsTable';
 
