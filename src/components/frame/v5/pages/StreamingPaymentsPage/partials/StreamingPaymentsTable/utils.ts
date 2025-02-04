@@ -20,8 +20,8 @@ export const searchStreamingPayments = (
     (member) =>
       member.user?.profile?.displayName
         ?.toLowerCase()
-        .startsWith(searchValue.toLowerCase()) ||
-      member.contributorAddress.startsWith(searchValue),
+        .includes(searchValue.toLowerCase()) ||
+      member.contributorAddress.includes(searchValue),
   );
 
   const member = searchedMembers.find(
@@ -29,7 +29,7 @@ export const searchStreamingPayments = (
       searchedMember.contributorAddress === streamingPayment.user,
   );
   const filteredActions = streamingPayment.actions.filter((action) =>
-    action.title.toLowerCase().startsWith(searchValue.toLowerCase()),
+    action.title.toLowerCase().includes(searchValue.toLowerCase()),
   );
 
   if (member) {

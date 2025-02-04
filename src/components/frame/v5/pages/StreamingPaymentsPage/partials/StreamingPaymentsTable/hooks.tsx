@@ -60,6 +60,7 @@ export const useStreamingTableColumns = (loading: boolean) => {
         cell: ({ row }) =>
           loading ? null : (
             <UserStreams
+              actions={row.original.actions}
               items={row.original.tokenTotalsPerMonth}
               toggleExpanded={row.toggleExpanded}
             />

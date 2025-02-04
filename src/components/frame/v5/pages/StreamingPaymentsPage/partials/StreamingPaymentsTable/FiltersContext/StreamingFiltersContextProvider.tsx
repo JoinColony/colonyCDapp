@@ -10,6 +10,7 @@ import {
   type ModelSortDirection,
   type StreamingPaymentEndCondition,
 } from '~gql';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { type StreamingPaymentStatus } from '~types/streamingPayments.ts';
 
 import { STATUS_FILTERS } from '../partials/StreamingPaymentFilters/partials/StatusFilters/consts.ts';
@@ -42,6 +43,8 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
     pastYear: false,
     custom: undefined,
   });
+
+  const { dateFromCurrentBlockTime } = useCurrentBlockTime();
 
   const handleStatusesFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,7 +138,10 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
   );
 
   const activeFilters: StreamingPaymentFilters = useMemo(() => {
-    const date = getDateFilter(dateFilters);
+    const date = getDateFilter(
+      dateFilters,
+      dateFromCurrentBlockTime ?? undefined,
+    );
 
     return {
       ...(statuses.length ? { statuses } : {}),
@@ -153,6 +159,7 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
     tokenTypes,
     searchFilter,
     totalStreamedFilters,
+    dateFromCurrentBlockTime,
   ]);
 
   const handleResetFilters = useCallback(
