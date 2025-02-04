@@ -166,15 +166,8 @@ export const segregateCancelActions = (
 export const getExpenditureStep = (
   expenditure: Expenditure | null | undefined,
 ) => {
-  const {
-    status,
-    userStake,
-    cancellingActions,
-    lockingActions,
-    releaseActions,
-    isStaked,
-  } = expenditure || {};
-  const { isForfeited } = userStake || {};
+  const { status, cancellingActions, lockingActions, releaseActions } =
+    expenditure || {};
   const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
 
   const allCancelledMotions = cancellingActions?.items
@@ -208,16 +201,11 @@ export const getExpenditureStep = (
       if (isExpenditureFunded) {
         return ExpenditureStep.Release;
       }
-
       return ExpenditureStep.Funding;
     }
     case ExpenditureStatus.Finalized:
       return ExpenditureStep.Payment;
     case ExpenditureStatus.Cancelled: {
-      if (isForfeited && isStaked) {
-        return ExpenditureStep.Reclaim;
-      }
-
       if (releaseActions?.items && releaseActions?.items.length > 0) {
         return `${ExpenditureStep.Cancel}-${3}`;
       }
