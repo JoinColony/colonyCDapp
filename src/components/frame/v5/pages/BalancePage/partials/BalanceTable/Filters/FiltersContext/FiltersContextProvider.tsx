@@ -11,47 +11,44 @@ import { getObjectValues } from '~utils/objects/index.ts';
 import { FiltersContext, type FiltersContextValue } from './FiltersContext.ts';
 import {
   FiltersValues,
-  type BalanceTableFilters,
-  type BalanceFilterType,
+  type TBalanceTableFilters,
+  type TBalanceFilter,
 } from './types.ts';
 
 const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [searchFilter, setSearchFilter] = useState('');
 
-  const [filters, setFilters] = useState<BalanceTableFilters>({
-    search: '',
+  const [filters, setFilters] = useState<TBalanceTableFilters>({
     attribute: {
-      native: false,
-      reputation: false,
+      native: {
+        isChecked: false,
+      },
+      reputation: {
+        isChecked: false,
+      },
     },
     token: {},
     chain: {},
   });
 
   const handleFiltersChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>, type: BalanceFilterType) => {
+    (event: React.ChangeEvent<HTMLInputElement>, type: TBalanceFilter) => {
       const isChecked = event.target.checked;
-      const { name } = event.target;
+      const { name, id } = event.target;
 
       setFilters((state) => ({
         ...state,
         [type]: {
           ...state[type],
-          [name]: isChecked,
+          [name]: {
+            isChecked,
+            id,
+          },
         },
       }));
     },
     [],
   );
-
-  const activeFilters: BalanceTableFilters = useMemo(() => {
-    return {
-      attribute: filters.attribute,
-      chain: filters.chain,
-      token: filters.token,
-      search: '',
-    };
-  }, [filters.attribute, filters.chain, filters.token]);
 
   const handleResetFilters = useCallback((filter: FiltersValues) => {
     switch (filter) {
@@ -65,8 +62,12 @@ const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
         return setFilters((state) => ({
           ...state,
           attribute: {
-            native: false,
-            reputation: false,
+            native: {
+              isChecked: false,
+            },
+            reputation: {
+              isChecked: false,
+            },
           },
         }));
       }
@@ -83,15 +84,15 @@ const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const selectedFiltersCount =
-    getObjectValues(filters.token).filter((filter) => filter).length +
-    getObjectValues(filters.attribute).filter((filter) => filter).length +
-    getObjectValues(filters.chain).filter((filter) => filter).length;
+    getObjectValues(filters.token).filter(({ isChecked }) => isChecked).length +
+    getObjectValues(filters.attribute).filter(({ isChecked }) => isChecked)
+      .length +
+    getObjectValues(filters.chain).filter(({ isChecked }) => isChecked).length;
 
   const value = useMemo<FiltersContextValue>(
     () => ({
       searchFilter,
       setSearchFilter,
-      activeFilters,
       selectedFiltersCount,
       handleResetFilters,
       filters,
@@ -99,7 +100,6 @@ const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
     }),
     [
       searchFilter,
-      activeFilters,
       selectedFiltersCount,
       handleResetFilters,
       filters,

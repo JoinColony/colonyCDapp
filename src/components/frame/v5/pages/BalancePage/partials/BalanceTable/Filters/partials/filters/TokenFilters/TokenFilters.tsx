@@ -50,7 +50,7 @@ const TokenFilters: FC = () => {
       </h5>
       <ul>
         {tokenItems.map(({ label, name, key }) => {
-          const isChecked = tokenFilters[name];
+          const { isChecked } = tokenFilters[name] ?? {};
 
           return (
             <li key={key}>

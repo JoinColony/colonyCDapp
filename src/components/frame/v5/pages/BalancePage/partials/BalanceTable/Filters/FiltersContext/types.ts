@@ -8,16 +8,20 @@ export interface TokenTypes {
   [key: string]: boolean;
 }
 
-export interface AttributeFilters {
-  native: boolean;
-  reputation: boolean;
-}
-
-export type BalanceFilterType = 'attribute' | 'chain' | 'token';
-
-export type BalanceTableFilters = {
-  search: string;
-  attribute: AttributeFilters;
-  chain: Record<string, boolean>;
-  token: Record<string, boolean>;
+type TFilterConfig = {
+  isChecked: boolean;
+  id?: string;
 };
+
+type TAttributeFilter = {
+  native: TFilterConfig;
+  reputation: TFilterConfig;
+};
+
+export type TBalanceTableFilters = {
+  attribute: TAttributeFilter;
+  chain: Record<string, TFilterConfig>;
+  token: Record<string, TFilterConfig>;
+};
+
+export type TBalanceFilter = keyof TBalanceTableFilters;

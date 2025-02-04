@@ -16,7 +16,7 @@ const AttributeFilters: FC = () => {
       </h5>
       <ul>
         {ATTRIBUTE_FILTERS.map(({ label, name }) => {
-          const isChecked = filters.attribute[name];
+          const { isChecked } = filters.attribute[name] ?? {};
 
           return (
             <li key={name}>

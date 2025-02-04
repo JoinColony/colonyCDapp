@@ -2,8 +2,8 @@ import { createContext, useContext } from 'react';
 
 import {
   type FiltersValues,
-  type BalanceTableFilters,
-  type BalanceFilterType,
+  type TBalanceTableFilters,
+  type TBalanceFilter,
 } from './types.ts';
 
 import type React from 'react';
@@ -11,13 +11,12 @@ import type React from 'react';
 export interface FiltersContextValue {
   searchFilter: string;
   setSearchFilter: (searchValue: string) => void;
-  activeFilters: BalanceTableFilters;
   selectedFiltersCount: number;
   handleResetFilters: (filter: FiltersValues) => void;
-  filters: BalanceTableFilters;
+  filters: TBalanceTableFilters;
   handleFiltersChange: (
     event: React.ChangeEvent<HTMLInputElement>,
-    type: BalanceFilterType,
+    type: TBalanceFilter,
   ) => void;
 }
 

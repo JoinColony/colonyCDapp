@@ -42,7 +42,11 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
   const { balancesByToken: expenditureBalances, loading } =
     useColonyExpenditureBalances();
 
-  const { attribute: attributeFilters, token: tokenFilters } = filters;
+  const {
+    attribute: attributeFilters,
+    token: tokenFilters,
+    chain: chainFilters,
+  } = filters;
 
   const tokensData = useMemo(
     () =>
@@ -81,8 +85,8 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
   );
 
   const filteredTokens = tokensData?.filter((token) => {
-    if (attributeFilters.native) {
-      if (getObjectValues(tokenFilters).some((filter) => filter)) {
+    if (attributeFilters.native.isChecked) {
+      if (getObjectValues(tokenFilters).some(({ isChecked }) => isChecked)) {
         return (
           token.token?.tokenAddress === nativeToken.tokenAddress &&
           tokenFilters[token.token?.tokenAddress || 0]
@@ -91,28 +95,24 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
       return token.token?.tokenAddress === nativeToken.tokenAddress;
     }
 
-    if (getObjectValues(tokenFilters).some((filter) => filter)) {
+    if (getObjectValues(tokenFilters).some(({ isChecked }) => isChecked)) {
       return tokenFilters[token.token?.tokenAddress || 0];
     }
 
     return true;
   });
 
-  const searchedTokens = filteredTokens?.filter(
-    ({ token }) =>
-      token?.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
-      token?.symbol.toLowerCase().includes(searchFilter.toLowerCase()),
+  const searchedChainIds = getObjectValues(chainFilters)
+    .filter(({ isChecked }) => isChecked)
+    .map(({ id }) => id);
+
+  const searchedTokens = filteredTokens?.filter(({ token }) =>
+    searchedChainIds.length
+      ? searchedChainIds.includes(token.chainMetadata.chainId)
+      : true &&
+        (token?.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
+          token?.symbol.toLowerCase().includes(searchFilter.toLowerCase())),
   );
-
-  // const searchedChainIds = getObjectKeys(filters.chain).filter(
-  //   (chain) => filters.chain[chain],
-  // );
-
-  // const searchedTokensByChainIds = searchedTokens.filter(({ token }) =>
-  //   searchedChainIds?.length && token
-  //     ? searchedChainIds.includes(token?.chainMetadata.chainId)
-  //     : true,
-  // );
 
   const sortedTokens = useMemo(
     () =>
