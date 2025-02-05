@@ -9,7 +9,6 @@ import { type ExpenditureType } from '~gql';
 import useToggle from '~hooks/useToggle/index.ts';
 import { type ExpenditureAction } from '~types/graphql.ts';
 import { type ExpenditureStep } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/types.ts';
-import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 
 import { PaymentBuilderContext } from './PaymentBuilderContext.ts';
 
@@ -37,11 +36,6 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
     { toggleOn: toggleOnFinalizeModal, toggleOff: toggleOffFinalizeModal },
   ] = useToggle();
 
-  const [
-    isMilestoneModalOpen,
-    { toggleOn: toggleOnMilestoneModal, toggleOff: toggleOffMilestoneModal },
-  ] = useToggle();
-
   const [selectedFundingAction, setSelectedFundingAction] =
     useState<ExpenditureAction | null>(null);
   const [selectedFinalizeAction, setSelectedFinalizeAction] =
@@ -53,10 +47,6 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
     ExpenditureType | undefined
   >(undefined);
 
-  const [selectedMilestones, setSelectedMilestones] = useState<MilestoneItem[]>(
-    [],
-  );
-
   const value = useMemo(
     () => ({
       toggleOnFundingModal,
@@ -65,9 +55,6 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOnCancelModal,
       toggleOffCancelModal,
       isCancelModalOpen,
-      toggleOnMilestoneModal,
-      toggleOffMilestoneModal,
-      isMilestoneModalOpen,
       toggleOnReleaseModal,
       toggleOffReleaseModal,
       expectedExpenditureType,
@@ -78,8 +65,6 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       selectedExpenditureMotion: null,
       expectedStepKey,
       setExpectedStepKey,
-      selectedMilestones,
-      setSelectedMilestones,
       selectedFundingAction,
       setSelectedFundingAction,
       selectedReleaseAction,
@@ -97,15 +82,11 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOnCancelModal,
       toggleOffCancelModal,
       isCancelModalOpen,
-      toggleOnMilestoneModal,
-      toggleOffMilestoneModal,
-      isMilestoneModalOpen,
       toggleOnReleaseModal,
       toggleOffReleaseModal,
       expectedExpenditureType,
       isReleaseModalOpen,
       expectedStepKey,
-      selectedMilestones,
       selectedFundingAction,
       selectedReleaseAction,
       setSelectedReleaseAction,

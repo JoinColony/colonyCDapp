@@ -13,6 +13,7 @@ import ColonyTriggersContextProvider from '~context/GlobalTriggersContext/Colony
 import MemberContextProvider from '~context/MemberContext/MemberContextProviderWithSearchAndFilter.tsx';
 import MemberModalProvider from '~context/MemberModalContext/MemberModalContextProvider.tsx';
 import PaymentBuilderContextProvider from '~context/PaymentBuilderContext/PaymentBuilderContextProvider.tsx';
+import StagedPaymentContextProvider from '~context/StagedPaymentContext/StagedPaymentContextProvider.tsx';
 import TokensModalContextProvider from '~context/TokensModalContext/TokensModalContextProvider.tsx';
 import TourContextProvider from '~context/TourContext/TourContextProvider.tsx';
 import UserTokenBalanceProvider from '~context/UserTokenBalanceContext/UserTokenBalanceContextProvider.tsx';
@@ -113,11 +114,13 @@ const ColonyRoute = () => {
                     <TokensModalContextProvider>
                       <TourContextProvider>
                         <PaymentBuilderContextProvider>
-                          <ActionContextProvider>
-                            <ColonyLayout>
-                              <Outlet />
-                            </ColonyLayout>
-                          </ActionContextProvider>
+                          <StagedPaymentContextProvider>
+                            <ActionContextProvider>
+                              <ColonyLayout>
+                                <Outlet />
+                              </ColonyLayout>
+                            </ActionContextProvider>
+                          </StagedPaymentContextProvider>
                         </PaymentBuilderContextProvider>
                       </TourContextProvider>
                     </TokensModalContextProvider>

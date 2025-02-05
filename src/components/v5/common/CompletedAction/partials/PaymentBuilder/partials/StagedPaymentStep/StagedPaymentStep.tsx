@@ -1,9 +1,9 @@
 import { SpinnerGap } from '@phosphor-icons/react';
-import { isEqual } from 'lodash';
-import React, { type FC, useState, useEffect } from 'react';
+import React, { type FC, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
+import { useStagedPaymentContext } from '~context/StagedPaymentContext/StagedPaymentContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { type ExpenditureAction, type Expenditure } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
@@ -52,26 +52,27 @@ interface StagedPaymentStepProps {
   expectedStepKey: ExpenditureStep | null;
   expenditure: Expenditure;
   releaseActions: ExpenditureAction[];
-  previousReleaseActionsCount: number;
 }
 
 const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
   expectedStepKey,
   expenditure,
   releaseActions,
-  previousReleaseActionsCount,
 }) => {
+  const { selectedReleaseAction } = usePaymentBuilderContext();
   const {
     toggleOnMilestoneModal: showModal,
     isMilestoneModalOpen,
     toggleOffMilestoneModal: hideModal,
-    selectedMilestones,
-    setSelectedMilestones,
-    selectedReleaseAction,
-  } = usePaymentBuilderContext();
+    allMilestonesSlotIdsAwaitingRelease,
+    currentMilestonesAwaitingRelease,
+    setCurrentMilestonesAwaitingRelease,
+    isPendingStagesRelease,
+    setPendingState,
+    resetMilestonesState,
+    removeSlotIdsFromPending,
+  } = useStagedPaymentContext();
   const { stagedExpenditureAddress } = useEnabledExtensions();
-  const [isWaitingForStagesRelease, setIsWaitingForStagesRelease] =
-    useState(false);
 
   const selectedReleaseMotion = selectedReleaseAction?.motionData;
 
@@ -91,20 +92,22 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
     };
   });
 
-  const firstMilestone = items
+  const notReleasedMilestones = items
     .sort((a, b) => a.slotId - b.slotId)
-    .filter((item) => !item.isClaimed)[0];
+    .filter((item) => !item.isClaimed);
+
+  const firstMilestone = notReleasedMilestones[0];
 
   const releaseNextMilestone = () => {
-    setSelectedMilestones([firstMilestone]);
+    setCurrentMilestonesAwaitingRelease([firstMilestone]);
     showModal();
   };
 
-  const notReleasedMilestones = items.filter((item) => !item.isClaimed);
-  const hasAllMilestonesReleased = isEqual(
-    notReleasedMilestones,
-    selectedMilestones,
+  const notReleasedMilestonesSlotIds = notReleasedMilestones.map(
+    (item) => item.slotId,
   );
+
+  const hasAllMilestonesReleased = !notReleasedMilestonesSlotIds.length;
   const releaseMilestoneMotions = expenditure.releaseActions?.items
     .map((action) => action?.motionData)
     .filter(notMaybe);
@@ -118,15 +121,47 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
     )
     .flatMap((motion) => motion?.expenditureSlotIds || []);
 
+  const shouldUpdateAllMilestonesSlotIds = slotsWithActiveMotions.some(
+    (slotId) => allMilestonesSlotIdsAwaitingRelease.includes(slotId),
+  );
+
   const totals = getSummedTokens(items);
   const paid = getSummedTokens(items, true);
   const allPaid = items.every(({ isClaimed }) => isClaimed);
 
+  const releaseActionsSlotsIds = releaseActions.flatMap(
+    (releaseAction) => releaseAction.expenditureSlotIds,
+  );
+
+  const allReleaseActionsAmongReleaseMilestones =
+    !!allMilestonesSlotIdsAwaitingRelease.length &&
+    allMilestonesSlotIdsAwaitingRelease.every((slotId) =>
+      releaseActionsSlotsIds.includes(slotId),
+    );
+
+  // In case of milestones released using motions, we want to re-enable those milestones to be able to release them using a different decision method
+  // So we will remove them from the allMilestonesSlotIdsAwaitingRelease list
   useEffect(() => {
-    if (releaseActions.length !== previousReleaseActionsCount) {
-      setIsWaitingForStagesRelease(false);
+    if (shouldUpdateAllMilestonesSlotIds) {
+      removeSlotIdsFromPending(slotsWithActiveMotions);
     }
-  }, [releaseActions, previousReleaseActionsCount]);
+  }, [
+    shouldUpdateAllMilestonesSlotIds,
+    slotsWithActiveMotions,
+    removeSlotIdsFromPending,
+  ]);
+
+  useEffect(() => {
+    if (allPaid) {
+      resetMilestonesState();
+    }
+  }, [allPaid, resetMilestonesState]);
+
+  useEffect(() => {
+    if (allReleaseActionsAmongReleaseMilestones) {
+      setPendingState(false);
+    }
+  }, [allReleaseActionsAmongReleaseMilestones, setPendingState]);
 
   const releaseMotions = releaseActions
     .map((releaseAction) => releaseAction.motionData)
@@ -180,7 +215,7 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
             className="mt-4"
             content={
               expectedStepKey === ExpenditureStep.Payment ||
-              isWaitingForStagesRelease ? (
+              isPendingStagesRelease ? (
                 <IconButton
                   className="max-h-[2.5rem] w-full !text-md"
                   rounded="s"
@@ -211,13 +246,12 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
       </div>
 
       <MilestoneReleaseModal
-        items={selectedMilestones}
+        items={currentMilestonesAwaitingRelease}
         slotsWithActiveMotions={slotsWithActiveMotions}
         expenditure={expenditure}
         isOpen={isMilestoneModalOpen}
         hasAllMilestonesReleased={hasAllMilestonesReleased}
         onClose={hideModal}
-        setIsWaitingForStagesRelease={setIsWaitingForStagesRelease}
       />
     </>
   );

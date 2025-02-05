@@ -4,7 +4,7 @@ import React, { useMemo, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { ADDRESS_ZERO } from '~constants';
-import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
+import { useStagedPaymentContext } from '~context/StagedPaymentContext/StagedPaymentContext.ts';
 import { useMobile, useTablet } from '~hooks';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
@@ -21,6 +21,7 @@ import { type MilestoneItem } from '../StagedPaymentStep/partials/MilestoneRelea
 
 import ClaimDelayTooltip from './partials/ClaimDelayTooltip/ClaimDelayTooltip.tsx';
 import ReleaseAllButton from './partials/ReleaseAllButton/ReleaseAllButton.tsx';
+import ReleaseButton from './partials/ReleaseButton/ReleaseButton.tsx';
 import { type StagedPaymentTableProps } from './types.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.StagedPaymentTable';
@@ -49,11 +50,11 @@ const useStagedPaymentTableColumns = ({
   isLoading,
   expenditure,
 }: StagedPaymentTableColumnsProps) => {
+  const { isPendingStagesRelease, allMilestonesSlotIdsAwaitingRelease } =
+    useStagedPaymentContext();
   const dataRef = useWrapWithRef(data);
   const hasMoreThanOneToken = dataRef.current.length > 1;
   const isMobile = useMobile();
-  const { toggleOnMilestoneModal: showModal, setSelectedMilestones } =
-    usePaymentBuilderContext();
   const { stagedExpenditureAddress } = useEnabledExtensions();
   const hasMoreThanOneMilestone =
     dataRef.current.filter((item) => !item.isClaimed).length > 1;
@@ -156,19 +157,11 @@ const useStagedPaymentTableColumns = ({
                     <>
                       {isCorrectExtensionInstalled ? (
                         <div className="flex items-center justify-end gap-3">
-                          <button
-                            key={row.id}
-                            type="button"
-                            className="w-auto flex-shrink-0 text-left underline transition-colors text-3 hover:text-blue-400 sm:text-center"
-                            onClick={() => {
-                              if (!currentMilestone) return;
-
-                              setSelectedMilestones([currentMilestone]);
-                              showModal();
-                            }}
-                          >
-                            {formatText(MSG.payNow)}
-                          </button>
+                          <ReleaseButton
+                            description={MSG.payNow}
+                            items={currentMilestone ? [currentMilestone] : []}
+                            className="w-auto flex-shrink-0 text-left sm:text-center"
+                          />
                           <ClaimDelayTooltip
                             finalizedAt={expenditure.finalizedAt ?? 0}
                             claimDelay={row.original.claimDelay || '0'}
@@ -188,6 +181,7 @@ const useStagedPaymentTableColumns = ({
             ]
           : []),
       ];
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       hasMoreThanOneToken,
       isPaymentStep,
@@ -197,8 +191,9 @@ const useStagedPaymentTableColumns = ({
       isLoading,
       dataRef,
       expenditure.finalizedAt,
-      setSelectedMilestones,
-      showModal,
+      // Even though this is not directly used, it is needed to refresh the ReleaseButton
+      isPendingStagesRelease,
+      allMilestonesSlotIdsAwaitingRelease.length,
     ]);
 
   return columns;

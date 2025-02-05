@@ -4,7 +4,6 @@ import { ExpenditureType } from '~gql';
 import { type ExpenditureAction } from '~types/graphql.ts';
 import noop from '~utils/noop.ts';
 import { type ExpenditureStep } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/types.ts';
-import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 
 export const PaymentBuilderContext = createContext<{
   expectedExpenditureType: ExpenditureType | undefined;
@@ -17,9 +16,6 @@ export const PaymentBuilderContext = createContext<{
   toggleOnCancelModal: () => void;
   toggleOffCancelModal: () => void;
   isCancelModalOpen: boolean;
-  toggleOnMilestoneModal: () => void;
-  toggleOffMilestoneModal: () => void;
-  isMilestoneModalOpen: boolean;
   toggleOnReleaseModal: () => void;
   toggleOffReleaseModal: () => void;
   isReleaseModalOpen: boolean;
@@ -28,8 +24,6 @@ export const PaymentBuilderContext = createContext<{
   isFinalizeModalOpen: boolean;
   selectedFundingAction: ExpenditureAction | null;
   setSelectedFundingAction: (action: ExpenditureAction | null) => void;
-  selectedMilestones: MilestoneItem[];
-  setSelectedMilestones: (transaction: MilestoneItem[]) => void;
   selectedReleaseAction: ExpenditureAction | null;
   setSelectedReleaseAction: (action: ExpenditureAction | null) => void;
   selectedFinalizeAction: ExpenditureAction | null;
@@ -44,9 +38,6 @@ export const PaymentBuilderContext = createContext<{
   toggleOnFinalizeModal: noop,
   toggleOffFinalizeModal: noop,
   isFinalizeModalOpen: false,
-  toggleOnMilestoneModal: noop,
-  toggleOffMilestoneModal: noop,
-  isMilestoneModalOpen: false,
   toggleOnReleaseModal: noop,
   toggleOffReleaseModal: noop,
   expectedExpenditureType: ExpenditureType.PaymentBuilder,
@@ -60,8 +51,6 @@ export const PaymentBuilderContext = createContext<{
   selectedFinalizeAction: null,
   setSelectedFinalizeAction: noop,
   setSelectedReleaseAction: noop,
-  selectedMilestones: [],
-  setSelectedMilestones: noop,
 });
 
 export const usePaymentBuilderContext = () => useContext(PaymentBuilderContext);
