@@ -33,11 +33,12 @@ export const FundsCardsTotalDescription: React.FC<
   const {
     colony: { balances, nativeToken },
   } = useColonyContext();
-  const tokenBalance = getBalanceForTokenAndDomain(
+  const tokenBalance = getBalanceForTokenAndDomain({
     balances,
-    nativeToken.tokenAddress,
-    selectedDomain ? Number(selectedDomain.nativeId) : undefined,
-  );
+    tokenAddress: nativeToken.tokenAddress,
+    tokenChainId: nativeToken.chainMetadata.chainId,
+    domainId: selectedDomain ? Number(selectedDomain.nativeId) : undefined,
+  });
 
   return (
     <div className="mt-1 flex w-full justify-between text-xs">

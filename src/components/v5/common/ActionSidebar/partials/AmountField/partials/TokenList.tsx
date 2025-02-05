@@ -24,15 +24,16 @@ export const TokenList: FC<TokenListProps> = ({
   return (
     <ul className="h-full overflow-y-auto" data-testid="token-list">
       {colonyTokens.map((colonyToken) => {
-        const tokenBalance = getBalanceForTokenAndDomain(
-          colonyBalances,
-          colonyToken.tokenAddress,
-          domainId ?? Id.RootDomain,
-        );
+        const tokenBalance = getBalanceForTokenAndDomain({
+          balances: colonyBalances,
+          tokenAddress: colonyToken.tokenAddress,
+          tokenChainId: colonyToken.chainMetadata.chainId,
+          domainId: domainId ?? Id.RootDomain,
+        });
 
         return (
           <li
-            key={colonyToken.tokenAddress}
+            key={`${colonyToken.chainMetadata.chainId}_${colonyToken.tokenAddress}`}
             className="mb-1 last:mb-0"
             data-testid="token-list-item"
           >

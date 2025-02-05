@@ -19,20 +19,32 @@ import { type Address } from '~types/index.ts';
 import { notNull } from './arrays/index.ts';
 import { convertToDecimal } from './convertToDecimal.ts';
 
-export const getBalanceForTokenAndDomain = (
-  balances: ColonyBalances | null | undefined,
-  tokenAddress: Address,
-  domainId: number = COLONY_TOTAL_BALANCE_DOMAIN_ID,
-) => {
+export const getBalanceForTokenAndDomain = ({
+  balances,
+  tokenAddress,
+  tokenChainId,
+  domainId = COLONY_TOTAL_BALANCE_DOMAIN_ID,
+}: {
+  balances: ColonyBalances | null | undefined;
+  tokenAddress: Address;
+  tokenChainId: string;
+  domainId?: number | '';
+}) => {
   const currentDomainBalance = balances?.items
     ?.filter((domainBalance) =>
-      domainId === COLONY_TOTAL_BALANCE_DOMAIN_ID
+      domainId === COLONY_TOTAL_BALANCE_DOMAIN_ID || domainId === ''
         ? domainBalance?.domain === null
         : domainBalance?.domain?.nativeId === domainId,
     )
-    .find(
-      (domainBalance) => domainBalance?.token?.tokenAddress === tokenAddress,
-    );
+    .find((domainBalance) => {
+      const isMatchingChainId =
+        domainBalance?.token?.chainMetadata?.chainId === tokenChainId;
+
+      const isMatchTokenAddress =
+        domainBalance?.token?.tokenAddress === tokenAddress;
+
+      return isMatchingChainId && isMatchTokenAddress;
+    });
 
   return BigNumber.from(currentDomainBalance?.balance ?? 0);
 };

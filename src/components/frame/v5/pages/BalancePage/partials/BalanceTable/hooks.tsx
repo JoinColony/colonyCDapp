@@ -44,11 +44,14 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
   const tokensData = useMemo(
     () =>
       colonyTokens?.items.filter(notNull).map((item) => {
-        const colonyTokenBalance = getBalanceForTokenAndDomain(
+        const colonyTokenBalance = getBalanceForTokenAndDomain({
           balances,
-          item.token.tokenAddress,
-          selectedDomain ? Number(selectedDomain.nativeId) : undefined,
-        );
+          tokenAddress: item.token.tokenAddress,
+          tokenChainId: item.token.chainMetadata.chainId,
+          domainId: selectedDomain
+            ? Number(selectedDomain.nativeId)
+            : undefined,
+        });
 
         let totalBalance = colonyTokenBalance;
         if (!selectedDomain || selectedDomain.nativeId === Id.RootDomain) {
