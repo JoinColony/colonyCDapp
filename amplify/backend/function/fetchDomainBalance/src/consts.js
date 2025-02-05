@@ -28,6 +28,8 @@ const SupportedNetwork = {
   Gnosis: 'gnosis',
   GnosisFork: 'gnosisFork',
   Ganache: 'ganache',
+  GanacheProxy1: 'ganache-proxy-1',
+  GanacheProxy2: 'ganache-proxy-2',
   Polygon: 'polygon',
   Amoy: 'amoy',
   ArbitrumOne: 'arbitrumOne',
@@ -88,16 +90,11 @@ const POLYGON_TOKEN = {
   decimals: 18,
 };
 
-const TOKEN_DATA = {
-  [SupportedNetwork.Ganache]: ETHER_TOKEN,
-  [SupportedNetwork.Gnosis]: XDAI_TOKEN,
-  [SupportedNetwork.GnosisFork]: XDAI_TOKEN,
-  [SupportedNetwork.Goerli]: GOERLI_TOKEN,
-  [SupportedNetwork.Mainnet]: ETHER_TOKEN,
-  [SupportedNetwork.Polygon]: POLYGON_TOKEN,
-  [SupportedNetwork.Amoy]: POLYGON_TOKEN,
-  [SupportedNetwork.ArbitrumOne]: ETHER_TOKEN,
-  [SupportedNetwork.ArbitrumSepolia]: ETHER_TOKEN,
+const Tokens = {
+  ETHER: ETHER_TOKEN,
+  XDAI: XDAI_TOKEN,
+  GOERLI: GOERLI_TOKEN,
+  POLYGON: POLYGON_TOKEN,
 };
 
 const GNOSIS_NETWORK = {
@@ -109,6 +106,7 @@ const GNOSIS_NETWORK = {
   blockExplorerUrl: 'https://gnosis.blockscout.com',
   tokenExplorerLink: 'https://gnosis.blockscout.com/tokens',
   contractAddressLink: 'https://gnosis.blockscout.com/address',
+  nativeToken: Tokens.XDAI,
   blockTime: 5,
 };
 
@@ -124,7 +122,7 @@ const ETHEREUM_NETWORK = {
   safeTxService: 'https://safe-transaction-mainnet.safe.global/api',
   rpcUrl: 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   apiUri: 'https://api.etherscan.io/api',
-  nativeToken: ETHER_TOKEN,
+  nativeToken: Tokens.ETHER,
   blockTime: 12,
 };
 
@@ -137,7 +135,7 @@ const GOERLI_NETWORK = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'https://goerli.etherscan.io/tokens',
   contractAddressLink: 'https://goerli.etherscan.io/address',
-  nativeToken: GOERLI_TOKEN,
+  nativeToken: Tokens.GOERLI,
   blockTime: 5,
 };
 
@@ -150,7 +148,37 @@ const GANACHE_NETWORK = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'http://localhost',
   contractAddressLink: 'http://localhost',
-  nativeToken: ETHER_TOKEN,
+  nativeToken: Tokens.ETHER,
+  blockTime: 5,
+};
+
+const GANACHE_NETWORK_1 = {
+  name: 'Local Proxy Chain 1',
+  chainId: '265669101',
+  shortName: 'Local Proxy Chain 1',
+  blockExplorerName: 'Noexplorer',
+  blockExplorerUrl: 'http://localhost',
+  displayENSDomain: 'joincolony.eth',
+  tokenExplorerLink: 'http://localhost',
+  contractAddressLink: 'http://localhost',
+  apiUri: 'https://api-sepolia.arbiscan.io/api',
+  rpcUrl: 'http://network-contracts-remote:8545',
+  nativeToken: Tokens.ETHER,
+  blockTime: 5,
+};
+
+const GANACHE_NETWORK_2 = {
+  name: 'Local Proxy Chain 2',
+  chainId: '265669102',
+  shortName: 'Local Proxy Chain 2',
+  blockExplorerName: 'Noexplorer',
+  blockExplorerUrl: 'http://localhost',
+  displayENSDomain: 'joincolony.eth',
+  tokenExplorerLink: 'http://localhost',
+  contractAddressLink: 'http://localhost',
+  apiUri: 'https://api-sepolia.arbiscan.io/api',
+  rpcUrl: 'http://network-contracts-remote-2:8545',
+  nativeToken: Tokens.ETHER,
   blockTime: 5,
 };
 
@@ -163,6 +191,7 @@ const POLYGON_NETWORK = {
   tokenExplorerLink: 'https://polygonscan.com/tokens',
   contractAddressLink: 'https://polygonscan.com/address',
   displayENSDomain: 'joincolony.matic',
+  nativeToken: Tokens.POLYGON,
   blockTime: 3,
 };
 
@@ -175,6 +204,7 @@ const AMOY_NETWORK = {
   tokenExplorerLink: 'https://www.oklink.com/amoy/address',
   contractAddressLink: 'https://www.oklink.com/amoy/address',
   displayENSDomain: 'joincolony.matic',
+  nativeToken: Tokens.POLYGON,
   blockTime: 3,
 };
 
@@ -187,6 +217,7 @@ const ARBITRUM_NETWORK = {
   tokenExplorerLink: 'https://arbiscan.io/tokens',
   contractAddressLink: 'https://arbiscan.io/address',
   displayENSDomain: 'joincolony.arbitrum',
+  nativeToken: Tokens.ETHER,
   blockTime: 4,
 };
 
@@ -199,11 +230,14 @@ const ARBITRUM_SEPOLIA_NETWORK = {
   tokenExplorerLink: 'https://sepolia.arbiscan.io/tokens',
   contractAddressLink: 'https://sepolia.arbiscan.io/address',
   displayENSDomain: 'joincolony.arbitrumsepolia',
+  nativeToken: Tokens.ETHER,
   blockTime: 4,
 };
 
 const NETWORK_DATA = {
   [SupportedNetwork.Ganache]: GANACHE_NETWORK,
+  [SupportedNetwork.GanacheProxy1]: GANACHE_NETWORK_1,
+  [SupportedNetwork.GanacheProxy2]: GANACHE_NETWORK_2,
   [SupportedNetwork.Gnosis]: GNOSIS_NETWORK,
   [SupportedNetwork.GnosisFork]: GNOSIS_NETWORK,
   [SupportedNetwork.Goerli]: GOERLI_NETWORK,
@@ -213,6 +247,20 @@ const NETWORK_DATA = {
   [SupportedNetwork.ArbitrumOne]: ARBITRUM_NETWORK,
   [SupportedNetwork.ArbitrumSepolia]: ARBITRUM_SEPOLIA_NETWORK,
 };
+
+const TOKEN_DATA = Object.fromEntries(
+  Object.entries(NETWORK_DATA).map(([network, config]) => [
+    network,
+    config.nativeToken,
+  ]),
+);
+
+const CHAIN_ID_TO_SUPPORTED_NETWORK = Object.fromEntries(
+  Object.entries(NETWORK_DATA).map(([network, config]) => [
+    parseInt(config.chainId, 10),
+    network,
+  ]),
+);
 
 const coinGeckoMappings = {
   // This is a map between our internal reference to a supported currency, and the reference the api uses.
@@ -233,6 +281,8 @@ const coinGeckoMappings = {
     [SupportedNetwork.ArbitrumOne]: 'arbitrum-one',
     [SupportedNetwork.ArbitrumSepolia]: 'arbitrum-one',
     [SupportedNetwork.Ganache]: 'arbitrum-one',
+    [SupportedNetwork.GanacheProxy1]: 'arbitrum-one',
+    [SupportedNetwork.GanacheProxy2]: 'arbitrum-one',
     [SupportedNetwork.Gnosis]: 'xdai',
     [SupportedNetwork.GnosisFork]: 'xdai',
     [SupportedNetwork.Goerli]: 'ethereum',
@@ -254,6 +304,7 @@ module.exports = {
   ColonyJSNetworkMapping,
   SupportedNetwork,
   SupportedCurrencies,
+  CHAIN_ID_TO_SUPPORTED_NETWORK,
   NETWORK_DATA,
   TOKEN_DATA,
   coinGeckoMappings,

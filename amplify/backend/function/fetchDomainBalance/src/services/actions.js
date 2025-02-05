@@ -50,16 +50,19 @@ const getTokensDatesMap = (actions) => {
 
   actions.forEach((action) => {
     const tokenAddress = action.token?.id;
+    const tokenChainId = action.token?.chainMetadata?.chainId;
 
     if (!tokenAddress) {
       return;
     }
 
-    if (!tokens[tokenAddress]) {
-      tokens[tokenAddress] = [];
+    const tokenAddressChainId = `${tokenChainId}_${tokenAddress}`;
+
+    if (!tokens[tokenAddressChainId]) {
+      tokens[tokenAddressChainId] = [];
     }
 
-    tokens[tokenAddress].push(action.finalizedDate);
+    tokens[tokenAddressChainId].push(action.finalizedDate);
   });
   return tokens;
 };

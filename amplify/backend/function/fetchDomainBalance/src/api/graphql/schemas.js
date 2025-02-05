@@ -242,7 +242,27 @@ module.exports = {
           token {
             decimals
             id
+            chainMetadata {
+              chainId
+            }
           }
+        }
+      }
+    }
+  `,
+  getColony: /* GraphQL */ `
+    query GetColonyVersion($colonyAddress: ID!) {
+      getColony(id: $colonyAddress) {
+        version
+      }
+    }
+  `,
+  getProxyColonies: /* GraphQL */ `
+    query GetProxyColonies($colonyAddress: ID!) {
+      getProxyColoniesByColonyAddress(colonyAddress: $colonyAddress) {
+        items {
+          chainId
+          isActive
         }
       }
     }
