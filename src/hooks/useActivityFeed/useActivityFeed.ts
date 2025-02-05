@@ -56,6 +56,8 @@ const useActivityFeed = (
     setPageNumber(1);
   }, [stringifiedFilters]);
 
+  const filter = getSearchActionsFilterVariable(colonyAddress, filters);
+
   const {
     data,
     fetchMore,
@@ -63,7 +65,7 @@ const useActivityFeed = (
     refetch: refetchActions,
   } = useSearchActionsQuery({
     variables: {
-      filter: getSearchActionsFilterVariable(colonyAddress, filters),
+      filter,
       sort: sort || {
         field: SearchableColonyActionSortableFields.CreatedAt,
         direction: SearchableSortDirection.Desc,

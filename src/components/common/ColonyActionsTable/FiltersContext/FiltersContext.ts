@@ -22,6 +22,7 @@ export interface FiltersContextValue {
   dateFilters: DateOptions;
   activeFilters: ActivityFeedFilters;
   selectedFiltersCount: number;
+  chainIdFilters: string[];
   handleActionTypesFilterChange: (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
@@ -34,6 +35,9 @@ export interface FiltersContextValue {
   handleDateFilterChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCustomDateFilterChange: (date: [Date | null, Date | null]) => void;
   handleResetFilters: (filter: FiltersValues) => void;
+  handleChainIdFilterChange: (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => void;
 }
 
 export const FiltersContext = createContext<FiltersContextValue | undefined>(

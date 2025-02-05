@@ -166,7 +166,13 @@ export const getBaseSearchActionsFilterVariable = (
 
 export const getSearchActionsFilterVariable = (
   colonyAddress: string,
-  { dateFrom, dateTo, decisionMethods, teamId }: ActivityFeedFilters = {},
+  {
+    dateFrom,
+    dateTo,
+    decisionMethods,
+    teamId,
+    chainIds,
+  }: ActivityFeedFilters = {},
 ): SearchActionsFilterVariable => {
   const dateFilter =
     dateFrom && dateTo
@@ -191,6 +197,7 @@ export const getSearchActionsFilterVariable = (
               }
             : {}),
         };
+
   const decisionMethodFilter =
     decisionMethods && !!decisionMethods.length
       ? {
@@ -229,11 +236,20 @@ export const getSearchActionsFilterVariable = (
         }
       : undefined;
 
+  const chainFilters = chainIds?.length
+    ? {
+        or: chainIds.map((chainId) => ({
+          targetChainId: { eq: Number(chainId) },
+        })),
+      }
+    : {};
+
   return {
     ...getBaseSearchActionsFilterVariable(colonyAddress),
     ...(teamId !== undefined ? { fromDomainId: { eq: teamId } } : {}),
     ...dateFilter,
     ...(decisionMethodFilter || {}),
+    ...chainFilters,
   };
 };
 

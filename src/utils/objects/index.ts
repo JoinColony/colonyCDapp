@@ -20,6 +20,12 @@ export const getObjectKeys = <T extends object>(obj: T): Array<keyof T> => {
   return Object.keys(obj) as Array<keyof T>;
 };
 
+export const getObjectValues = <T extends object>(
+  obj: T,
+): Array<T[keyof T]> => {
+  return Object.values(obj) as Array<T[keyof T]>;
+};
+
 /**
  * Removes specified fields from an object and returns the updated object.
  *

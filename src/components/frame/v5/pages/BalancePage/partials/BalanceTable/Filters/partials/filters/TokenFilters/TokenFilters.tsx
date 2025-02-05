@@ -9,23 +9,39 @@ import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 import { useGetTokenTypeFilters } from './hooks.ts';
 
 const TokenFilters: FC = () => {
-  const { tokenTypes, handleTokenTypesFilterChange } = useFiltersContext();
+  const {
+    filters: { token: tokenFilters },
+    handleFiltersChange,
+  } = useFiltersContext();
+
   const tokenTypesFilters = useGetTokenTypeFilters();
-  const tokenItems = tokenTypesFilters.map(({ token }) => ({
-    symbol: token.symbol,
-    label: (
-      <div className="flex items-center gap-2">
-        <TokenAvatar
-          size={18}
-          tokenName={token.name}
-          tokenAddress={token.tokenAddress}
-          tokenAvatarSrc={token.avatar ?? undefined}
-        />
-        {multiLineTextEllipsis(token.symbol, 5)}
-      </div>
-    ),
-    name: token?.tokenAddress || '',
-  }));
+
+  const tokenItems = tokenTypesFilters.map(
+    ({
+      token: {
+        symbol,
+        name,
+        tokenAddress,
+        avatar,
+        chainMetadata: { chainId },
+      },
+    }) => ({
+      symbol,
+      label: (
+        <div className="flex items-center gap-2">
+          <TokenAvatar
+            size={18}
+            tokenName={name}
+            tokenAddress={tokenAddress}
+            tokenAvatarSrc={avatar ?? undefined}
+          />
+          {multiLineTextEllipsis(symbol, 5)}
+        </div>
+      ),
+      name: tokenAddress || '',
+      key: `${chainId}-${symbol}`,
+    }),
+  );
 
   return (
     <div>
@@ -33,15 +49,15 @@ const TokenFilters: FC = () => {
         {formatText({ id: 'balancePage.filter.approvedTokenTypes' })}
       </h5>
       <ul>
-        {tokenItems.map(({ label, name }) => {
-          const isChecked = tokenTypes[name];
+        {tokenItems.map(({ label, name, key }) => {
+          const { isChecked } = tokenFilters[name] ?? {};
 
           return (
-            <li key={name}>
+            <li key={key}>
               <Checkbox
                 className="subnav-button px-0 sm:px-3.5"
                 name={name}
-                onChange={handleTokenTypesFilterChange}
+                onChange={(event) => handleFiltersChange(event, 'token')}
                 isChecked={isChecked}
               >
                 {label}

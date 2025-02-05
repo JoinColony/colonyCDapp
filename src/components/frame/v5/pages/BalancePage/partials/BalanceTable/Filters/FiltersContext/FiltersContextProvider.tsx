@@ -6,68 +6,66 @@ import React, {
   useCallback,
 } from 'react';
 
-import { FiltersContext } from './FiltersContext.ts';
+import { getObjectValues } from '~utils/objects/index.ts';
+
+import { defaultBalanceTableFilters } from './consts.ts';
+import { FiltersContext, type FiltersContextValue } from './FiltersContext.ts';
 import {
-  type AttributeFilters,
   FiltersValues,
-  type TokenTypes,
-  type BalanceTableFilters,
+  type TBalanceTableFilters,
+  type TBalanceTableFilterKey,
 } from './types.ts';
 
 const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [searchFilter, setSearchFilter] = useState('');
-  const [tokenTypes, setTokenTypes] = useState<TokenTypes>({});
-  const [attributeFilters, setAttributeFilters] = useState<AttributeFilters>({
-    native: false,
-    reputation: false,
+
+  const [filters, setFilters] = useState<TBalanceTableFilters>({
+    attribute: defaultBalanceTableFilters.attribute,
+    token: defaultBalanceTableFilters.token,
+    chain: defaultBalanceTableFilters.chain,
   });
 
-  const handleTokenTypesFilterChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFiltersChange = useCallback(
+    (
+      event: React.ChangeEvent<HTMLInputElement>,
+      type: TBalanceTableFilterKey,
+    ) => {
       const isChecked = event.target.checked;
-      const name = event.target.name as keyof TokenTypes;
+      const { name, id } = event.target;
 
-      if (isChecked) {
-        setTokenTypes({ ...tokenTypes, [name]: true });
-      } else {
-        setTokenTypes({ ...tokenTypes, [name]: false });
-      }
+      setFilters((state) => ({
+        ...state,
+        [type]: {
+          ...state[type],
+          [name]: {
+            isChecked,
+            id,
+          },
+        },
+      }));
     },
-    [tokenTypes],
+    [],
   );
-
-  const handleAttributeFilterChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const isChecked = event.target.checked;
-      const name = event.target.name as keyof AttributeFilters;
-
-      if (isChecked) {
-        setAttributeFilters({ ...attributeFilters, [name]: true });
-      } else {
-        setAttributeFilters({ ...attributeFilters, [name]: false });
-      }
-    },
-    [attributeFilters],
-  );
-
-  const activeFilters: BalanceTableFilters = useMemo(() => {
-    return {
-      ...(Object.keys(tokenTypes).length ? { tokenTypes } : {}),
-      ...(Object.keys(attributeFilters).length ? { attributeFilters } : {}),
-      ...(searchFilter ? { search: searchFilter } : {}),
-    };
-  }, [tokenTypes, attributeFilters, searchFilter]);
 
   const handleResetFilters = useCallback((filter: FiltersValues) => {
     switch (filter) {
       case FiltersValues.TokenType: {
-        return setTokenTypes({});
+        return setFilters((state) => ({
+          ...state,
+          token: defaultBalanceTableFilters.token,
+        }));
       }
       case FiltersValues.Attributes: {
-        return setAttributeFilters({
-          native: false,
-          reputation: false,
-        });
+        return setFilters((state) => ({
+          ...state,
+          attribute: defaultBalanceTableFilters.attribute,
+        }));
+      }
+      case FiltersValues.Chain: {
+        return setFilters((state) => ({
+          ...state,
+          chain: defaultBalanceTableFilters.chain,
+        }));
       }
       default: {
         return undefined;
@@ -76,30 +74,26 @@ const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const selectedFiltersCount =
-    Object.values(tokenTypes).filter((value) => value === true).length +
-    Object.values(attributeFilters).filter((value) => value === true).length;
+    getObjectValues(filters.token).filter(({ isChecked }) => isChecked).length +
+    getObjectValues(filters.attribute).filter(({ isChecked }) => isChecked)
+      .length +
+    getObjectValues(filters.chain).filter(({ isChecked }) => isChecked).length;
 
-  const value = useMemo(
+  const value = useMemo<FiltersContextValue>(
     () => ({
       searchFilter,
       setSearchFilter,
-      tokenTypes,
-      attributeFilters,
-      activeFilters,
       selectedFiltersCount,
-      handleAttributeFilterChange,
-      handleTokenTypesFilterChange,
       handleResetFilters,
+      filters,
+      handleFiltersChange,
     }),
     [
       searchFilter,
-      tokenTypes,
-      attributeFilters,
-      activeFilters,
       selectedFiltersCount,
-      handleAttributeFilterChange,
-      handleTokenTypesFilterChange,
       handleResetFilters,
+      filters,
+      handleFiltersChange,
     ],
   );
 

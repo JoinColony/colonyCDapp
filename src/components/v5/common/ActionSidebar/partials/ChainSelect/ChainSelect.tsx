@@ -9,12 +9,8 @@ import { formatText } from '~utils/intl.ts';
 import ChainBadge from '~v5/common/Pills/ChainBadge/ChainBadge.tsx';
 import { renderIconOption } from '~v5/shared/SearchSelect/partials/OptionRenderer/IconOptionRenderer.tsx';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
-import {
-  type SearchSelectOption,
-  type IconOption,
-} from '~v5/shared/SearchSelect/types.ts';
 
-import { useChainOptions } from './hooks.ts';
+import { type IUseChainOptions, useChainOptions } from './hooks.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.ChainSelect';
 
@@ -22,7 +18,7 @@ interface ChainSelectProps {
   name: string;
   disabled?: boolean;
   readOnly?: boolean;
-  filterOptionsFn?: (option: SearchSelectOption<IconOption>) => boolean;
+  filterOptionsFn?: IUseChainOptions['filterOptionsFn'];
 }
 
 const ChainSelect: FC<ChainSelectProps> = ({
@@ -39,7 +35,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
   });
   const fieldValue = field.value;
   const isError = !!error;
-  const chainOptions = useChainOptions(filterOptionsFn);
+  const chainOptions = useChainOptions({ filterOptionsFn });
 
   const { readonly } = useAdditionalFormOptionsContext();
   const isReadOnly = readonly || readOnlyProp;

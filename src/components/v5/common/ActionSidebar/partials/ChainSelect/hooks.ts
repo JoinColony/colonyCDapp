@@ -4,8 +4,18 @@ import { SUPPORTED_CHAINS } from '~constants/proxyColonies.ts';
 import { useGetSupportedChainsQuery } from '~gql';
 import GanacheIcon from '~icons/GanacheIcon.tsx';
 import { notNull } from '~utils/arrays/index.ts';
+import {
+  type IconOption,
+  type SearchSelectOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
-export const useChainOptions = (filterOptionsFn) => {
+export interface IUseChainOptions {
+  filterOptionsFn?: (options: SearchSelectOption<IconOption>) => boolean;
+}
+
+export const useChainOptions = (args: IUseChainOptions = {}) => {
+  const { filterOptionsFn } = args;
+
   const { data } = useGetSupportedChainsQuery();
 
   const chainOptions = useMemo(() => {
@@ -26,7 +36,7 @@ export const useChainOptions = (filterOptionsFn) => {
         };
       })
       .filter(notNull)
-      .filter((option) => filterOptionsFn && filterOptionsFn(option));
+      .filter((option) => (filterOptionsFn ? filterOptionsFn(option) : true));
   }, [data, filterOptionsFn]);
 
   return chainOptions;

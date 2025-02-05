@@ -17,6 +17,7 @@ export const useActiveFilters = () => {
     decisionMethods,
     motionStates,
     handleResetFilters,
+    chainIdFilters,
   } = useFiltersContext();
 
   const activeFiltersToDisplay = useMemo(() => {
@@ -87,8 +88,25 @@ export const useActiveFilters = () => {
             },
           ]
         : []),
+      ...(chainIdFilters.length
+        ? [
+            {
+              filter: FiltersValues.Chain,
+              category: formatText({
+                id: 'activityFeedTable.filters.chain',
+              }),
+              items: chainIdFilters,
+            },
+          ]
+        : []),
     ];
-  }, [actionTypesFilters, dateFilters, decisionMethods, motionStates]);
+  }, [
+    actionTypesFilters,
+    chainIdFilters,
+    dateFilters,
+    decisionMethods,
+    motionStates,
+  ]);
 
   return { activeFiltersToDisplay, handleResetFilters };
 };

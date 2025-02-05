@@ -4,4 +4,5 @@ export enum FiltersValues {
   DecisionMethod = 'decisionMethod',
   Date = 'date',
   Custom = 'custom',
+  Chain = 'chain',
 }
