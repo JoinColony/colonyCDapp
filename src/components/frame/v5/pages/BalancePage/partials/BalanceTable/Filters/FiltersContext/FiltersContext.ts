@@ -3,7 +3,7 @@ import { createContext, useContext } from 'react';
 import {
   type FiltersValues,
   type TBalanceTableFilters,
-  type TBalanceFilter,
+  type TBalanceTableFilterKey,
 } from './types.ts';
 
 import type React from 'react';
@@ -16,7 +16,7 @@ export interface FiltersContextValue {
   filters: TBalanceTableFilters;
   handleFiltersChange: (
     event: React.ChangeEvent<HTMLInputElement>,
-    type: TBalanceFilter,
+    type: TBalanceTableFilterKey,
   ) => void;
 }
 

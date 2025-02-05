@@ -8,31 +8,28 @@ import React, {
 
 import { getObjectValues } from '~utils/objects/index.ts';
 
+import { defaultBalanceTableFilters } from './consts.ts';
 import { FiltersContext, type FiltersContextValue } from './FiltersContext.ts';
 import {
   FiltersValues,
   type TBalanceTableFilters,
-  type TBalanceFilter,
+  type TBalanceTableFilterKey,
 } from './types.ts';
 
 const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [searchFilter, setSearchFilter] = useState('');
 
   const [filters, setFilters] = useState<TBalanceTableFilters>({
-    attribute: {
-      native: {
-        isChecked: false,
-      },
-      reputation: {
-        isChecked: false,
-      },
-    },
-    token: {},
-    chain: {},
+    attribute: defaultBalanceTableFilters.attribute,
+    token: defaultBalanceTableFilters.token,
+    chain: defaultBalanceTableFilters.chain,
   });
 
   const handleFiltersChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>, type: TBalanceFilter) => {
+    (
+      event: React.ChangeEvent<HTMLInputElement>,
+      type: TBalanceTableFilterKey,
+    ) => {
       const isChecked = event.target.checked;
       const { name, id } = event.target;
 
@@ -55,26 +52,19 @@ const FilterContextProvider: FC<PropsWithChildren> = ({ children }) => {
       case FiltersValues.TokenType: {
         return setFilters((state) => ({
           ...state,
-          token: {},
+          token: defaultBalanceTableFilters.token,
         }));
       }
       case FiltersValues.Attributes: {
         return setFilters((state) => ({
           ...state,
-          attribute: {
-            native: {
-              isChecked: false,
-            },
-            reputation: {
-              isChecked: false,
-            },
-          },
+          attribute: defaultBalanceTableFilters.attribute,
         }));
       }
       case FiltersValues.Chain: {
         return setFilters((state) => ({
           ...state,
-          chain: {},
+          chain: defaultBalanceTableFilters.chain,
         }));
       }
       default: {

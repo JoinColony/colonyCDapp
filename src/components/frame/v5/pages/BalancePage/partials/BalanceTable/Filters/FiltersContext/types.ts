@@ -24,4 +24,4 @@ export type TBalanceTableFilters = {
   token: Record<string, TFilterConfig>;
 };
 
-export type TBalanceFilter = keyof TBalanceTableFilters;
+export type TBalanceTableFilterKey = keyof TBalanceTableFilters;

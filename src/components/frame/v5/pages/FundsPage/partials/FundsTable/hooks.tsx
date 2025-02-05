@@ -5,7 +5,6 @@ import React, { useMemo, useState } from 'react';
 
 import { ADDRESS_ZERO } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useDeployedChainIds } from '~hooks/proxyColonies/useDeployedChainIds.ts';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -51,9 +50,7 @@ export const useFundsTableColumns = (): ColumnDef<
 export const useFundsTable = (): UseFundsTableProps => {
   const { colony } = useColonyContext();
   const claims = useColonyFundsClaims();
-  const activeProxyColoniesChainIds = useDeployedChainIds({
-    filterFn: (deployedProxyColony) => deployedProxyColony?.isActive,
-  });
+
   const validChainFilters = useChainOptions();
 
   const colonyTokens = useMemo(
@@ -276,9 +273,7 @@ export const useFundsTable = (): UseFundsTableProps => {
 
     const searchedTokensByChainIds = visibleTokens.filter(({ token }) =>
       searchedChainIds?.length && token
-        ? [...searchedChainIds, ...activeProxyColoniesChainIds].includes(
-            token?.chainMetadata.chainId,
-          )
+        ? searchedChainIds.includes(token?.chainMetadata.chainId)
         : true,
     );
 
@@ -289,13 +284,7 @@ export const useFundsTable = (): UseFundsTableProps => {
     );
 
     return searchResults;
-  }, [
-    activeFilters,
-    activeProxyColoniesChainIds,
-    searchValue,
-    validChainFilters,
-    visibleTokens,
-  ]);
+  }, [activeFilters, searchValue, validChainFilters, visibleTokens]);
 
   return {
     filters,

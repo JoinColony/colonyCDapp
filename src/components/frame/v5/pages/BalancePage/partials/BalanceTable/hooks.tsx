@@ -84,19 +84,19 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
     ],
   );
 
-  const filteredTokens = tokensData?.filter((token) => {
+  const filteredTokens = tokensData?.filter(({ token: { tokenAddress } }) => {
     if (attributeFilters.native.isChecked) {
       if (getObjectValues(tokenFilters).some(({ isChecked }) => isChecked)) {
         return (
-          token.token?.tokenAddress === nativeToken.tokenAddress &&
-          tokenFilters[token.token?.tokenAddress || 0]
+          tokenAddress === nativeToken.tokenAddress &&
+          tokenFilters[tokenAddress || 0]
         );
       }
-      return token.token?.tokenAddress === nativeToken.tokenAddress;
+      return tokenAddress === nativeToken.tokenAddress;
     }
 
     if (getObjectValues(tokenFilters).some(({ isChecked }) => isChecked)) {
-      return tokenFilters[token.token?.tokenAddress || 0];
+      return tokenFilters[tokenAddress]?.isChecked;
     }
 
     return true;
