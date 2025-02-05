@@ -128,7 +128,11 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
         };
       });
 
-      tokens.map(async ({ token }) => {
+      const mainChainTokens = tokens.filter(
+        (token) => token.token.chainMetadata.chainId === chainId,
+      );
+
+      mainChainTokens.map(async ({ token }) => {
         const { id: tokenAddress } = token;
 
         balances.push(async () => {
@@ -201,7 +205,11 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
           };
         });
 
-        tokens.map(async ({ token }) => {
+        const proxyChainTokens = tokens.filter(
+          (token) => token.token.chainMetadata.chainId === proxyChainId,
+        );
+
+        proxyChainTokens.map(async ({ token }) => {
           const { id: tokenAddress } = token;
 
           balances.push(async () => {
