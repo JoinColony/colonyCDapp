@@ -31,7 +31,7 @@ const UserField: FC<UserFieldProps> = ({
   ) : (
     <button
       type="button"
-      className="flex h-full w-full items-center gap-4 pl-[1.125rem] pr-4"
+      className="flex h-full w-full items-center gap-2 pl-[1.125rem] pr-4 sm:gap-4"
       onClick={() => toggleExpanded()}
     >
       <UserAvatar
