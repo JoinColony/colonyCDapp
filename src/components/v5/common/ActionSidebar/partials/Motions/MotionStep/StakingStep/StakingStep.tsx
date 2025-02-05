@@ -41,6 +41,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     motionStakes,
     requiredStake,
     motionDomain: { metadata },
+    isFinalized,
   } = motionData;
 
   const { nativeToken } = colony;
@@ -78,6 +79,14 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     return 'motion.staking.status.text';
   })();
 
+  const canUserStake = canInteract && !isFinalized;
+  const shouldShowNotEnoughReputation =
+    !enoughReputationToStakeMinimum && canUserStake;
+  const shouldShowNotEnoughTokens =
+    !enoughTokensToStakeMinimum &&
+    enoughReputationToStakeMinimum &&
+    canUserStake;
+
   return isLoading ? (
     <SpinnerLoader />
   ) : (
@@ -110,7 +119,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           </StatusText>
         }
         sections={[
-          ...(!enoughReputationToStakeMinimum && canInteract
+          ...(shouldShowNotEnoughReputation
             ? [
                 {
                   key: '1',
@@ -128,9 +137,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                 },
               ]
             : []),
-          ...(!enoughTokensToStakeMinimum &&
-          enoughReputationToStakeMinimum &&
-          canInteract
+          ...(shouldShowNotEnoughTokens
             ? [
                 {
                   key: '2',
