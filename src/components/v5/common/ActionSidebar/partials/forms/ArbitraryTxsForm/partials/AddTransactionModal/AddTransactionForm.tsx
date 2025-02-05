@@ -9,7 +9,7 @@ export const AddTransactionForm = () => {
   const [contractAbiLoading, setContractAbiLoading] = useState(false);
 
   const {
-    serverError,
+    contractAddressServerError,
     isJsonAbiFormatted,
     showJsonAbiEditWarning,
     toggleJsonFormat,
@@ -17,10 +17,12 @@ export const AddTransactionForm = () => {
   } = useGenerateABI({ setContractAbiLoading });
   return (
     <>
-      <ContractAddressInput
-        contractAbiLoading={contractAbiLoading}
-        serverError={serverError}
-      />
+      {contractAddressServerError && (
+        <div className="flex rounded-md border border-warning-400 bg-warning-100 px-4 py-4.5 text-warning-400 break-word">
+          <span className="text-sm">{contractAddressServerError}</span>
+        </div>
+      )}
+      <ContractAddressInput contractAbiLoading={contractAbiLoading} />
       <JsonAbiInput
         loading={contractAbiLoading}
         toggleJsonFormat={toggleJsonFormat}

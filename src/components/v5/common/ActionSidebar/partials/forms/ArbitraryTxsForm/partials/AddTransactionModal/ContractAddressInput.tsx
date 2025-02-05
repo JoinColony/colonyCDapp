@@ -8,10 +8,8 @@ import { MSG } from './translation.ts';
 
 interface ContractAddressInputProps {
   contractAbiLoading?: boolean;
-  serverError?: string;
 }
 export const ContractAddressInput: FC<ContractAddressInputProps> = ({
-  serverError,
   contractAbiLoading,
 }) => {
   return (
@@ -20,7 +18,6 @@ export const ContractAddressInput: FC<ContractAddressInputProps> = ({
         name="contractAddress"
         label={formatText(MSG.contractAddressField)}
         placeholder={formatText(MSG.contractAddressPlaceholder)}
-        error={serverError || undefined}
         loading={contractAbiLoading}
         registerOptions={{
           validate: validateContractAddress,
