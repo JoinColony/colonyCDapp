@@ -1777,6 +1777,8 @@
     "activityFeedTable.table.date": "<p>Date:</p> {date}",
     "activityFeedTable.table.status": "<p>Status:</p> {statusBadge}",
     "activityFeedTable.filters.actionType": "Action type",
+    "activityFeedTable.filters.availableChains": "Available chains",
+    "activityFeedTable.filters.chain": "Chain",
     "activityFeedTable.filters.date": "Date",
     "activityFeedTable.filters.date.pastHour": "Past hour",
     "activityFeedTable.filters.date.pastDay": "Past 24 hours",
