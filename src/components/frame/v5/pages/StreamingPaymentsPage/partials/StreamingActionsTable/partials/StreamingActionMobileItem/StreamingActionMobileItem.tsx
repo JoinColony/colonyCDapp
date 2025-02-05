@@ -7,16 +7,11 @@ import { type StreamingActionTableFieldModel } from '~frame/v5/pages/StreamingPa
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
 import StreamingPaymentStatusPill from '~v5/common/ActionSidebar/partials/StreamingPaymentStatusPill/StreamingPaymentStatusPill.tsx';
-import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
-import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import TeamField from '../TeamField/TeamField.tsx';
 
 interface StreamingActionMobileItemProps {
   actionRow: Row<StreamingActionTableFieldModel>;
-  getMenuProps: (
-    row: Row<StreamingActionTableFieldModel>,
-  ) => MeatBallMenuProps | undefined;
 }
 
 const displayName =
@@ -43,13 +38,10 @@ const MSG = defineMessages({
 
 const StreamingActionMobileItem: FC<StreamingActionMobileItemProps> = ({
   actionRow,
-  getMenuProps,
 }) => {
   const {
     original: { amount, nativeDomainId, token, status },
   } = actionRow;
-
-  const meatBallMenuProps = getMenuProps(actionRow);
 
   const textClassName = 'font-normal text-sm';
   const renderLabel = (chunks: string[]) => (
@@ -100,16 +92,6 @@ const StreamingActionMobileItem: FC<StreamingActionMobileItemProps> = ({
           })}
         </div>
       </div>
-      {meatBallMenuProps && (
-        <MeatBallMenu
-          {...meatBallMenuProps}
-          contentWrapperClassName="!left-6 right-6"
-          buttonClassName={(isMenuOpen) =>
-            clsx({ '!text-gray-600': !isMenuOpen })
-          }
-          iconSize={18}
-        />
-      )}
     </div>
   );
 };

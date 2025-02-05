@@ -1,4 +1,4 @@
-import { ArrowCircleDown, FilePlus, ShareNetwork } from '@phosphor-icons/react';
+import { ArrowCircleDown } from '@phosphor-icons/react';
 import {
   type SortingState,
   type Row,
@@ -7,19 +7,14 @@ import {
 import clsx from 'clsx';
 import React, { useState, type FC } from 'react';
 import { defineMessages } from 'react-intl';
-import { generatePath, useNavigate } from 'react-router-dom';
 
-import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
-import { APP_URL } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile, useTablet } from '~hooks';
-import {
-  COLONY_ACTIVITY_ROUTE,
-  COLONY_HOME_ROUTE,
-  TX_SEARCH_PARAM,
-} from '~routes';
 import { formatText } from '~utils/intl.ts';
-import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import {
+  EXPANDER_COLUMN_ID,
+  MEATBALL_MENU_COLUMN_ID,
+} from '~v5/common/Table/consts.ts';
 import { Table } from '~v5/common/Table/Table.tsx';
 
 import {
@@ -51,9 +46,8 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
   actionRow,
   isLoading,
 }) => {
-  const {
-    colony: { name: colonyName },
-  } = useColonyContext();
+  const { colony } = useColonyContext();
+
   const { original } = actionRow;
   const isTablet = useTablet();
   const isMobile = useMobile();
@@ -64,47 +58,11 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
       desc: true,
     },
   ]);
-  const navigate = useNavigate();
-  const getMenuProps = ({ original: { transactionId } }) => ({
-    items: [
-      {
-        key: '1',
-        label: formatText({ id: 'activityFeedTable.menu.view' }),
-        icon: FilePlus,
-        onClick: () => {
-          navigate(
-            `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionId}`,
-            {
-              replace: true,
-            },
-          );
-        },
-      },
-      {
-        key: '2',
-        label: formatText({ id: 'activityFeedTable.menu.share' }),
-        renderItemWrapper: (itemWrapperProps, children) => (
-          <MeatballMenuCopyItem
-            textToCopy={`${APP_URL.origin}/${generatePath(COLONY_HOME_ROUTE, {
-              colonyName,
-            })}${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionId}`}
-            {...itemWrapperProps}
-          >
-            {children}
-          </MeatballMenuCopyItem>
-        ),
-        icon: ShareNetwork,
-        onClick: () => false,
-      },
-    ],
-  });
 
-  const renderSubComponent = useRenderSubComponent({
-    getMenuProps,
-  });
+  const renderSubComponent = useRenderSubComponent();
   const renderRowLink = useRenderRowLink(isLoading);
 
-  const orderedActions = orderActions(original.actions, sorting);
+  const orderedActions = orderActions(original.actions, sorting, colony);
 
   return (
     <Table<StreamingActionTableFieldModel>
@@ -112,9 +70,9 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
       columns={columns}
       renderCellWrapper={isMobile ? undefined : renderRowLink}
       className={clsx(
-        'rounded-none border-none [&_td:first-child]:!pl-0 [&_td>a]:px-[1.125rem] [&_td>a]:py-2 [&_td>div]:px-[1.125rem] [&_td>div]:py-2 [&_td]:border-b [&_td]:border-gray-100 [&_td]:!pr-0 [&_th:not(:first-child)]:sm:text-center [&_th]:!rounded-none [&_th]:!border-b [&_th]:!border-solid [&_th]:border-gray-200 [&_tr.expanded-below_td]:border-none sm:[&_tr:hover]:bg-gray-25 [&_tr:last-child_td]:border-none',
+        'rounded-none border-none [&_td:first-child]:!pl-0 [&_td:nth-child(2)>a]:px-2 [&_td>a]:px-[1.125rem] [&_td>a]:py-2 [&_td>div]:px-[1.125rem] [&_td>div]:py-2 [&_td]:border-b [&_td]:border-gray-100 [&_td]:!pr-0 [&_th:not(:first-child)]:sm:text-left [&_th:nth-child(2)]:px-2 [&_th]:!rounded-none [&_th]:!border-b [&_th]:!border-solid [&_th]:border-gray-200 [&_tr.expanded-below_td]:border-none sm:[&_tr:hover]:bg-gray-25 [&_tr:last-child_td]:border-none',
         {
-          '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_th:not(:first-child)]:pl-0':
+          '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[100px] [&_td:not(:first-child)>a]:p-0 [&_td:nth-child(2)>a]:items-end [&_td:nth-child(2)>a]:pr-8 [&_th:not(:first-child)]:p-0 [&_th:nth-child(2)]:pr-8 [&_th:nth-child(2)]:text-right':
             !isTablet,
         },
       )}
@@ -151,7 +109,7 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
                 [MEATBALL_MENU_COLUMN_ID]: false,
               }
             : {
-                expander: false,
+                [EXPANDER_COLUMN_ID]: false,
               },
         },
         getRowId: (row) => row.transactionId,

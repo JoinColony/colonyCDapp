@@ -54,7 +54,7 @@ export const useStreamingTableColumns = (loading: boolean) => {
       }),
       helper.display({
         id: 'amount',
-        staticSize: loading ? '0px' : '208px',
+        staticSize: loading ? '0rem' : '13rem',
         enableSorting: false,
         header: () => null,
         cell: ({ row }) =>
