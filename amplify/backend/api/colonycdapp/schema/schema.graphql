@@ -4147,8 +4147,7 @@ type UserStake @model {
     )
   user: User! @hasOne(fields: ["userAddress"])
   colonyAddress: ID!
-  # TODO: Make this field non-nullable once migration is done
-  type: UserStakeType
+  type: UserStakeType!
   amount: String!
   isClaimed: Boolean!
   actionId: ID!
