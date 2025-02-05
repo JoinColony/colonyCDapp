@@ -67,7 +67,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
             <section
               id="main-content-container"
               className={clsx(
-                'modal-blur h-full w-full overflow-auto px-6 scrollbar-gutter-stable md:p-8 md:pb-0 md:pt-2',
+                'modal-blur h-full w-full overflow-y-auto overflow-x-hidden px-6 scrollbar-gutter-stable md:p-8 md:pb-0 md:pt-2',
                 {
                   'md:!pt-[1.125rem]': !pageTitle,
                 },
