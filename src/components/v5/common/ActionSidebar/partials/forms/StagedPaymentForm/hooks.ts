@@ -202,15 +202,9 @@ export const useStagePayment = (
       [nativeToken.tokenAddress],
     ),
     actionType: ActionTypes.EXPENDITURE_CREATE,
-    getFormOptions: (formOptions, form) =>
-      getFormOptions(
-        {
-          ...formOptions,
-          onSuccess: () => setExpectedExpenditureType(ExpenditureType.Staged),
-          actionType: ActionTypes.EXPENDITURE_CREATE,
-        },
-        form,
-      ),
+    getFormOptions,
+
+    onSuccess: () => setExpectedExpenditureType(ExpenditureType.Staged),
     transform: mapPayload((payload: StagedPaymentFormValues) => {
       return getStagedPaymentPayload(colony, payload, networkInverseFee);
     }),
