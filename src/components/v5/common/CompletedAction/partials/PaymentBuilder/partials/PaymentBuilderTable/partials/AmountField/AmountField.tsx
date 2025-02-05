@@ -23,7 +23,7 @@ const AmountField: FC<AmountFieldProps> = ({
   return (
     <LoadingSkeleton isLoading={isLoading} className="h-4 w-[11.25rem] rounded">
       <div className="flex items-center gap-3 text-md text-gray-900">
-        {formattedAmount}
+        <span>{formattedAmount}</span>
         {tokenData && (
           <div className="flex items-center gap-1">
             <TokenAvatar
