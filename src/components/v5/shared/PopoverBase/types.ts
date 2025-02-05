@@ -12,4 +12,5 @@ export interface PopoverBaseProps {
   cardProps?: CardProps;
   withTooltipStyles?: boolean;
   isTopSectionWithBackground?: boolean;
+  style?: any;
 }

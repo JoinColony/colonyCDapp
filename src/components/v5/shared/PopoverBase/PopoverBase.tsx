@@ -15,6 +15,7 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
   cardProps,
   withTooltipStyles = true,
   isTopSectionWithBackground,
+  style,
 }) => (
   <div
     ref={setTooltipRef}
@@ -22,6 +23,7 @@ const PopoverBase: FC<PropsWithChildren<PopoverBaseProps>> = ({
       className: clsx(className, 'z-header', {
         'tooltip-container': withTooltipStyles,
       }),
+      style,
     })}
   >
     {cardProps ? (
