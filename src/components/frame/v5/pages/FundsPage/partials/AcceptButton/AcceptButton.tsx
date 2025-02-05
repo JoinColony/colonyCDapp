@@ -22,16 +22,11 @@ const AcceptButton: FC<AcceptButtonProps & PropsWithChildren> = ({
 }) => {
   const { colony, canInteractWithColony } = useColonyContext();
   const [isClaimed, setIsClaimed] = useState(false);
-  const allTokenAddresses = [
-    ...new Set(
-      tokenAddressesGroupedByChain.flatMap((group) => group.tokenAddresses),
-    ),
-  ];
 
   const {
     isAcceptLoading,
     enableAcceptLoading,
-    setPendingFundsTokenAddresses,
+    setPendingFundsChainTokens,
     reset,
   } = useIncomingFundsLoadingContext();
 
@@ -47,7 +42,7 @@ const AcceptButton: FC<AcceptButtonProps & PropsWithChildren> = ({
 
   const handleClaimSuccess = () => {
     setIsClaimed(true);
-    setPendingFundsTokenAddresses(allTokenAddresses);
+    setPendingFundsChainTokens(tokenAddressesGroupedByChain);
   };
 
   const isBtnDisabled =

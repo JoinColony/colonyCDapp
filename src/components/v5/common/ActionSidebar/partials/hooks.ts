@@ -8,6 +8,8 @@ import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
+import { type ClaimTokensOnChainsPayload } from '~redux/types/actions/colony.ts';
+import { notNull } from '~utils/arrays/index.ts';
 import { canColonyBeUpgraded } from '~utils/checks/index.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
@@ -18,10 +20,7 @@ import {
 } from '../consts.ts';
 import { useActiveActionType } from '../hooks/useActiveActionType.ts';
 import { useCheckOperationType } from '../hooks/useCheckOperationType.ts';
-import {
-  type ClaimMintTokensActionParams,
-  type FinalizeSuccessCallback,
-} from '../types.ts';
+import { type FinalizeSuccessCallback } from '../types.ts';
 
 const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.PaymentBuilder]: 'button.createPayment',
@@ -141,10 +140,17 @@ export const useIsFieldDisabled = () => {
 };
 
 export const useFinalizeSuccessCallback = (): FinalizeSuccessCallback => {
-  const claimMintTokens = useAsyncFunction<ClaimMintTokensActionParams, void>({
-    submit: ActionTypes.CLAIM_TOKEN,
-    error: ActionTypes.CLAIM_TOKEN_ERROR,
-    success: ActionTypes.CLAIM_TOKEN_SUCCESS,
+  const { colony } = useColonyContext();
+  const colonyTokens = useMemo(
+    () =>
+      colony.tokens?.items.filter(notNull).map((token) => token.token) || [],
+    [colony.tokens?.items],
+  );
+
+  const claimMintTokens = useAsyncFunction<ClaimTokensOnChainsPayload, void>({
+    submit: ActionTypes.CLAIM_TOKENS_ON_CHAINS,
+    error: ActionTypes.CLAIM_TOKENS_ON_CHAINS_ERROR,
+    success: ActionTypes.CLAIM_TOKENS_ON_CHAINS_SUCCESS,
   });
 
   // We want to trigger this callback only when the Finalize button is pressed
@@ -153,9 +159,18 @@ export const useFinalizeSuccessCallback = (): FinalizeSuccessCallback => {
       case ColonyActionType.MintTokensMotion:
       case ColonyActionType.MintTokensMultisig: {
         if (action.tokenAddress) {
+          const token = colonyTokens.find(
+            (colonyToken) => colonyToken.tokenAddress === action.tokenAddress,
+          );
+          const tokenAddressesGroupedByChain = [
+            {
+              chainId: token?.chainMetadata?.chainId,
+              tokenAddresses: [action.tokenAddress],
+            },
+          ];
           claimMintTokens({
-            tokenAddresses: [action.tokenAddress],
             colonyAddress: action.colonyAddress,
+            tokenAddressesGroupedByChain,
           }).catch(() => {
             console.error(`An error occured while claiming tokens`);
           });

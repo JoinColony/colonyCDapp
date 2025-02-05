@@ -4,6 +4,8 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 
+import { type PendingFundsChainTokens } from './types.ts';
+
 export const useRefetchColonyData = (
   shouldRefetchColonyData: boolean,
   reset: () => void,
@@ -40,16 +42,25 @@ export const useRefetchColonyData = (
 };
 
 export const useFundsStateUpdater = (
-  pendingFundsTokenAddresses: string[],
+  pendingFundsTokenAddresses: PendingFundsChainTokens,
   reset: () => void,
 ) => {
   const fundsClaims = useColonyFundsClaims();
   const unclaimedFundsClaims = fundsClaims.filter(
-    (claim) =>
-      claim.amount !== '0' &&
-      !claim.isClaimed &&
-      claim.token?.tokenAddress &&
-      pendingFundsTokenAddresses.includes(claim.token?.tokenAddress),
+    ({ amount, isClaimed, token }) => {
+      const { tokenAddress, chainMetadata } = token || {};
+
+      return (
+        amount !== '0' &&
+        !isClaimed &&
+        tokenAddress &&
+        pendingFundsTokenAddresses.some(
+          ({ chainId, tokenAddresses }) =>
+            chainId === chainMetadata?.chainId &&
+            tokenAddresses.includes(tokenAddress),
+        )
+      );
+    },
   );
   const previousUnclaimedFundsClaims = usePrevious(unclaimedFundsClaims);
 
