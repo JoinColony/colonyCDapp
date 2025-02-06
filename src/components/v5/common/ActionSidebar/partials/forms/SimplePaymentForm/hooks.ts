@@ -4,7 +4,9 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
 import { array, type InferType, number, object, string } from 'yup';
 
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useDeployedChainIds } from '~hooks/proxyColonies/useDeployedChainIds.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import useTokenLockStates from '~hooks/useTokenLockStates.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -19,12 +21,33 @@ import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreater
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
+  CHAIN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import {
+  type IconOption,
+  type SearchSelectOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 import { getSimplePaymentPayload } from './utils.tsx';
+
+export const useActiveChainsFilter = () => {
+  const activeProxyColoniesChainIds = useDeployedChainIds({
+    filterFn: (deployedProxyColony) => deployedProxyColony?.isActive,
+  });
+
+  const filterFn = ({ value: chainId }: SearchSelectOption<IconOption>) => {
+    // keep the default chain from the select
+    if (chainId === DEFAULT_NETWORK_INFO.chainId) {
+      return true;
+    }
+
+    return activeProxyColoniesChainIds.includes(chainId.toString());
+  };
+  return filterFn;
+};
 
 export const useValidationSchema = (networkInverseFee: string | undefined) => {
   const { colony } = useColonyContext();
@@ -81,6 +104,9 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                 ),
             ),
           createdIn: number().defined(),
+          [CHAIN_FIELD_NAME]: string().required(
+            formatText({ id: 'errors.chain.required' }),
+          ),
           recipient: string().address().required(),
           from: number().required(),
           decisionMethod: string().defined(),
@@ -136,6 +162,7 @@ export const useSimplePayment = (
     defaultValues: useMemo<DeepPartial<SimplePaymentFormValues>>(
       () => ({
         createdIn: Id.RootDomain,
+        chain: DEFAULT_NETWORK_INFO.chainId,
         payments: [],
         tokenAddress: colony.nativeToken.tokenAddress,
       }),

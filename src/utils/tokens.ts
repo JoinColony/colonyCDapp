@@ -120,6 +120,7 @@ export const calculateFee = (
   };
 };
 
+// @TODO filter by chainId too
 export const getSelectedToken = (
   colony: Pick<Colony, 'tokens'>,
   tokenAddress: string,

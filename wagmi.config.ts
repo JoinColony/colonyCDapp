@@ -32,6 +32,11 @@ const contracts: Contract[] = [
     address: '0x777760996135F0791E2e1a74aFAa060711197781',
     path: 'bridging/ProxyColony.sol/ProxyColony.json',
   },
+  {
+    name: 'OneTxPayment',
+    address: '0x777760996135F0791E2e1a74aFAa060711197782',
+    path: 'extensions/OneTxPayment.sol/OneTxPayment.json',
+  },
 ];
 
 export default defineConfig({

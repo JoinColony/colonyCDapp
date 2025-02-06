@@ -210,7 +210,6 @@
     "learn.more": "Learn more",
     "learnMoreComponent.helpAndGuidance": "Need help and guidance? <a>Visit our docs</a>",
     "loader.noMoreResults": "No more results",
-
     "transaction.cancel.title": "Transaction cancelled",
     "transaction.cancel.description": "Transaction cancelled by user",
     "transaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
@@ -978,6 +977,7 @@
     "retry": "Retry",
     "cancel": "Cancel",
     "menu": "Menu",
+    "on": "on",
     "total.balance": "Total balance",
     "active": "Active",
     "staked": "Staked",
