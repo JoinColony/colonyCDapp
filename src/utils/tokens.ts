@@ -22,11 +22,11 @@ import { convertToDecimal } from './convertToDecimal.ts';
 export const getBalanceForTokenAndDomain = (
   balances: ColonyBalances | null | undefined,
   tokenAddress: Address,
-  domainId: number = COLONY_TOTAL_BALANCE_DOMAIN_ID,
+  domainId: number | '' = COLONY_TOTAL_BALANCE_DOMAIN_ID,
 ) => {
   const currentDomainBalance = balances?.items
     ?.filter((domainBalance) =>
-      domainId === COLONY_TOTAL_BALANCE_DOMAIN_ID
+      domainId === COLONY_TOTAL_BALANCE_DOMAIN_ID || domainId === ''
         ? domainBalance?.domain === null
         : domainBalance?.domain?.nativeId === domainId,
     )
