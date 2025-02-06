@@ -116,6 +116,7 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.TokensNumber,
       ];
     case actionType.includes(ColonyActionType.FundExpenditureMotion):
+    case actionType.includes(ColonyActionType.FinalizeExpenditureMotion):
       return [
         ActionTitleMessageKeys.Initiator,
         ActionTitleMessageKeys.RecipientsNumber,
