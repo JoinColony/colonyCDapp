@@ -51,13 +51,15 @@ const StreamingPaymentsPage = () => {
     nativeDomainId,
   });
 
-  const { isExtensionInstalled, extensionDataLoading } = useExtensionItem(
-    Extension.StreamingPayments,
-  );
+  const { isExtensionInstalled, extensionDataLoading, status } =
+    useExtensionItem(Extension.StreamingPayments);
+
+  const isExtensionDisabled =
+    status === 'deprecated' || (!isExtensionInstalled && !extensionDataLoading);
 
   return (
     <ContentWithTeamFilter>
-      <div className="pb-9">
+      <div className="pb-8">
         <StatsCards
           streamingPerMonth={totalLastMonthStreaming}
           totalActiveStreams={activeStreamingPayments}
@@ -67,12 +69,12 @@ const StreamingPaymentsPage = () => {
           suffix={currency}
         />
       </div>
-      {!isExtensionInstalled && !extensionDataLoading && (
-        <div className="pb-9">
+      {isExtensionDisabled && (
+        <div className="pb-9 pt-1">
           <NoExtensionBanner />
         </div>
       )}
-      <div className="mb-3.5 mt-9 flex-col justify-between sm:flex sm:flex-row sm:items-center">
+      <div className="mb-3.5 flex-col justify-between sm:flex sm:flex-row sm:items-center">
         <div className="mb-2.5 flex items-center gap-2 sm:mb-0">
           <h4 className="heading-5">{formatText(MSG.title)}</h4>
         </div>
@@ -87,6 +89,7 @@ const StreamingPaymentsPage = () => {
                 [ACTION_TYPE_FIELD_NAME]: Action.StreamingPayment,
               });
             }}
+            disabled={isExtensionDisabled}
           >
             {formatText(MSG.createNewStream)}
           </Button>

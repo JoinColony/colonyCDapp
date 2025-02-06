@@ -26,15 +26,13 @@ const NoExtensionBanner = () => {
   const { extensionUrl } = useExtensionItem(Extension.StreamingPayments);
 
   return (
-    <div className="pb-9">
-      <NotificationBanner
-        status="warning"
-        icon={WarningCircle}
-        callToAction={<Link to={extensionUrl}>{formatMessage(MSG.link)}</Link>}
-      >
-        {formatMessage(MSG.bannerInfo)}
-      </NotificationBanner>
-    </div>
+    <NotificationBanner
+      status="warning"
+      icon={WarningCircle}
+      callToAction={<Link to={extensionUrl}>{formatMessage(MSG.link)}</Link>}
+    >
+      {formatMessage(MSG.bannerInfo)}
+    </NotificationBanner>
   );
 };
 
