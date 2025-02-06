@@ -32,7 +32,11 @@ export const MSG = defineMessages({
   contractAddressServerError: {
     id: `${displayName}.contractAddressServerError`,
     defaultMessage:
-      'Note: We were unable to verify this contract. Please proceed only if you fully understand its functionality and trust its source.',
+      'We were unable to verify this contract. Please proceed only if you fully understand its functionality and trust its source.',
+  },
+  contractAddressServerErrorNote: {
+    id: `${displayName}.contractAddressServerErrorNote`,
+    defaultMessage: 'Note:',
   },
   jsonAbiField: {
     id: `${displayName}.jsonAbiField`,
