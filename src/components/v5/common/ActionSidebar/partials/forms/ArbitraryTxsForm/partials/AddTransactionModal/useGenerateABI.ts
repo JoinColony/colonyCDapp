@@ -6,10 +6,13 @@ import useGetCurrentNetwork from '~hooks/useGetCurrentNetwork.ts';
 import { formatText } from '~utils/intl.ts';
 import { fetchContractABI } from '~utils/safes/index.ts';
 
+import { MSG } from './translation.ts';
+
 export const useGenerateABI = ({ setContractAbiLoading }) => {
   const { watch, setValue, trigger } = useFormContext();
 
-  const [serverError, setServerError] = useState('');
+  const [contractAddressServerError, setContractAddressServerError] =
+    useState('');
   const networkInfo = useGetCurrentNetwork();
 
   const [isJsonAbiFormatted, setIsJsonAbiFormatted] = useState(false);
@@ -29,18 +32,27 @@ export const useGenerateABI = ({ setContractAbiLoading }) => {
 
         setContractAbiLoading(false);
         if (response.status === '1') {
-          setServerError('');
+          setContractAddressServerError('');
           setValue('jsonAbi', response.result);
           trigger('jsonAbi'); // Trigger validation to clear previous errors
           setShowJsonAbiEditWarning(true);
         } else {
-          setServerError(
-            response?.result ?? formatText({ id: 'error.message' }),
-          );
+          const errorMessage = response?.result;
+          if (errorMessage) {
+            if (errorMessage.toLowerCase().includes('not verified')) {
+              setContractAddressServerError(
+                formatText(MSG.contractAddressServerError),
+              );
+            } else {
+              setContractAddressServerError(errorMessage);
+            }
+          } else {
+            setContractAddressServerError(formatText({ id: 'error.message' }));
+          }
         }
       } catch (e) {
         setContractAbiLoading(false);
-        setServerError(e.message);
+        setContractAddressServerError(e.message);
         // eslint-disable-next-line no-console
         console.log(e);
       }
@@ -110,7 +122,7 @@ export const useGenerateABI = ({ setContractAbiLoading }) => {
   };
 
   return {
-    serverError,
+    contractAddressServerError,
     isJsonAbiFormatted,
     showJsonAbiEditWarning,
     toggleJsonFormat,

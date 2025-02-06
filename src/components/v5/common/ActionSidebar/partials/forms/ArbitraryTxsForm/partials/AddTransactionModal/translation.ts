@@ -29,6 +29,15 @@ export const MSG = defineMessages({
     id: `${displayName}.contractAddressError`,
     defaultMessage: 'Please enter a valid contract address.',
   },
+  contractAddressServerError: {
+    id: `${displayName}.contractAddressServerError`,
+    defaultMessage:
+      'We were unable to verify this contract. Please proceed only if you fully understand its functionality and trust its source.',
+  },
+  contractAddressServerErrorNote: {
+    id: `${displayName}.contractAddressServerErrorNote`,
+    defaultMessage: 'Note:',
+  },
   jsonAbiField: {
     id: `${displayName}.jsonAbiField`,
     defaultMessage: 'ABI/JSON',
