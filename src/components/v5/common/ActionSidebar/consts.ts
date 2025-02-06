@@ -33,6 +33,7 @@ export const ARBITRARY_TRANSACTIONS_FIELD_NAME = 'transactions';
 export const COLONY_OBJECTIVE_TITLE_FIELD_NAME = 'colonyObjectiveTitle';
 export const COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME =
   'colonyObjectiveDescription';
+export const ACTION_TITLE_MAX_LENGTH = 60;
 
 export const NON_RESETTABLE_FIELDS = [TITLE_FIELD_NAME, ACTION_TYPE_FIELD_NAME];
 
@@ -54,9 +55,9 @@ export const ACTION_BASE_VALIDATION_SCHEMA = object()
   .shape({
     title: string()
       .required(formatText({ id: 'errors.title.required' }))
-      .max(60, ({ max }) =>
+      .max(ACTION_TITLE_MAX_LENGTH, ({ max }) =>
         formatText(
-          { id: 'errors.title.maxLength' },
+          { id: 'errors.text.maxLength' },
           {
             maxLength: max,
           },

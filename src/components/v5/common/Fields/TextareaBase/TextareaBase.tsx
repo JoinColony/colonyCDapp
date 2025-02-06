@@ -85,19 +85,19 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
             id={id}
             {...rest}
           />
+          {state === FieldState.Error &&
+            notMaybe(maxLength) &&
+            !withoutCounter && (
+              <div
+                className={clsx('absolute right-0 flex justify-end text-4', {
+                  'text-negative-400': state === FieldState.Error,
+                  'text-gray-500': state !== FieldState.Error,
+                })}
+              >
+                {typeof value === 'string' && value.length}/{maxLength}
+              </div>
+            )}
         </div>
-        {state === FieldState.Error &&
-          notMaybe(maxLength) &&
-          !withoutCounter && (
-            <div
-              className={clsx('absolute right-0 flex justify-end text-4', {
-                'text-negative-400': state === FieldState.Error,
-                'text-gray-500': state !== FieldState.Error,
-              })}
-            >
-              {typeof value === 'string' && value.length}/{maxLength}
-            </div>
-          )}
         {!!message && (
           <span
             className={clsx(
