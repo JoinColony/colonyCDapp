@@ -8,5 +8,5 @@ export const withForwardingRef = <Props extends Record<string, any>>(
   BaseComponent: ComponentType<Props>,
 ) =>
   forwardRef<ForwardedRefProps, Props>((props, ref) =>
-    createElement(BaseComponent, { ...props, forwardedRef: ref }),
+    createElement(BaseComponent, { ...(props as Props), forwardedRef: ref }),
   );

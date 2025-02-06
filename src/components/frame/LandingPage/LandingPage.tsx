@@ -47,7 +47,7 @@ const LandingPage = () => {
       bottomComponent={
         isContentLoading ? (
           <LoadingSkeleton
-            isLoading
+            // isLoading
             className="m-6 h-[2.125rem] w-full rounded md:hidden"
           />
         ) : (

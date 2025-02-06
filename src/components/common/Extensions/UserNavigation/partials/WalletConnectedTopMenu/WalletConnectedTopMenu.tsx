@@ -1,6 +1,7 @@
-import { UserCircleGear } from '@phosphor-icons/react';
+import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
+import { UserCircleGear, Wallet } from '@phosphor-icons/react';
 import React, { type PropsWithChildren, type FC } from 'react';
-import { useIntl } from 'react-intl';
+import { useIntl, defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useTablet } from '~hooks/index.ts';
@@ -14,10 +15,18 @@ import Link from '~v5/shared/Link/index.ts';
 const displayName =
   'common.Extensions.UserNavigation.partials.WalletConnectedTopMenu';
 
+const MSG = defineMessages({
+  manageEmbedded: {
+    id: `${displayName}.manageEmbedded`,
+    defaultMessage: 'Manage wallet',
+  },
+});
+
 const WalletConnectedTopMenu: FC<PropsWithChildren> = ({ children }) => {
   const { formatMessage } = useIntl();
-  const { user } = useAppContext();
+  const { user, wallet } = useAppContext();
   const isTablet = useTablet();
+  const { setShowAuthFlow } = useDynamicContext();
 
   const iconSize = isTablet ? 18 : 16;
 
@@ -44,6 +53,22 @@ const WalletConnectedTopMenu: FC<PropsWithChildren> = ({ children }) => {
             {formatMessage({ id: 'userMenu.createTitle' })}
           </p>
         </Link>
+      )}
+      {/*
+       * Only show the manage embedded wallet link if the wallet is embedded / custodial
+       * All the other wallet types have their own interface
+       */}
+      {wallet?.label === 'turnkeyhd' && (
+        <div className="navigation-link -ml-4 w-[calc(100%+2rem)] rounded hover:bg-gray-50">
+          <Wallet size={iconSize} />
+          <button
+            type="button"
+            className="ml-2"
+            onClick={() => setShowAuthFlow(true)}
+          >
+            {formatMessage(MSG.manageEmbedded)}
+          </button>
+        </div>
       )}
     </div>
   );

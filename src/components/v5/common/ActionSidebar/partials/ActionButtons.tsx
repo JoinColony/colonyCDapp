@@ -3,10 +3,7 @@ import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
-import { isElementInsideModalOrPortal } from '~context/ActionSidebarContext/utils.ts';
 import { useMobile } from '~hooks/index.ts';
-import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
@@ -32,40 +29,16 @@ const ActionButtons: FC<ActionButtonsProps> = ({
   const submitText = useSubmitButtonText();
   const isButtonDisabled = useSubmitButtonDisabled();
   const {
-    formState: { isSubmitting, dirtyFields },
+    formState: { isSubmitting },
     getValues,
   } = useFormContext();
-  const {
-    actionSidebarToggle: [, { useRegisterOnBeforeCloseCallback }],
-    cancelModalToggle: [isCancelModalOpen, { toggleOn: toggleCancelModalOn }],
-  } = useActionSidebarContext();
   const { closeSidebarClick } = useCloseSidebarClick();
   const isFieldDisabled = useIsFieldDisabled();
-  const { getIsDraftAgreement } = useDraftAgreement();
 
   const formValues = getValues();
   const selectedActionType = formValues[ACTION_TYPE_FIELD_NAME];
   const createDecisionActionSelected =
     selectedActionType === Action.CreateDecision;
-
-  useRegisterOnBeforeCloseCallback((element) => {
-    const isClickedInside = isElementInsideModalOrPortal(element);
-
-    if (!isClickedInside) {
-      return false;
-    }
-
-    if (
-      Object.keys(dirtyFields).length > 0 &&
-      !isCancelModalOpen &&
-      !getIsDraftAgreement()
-    ) {
-      toggleCancelModalOn();
-      return false;
-    }
-
-    return undefined;
-  });
 
   const primaryButtonType = primaryButton?.type ?? 'submit';
 

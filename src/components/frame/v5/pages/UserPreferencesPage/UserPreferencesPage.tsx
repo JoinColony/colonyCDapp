@@ -23,11 +23,12 @@ const MSG = defineMessages({
 });
 
 const UserPreferencesPage: FC = () => {
-  const { user, userLoading, walletConnecting } = useAppContext();
+  const { user, userLoading, walletConnecting, willWalletAutoConnect } =
+    useAppContext();
 
   useSetPageHeadingTitle(formatText({ id: 'userPreferencesPage.title' }));
 
-  if (userLoading || walletConnecting) {
+  if (userLoading || walletConnecting || (!user && willWalletAutoConnect)) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
   }
 

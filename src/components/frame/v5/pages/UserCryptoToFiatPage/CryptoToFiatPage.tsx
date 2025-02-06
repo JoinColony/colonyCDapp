@@ -32,7 +32,8 @@ const MSG = defineMessages({
 });
 
 const UserCryptoToFiatPage = () => {
-  const { user, userLoading, walletConnecting } = useAppContext();
+  const { user, userLoading, walletConnecting, willWalletAutoConnect } =
+    useAppContext();
   const featureFlags = useContext(FeatureFlagsContext);
   const cryptoToFiatFeatureFlag = featureFlags[FeatureFlag.CRYPTO_TO_FIAT];
 
@@ -45,7 +46,8 @@ const UserCryptoToFiatPage = () => {
     return <Navigate to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`} />;
   }
 
-  const isLoadingUserAndWalletInfo = userLoading || walletConnecting;
+  const isLoadingUserAndWalletInfo =
+    userLoading || walletConnecting || (!user && willWalletAutoConnect);
 
   if (!isLoadingUserAndWalletInfo && !user) {
     return <Navigate to={LANDING_PAGE_ROUTE} />;

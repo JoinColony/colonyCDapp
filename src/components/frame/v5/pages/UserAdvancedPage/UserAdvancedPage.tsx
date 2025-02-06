@@ -20,11 +20,12 @@ const MSG = defineMessages({
 });
 
 const UserAdvancedPage = () => {
-  const { user, userLoading, walletConnecting } = useAppContext();
+  const { user, userLoading, walletConnecting, willWalletAutoConnect } =
+    useAppContext();
 
   useSetPageHeadingTitle(formatText({ id: 'advancedSettings.title' }));
 
-  if (userLoading || walletConnecting) {
+  if (userLoading || walletConnecting || (!user && willWalletAutoConnect)) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
   }
 
