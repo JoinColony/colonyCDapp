@@ -1,6 +1,8 @@
+import { Extension } from '@colony/colony-js';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useExtensionItem } from '~common/Extensions/ExtensionItem/hooks.ts';
 import { Action } from '~constants/actions.ts';
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
@@ -12,6 +14,7 @@ import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
+import NoExtensionBanner from './partials/NoExtensionBanner/NoExtensionBanner.tsx';
 import StatsCards from './partials/StatsCards/StatsCards.tsx';
 import StreamingPaymentPageFilters from './partials/StreamingPaymentsTable/partials/StreamingPaymentFilters/StreamingPaymentFilters.tsx';
 import StreamingPaymentsTable from './partials/StreamingPaymentsTable/StreamingPaymentsTable.tsx';
@@ -48,17 +51,30 @@ const StreamingPaymentsPage = () => {
     nativeDomainId,
   });
 
+  const { isExtensionInstalled, extensionDataLoading, status } =
+    useExtensionItem(Extension.StreamingPayments);
+
+  const isExtensionDisabled =
+    status === 'deprecated' || (!isExtensionInstalled && !extensionDataLoading);
+
   return (
     <ContentWithTeamFilter>
-      <StatsCards
-        streamingPerMonth={totalLastMonthStreaming}
-        totalActiveStreams={activeStreamingPayments}
-        totalStreamed={totalStreamed}
-        unclaimedFounds={totalFunds.totalAvailable}
-        prefix={currencySymbolMap[currency]}
-        suffix={currency}
-      />
-      <div className="mb-3.5 mt-9 flex-col justify-between sm:flex sm:flex-row sm:items-center">
+      <div className="pb-8">
+        <StatsCards
+          streamingPerMonth={totalLastMonthStreaming}
+          totalActiveStreams={activeStreamingPayments}
+          totalStreamed={totalStreamed}
+          unclaimedFounds={totalFunds.totalAvailable}
+          prefix={currencySymbolMap[currency]}
+          suffix={currency}
+        />
+      </div>
+      {isExtensionDisabled && (
+        <div className="pb-9 pt-1">
+          <NoExtensionBanner />
+        </div>
+      )}
+      <div className="mb-3.5 flex-col justify-between sm:flex sm:flex-row sm:items-center">
         <div className="mb-2.5 flex items-center gap-2 sm:mb-0">
           <h4 className="heading-5">{formatText(MSG.title)}</h4>
         </div>
@@ -73,6 +89,7 @@ const StreamingPaymentsPage = () => {
                 [ACTION_TYPE_FIELD_NAME]: Action.StreamingPayment,
               });
             }}
+            disabled={isExtensionDisabled}
           >
             {formatText(MSG.createNewStream)}
           </Button>
