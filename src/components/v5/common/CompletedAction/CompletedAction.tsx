@@ -171,7 +171,7 @@ const CompletedAction = ({ action }: ICompletedAction) => {
   return (
     <div
       data-testid="completed-action"
-      className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start"
+      className="flex h-fit w-full flex-col-reverse overflow-auto sm:h-full sm:flex-row sm:justify-start"
     >
       <div
         className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8', {
