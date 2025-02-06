@@ -37,6 +37,7 @@ const MSG = defineMessages({
 const ActionWithStakingInfo: FC<ActionWithStakingInfoProps> = ({
   userAdddress,
   stakeAmount,
+  title,
 }) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
@@ -58,7 +59,7 @@ const ActionWithStakingInfo: FC<ActionWithStakingInfoProps> = ({
           iconSize={16}
           iconClassName="text-gray-500"
         >
-          {formatText(MSG.info)}
+          {title ?? formatText(MSG.info)}
         </StatusText>
       }
       sections={[

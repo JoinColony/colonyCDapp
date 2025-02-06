@@ -64,6 +64,7 @@ const formatDate = (value: string | undefined) => {
 };
 
 const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
+  title,
   action,
 }) => {
   if (!action) {
@@ -83,9 +84,10 @@ const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
           iconSize={16}
           iconClassName="text-gray-500"
         >
-          {formatText({
-            id: 'action.executed.permissions.description',
-          })}
+          {title ??
+            formatText({
+              id: 'action.executed.permissions.description',
+            })}
         </StatusText>
       }
       sections={[
