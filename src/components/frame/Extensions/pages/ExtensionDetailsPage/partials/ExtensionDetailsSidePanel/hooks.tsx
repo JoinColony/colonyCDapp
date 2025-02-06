@@ -1,4 +1,4 @@
-import { type Extension } from '@colony/colony-js';
+import { Extension } from '@colony/colony-js';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -7,9 +7,15 @@ import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/Extensio
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
 import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import { useColonyStreamingPayments } from '~hooks/useColonyStreamingPayments.ts';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
+import { useStreamingPaymentsTotalFunds } from '~shared/StreamingPayments/hooks.ts';
+import { type StreamingPaymentItems } from '~shared/StreamingPayments/types.ts';
+import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
+import { getStreamingPaymentStatus } from '~utils/streamingPayments.ts';
 
 export const useUninstall = (extensionId: Extension) => {
   const {
@@ -123,5 +129,64 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
   return {
     handleDeprecate,
     isLoading,
+  };
+};
+
+export const useGetActiveAndUnclaimedStreams = () => {
+  const { colony } = useColonyContext();
+  const { currentBlockTime: blockTime } = useCurrentBlockTime();
+
+  const { streamingPayments } = useColonyStreamingPayments({
+    colonyId: colony.colonyAddress,
+  });
+
+  const getTotalActiveStreamingPayments = (items: StreamingPaymentItems) => {
+    const activeStreams = items.filter((item) => {
+      return (
+        getStreamingPaymentStatus({
+          streamingPayment: item,
+          currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
+        }) === StreamingPaymentStatus.Active
+      );
+    });
+    return activeStreams.length;
+  };
+
+  const activeStreams = getTotalActiveStreamingPayments(streamingPayments);
+
+  const { totalFunds } = useStreamingPaymentsTotalFunds({
+    isFilteredByWalletAddress: false,
+  });
+
+  return {
+    hasActiveStream: activeStreams > 0,
+    hasUnclaimedFunds: totalFunds.totalAvailable > 0,
+  };
+};
+
+export const useGetUninstallExtensionInfo = () => {
+  const { hasActiveStream, hasUnclaimedFunds } =
+    useGetActiveAndUnclaimedStreams();
+
+  const canRemoveExtension = (extensionId: Extension) => {
+    switch (extensionId) {
+      case Extension.StreamingPayments: {
+        const isStreamingPaymentsExtension =
+          extensionId === Extension.StreamingPayments;
+
+        return (
+          !isStreamingPaymentsExtension ||
+          (isStreamingPaymentsExtension &&
+            !hasActiveStream &&
+            !hasUnclaimedFunds)
+        );
+      }
+      default:
+        return true;
+    }
+  };
+
+  return {
+    canRemoveExtension,
   };
 };
