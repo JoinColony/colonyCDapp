@@ -53,7 +53,7 @@ export const useUserSelect = ({
             thumbnail: profile?.thumbnail || undefined,
             id: result.length,
             showAvatar: true,
-            walletAddress,
+            walletAddress: walletAddress || member.contributorAddress,
             isVerified: member.isVerified,
             userReputation,
           },
