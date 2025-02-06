@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { ColonyRole, Id } from '@colony/colony-js';
+import { isNaN } from 'lodash';
 import difference from 'lodash/difference';
 import { defineMessages } from 'react-intl';
 import { boolean, number, object, string, type TestContext } from 'yup';
@@ -154,8 +155,10 @@ const MSG = defineMessages({
 
 export const validationSchema = object()
   .shape<ManagePermissionsFormValues>({
-    member: string().required(),
-    team: number().required(),
+    member: string().required(formatText({ id: 'errors.member.required' })),
+    team: number()
+      .transform((value) => (isNaN(value) ? undefined : value))
+      .required(formatText({ id: 'errors.domain' })),
     createdIn: number().defined(),
     role: string()
       .test({
@@ -337,8 +340,10 @@ export const validationSchema = object()
           return true;
         },
       })
-      .required(),
-    authority: getEnumYupSchema(Authority).required(),
+      .required(formatText({ id: 'errors.role.required' })),
+    authority: getEnumYupSchema(Authority).required(
+      formatText({ id: 'errors.authority.required' }),
+    ),
     permissions: permissionsSchema.when('role', {
       is: UserRole.Custom,
       then: (schema: typeof permissionsSchema) =>
@@ -414,7 +419,9 @@ export const validationSchema = object()
             },
           }),
     }),
-    decisionMethod: getEnumYupSchema(DecisionMethod).required(),
+    decisionMethod: getEnumYupSchema(DecisionMethod).required(
+      formatText({ id: 'errors.decisionMethod.required' }),
+    ),
     title: string().required(), // @TODO these two dont get inferred from the schema with concat
     description: string().optional(),
   })

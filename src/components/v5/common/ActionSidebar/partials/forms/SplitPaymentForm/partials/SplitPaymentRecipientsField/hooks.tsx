@@ -19,6 +19,7 @@ import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { type ColonyContributor, type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
+import InputsOrderCellWrapper from '~v5/common/ActionSidebar/partials/ActionSidebarContent/partials/InputsOrderCellWrapper.tsx';
 import { getUnevenSplitPaymentTotalPercentage } from '~v5/common/ActionSidebar/partials/forms/SplitPaymentForm/utils.ts';
 import UserSelect, {
   type UserSearchSelectOption,
@@ -93,20 +94,25 @@ export const useRecipientsFieldTableColumns = ({
         columnHelper.display({
           id: 'recipient',
           header: () => formatText({ id: 'table.row.recipient' }),
-          cell: ({ row }) => (
-            <UserSelect
-              key={row.id}
-              name={`${name}.${row.index}.recipient`}
-              disabled={disabled}
-              domainId={domainId}
-              filterOptionsFn={
-                distributionMethodRef?.current ===
-                SplitPaymentDistributionType.Reputation
-                  ? filterUsersWithReputation
-                  : undefined
-              }
-            />
-          ),
+          cell: ({ row }) => {
+            const fieldName = `${name}.${row.index}.recipient`;
+            return (
+              <InputsOrderCellWrapper fieldName={fieldName}>
+                <UserSelect
+                  key={row.id}
+                  name={fieldName}
+                  disabled={disabled}
+                  domainId={domainId}
+                  filterOptionsFn={
+                    distributionMethodRef?.current ===
+                    SplitPaymentDistributionType.Reputation
+                      ? filterUsersWithReputation
+                      : undefined
+                  }
+                />
+              </InputsOrderCellWrapper>
+            );
+          },
           footer: () => (
             <span className="text-gray-400 text-4">
               {formatText({ id: 'table.footer.total' })}
@@ -116,33 +122,40 @@ export const useRecipientsFieldTableColumns = ({
         columnHelper.display({
           id: 'amount',
           header: () => formatText({ id: 'table.row.amount' }),
-          cell: ({ row }) => (
-            <SplitPaymentAmountField
-              key={row.id}
-              name={`${name}.${row.index}.amount`}
-              tokenAddressFieldName={`${name}.${row.index}.tokenAddress`}
-              isDisabled={disabled}
-              onBlur={
-                amount
-                  ? () => {
-                      const percentCalculated = calculatePercentageValue(
-                        dataRef.current?.[row.index].amount,
-                        amount,
-                      );
+          cell: ({ row }) => {
+            const fieldNameAmount = `${name}.${row.index}.amount`;
+            return (
+              <InputsOrderCellWrapper fieldName={fieldNameAmount}>
+                <SplitPaymentAmountField
+                  key={row.id}
+                  name={fieldNameAmount}
+                  tokenAddressFieldName={`${name}.${row.index}.tokenAddress`}
+                  isDisabled={disabled}
+                  onBlur={
+                    amount
+                      ? () => {
+                          const percentCalculated = calculatePercentageValue(
+                            dataRef.current?.[row.index].amount,
+                            amount,
+                          );
 
-                      if (percentCalculated === getPercentValue(row.index)) {
-                        return;
-                      }
+                          if (
+                            percentCalculated === getPercentValue(row.index)
+                          ) {
+                            return;
+                          }
 
-                      update(row.index, {
-                        ...(dataRef.current?.[row.index] || {}),
-                        percent: percentCalculated,
-                      });
-                    }
-                  : undefined
-              }
-            />
-          ),
+                          update(row.index, {
+                            ...(dataRef.current?.[row.index] || {}),
+                            percent: percentCalculated,
+                          });
+                        }
+                      : undefined
+                  }
+                />
+              </InputsOrderCellWrapper>
+            );
+          },
           footer: () => (
             <div className="flex items-center justify-end gap-9 md:justify-start">
               <SplitPaymentPayoutsTotal
@@ -174,39 +187,45 @@ export const useRecipientsFieldTableColumns = ({
         columnHelper.display({
           id: 'percent',
           header: () => formatText({ id: 'table.row.percent' }),
-          cell: ({ row }) => (
-            <SplitPaymentPercentField
-              onBlur={
-                amount
-                  ? () => {
-                      const percentCalculated = getPercentValue(row.index);
+          cell: ({ row }) => {
+            const fieldName = `${name}.${row.index}.percent`;
+            return (
+              <InputsOrderCellWrapper fieldName={fieldName}>
+                <SplitPaymentPercentField
+                  onBlur={
+                    amount
+                      ? () => {
+                          const percentCalculated = getPercentValue(row.index);
 
-                      const amountCalculated = new Decimal(amount)
-                        .mul(percentCalculated)
-                        .div(100)
-                        .toDecimalPlaces(
-                          token.decimals || DEFAULT_TOKEN_DECIMALS,
-                        )
-                        .toFixed();
+                          const amountCalculated = new Decimal(amount)
+                            .mul(percentCalculated)
+                            .div(100)
+                            .toDecimalPlaces(
+                              token.decimals || DEFAULT_TOKEN_DECIMALS,
+                            )
+                            .toFixed();
 
-                      if (
-                        dataRef.current?.[row.index].amount === amountCalculated
-                      ) {
-                        return;
-                      }
+                          if (
+                            dataRef.current?.[row.index].amount ===
+                            amountCalculated
+                          ) {
+                            return;
+                          }
 
-                      update(row.index, {
-                        ...(dataRef.current?.[row.index] || {}),
-                        amount: amountCalculated,
-                      });
-                    }
-                  : undefined
-              }
-              key={row.id}
-              name={`${name}.${row.index}.percent`}
-              disabled={disabled}
-            />
-          ),
+                          update(row.index, {
+                            ...(dataRef.current?.[row.index] || {}),
+                            amount: amountCalculated,
+                          });
+                        }
+                      : undefined
+                  }
+                  key={row.id}
+                  name={fieldName}
+                  disabled={disabled}
+                />
+              </InputsOrderCellWrapper>
+            );
+          },
           footer: !isTablet
             ? () => {
                 return (

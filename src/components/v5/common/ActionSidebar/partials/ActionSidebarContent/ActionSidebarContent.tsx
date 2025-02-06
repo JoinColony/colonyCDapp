@@ -36,6 +36,7 @@ import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarD
 import RemoveDraftModal from '../RemoveDraftModal/RemoveDraftModal.tsx';
 
 import { useGetFormActionErrors } from './hooks.ts';
+import InputsOrderContextProvider from './InputsOrderContext/InputsOrderContextProvider.tsx';
 import { MultiSigMembersError } from './partials/MultiSigMembersError.tsx';
 import NoPermissionsError from './partials/NoPermissionsError.tsx';
 import NoReputationError from './partials/NoReputationError.tsx';
@@ -315,11 +316,13 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           }}
           testId="action-form"
         >
-          <ActionSidebarFormContent
-            getFormOptions={getFormOptions}
-            actionFormProps={actionFormProps}
-            customError={customError}
-          />
+          <InputsOrderContextProvider>
+            <ActionSidebarFormContent
+              getFormOptions={getFormOptions}
+              actionFormProps={actionFormProps}
+              customError={customError}
+            />
+          </InputsOrderContextProvider>
         </ActionForm>
       </div>
     </div>

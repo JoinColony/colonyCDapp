@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+import { isNaN } from 'lodash';
 import { useMemo } from 'react';
 import { type DeepPartial } from 'utility-types';
 import { type InferType, array, number, object, string } from 'yup';
@@ -56,15 +57,17 @@ export const useValidationSchema = () => {
                 return formatText({ id: 'errors.recipient.required' });
               }
               return formatText(
-                { id: 'errors.recipient.requiredIn' },
+                { id: 'errors.recipient.requiredInPayment' },
                 { paymentIndex: index + 1 },
               );
             })
             .address(),
-          [FROM_FIELD_NAME]: number().required(
-            formatText({ id: 'errors.fundFrom.required' }),
+          [FROM_FIELD_NAME]: number()
+            .transform((value) => (isNaN(value) ? undefined : value))
+            .required(formatText({ id: 'errors.fundFrom.required' })),
+          [DECISION_METHOD_FIELD_NAME]: string().required(
+            formatText({ id: 'errors.decisionMethod.required' }),
           ),
-          [DECISION_METHOD_FIELD_NAME]: string().defined(),
           [CREATED_IN_FIELD_NAME]: number().defined(),
           stages: array()
             .of(
@@ -85,15 +88,14 @@ export const useValidationSchema = () => {
                     .required(({ path }) => {
                       const index = getLastIndexFromPath(path);
                       if (index === undefined) {
-                        return formatText({ id: 'errors.amount' });
+                        return formatText({ id: 'errors.milestone.required' });
                       }
                       return formatText(
-                        { id: 'errors.milestone.required' },
+                        { id: 'errors.milestone.requiredIn' },
                         { paymentIndex: index + 1 },
                       );
                     }),
                   [AMOUNT_FIELD_NAME]: string()
-                    .required(formatText({ id: 'errors.amount' }))
                     .test(
                       'more-than-zero',
                       ({ path }) => {
@@ -121,7 +123,8 @@ export const useValidationSchema = () => {
                         context,
                         colony,
                       }),
-                    ),
+                    )
+                    .required(formatText({ id: 'errors.amount' })),
                   [TOKEN_FIELD_NAME]: string()
                     .test(
                       'token-unlocked',
@@ -199,15 +202,9 @@ export const useStagePayment = (
       [nativeToken.tokenAddress],
     ),
     actionType: ActionTypes.EXPENDITURE_CREATE,
-    getFormOptions: (formOptions, form) =>
-      getFormOptions(
-        {
-          ...formOptions,
-          onSuccess: () => setExpectedExpenditureType(ExpenditureType.Staged),
-          actionType: ActionTypes.EXPENDITURE_CREATE,
-        },
-        form,
-      ),
+    getFormOptions,
+
+    onSuccess: () => setExpectedExpenditureType(ExpenditureType.Staged),
     transform: mapPayload((payload: StagedPaymentFormValues) => {
       return getStagedPaymentPayload(colony, payload, networkInverseFee);
     }),

@@ -21,11 +21,34 @@ export const getEditColonyDetailsValidationSchema = (
         image: string().nullable().defined(),
         thumbnail: string().nullable().defined(),
       }),
-      colonyName: string().trim().max(MAX_COLONY_DISPLAY_NAME).required(),
+      colonyName: string()
+        .trim()
+        .required(formatText({ id: 'errors.colonyName.required' }))
+        .max(
+          MAX_COLONY_DISPLAY_NAME,
+          formatText(
+            { id: 'errors.colonyName.maxLength' },
+            {
+              maxLength: MAX_COLONY_DISPLAY_NAME,
+            },
+          ),
+        ),
       createdIn: string().defined(),
-      decisionMethod: string().defined(),
+      decisionMethod: string().required(
+        formatText({ id: 'errors.decisionMethod.required' }),
+      ),
       description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
-      colonyDescription: string().required().max(MAX_COLONY_DESCRIPTION_LENGTH),
+      colonyDescription: string()
+        .required(formatText({ id: 'errors.colonyDescription.required' }))
+        .max(
+          MAX_COLONY_DESCRIPTION_LENGTH,
+          formatText(
+            { id: 'errors.colonyDescription.maxLength' },
+            {
+              maxLength: MAX_COLONY_DESCRIPTION_LENGTH,
+            },
+          ),
+        ),
       externalLinks: array()
         .of(
           object()

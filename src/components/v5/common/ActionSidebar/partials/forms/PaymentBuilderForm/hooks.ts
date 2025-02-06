@@ -1,6 +1,7 @@
 import { Id } from '@colony/colony-js';
 import { unformatNumeral } from 'cleave-zen';
 import { BigNumber } from 'ethers';
+import { isNaN } from 'lodash';
 import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 import { type DeepPartial } from 'utility-types';
@@ -48,10 +49,12 @@ export const useValidationSchema = () => {
            * @internal
            */
           _tokenSums: object(),
-          from: number().required(
-            formatText({ id: 'errors.fundFrom.required' }),
+          from: number()
+            .transform((value) => (isNaN(value) ? undefined : value))
+            .required(formatText({ id: 'errors.fundFrom.required' })),
+          decisionMethod: string().required(
+            formatText({ id: 'errors.decisionMethod.required' }),
           ),
-          decisionMethod: string().defined(),
           createdIn: number().defined(),
           payments: array()
             .of(
@@ -64,13 +67,22 @@ export const useValidationSchema = () => {
                         return formatText({ id: 'errors.recipient.required' });
                       }
                       return formatText(
-                        { id: 'errors.recipient.requiredIn' },
+                        { id: 'errors.recipient.requiredInPayment' },
                         { paymentIndex: index + 1 },
                       );
                     })
                     .address(),
                   amount: string()
-                    .required(formatText({ id: 'errors.amount' }))
+                    .required(({ path }) => {
+                      const index = getLastIndexFromPath(path);
+                      if (index === undefined) {
+                        return formatText({ id: 'errors.amount' });
+                      }
+                      return formatText(
+                        { id: 'errors.amount.greaterThanZeroIn' },
+                        { paymentIndex: index + 1 },
+                      );
+                    })
                     .test(
                       'more-than-zero',
                       ({ path }) => {
@@ -92,12 +104,15 @@ export const useValidationSchema = () => {
                           colony,
                         }),
                     )
-                    .test('tokens-sum-exceeded', '', (value, context) =>
-                      allTokensAmountValidation({
-                        value,
-                        context,
-                        colony,
-                      }),
+                    .test(
+                      'tokens-sum-exceeded',
+                      formatText({ id: 'errors.amount.notEnoughTokens' }),
+                      (value, context) =>
+                        allTokensAmountValidation({
+                          value,
+                          context,
+                          colony,
+                        }),
                     ),
                   tokenAddress: string()
                     .required()
