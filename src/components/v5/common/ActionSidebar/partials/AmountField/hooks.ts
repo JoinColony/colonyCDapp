@@ -9,7 +9,10 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import { CHAIN_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 export const useAmountField = (selectedTokenAddress: string | undefined) => {
-  const { colony } = useColonyContext();
+  const {
+    colony,
+    colony: { nativeToken },
+  } = useColonyContext();
   const { watch } = useFormContext();
   const chainId = watch(CHAIN_FIELD_NAME) ?? DEFAULT_NETWORK_INFO.chainId;
 
@@ -22,7 +25,11 @@ export const useAmountField = (selectedTokenAddress: string | undefined) => {
   const selectedToken =
     colonyTokens.find(
       (token) => token?.tokenAddress === selectedTokenAddress,
-    ) || colonyTokens[0];
+    ) ||
+    colonyTokens.find(
+      (token) => token?.tokenAddress === nativeToken.tokenAddress,
+    ) ||
+    colonyTokens[0];
 
   const formattingOptions: FormatNumeralOptions = useMemo(
     () => ({
