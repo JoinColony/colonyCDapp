@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { type TestContext } from 'yup';
 
+import { DEFAULT_NETWORK_INFO } from '~constants';
 import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import {
@@ -34,8 +35,12 @@ export const hasEnoughFundsValidation = ({
     return false;
   }
   const { parent } = context;
-  const { tokenAddress: tokenAddressFieldValue } = parent || {};
+  const { tokenAddress: tokenAddressFieldValue, chainId } = parent || {};
 
+  // @TODO hook this up with actual balances
+  if (chainId !== DEFAULT_NETWORK_INFO.chainId) {
+    return true;
+  }
   const colonyTokens =
     colony.tokens?.items
       .filter(notNull)

@@ -3299,6 +3299,7 @@ type Payment {
   Network fee amount
   """
   networkFee: String
+  chainId: String
   tokenAddress: String!
   recipientAddress: String!
 }

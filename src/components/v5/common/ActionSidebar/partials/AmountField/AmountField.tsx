@@ -48,6 +48,7 @@ const AmountField: FC<AmountFieldProps> = ({
     placeholder || formatText({ id: 'actionSidebar.enterAmount' });
 
   const { trigger } = useFormContext();
+
   const {
     field,
     fieldState: { error },
@@ -62,6 +63,7 @@ const AmountField: FC<AmountFieldProps> = ({
   });
   const isError = !!error || !!tokenAddressError;
   const { colony } = useColonyContext();
+
   const [
     isTokenSelectVisible,
     { toggle: toggleTokenSelect, registerContainerRef },
@@ -98,6 +100,12 @@ const AmountField: FC<AmountFieldProps> = ({
     field.onChange(unformattedValue.replace('-', ''));
     setValue(formattedValue);
   };
+
+  useEffect(() => {
+    if (selectedToken?.tokenAddress) {
+      tokenAddressController.onChange(selectedToken.tokenAddress);
+    }
+  }, [selectedToken?.tokenAddress]);
 
   const handleTokenSelect = (selectedTokenAddress: string) => {
     tokenAddressController.onChange(selectedTokenAddress);
