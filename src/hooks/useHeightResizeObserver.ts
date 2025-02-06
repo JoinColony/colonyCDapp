@@ -7,22 +7,17 @@ export const useHeightResizeObserver = <T extends HTMLElement | null>(
   cssVar: CSSCustomVariable,
 ) => {
   useEffect(() => {
-    if (!ref?.current) {
-      return undefined;
-    }
+    const element = ref.current;
+    if (!element) return undefined;
 
-    const observer = new ResizeObserver(([topContainer]) => {
-      const {
-        contentRect: { height },
-      } = topContainer;
-
+    const updateHeight = ([entry]: ResizeObserverEntry[]) => {
+      const { height } = entry.contentRect;
       document.body.style.setProperty(cssVar, `${height}px`);
-    });
-
-    observer.observe(ref.current);
-
-    return () => {
-      observer.disconnect();
     };
-  }, [cssVar, ref]);
+
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [ref, cssVar]);
 };

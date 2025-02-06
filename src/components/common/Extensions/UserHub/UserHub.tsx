@@ -80,15 +80,16 @@ const UserHub: FC<Props> = ({
 
   useLockBodyScroll(isMobile);
 
+  const shouldHaveAutoHeight =
+    selectedTab === UserHubTab.Balance ||
+    selectedTab === UserHubTab.CryptoToFiat;
   return (
     <div
       className={clsx(
-        'mt-5.5 flex h-dynamic-screen flex-col sm:mt-0 sm:h-auto sm:w-[42.625rem] sm:flex-row',
+        'mt-5.5 flex h-dynamic-screen flex-col sm:mt-0 sm:min-h-[27.75rem] sm:w-[42.625rem] sm:flex-row',
         {
-          'sm:h-[27.75rem]':
-            selectedTab !== UserHubTab.Balance &&
-            selectedTab !== UserHubTab.CryptoToFiat,
-          'sm:min-h-[27.75rem]': selectedTab === UserHubTab.Balance,
+          'sm:h-[27.75rem]': !shouldHaveAutoHeight,
+          'sm:h-auto': shouldHaveAutoHeight,
         },
       )}
     >

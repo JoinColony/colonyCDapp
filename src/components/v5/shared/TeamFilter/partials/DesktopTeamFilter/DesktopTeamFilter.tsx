@@ -93,7 +93,7 @@ const DesktopTeamFilter = ({ allDomains }: { allDomains: Domain[] }) => {
   );
 
   return (
-    <div className="mt-[-2px] flex h-[38px] w-fit overflow-hidden whitespace-nowrap p-[2px]">
+    <div className="relative mt-[-2px] flex h-[38px] w-fit whitespace-nowrap p-[2px]">
       <AllTeamsItem
         selected={isAllTeamsFilterActive}
         // The item should have a delimiter only if it is not the first one before the selected team
