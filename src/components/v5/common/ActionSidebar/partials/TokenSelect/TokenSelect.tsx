@@ -69,7 +69,7 @@ const TokenSelectContent: FC<TokenSelectProps> = ({
   }, [isTokenSelectVisible]);
 
   return (
-    <div className="w-full sm:relative">
+    <div className="w-full sm:relative" data-testid="token-select">
       {readonly || readOnlyProp ? (
         <div
           className={clsx('flex text-md', {
