@@ -105,6 +105,7 @@ const AmountField: FC<AmountFieldProps> = ({
     if (selectedToken?.tokenAddress) {
       tokenAddressController.onChange(selectedToken.tokenAddress);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- tokenAddressController deliberately omitted
   }, [selectedToken?.tokenAddress]);
 
   const handleTokenSelect = (selectedTokenAddress: string) => {

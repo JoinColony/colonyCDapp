@@ -32,6 +32,9 @@ const baseToken = {
   decimals: null,
   type: null,
   colonies: null,
+  chainMetadata: {
+    chainId: '',
+  },
 };
 
 const setEnvVariables = async (network) => {
