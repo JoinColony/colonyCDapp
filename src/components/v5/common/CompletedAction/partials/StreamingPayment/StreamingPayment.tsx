@@ -1,3 +1,4 @@
+import { useApolloClient } from '@apollo/client';
 import { ColonyRole } from '@colony/colony-js';
 import {
   Calendar,
@@ -26,6 +27,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ColonyActionType,
+  SearchStreamingPaymentsDocument,
   StreamingPaymentEndCondition,
   useGetUserByAddressQuery,
 } from '~gql';
@@ -41,6 +43,7 @@ import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
+import { isQueryActive } from '~utils/isQueryActive.ts';
 import {
   getAmountPerValue,
   getStreamingPaymentLimit,
@@ -125,6 +128,15 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
 
   const recipientName =
     recipentData?.getUserByAddress?.items[0]?.profile?.displayName ?? '';
+  const client = useApolloClient();
+
+  useEffect(() => {
+    if (isQueryActive('SearchStreamingPayments')) {
+      client.refetchQueries({
+        include: [SearchStreamingPaymentsDocument],
+      });
+    }
+  }, [client]);
 
   useEffect(() => {
     if (expectedActionStatus && expectedActionStatus !== actionStatus) {

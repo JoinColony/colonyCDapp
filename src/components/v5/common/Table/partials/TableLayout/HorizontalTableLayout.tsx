@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useCollapseRows } from '~v5/common/Table/hooks.ts';
 import { ExpandableRowWrapper } from '~v5/common/Table/partials/ExpandableRowWrapper.tsx';
@@ -23,6 +23,7 @@ export const HorizontalTableLayout = <T,>({
   isDisabled,
   data,
   table,
+  overrides,
 }: HorizontalTableLayoutProps<T>) => {
   const { rows } = table.getRowModel();
   const headerGroups = table.getHeaderGroups();
@@ -31,7 +32,17 @@ export const HorizontalTableLayout = <T,>({
   const hasNarrowBorders = borders?.type === 'narrow';
   const hasWideBorders = borders?.type === 'wide';
   const hasMoreActions = !!moreActions;
+  const { loadMoreProps } = overrides || {};
   useCollapseRows(rows, table.getIsSomeRowsExpanded());
+  const [showedActions, setShowedActions] = useState(
+    loadMoreProps?.itemsPerPage,
+  );
+
+  const rowsToShow = loadMoreProps ? rows.slice(0, showedActions) : rows;
+  const handleLoadMore = () => {
+    setShowedActions((showedActions ?? 0) + (loadMoreProps?.itemsPerPage ?? 0));
+  };
+  const canLoadMore = rows.length > (showedActions ?? 0);
 
   const getTableCellStyle = (index: number) =>
     !showTableHead
@@ -58,7 +69,7 @@ export const HorizontalTableLayout = <T,>({
           emptyContent,
           colSpan: totalColumnsCount,
         }) ||
-          rows.map((row) => {
+          rowsToShow.map((row) => {
             const renderSubComponent = rowsConfig?.renderSubComponent;
             const showExpandableContent =
               row.getIsExpanded() && !!renderSubComponent;
@@ -111,6 +122,16 @@ export const HorizontalTableLayout = <T,>({
               </React.Fragment>
             );
           })}
+        {loadMoreProps && canLoadMore && (
+          <tr className="loadMore">
+            <td
+              colSpan={totalColumnsCount}
+              className="h-full px-[1.1rem] pb-5 pt-2.5 text-center"
+            >
+              {loadMoreProps.renderContent(handleLoadMore)}
+            </td>
+          </tr>
+        )}
       </tbody>
     </>
   );

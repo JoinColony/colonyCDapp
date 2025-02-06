@@ -2,6 +2,7 @@ fragment StreamingPayment on StreamingPayment {
   id
   nativeId
   recipientAddress
+  creatorAddress
   nativeDomainId
   startTime
   endTime
