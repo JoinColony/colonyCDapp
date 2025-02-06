@@ -18,6 +18,7 @@ import { formatText } from '~utils/intl.ts';
 import { isQueryActive } from '~utils/isQueryActive.ts';
 import ActionTypeSelect from '~v5/common/ActionSidebar/ActionTypeSelect.tsx';
 import {
+  ACTION_TITLE_MAX_LENGTH,
   ACTION_TYPE_FIELD_NAME,
   CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
@@ -141,6 +142,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           placeholder={formatText({ id: 'placeholder.title' })}
           className="leading-tight text-gray-900 transition-colors heading-3"
           message={false}
+          maxLength={ACTION_TITLE_MAX_LENGTH}
           shouldFocus
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
@@ -151,9 +153,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           onChange={(e) => {
             e.target.value = e.target.value.replace(/[\r\n\v]+/g, '');
           }}
-          wrapperClassName={clsx('flex flex-col', {
-            'mb-2': selectedAction,
-          })}
+          wrapperClassName="w-full"
         />
         {selectedAction && (
           <div

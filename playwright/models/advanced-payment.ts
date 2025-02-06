@@ -17,7 +17,7 @@ type CSVFileInput =
 export class AdvancedPayment {
   static readonly validationMessages = {
     title: {
-      maxLengthExceeded: 'Title must not exceed 60 characters',
+      maxLengthExceeded: 'The maximum character limit is 60.',
       isRequired: 'Title is required',
     },
     allRequiredFields: [

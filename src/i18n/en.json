@@ -1646,7 +1646,7 @@
     "colonyAvatar.chainImage.alt": "Chain logo",
     "colonyName": "Colony name",
     "errors.domain": "Team must be provided",
-    "errors.title.maxLength": "Title must not exceed {maxLength} characters",
+    "errors.text.maxLength": "The maximum character limit is {maxLength}.",
     "errors.description.maxLength": "Description must not exceed {maxLength} characters",
     "errors.title.required": "Title is required",
     "errors.decisionMethod.required": "Decision method is required",

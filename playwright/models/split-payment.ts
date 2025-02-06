@@ -3,7 +3,7 @@ import type { Page, Locator } from '@playwright/test';
 export class SplitPayment {
   static readonly validationMessages = {
     title: {
-      maxLengthExceeded: 'Title must not exceed 60 characters',
+      maxLengthExceeded: 'The maximum character limit is 60.',
       isRequired: 'Title is required',
     },
     allRequiredFields: [

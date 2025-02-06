@@ -3,7 +3,7 @@ import type { Locator, Page } from '@playwright/test';
 export class SimplePayment {
   static readonly validationMessages = {
     title: {
-      maxLengthExceeded: 'Title must not exceed 60 characters',
+      maxLengthExceeded: 'The maximum character limit is 60.',
       isRequired: 'Title is required',
     },
     allRequiredFields: [
