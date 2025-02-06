@@ -110,7 +110,8 @@ export const useStreamingActionsTableColumns = () => {
             <TokenAvatar
               size={18}
               tokenAddress={row.original.token?.tokenAddress ?? ''}
-              tokenAvatarSrc={row.original.token?.avatar ?? ''}
+              tokenName={row.original.token?.name}
+              tokenAvatarSrc={row.original.token?.avatar ?? undefined}
             />
             <p className="text-md text-gray-600">
               {row.original.token?.symbol || ''}
