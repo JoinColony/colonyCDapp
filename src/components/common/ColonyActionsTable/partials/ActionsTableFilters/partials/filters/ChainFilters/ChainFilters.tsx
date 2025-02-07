@@ -8,7 +8,10 @@ import Checkbox from '~v5/common/Checkbox/index.ts';
 const ChainFilters = () => {
   const { chainIdFilters, handleChainIdFilterChange } = useFiltersContext();
 
-  const chainOptions = useChainOptions();
+  const chainOptions = useChainOptions({
+    includeDefaultChain: true,
+    onlyShowActiveChains: true,
+  });
 
   return (
     <div>

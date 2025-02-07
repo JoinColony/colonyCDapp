@@ -43,7 +43,10 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [chainIdFilters, setChainIdFilters] = useState<string[]>([]);
 
   const { dateFromCurrentBlockTime } = useCurrentBlockTime();
-  const chainOptions = useChainOptions();
+  const chainOptions = useChainOptions({
+    includeDefaultChain: true,
+    onlyShowActiveChains: true,
+  });
 
   const handleActionTypesFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -196,6 +199,9 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
       case FiltersValues.DecisionMethod: {
         return setDecisionMethods([]);
       }
+      case FiltersValues.Chain: {
+        return setChainIdFilters([]);
+      }
       case FiltersValues.Date:
       case FiltersValues.Custom: {
         return setDateFilters(emptyDateFilters);
@@ -209,6 +215,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const selectedFiltersCount =
     actionTypesFilters.length +
     motionStates.length +
+    chainIdFilters.length +
     decisionMethods.length +
     Object.values(dateFilters).filter(Boolean).length;
 

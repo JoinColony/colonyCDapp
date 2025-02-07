@@ -1,11 +1,13 @@
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { type ProxyColony, useGetProxyColoniesQuery } from '~gql';
+import { useGetProxyColoniesQuery, type ProxyColony } from '~gql';
 import { notNull } from '~utils/arrays/index.ts';
 
 export const useDeployedChainIds = ({
   filterFn = notNull,
+  skip = false,
 }: {
   filterFn: (x: ProxyColony) => boolean;
+  skip?: boolean;
 }) => {
   const { colony } = useColonyContext();
   const { data } = useGetProxyColoniesQuery({
@@ -13,6 +15,7 @@ export const useDeployedChainIds = ({
       colonyAddress: colony.colonyAddress,
     },
     fetchPolicy: 'network-only',
+    skip,
   });
   const deployedProxyColonies =
     data?.getProxyColoniesByColonyAddress?.items || [];

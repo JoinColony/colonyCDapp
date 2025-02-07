@@ -51,7 +51,10 @@ export const useFundsTable = (): UseFundsTableProps => {
   const { colony } = useColonyContext();
   const claims = useColonyFundsClaims();
 
-  const validChainFilters = useChainOptions();
+  const validChainFilters = useChainOptions({
+    includeDefaultChain: true,
+    onlyShowActiveChains: true,
+  });
 
   const colonyTokens = useMemo(
     () =>
