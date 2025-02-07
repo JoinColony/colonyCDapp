@@ -29,9 +29,8 @@ export const useExtensionItem = (extensionId: string) => {
   return {
     extensionUrl,
     isExtensionInstalled,
-    isExtensionDataLoading: loading,
+    isExtensionDataLoading: extensionDataLoading,
     status,
     handleNavigateToExtensionDetails,
-    extensionDataLoading,
   };
 };

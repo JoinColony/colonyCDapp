@@ -14,6 +14,7 @@ import React, {
 
 import { isFullScreen } from '~constants/index.ts';
 import { useMobile } from '~hooks/index.ts';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
@@ -35,16 +36,18 @@ const ActionSidebarLayout = forwardRef<
       children,
       additionalTopContent,
       statusPill,
-      shareButtonProps,
       isLoading,
       className,
       isMotion,
       transactionId,
       actionNotFound,
+      goBackButton,
+      transactionHash,
     },
     ref,
   ) => {
     const isMobile = useMobile();
+    const { isCopied, handleClipboardCopy } = useCopyToClipboard();
 
     const [
       isSidebarFullscreen,
@@ -57,37 +60,24 @@ const ActionSidebarLayout = forwardRef<
       }
     }, [toggleOn]);
 
-    const getShareButton = () => {
-      if (!shareButtonProps) {
-        return null;
-      }
-
-      const {
-        onShareButtonClick,
-        tooltipContent,
-        placement,
-        ...restShareTooltipProps
-      } = shareButtonProps;
-
-      return (
+    const getShareButton = () =>
+      !!transactionHash && (
         <Tooltip
-          tooltipContent={
-            tooltipContent || formatText({ id: 'copy.urlCopied' })
-          }
-          placement={placement || 'bottom'}
-          {...restShareTooltipProps}
+          tooltipContent={formatText({ id: 'copy.urlCopied' })}
+          isOpen={isCopied}
+          isSuccess={isCopied}
+          placement="bottom"
         >
           <button
             type="button"
             className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-            onClick={onShareButtonClick}
+            onClick={() => handleClipboardCopy(window.location.href)}
             aria-label={formatText({ id: 'ariaLabel.shareAction' })}
           >
             <ShareNetwork size={18} />
           </button>
         </Tooltip>
       );
-    };
 
     return (
       <motion.div
@@ -144,6 +134,7 @@ const ActionSidebarLayout = forwardRef<
               >
                 <X size={18} />
               </button>
+              {goBackButton && goBackButton}
               {isMobile ? (
                 getShareButton()
               ) : (

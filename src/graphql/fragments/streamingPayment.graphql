@@ -11,9 +11,6 @@ fragment StreamingPayment on StreamingPayment {
   token {
     ...Token
   }
-  payouts {
-    ...ExpenditurePayout
-  }
   amount
   isCancelled
   isWaived
@@ -25,32 +22,16 @@ fragment StreamingPayment on StreamingPayment {
       oldEndCondition
       newEndCondition
     }
-    limitAmount
   }
   claims {
     amount
     timestamp
-    tokenAddress
   }
   creatingActions: actions(filter: { type: { eq: CREATE_STREAMING_PAYMENT } }) {
     items {
       transactionHash: id
     }
   }
-}
-
-fragment StreamingPaymentChanges on StreamingPaymentChanges {
-  startTime
-  endTime
-  interval
-  amount
-}
-
-fragment StreamingPaymentChanges on StreamingPaymentChanges {
-  startTime
-  endTime
-  interval
-  amount
 }
 
 fragment StreamingPaymentChanges on StreamingPaymentChanges {

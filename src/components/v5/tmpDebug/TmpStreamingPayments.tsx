@@ -1,5 +1,5 @@
 import { gql, useLazyQuery } from '@apollo/client';
-import { Extension, Id } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import React, { useState } from 'react';
@@ -14,7 +14,7 @@ import {
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
-import useExtensionData from '~hooks/useExtensionData.ts';
+import useStreamingPaymentAmountsLeft from '~hooks/useStreamingPaymentAmountsLeft.ts';
 import { ActionTypes } from '~redux';
 import { type ClaimStreamingPaymentPayload } from '~redux/sagas/expenditures/claimStreamingPayment.ts';
 import { type CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment.ts';
@@ -30,10 +30,7 @@ import {
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { getStreamingPaymentDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
-import {
-  getStreamingPaymentLimit,
-  getStreamingPaymentAmountsLeft,
-} from '~utils/streamingPayments.ts';
+import { getStreamingPaymentLimit } from '~utils/streamingPayments.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Select from '~v5/common/Fields/Select/Select.tsx';
@@ -104,8 +101,6 @@ const TmpStreamingPayments = () => {
   const [updateEndCondition, setUpdateEndCondition] = useState(false);
   const [updateLimit, setUpdateLimit] = useState(false);
 
-  const { extensionData } = useExtensionData(Extension.StreamingPayments);
-
   const { data, refetch } = useGetStreamingPaymentQuery({
     variables: {
       streamingPaymentId: getStreamingPaymentDatabaseId(
@@ -145,7 +140,7 @@ const TmpStreamingPayments = () => {
   });
 
   const { amountAvailableToClaim, amountClaimedToDate } =
-    getStreamingPaymentAmountsLeft(
+    useStreamingPaymentAmountsLeft(
       streamingPayment,
       Math.floor(blockTime ?? Date.now() / 1000),
     );
@@ -680,9 +675,6 @@ const TmpStreamingPayments = () => {
             }}
           >
             Refetch
-          </Button>
-          <Button onClick={() => handleEdit()} disabled={!streamingPayment}>
-            Edit
           </Button>
           <Button
             onClick={() => handleCancel({ shouldWaive: false })}

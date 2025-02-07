@@ -7,32 +7,24 @@ import React, {
   useRef,
 } from 'react';
 
-import { isFullScreen } from '~constants/index.ts';
 import { useActionContext } from '~context/ActionContext/ActionContext.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import ActionStatusContextProvider from '~context/ActionStatusContext/ActionStatusContextProvider.tsx';
-import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
-import useToggle from '~hooks/useToggle/index.ts';
-import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import CompletedAction from '../CompletedAction/index.ts';
-import FourOFourMessage from '../FourOFourMessage/index.ts';
-import PillsBase from '../Pills/PillsBase.tsx';
 
-import { ACTION_TYPE_FIELD_NAME, actionSidebarAnimation } from './consts.ts';
+import { ACTION_TYPE_FIELD_NAME } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.tsx';
 import { ActionNotFound } from './partials/ActionNotFound.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ActionSidebarLayout from './partials/ActionSidebarLayout/ActionSidebarLayout.tsx';
 import ActionSidebarStatusPill from './partials/ActionSidebarStatusPill/ActionSidebarStatusPill.tsx';
-import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import { GoBackButton } from './partials/GoBackButton/GoBackButton.tsx';
-import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
 import { getActionGroup, mapActionTypeToAction } from './utils.ts';
 
@@ -40,6 +32,7 @@ const displayName = 'v5.common.ActionSidebar';
 
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
+  transactionId,
   className,
 }) => {
   const {
@@ -91,8 +84,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     formContextOverride: formRef.current,
   });
 
-  const { isCopied, handleClipboardCopy } = useCopyToClipboard();
-
   useDisableBodyScroll(isActionSidebarOpen);
 
   const isLoading = !!transactionHash && (loadingAction || loadingExpenditure);
@@ -141,16 +132,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           })
         }
         className={className}
-        shareButtonProps={
-          transactionId
-            ? {
-                isOpen: isCopied,
-                isSuccess: isCopied,
-                onShareButtonClick: () =>
-                  handleClipboardCopy(window.location.href),
-              }
-            : undefined
-        }
         additionalTopContent={children}
         isLoading={isLoading}
         statusPill={
@@ -159,6 +140,15 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         transactionId={transactionId}
         isMotion={isMotion}
         actionNotFound={!!actionNotFound}
+        goBackButton={
+          actionGroupType ? (
+            <GoBackButton
+              action={action}
+              onClick={transactionHash ? closeSidebarClick : undefined}
+            />
+          ) : null
+        }
+        transactionHash={transactionHash}
       >
         <div
           className={clsx('flex flex-grow overflow-y-auto', {

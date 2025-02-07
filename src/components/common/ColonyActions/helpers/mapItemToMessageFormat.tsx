@@ -309,12 +309,16 @@ export const useMapColonyActionToExpectedFormat = ({
       <Numeral
         value={getAmount(
           actionData.type,
-          streamingPaymentData ? streamingPaymentData.amount : actionData.amount,
+          streamingPaymentData
+            ? streamingPaymentData.amount
+            : actionData.amount,
           actionData.networkFee,
         )}
-        decimals={getTokenDecimalsWithFallback(streamingPaymentData
-          ? streamingPaymentData.token?.decimals
-          : actionData.token?.decimals)}
+        decimals={getTokenDecimalsWithFallback(
+          streamingPaymentData
+            ? streamingPaymentData.token?.decimals
+            : actionData.token?.decimals,
+        )}
       />,
       ActionTitleMessageKeys.Amount,
       notMaybe(
