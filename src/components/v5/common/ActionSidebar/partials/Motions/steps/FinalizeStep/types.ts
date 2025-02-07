@@ -1,4 +1,4 @@
-import { type MotionAction } from '~types/motions.ts';
+import { type ColonyActionFragment } from '~gql';
 import { type MotionState } from '~utils/colonyMotions.ts';
 import { type RefetchAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 
@@ -6,7 +6,7 @@ export interface FinalizeStepProps {
   startPollingAction: (pollingInterval: number) => void;
   stopPollingAction: () => void;
   refetchAction: RefetchAction;
-  actionData: MotionAction;
+  actionData: ColonyActionFragment;
   motionState?: MotionState;
 }
 

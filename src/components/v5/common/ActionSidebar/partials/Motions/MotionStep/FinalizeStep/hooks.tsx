@@ -149,7 +149,7 @@ export const useClaimConfig = ({
     }
 
     return userReward.amount;
-  }, [userAddress, voterRewards]);
+  }, [userAddress, voterRewards, userReward]);
 
   const userTotalStake = useMemo(
     () =>
