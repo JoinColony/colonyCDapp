@@ -2,7 +2,6 @@ import { type BigNumberish, utils, type TypedDataField } from 'ethers';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import { type Address } from '~types/index.ts';
-import { isFullWallet } from '~types/wallet.ts';
 
 import { generateBroadcasterHumanReadableError } from './errorMessages.ts';
 
@@ -21,10 +20,6 @@ export const signTypedData = async ({
   v?: number;
 }> => {
   const wallet = getContext(ContextModule.Wallet);
-
-  if (!isFullWallet(wallet)) {
-    throw new Error('Background login not yet completed.');
-  }
 
   const signer = wallet.ethersProvider.getSigner();
   // eslint-disable-next-line no-underscore-dangle

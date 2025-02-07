@@ -1,3 +1,4 @@
+import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
 import { Cardholder, GearSix, List, X } from '@phosphor-icons/react';
 import React, { useState, type FC } from 'react';
 import { defineMessages } from 'react-intl';
@@ -26,6 +27,8 @@ const MSG = defineMessages({
     defaultMessage: `Please switch your wallet to the {correctNetworkName} network. More chains will be supported in future.`,
   },
 });
+
+const localStorageKey = '__DYNAMIC_WALLET_DEBUG_ENABLED__';
 
 // @TODO: Rename this to something more explanatory
 const UserNavigation: FC<UserNavigationProps> = ({
@@ -79,6 +82,15 @@ const UserNavigation: FC<UserNavigationProps> = ({
 
   return (
     <div data-tour={TourTargets.UserMenu} className="flex gap-1 md:relative">
+      <div
+        className={
+          localStorage.getItem(localStorageKey) === 'true'
+            ? 'visible'
+            : 'hidden'
+        }
+      >
+        <DynamicWidget />
+      </div>
       {txButton}
       {isWalletConnected ? (
         <div className="flex gap-1">

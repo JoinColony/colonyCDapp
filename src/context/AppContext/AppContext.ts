@@ -24,6 +24,7 @@ export interface AppContextValue {
   joinedColonies: JoinedColony[];
   joinedColoniesLoading: boolean;
   refetchJoinedColonies: () => void;
+  willWalletAutoConnect: boolean;
 }
 
 export const AppContext = createContext<AppContextValue | undefined>(undefined);

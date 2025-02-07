@@ -1,5 +1,5 @@
 import Onboard, { type InitOptions } from '@web3-onboard/core';
-import injectedWallets from '@web3-onboard/injected-wallets';
+import injectedWalletsModule from '@web3-onboard/injected-wallets';
 
 import {
   TERMS_AND_CONDITIONS,
@@ -7,6 +7,9 @@ import {
   TOKEN_DATA,
   GANACHE_NETWORK,
   GANACHE_LOCAL_RPC_URL,
+  ARBITRUM_NETWORK,
+  ARBITRUM_SEPOLIA_NETWORK,
+  GNOSIS_NETWORK,
 } from '~constants/index.ts';
 import { Network } from '~types/network.ts';
 import { getChainIdAsHex } from '~utils/chainId.ts';
@@ -16,7 +19,7 @@ import ganacheModule from './ganacheModule.ts';
 
 const { formatMessage } = intl({
   'metadata.name': 'Colony App',
-  'metadata.description': `Logging into your Colony is done using your wallet. You’ll be able to perform actions, contribute, and make use of any earned reputation.`,
+  'metadata.description': `Logging into your Colony is done using your wallet. You'll be able to perform actions, contribute, and make use of any earned reputation.`,
   'info.text': 'Connect your wallet to log in',
 });
 
@@ -47,29 +50,38 @@ const getDevelopmentWallets = async () => {
   return [];
 };
 
-// chains: [
-//   {
-//     /*
-//      * chain id for @web3-onboard needs to be expressed as a hex string
-//      */
-//     // id: `0x${GANACHE_NETWORK.chainId.toString(16)}`,
-//     id: '0x64',
-//     token: TOKEN_DATA[Network.Gnosis].symbol,
-//     label: 'Metamask Wallet',
-//     rpcUrl: 'https://rpc.gnosischain.com',
-//   },
-// ],
-
 const onboardConfig: InitOptions = {
-  wallets: [injectedWallets()],
+  wallets: [injectedWalletsModule()],
   // Chains array only used in `ganacheModule` for use in development.
   chains: [
+    // local
     {
       // web3-onboard formats chain id as hex strings
       id: getChainIdAsHex(GANACHE_NETWORK.chainId),
       token: TOKEN_DATA[Network.Ganache].symbol,
       label: GANACHE_NETWORK.shortName,
       rpcUrl: GANACHE_LOCAL_RPC_URL,
+    },
+    // arbitrum
+    {
+      // web3-onboard formats chain id as hex strings
+      id: getChainIdAsHex(ARBITRUM_NETWORK.chainId),
+      token: TOKEN_DATA[Network.ArbitrumOne].symbol,
+      label: ARBITRUM_NETWORK.shortName,
+    },
+    // arbitrum sepolia (testnet)
+    {
+      // web3-onboard formats chain id as hex strings
+      id: getChainIdAsHex(ARBITRUM_SEPOLIA_NETWORK.chainId),
+      token: TOKEN_DATA[Network.ArbitrumSepolia].symbol,
+      label: ARBITRUM_SEPOLIA_NETWORK.shortName,
+    },
+    // gnosis
+    {
+      // web3-onboard formats chain id as hex strings
+      id: getChainIdAsHex(GNOSIS_NETWORK.chainId),
+      token: TOKEN_DATA[Network.Gnosis].symbol,
+      label: GNOSIS_NETWORK.shortName,
     },
   ],
   accountCenter: {
