@@ -198,33 +198,37 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                   }
                   isClaimed={isClaimed}
                 >
-                  {showFinalizeButton && (
-                    <Button
-                      mode="primarySolid"
-                      disabled={!isFinalizable || wrongMotionState}
-                      isFullSize
-                      text={formatText({
-                        id: 'motion.finalizeStep.submit',
-                      })}
-                      type="submit"
-                    />
-                  )}
-                  {showClaimButton && (
-                    <Button
-                      mode="primarySolid"
-                      disabled={
-                        !canClaimStakes ||
-                        wrongMotionState ||
-                        formHelpers.formState.isSubmitting
-                      }
-                      isFullSize
-                      text={formatText({
-                        id: isMotionAgreement
-                          ? 'motion.finalizeStep.returnStakes'
-                          : buttonTextId,
-                      })}
-                      type="submit"
-                    />
+                  {(showFinalizeButton || showClaimButton) && (
+                    <>
+                      {showFinalizeButton && (
+                        <Button
+                          mode="primarySolid"
+                          disabled={!isFinalizable || wrongMotionState}
+                          isFullSize
+                          text={formatText({
+                            id: 'motion.finalizeStep.submit',
+                          })}
+                          type="submit"
+                        />
+                      )}
+                      {showClaimButton && (
+                        <Button
+                          mode="primarySolid"
+                          disabled={
+                            !canClaimStakes ||
+                            wrongMotionState ||
+                            formHelpers.formState.isSubmitting
+                          }
+                          isFullSize
+                          text={formatText({
+                            id: isMotionAgreement
+                              ? 'motion.finalizeStep.returnStakes'
+                              : buttonTextId,
+                          })}
+                          type="submit"
+                        />
+                      )}
+                    </>
                   )}
                 </FinalizeStepContent>
               )}
