@@ -8,6 +8,7 @@ import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { useTimeout } from '~hooks/useTimeout.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
+import { getGroupedUnclaimedClaimsByChain } from '~utils/claims.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -26,9 +27,9 @@ export const ClaimFundsButton = () => {
     (claim) => !claim.isClaimed && claim.amount !== '0',
   );
   const hasUnclaimedClaims = !!unclaimedClaims.length;
-  const allClaimableTokenAddresses = Array.from(
-    new Set(unclaimedClaims.map((claim) => claim.token?.tokenAddress || '')),
-  );
+
+  const tokenAddressesGroupedByChain =
+    getGroupedUnclaimedClaimsByChain(unclaimedClaims);
 
   const [isClaimed, setIsClaimed] = useState(false);
   const [isClaiming, setIsClaiming] = useState(false);
@@ -61,10 +62,10 @@ export const ClaimFundsButton = () => {
     },
   });
 
-  const claimToken = useAsyncFunction({
-    submit: ActionTypes.CLAIM_TOKEN,
-    error: ActionTypes.CLAIM_TOKEN_ERROR,
-    success: ActionTypes.CLAIM_TOKEN_SUCCESS,
+  const claimTokensOnChains = useAsyncFunction({
+    submit: ActionTypes.CLAIM_TOKENS_ON_CHAINS,
+    error: ActionTypes.CLAIM_TOKENS_ON_CHAINS_ERROR,
+    success: ActionTypes.CLAIM_TOKENS_ON_CHAINS_SUCCESS,
   });
 
   if (!isVisible) {
@@ -74,9 +75,9 @@ export const ClaimFundsButton = () => {
   const handleClick = async () => {
     setIsClaiming(true);
     try {
-      await claimToken({
+      await claimTokensOnChains({
         colonyAddress: colony?.colonyAddress,
-        tokenAddresses: allClaimableTokenAddresses,
+        tokenAddressesGroupedByChain,
       });
       setIsClaimed(true);
       startPollingColonyData(1_000);

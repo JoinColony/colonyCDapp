@@ -16,7 +16,6 @@ import actionsSagas from './actions/index.ts';
 import colonyClaimFundsSagas from './colony/colonyClaimFunds.ts';
 import colonyCreateSaga from './colony/colonyCreate.ts';
 import colonyFinishCreateSaga from './colony/colonyFinishCreate.ts';
-import colonySagas from './colony/index.ts';
 import decisionsSagas from './decisions/index.ts';
 import expendituresSagas from './expenditures/index.ts';
 import extensionSagas from './extensions/index.ts';
@@ -54,7 +53,6 @@ function* setupContextDependentSagas() {
   yield all([
     call(decisionsSagas),
     call(actionsSagas),
-    call(colonySagas),
     call(colonyClaimFundsSagas),
     call(colonyCreateSaga),
     call(colonyFinishCreateSaga),

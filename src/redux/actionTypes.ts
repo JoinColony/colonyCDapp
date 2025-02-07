@@ -2,9 +2,6 @@ export enum ActionTypes {
   /*
    * Colony Related (create, recovery, etc)
    */
-  CLAIM_TOKEN = 'CLAIM_TOKEN',
-  CLAIM_TOKEN_ERROR = 'CLAIM_TOKEN_ERROR',
-  CLAIM_TOKEN_SUCCESS = 'CLAIM_TOKEN_SUCCESS',
   CREATE = 'CREATE',
   CREATE_CANCEL = 'CREATE_CANCEL',
   CREATE_ERROR = 'CREATE_ERROR',

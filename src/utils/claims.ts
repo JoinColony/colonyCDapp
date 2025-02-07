@@ -7,7 +7,7 @@ export const getGroupedUnclaimedClaimsByChain = (
     (acc, claim) => {
       if (!claim || !claim.token) return acc;
 
-      const { chainId } = claim.token.chainMetadata;
+      const { chainId } = claim.token?.chainMetadata ?? {};
       const { tokenAddress } = claim.token;
 
       // Ensure the chainId group exists

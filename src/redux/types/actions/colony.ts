@@ -17,27 +17,18 @@ import {
   type ActionTypeWithMeta,
 } from './index.ts';
 
+export type ClaimTokensOnChainsPayload = {
+  colonyAddress: Address;
+  tokenAddressesGroupedByChain: {
+    chainId?: string;
+    tokenAddresses: `0x${string}`[];
+  }[];
+};
+
 export type ColonyActionTypes =
   | UniqueActionType<
-      ActionTypes.CLAIM_TOKEN,
-      { tokenAddresses: Address[]; colonyAddress: Address },
-      object
-    >
-  | ErrorActionType<ActionTypes.CLAIM_TOKEN_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.CLAIM_TOKEN_SUCCESS,
-      { params: { tokenAddresses: Address[] } },
-      object
-    >
-  | UniqueActionType<
       ActionTypes.CLAIM_TOKENS_ON_CHAINS,
-      {
-        tokenAddressesGroupedByChain: {
-          chainId?: string;
-          tokenAddresses: `0x${string}`[];
-        }[];
-        colonyAddress: Address;
-      },
+      ClaimTokensOnChainsPayload,
       object
     >
   | ErrorActionType<ActionTypes.CLAIM_TOKENS_ON_CHAINS_ERROR, object>
