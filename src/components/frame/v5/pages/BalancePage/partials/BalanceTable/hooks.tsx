@@ -16,6 +16,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import { type NativeTokenStatus, type Token } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { getObjectValues } from '~utils/objects/index.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
 import {
   getBalanceForTokenAndDomain,
@@ -37,9 +38,15 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
     colony: { tokens: colonyTokens, balances, nativeToken },
   } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
-  const { attributeFilters, tokenTypes, searchFilter } = useFiltersContext();
+  const { filters, searchFilter } = useFiltersContext();
   const { balancesByToken: expenditureBalances, loading } =
     useColonyExpenditureBalances();
+
+  const {
+    attribute: attributeFilters,
+    token: tokenFilters,
+    chain: chainFilters,
+  } = filters;
 
   const tokensData = useMemo(
     () =>
@@ -77,30 +84,34 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
     ],
   );
 
-  const filteredTokens = tokensData?.filter((token) => {
-    if (attributeFilters.native) {
-      if (
-        Object.values(tokenTypes).some((tokenTypeFilter) => tokenTypeFilter)
-      ) {
+  const filteredTokens = tokensData?.filter(({ token: { tokenAddress } }) => {
+    if (attributeFilters.native.isChecked) {
+      if (getObjectValues(tokenFilters).some(({ isChecked }) => isChecked)) {
         return (
-          token.token?.tokenAddress === nativeToken.tokenAddress &&
-          tokenTypes[token.token?.tokenAddress || 0]
+          tokenAddress === nativeToken.tokenAddress &&
+          tokenFilters[tokenAddress || 0]
         );
       }
-      return token.token?.tokenAddress === nativeToken.tokenAddress;
+      return tokenAddress === nativeToken.tokenAddress;
     }
 
-    if (Object.values(tokenTypes).some((tokenTypeFilter) => tokenTypeFilter)) {
-      return tokenTypes[token.token?.tokenAddress || 0];
+    if (getObjectValues(tokenFilters).some(({ isChecked }) => isChecked)) {
+      return tokenFilters[tokenAddress]?.isChecked;
     }
 
     return true;
   });
 
-  const searchedTokens = filteredTokens?.filter(
-    ({ token }) =>
-      token?.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
-      token?.symbol.toLowerCase().includes(searchFilter.toLowerCase()),
+  const searchedChainIds = getObjectValues(chainFilters)
+    .filter(({ isChecked }) => isChecked)
+    .map(({ id }) => id);
+
+  const searchedTokens = filteredTokens?.filter(({ token }) =>
+    searchedChainIds.length
+      ? searchedChainIds.includes(token.chainMetadata.chainId)
+      : true &&
+        (token?.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
+          token?.symbol.toLowerCase().includes(searchFilter.toLowerCase())),
   );
 
   const sortedTokens = useMemo(

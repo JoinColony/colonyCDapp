@@ -55,19 +55,22 @@ function Filter<TValue extends FilterValue>({
     [onSearch],
   );
 
-  const RootItems = rootItems.map(({ icon, items, label, name, title }) => (
-    <FilterItem
-      key={name.toString()}
-      label={label}
-      icon={icon}
-      title={title}
-      name={name}
-      items={items}
-      path={name.toString()}
-      value={value}
-      onChange={onChange}
-    />
-  ));
+  const RootItems = rootItems.map(
+    ({ icon, items, label, name, title, containerClassName }) => (
+      <FilterItem
+        key={name.toString()}
+        label={label}
+        icon={icon}
+        title={title}
+        name={name}
+        items={items}
+        path={name.toString()}
+        value={value}
+        onChange={onChange}
+        containerClassName={containerClassName}
+      />
+    ),
+  );
 
   const filterCount = Object.values(value).reduce((acc, obj) => {
     return acc + Object.values(obj).filter((item) => item === true).length;

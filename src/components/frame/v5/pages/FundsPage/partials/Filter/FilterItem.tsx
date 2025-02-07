@@ -1,4 +1,5 @@
 import { CaretDown } from '@phosphor-icons/react';
+import clsx from 'clsx';
 import React from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
@@ -18,6 +19,7 @@ function FilterItem<TValue extends FilterValue>({
   path,
   value,
   title,
+  containerClassName,
 }: RootFilterProps<TValue>) {
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
@@ -77,7 +79,10 @@ function FilterItem<TValue extends FilterValue>({
                 hasShadow: true,
                 className: 'py-6 px-2',
               }}
-              className="mr-2 w-full sm:max-w-[13.25rem]"
+              className={clsx(
+                'mr-2 w-full sm:max-w-[13.25rem]',
+                containerClassName,
+              )}
             >
               <>
                 <span className="px-3.5 pb-2 uppercase text-gray-400 text-4">

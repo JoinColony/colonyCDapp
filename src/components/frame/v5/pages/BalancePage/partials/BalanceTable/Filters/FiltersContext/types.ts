@@ -1,18 +1,27 @@
 export enum FiltersValues {
   TokenType = 'tokenType',
   Attributes = 'attributes',
+  Chain = 'chain',
 }
 
 export interface TokenTypes {
   [key: string]: boolean;
 }
 
-export interface AttributeFilters {
-  native: boolean;
-  reputation: boolean;
-}
+type TFilterConfig = {
+  isChecked: boolean;
+  id?: string;
+};
 
-export interface BalanceTableFilters {
-  tokenTypes?: TokenTypes;
-  attributeFilters?: AttributeFilters;
-}
+type TAttributeFilter = {
+  native: TFilterConfig;
+  reputation: TFilterConfig;
+};
+
+export type TBalanceTableFilters = {
+  attribute: TAttributeFilter;
+  chain: Record<string, TFilterConfig>;
+  token: Record<string, TFilterConfig>;
+};
+
+export type TBalanceTableFilterKey = keyof TBalanceTableFilters;

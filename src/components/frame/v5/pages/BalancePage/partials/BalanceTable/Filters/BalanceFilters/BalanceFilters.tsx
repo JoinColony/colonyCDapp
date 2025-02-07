@@ -15,7 +15,7 @@ import { useFiltersContext } from '../FiltersContext/FiltersContext.ts';
 import ActiveFiltersList from '../partials/ActiveFiltersList/ActiveFiltersList.tsx';
 import BalanceTableFiltersItem from '../partials/BalanceTableFiltersItem/BalanceTableFiltersItem.tsx';
 
-import { filterItems } from './consts.tsx';
+import { filterItems } from './consts.ts';
 
 interface BalanceFiltersProps {
   toggleAddFundsModalOn: () => void;
@@ -42,10 +42,10 @@ const BalanceFilters: FC<BalanceFiltersProps> = ({ toggleAddFundsModalOn }) => {
         {formatText({ id: isMobile ? 'filterAndSort' : 'filters' })}
       </h4>
       <ul className="flex flex-col gap-7 sm:gap-0">
-        {filterItems.map(({ icon, label, children }) => (
+        {filterItems.map(({ icon, label, FiltersContent }) => (
           <li key={label}>
             <BalanceTableFiltersItem label={label} icon={icon}>
-              {children}
+              <FiltersContent />
             </BalanceTableFiltersItem>
           </li>
         ))}

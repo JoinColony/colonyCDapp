@@ -21,6 +21,7 @@ export interface ActivityFeedFilters {
   dateTo?: Date;
   decisionMethods?: ActivityDecisionMethod[];
   search?: string;
+  chainIds?: string[];
 }
 
 export type ActivityFeedSort = SearchActionsQueryVariables['sort'];

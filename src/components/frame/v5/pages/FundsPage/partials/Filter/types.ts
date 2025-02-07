@@ -10,6 +10,7 @@ export type FilterValue = {
 export interface NestedItem<TValue extends FilterValue, TLevel extends number> {
   label: ReactNode;
   name: KeysAtLevel<TValue, TLevel>;
+  icon?: Icon;
   symbol?: string;
   // @ts-ignore
   items?: NestedItem<TValue, Add<TLevel, 1>>[];
@@ -22,6 +23,7 @@ export interface RootItem<TValue extends FilterValue> {
   icon: Icon;
   title: ReactNode;
   filterName: string;
+  containerClassName?: string;
 }
 
 export interface FilterProps<TValue extends FilterValue> {

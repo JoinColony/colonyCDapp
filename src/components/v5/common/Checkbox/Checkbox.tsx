@@ -16,7 +16,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
   label = '',
   onChange,
   className,
-  isChecked,
+  isChecked = false,
   children,
 }) => {
   const generatedId = useId();

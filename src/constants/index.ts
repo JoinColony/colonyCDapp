@@ -309,6 +309,20 @@ export const DEFAULT_NETWORK_TOKEN = TOKEN_DATA[DEFAULT_NETWORK];
 
 export const DEFAULT_NETWORK_INFO = NETWORK_DATA[DEFAULT_NETWORK];
 
+export interface IChainConfig {
+  icon: Icon;
+  value: string;
+  label: string;
+  isDisabled: boolean;
+}
+
+export const DEFAULT_CHAIN_CONFIG: IChainConfig = {
+  icon: DEFAULT_NETWORK_INFO.icon ?? GanacheIcon,
+  value: DEFAULT_NETWORK_INFO.chainId,
+  label: DEFAULT_NETWORK_INFO.shortName,
+  isDisabled: false,
+};
+
 /*
  * List all networks that curently support metatransactions
  */

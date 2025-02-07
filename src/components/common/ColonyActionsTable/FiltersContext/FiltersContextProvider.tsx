@@ -15,11 +15,12 @@ import {
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { type AnyActionType } from '~types/actions.ts';
 import { type MotionState } from '~utils/colonyMotions.ts';
+import { useChainOptions } from '~v5/common/ActionSidebar/partials/ChainSelect/hooks.ts';
 
 import { type DateOptions } from '../partials/ActionsTableFilters/types.ts';
 import { getDateFilter } from '../utils.ts';
 
-import { FiltersContext } from './FiltersContext.ts';
+import { FiltersContext, type FiltersContextValue } from './FiltersContext.ts';
 import { FiltersValues } from './types.ts';
 
 const emptyDateFilters: DateOptions = {
@@ -39,7 +40,13 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   >([]);
   const [actionTypesFilters, setActionTypesFilters] = useState<Action[]>([]);
   const [dateFilters, setDateFilters] = useState<DateOptions>(emptyDateFilters);
+  const [chainIdFilters, setChainIdFilters] = useState<string[]>([]);
+
   const { dateFromCurrentBlockTime } = useCurrentBlockTime();
+  const chainOptions = useChainOptions({
+    includeDefaultChain: true,
+    onlyShowActiveChains: true,
+  });
 
   const handleActionTypesFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,10 +127,27 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [],
   );
 
+  const handleChainIdFilterChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { checked } = event.target;
+      const { name } = event.target;
+
+      if (checked) {
+        setChainIdFilters((state) => [...state, name]);
+      } else {
+        setChainIdFilters((state) =>
+          state.filter((checkedItem) => checkedItem !== name),
+        );
+      }
+    },
+    [],
+  );
+
   const activeFilters: ActivityFeedFilters = useMemo(() => {
     const date = dateFromCurrentBlockTime
       ? getDateFilter(dateFilters, dateFromCurrentBlockTime)
       : null;
+
     const actionTypes = actionTypesFilters.reduce<AnyActionType[]>(
       (result, actionType) => {
         const apiActionTypes = ACTION_TYPE_TO_API_ACTION_TYPES_MAP[actionType];
@@ -137,6 +161,10 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
       [],
     );
 
+    const chainIds = chainOptions
+      .filter((chainOption) => chainIdFilters.includes(chainOption.label))
+      .map((chainOption) => chainOption.value);
+
     return {
       ...(motionStates.length ? { motionStates } : {}),
       ...(actionTypes.length ? { actionTypes } : {}),
@@ -147,14 +175,17 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
           }
         : {}),
       ...(searchFilter ? { search: searchFilter } : {}),
+      ...(chainIdFilters.length ? { chainIds } : {}),
     };
   }, [
-    actionTypesFilters,
     dateFromCurrentBlockTime,
     dateFilters,
-    decisionMethods,
+    actionTypesFilters,
     motionStates,
+    decisionMethods,
     searchFilter,
+    chainIdFilters,
+    chainOptions,
   ]);
 
   const handleResetFilters = useCallback((filter: FiltersValues) => {
@@ -167,6 +198,9 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
       }
       case FiltersValues.DecisionMethod: {
         return setDecisionMethods([]);
+      }
+      case FiltersValues.Chain: {
+        return setChainIdFilters([]);
       }
       case FiltersValues.Date:
       case FiltersValues.Custom: {
@@ -181,10 +215,11 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const selectedFiltersCount =
     actionTypesFilters.length +
     motionStates.length +
+    chainIdFilters.length +
     decisionMethods.length +
     Object.values(dateFilters).filter(Boolean).length;
 
-  const value = useMemo(
+  const value = useMemo<FiltersContextValue>(
     () => ({
       searchFilter,
       setSearchFilter,
@@ -194,12 +229,14 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
       dateFilters,
       activeFilters,
       selectedFiltersCount,
+      chainIdFilters,
       handleActionTypesFilterChange,
       handleDecisionMethodsFilterChange,
       handleMotionStatesFilterChange,
       handleDateFilterChange,
       handleCustomDateFilterChange,
       handleResetFilters,
+      handleChainIdFilterChange,
     }),
     [
       searchFilter,
@@ -209,12 +246,14 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
       dateFilters,
       activeFilters,
       selectedFiltersCount,
+      chainIdFilters,
       handleActionTypesFilterChange,
       handleDecisionMethodsFilterChange,
       handleMotionStatesFilterChange,
       handleDateFilterChange,
       handleCustomDateFilterChange,
       handleResetFilters,
+      handleChainIdFilterChange,
     ],
   );
 
