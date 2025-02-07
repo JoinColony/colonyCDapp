@@ -3,6 +3,7 @@ import React, { type PropsWithChildren } from 'react';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { light } from '~frame/Extensions/themes/consts.ts';
 import LandingPageCarousel from '~frame/LandingPage/partials/LandingPageCarousel/LandingPageCarousel.tsx';
+import { useTablet } from '~hooks';
 import ColonyLogo from '~icons/ColonyLogoLandingPage.tsx';
 import PageHeader from '~v5/frame/PageLayout/partials/PageHeader/PageHeader.tsx';
 import { BasicPageSidebar } from '~v5/shared/Navigation/Sidebar/sidebars/BasicPageSidebar.tsx';
@@ -19,12 +20,22 @@ export const LandingPageLayout = ({
   bottomComponent,
 }: LandingPageLayoutProps) => {
   const { isDarkMode } = usePageThemeContext();
+  const isTablet = useTablet();
 
   return (
     <div className="flex h-screen w-screen flex-col justify-between md:py-4 md:pl-4">
-      <div className="block md:hidden">
-        <PageHeader userNavigation={<UserNavigationWrapper />} />
-      </div>
+      {/* 
+        Using conditional rendering with isTablet instead of CSS display classes
+        because PageHeader uses a ResizeObserver to set a CSS custom variable.
+        If we used CSS classes to hide/show headers, both would exist in the DOM
+        and their ResizeObservers would conflict, causing incorrect variable values.
+        This ensures only one header (and thus one observer) is active at a time.
+      */}
+      {isTablet && (
+        <div className="block">
+          <PageHeader userNavigation={<UserNavigationWrapper />} />
+        </div>
+      )}
       <div className="overflow-auto md:flex md:h-full md:flex-row">
         <section>
           <BasicPageSidebar />
@@ -36,9 +47,11 @@ export const LandingPageLayout = ({
                 color={isDarkMode ? light.baseWhite : light.gray900}
               />
             </div>
-            <div className="hidden w-full md:block">
-              <PageHeader userNavigation={<UserNavigationWrapper />} />
-            </div>
+            {!isTablet && (
+              <div className="block w-full">
+                <PageHeader userNavigation={<UserNavigationWrapper />} />
+              </div>
+            )}
           </div>
           <div className="flex h-full w-full flex-col-reverse overflow-hidden md:flex-row md:bg-transparent">
             <div className="flex h-full w-full flex-1 justify-center md:justify-end">

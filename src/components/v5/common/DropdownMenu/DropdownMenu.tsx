@@ -1,8 +1,9 @@
 import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useRef, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { usePopperCustomPositioning } from '~hooks/usePopperCustomPositioning.ts';
 import KebapMenu from '~v5/shared/KebapMenu/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
@@ -14,6 +15,23 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
   className,
   showSubMenuInPopover,
 }) => {
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const menuRef = useRef<HTMLElement | null>(null);
+
+  const { menuClassName, menuStyle } = usePopperCustomPositioning({
+    triggerRef,
+    menuRef,
+    config: {
+      skipDesktop: true,
+      keepInitialBottomPlacement: true,
+      useTriggerAsTranslateDefault: true,
+      offset: {
+        left: 0.25,
+        top: 0.25,
+      },
+    },
+  });
+
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
       delayShow: 200,
@@ -22,6 +40,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
       trigger: ['click'],
       interactive: true,
       closeOnOutsideClick: true,
+      offset: [0, 8],
     });
   const [activeGroupIndex, setActiveGroupIndex] = useState<number | undefined>(
     undefined,
@@ -47,7 +66,10 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
     <div className={className}>
       <KebapMenu
         isVertical
-        setTriggerRef={setTriggerRef}
+        setTriggerRef={(ref: HTMLElement | null) => {
+          setTriggerRef(ref);
+          triggerRef.current = ref;
+        }}
         className={clsx('!duration-0', {
           '!text-blue-400': visible,
           'text-gray-900': !visible,
@@ -55,7 +77,10 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
       />
       {visible && !!groups.length && (
         <PopoverBase
-          setTooltipRef={setTooltipRef}
+          setTooltipRef={(ref: HTMLElement | null) => {
+            setTooltipRef(ref);
+            menuRef.current = ref;
+          }}
           tooltipProps={getTooltipProps}
           withTooltipStyles={false}
           cardProps={{
@@ -63,7 +88,11 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
             hasShadow: true,
             className: 'py-4 px-0',
           }}
-          className="w-full overflow-hidden px-6 sm:w-auto sm:px-0"
+          className={clsx(
+            menuClassName,
+            'z-dropdown overflow-hidden px-6 sm:px-0',
+          )}
+          style={menuStyle}
         >
           <ul
             className={clsx('w-full px-6 sm:w-[14.625rem]', {
