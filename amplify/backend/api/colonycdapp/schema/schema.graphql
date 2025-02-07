@@ -3602,29 +3602,10 @@ type ColonyAction @model @searchable {
   Streaming payment associated with the action, if any
   """
   streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
-=======
->>>>>>> adad6bd8a (Feat: Edit streams using motions)
-=======
->>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   """
   Changes to the streaming payment associated with the action, if any
   Applicable to `EDIT_STREAMING_PAYMENT` action only
   """
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
-=======
->>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   streamingPaymentChanges: StreamingPaymentChangeSet
 }
 
@@ -3636,61 +3617,14 @@ type StreamingPaymentChangeSet {
   """
   The values before the change
   """
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> adad6bd8a (Feat: Edit streams using motions)
-  streamingPaymentChanges: FullStreamingPaymentChanges
-}
-
-type FullStreamingPaymentChanges {
-  oldValues: StreamingPaymentChanges!
-<<<<<<< HEAD
->>>>>>> e5ef3fbe5 (Feat: Edit streams using motions)
-=======
->>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
-=======
->>>>>>> adad6bd8a (Feat: Edit streams using motions)
-=======
->>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   newValues: StreamingPaymentChanges!
 }
 
 type StreamingPaymentChanges {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
-=======
->>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   startTime: String!
   endTime: String!
   interval: String!
   amount: String!
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> adad6bd8a (Feat: Edit streams using motions)
-  startTime: String
-  endTime: String
-  interval: String
-  amount: String
-<<<<<<< HEAD
->>>>>>> e5ef3fbe5 (Feat: Edit streams using motions)
-=======
->>>>>>> 9a2bfec21 (Feat: Add changelog to streaming payment and streaming payment metadata)
-=======
->>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
-=======
->>>>>>> adad6bd8a (Feat: Edit streams using motions)
-=======
->>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
-=======
->>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 }
 
 """
@@ -3705,18 +3639,6 @@ type ApprovedTokenChanges {
 type ExpenditureSlotChanges {
   oldSlots: [ExpenditureSlot!]!
   newSlots: [ExpenditureSlot!]!
-  """
-  ID of the associated streaming payment, if any
-  """
-  streamingPaymentId: ID
-    @index(
-      name: "byStreamingPaymentId"
-      queryField: "getActionByStreamingPaymentId"
-    )
-  """
-  Streaming payment associated with the action, if any
-  """
-  streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
 }
 
 type ColonyActionMetadata @model {
@@ -4181,20 +4103,9 @@ type StreamingPayment @model @searchable {
   startTime: String!
   endTime: String!
   interval: String!
-<<<<<<< HEAD
-<<<<<<< HEAD
   tokenAddress: ID!
   token: Token @hasOne(fields: ["tokenAddress"])
   amount: String!
-  payouts: [ExpenditurePayout!]
-=======
-  tokenAddress: String!
-=======
-  tokenAddress: ID!
-  token: Token @hasOne(fields: ["tokenAddress"])
->>>>>>> 38c525943 (Feat: Remove limit amount from streamingPaymentMetadata)
-  amount: String!
->>>>>>> 819abc5af (Schema update: adjust streaming payment model for a single token)
   claims: [StreamingPaymentClaim!]
   metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
   """
@@ -4215,66 +4126,15 @@ type StreamingPayment @model @searchable {
   """
   motions: [ColonyMotion]
     @hasMany(indexName: "byStreamingPaymentId", fields: ["id"])
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
   """
   Address of the stream creator, can be a user or an extension
   """
   creatorAddress: ID!
-=======
->>>>>>> e5ef3fbe5 (Feat: Edit streams using motions)
-=======
-=======
->>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
-  """
-  List of Streaming Payment changelog entries
-  """
-  changelog: [StreamingPaymentChangelog!]
-}
-
-type StreamingPaymentChangelog {
-  """
-  Transaction hash associated with the changelog entry
-  """
-  transactionHash: String!
-  """
-  The values before the change
-  """
-  oldValues: StreamingPaymentChanges!
-  """
-  The values before the change
-  """
-  newValues: StreamingPaymentChanges!
-}
-
-type StreamingPaymentChanges {
-  startTime: String!
-  endTime: String!
-  interval: String!
-  amount: String!
-<<<<<<< HEAD
->>>>>>> 9a2bfec21 (Feat: Add changelog to streaming payment and streaming payment metadata)
-=======
->>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
-=======
->>>>>>> adad6bd8a (Feat: Edit streams using motions)
-=======
->>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
-=======
->>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 }
 
 type StreamingPaymentMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   endCondition: StreamingPaymentEndCondition!
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
   """
   List of Streaming Payment metadata changelog entries
   """
@@ -4297,24 +4157,6 @@ type StreamingPaymentMetadataChangelog {
   The end condition after the change
   """
   newEndCondition: StreamingPaymentEndCondition!
-<<<<<<< HEAD
-<<<<<<< HEAD
-}
-
-type StreamingPaymentClaim {
-  amount: String!
-  timestamp: String!
-=======
->>>>>>> 9a2bfec21 (Feat: Add changelog to streaming payment and streaming payment metadata)
-}
-
-type StreamingPaymentClaim {
-  amount: String!
-  timestamp: String!
-=======
->>>>>>> 38c525943 (Feat: Remove limit amount from streamingPaymentMetadata)
-=======
->>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
 }
 
 type StreamingPaymentClaim {
