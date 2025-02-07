@@ -151,7 +151,8 @@ const CompletedAction = ({ action }: ICompletedAction) => {
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
       case ColonyActionType.CancelStreamingPaymentMotion:
-      case ColonyActionType.EditStreamingPaymentMotion: {
+      case ColonyActionType.EditStreamingPaymentMotion:
+      case ColonyActionType.CreateStreamingPaymentMotion: {
         const { motionData } = action;
 
         return motionData ? (

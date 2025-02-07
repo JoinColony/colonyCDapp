@@ -663,6 +663,8 @@ export enum ColonyActionType {
   CreateExpenditure = 'CREATE_EXPENDITURE',
   /** An action related to creating a streaming payment */
   CreateStreamingPayment = 'CREATE_STREAMING_PAYMENT',
+  /** An action related to creating a streaming payment via a motion */
+  CreateStreamingPaymentMotion = 'CREATE_STREAMING_PAYMENT_MOTION',
   /** An action related to editing a domain's details */
   EditDomain = 'EDIT_DOMAIN',
   /** An action related to editing a domain's details via a motion */
