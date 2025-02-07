@@ -14,6 +14,7 @@ import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
+import Numeral from '~shared/Numeral/Numeral.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { DecisionMethod } from '~types/actions.ts';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
@@ -27,6 +28,7 @@ import {
   getSafePollingInterval,
   removeCacheEntry,
 } from '~utils/queries.ts';
+import { getSelectedToken } from '~utils/tokens.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
@@ -37,6 +39,7 @@ import { LoadingBehavior } from '~v5/shared/Button/types.ts';
 import MotionWidgetSkeleton from '~v5/shared/MotionWidgetSkeleton/MotionWidgetSkeleton.tsx';
 import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
+import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
 import ActionWithPermissionsInfo from '../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
 import ActionWithStakingInfo from '../ActionWithStakingInfo/ActionWithStakingInfo.tsx';
@@ -93,6 +96,11 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     startPolling,
     stopPolling,
   } = useGetExpenditureData(expenditureId, { pollUntilUnmount: true });
+
+  const tokenData = getSelectedToken(
+    colony,
+    expenditure?.slots?.[0]?.payouts?.[0]?.tokenAddress ?? '',
+  );
 
   const {
     fundingActions,
@@ -372,27 +380,75 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             ) : (
               <StepDetailsBlock
                 text={formatText({
-                  id: 'expenditure.reviewStage.confirmDetails.info',
+                  id:
+                    !expenditure?.ownerAddress ||
+                    walletAddress !== expenditure?.ownerAddress
+                      ? 'expenditure.reviewStage.confirmDetails.info'
+                      : 'expenditure.reviewStage.confirmDetails.creatorInfo',
                 })}
                 content={
-                  <ActionButton
-                    disabled={
-                      !expenditure?.ownerAddress ||
-                      walletAddress !== expenditure?.ownerAddress
-                    }
-                    onSuccess={() => {
-                      setExpectedStepKey(ExpenditureStep.Funding);
-                    }}
-                    loadingBehavior={LoadingBehavior.TxLoader}
-                    text={formatText({
-                      id: 'expenditure.reviewStage.confirmDetails.button',
-                    })}
-                    values={lockExpenditurePayload}
-                    actionType={ActionTypes.EXPENDITURE_LOCK}
-                    mode="primarySolid"
-                    isFullSize
-                    isLoading={expectedStepKey === ExpenditureStep.Funding}
-                  />
+                  !expenditure?.ownerAddress ||
+                  walletAddress !== expenditure?.ownerAddress ? (
+                    <div>
+                      <h4 className="mb-3 flex items-center justify-between text-1">
+                        {formatText({
+                          id: 'expenditure.reviewStage.confirmDetails.title',
+                        })}
+                      </h4>
+
+                      <div className="mb-2 flex items-center justify-between gap-2 text-sm last:mb-0">
+                        <dt className="text-gray-600">
+                          {formatText({
+                            id: 'expenditure.reviewStage.confirmDetails.creator',
+                          })}
+                        </dt>
+                        <dd>
+                          <div className="flex w-full items-center">
+                            <UserPopover
+                              walletAddress={action.initiatorAddress}
+                              size={18}
+                            />
+                          </div>
+                        </dd>
+                      </div>
+                      {isStaked && (
+                        <div className="mb-2 flex items-center justify-between gap-2 text-sm last:mb-0">
+                          <dt className="text-gray-600">
+                            {formatText({
+                              id: 'expenditure.reviewStage.confirmDetails.stakeAmount',
+                            })}
+                          </dt>
+                          <dd>
+                            <Numeral
+                              value={stakeAmount}
+                              decimals={tokenData?.decimals}
+                            />{' '}
+                            {tokenData?.symbol}
+                          </dd>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <ActionButton
+                      disabled={
+                        !expenditure?.ownerAddress ||
+                        walletAddress !== expenditure?.ownerAddress
+                      }
+                      onSuccess={() => {
+                        setExpectedStepKey(ExpenditureStep.Funding);
+                      }}
+                      loadingBehavior={LoadingBehavior.TxLoader}
+                      text={formatText({
+                        id: 'expenditure.reviewStage.confirmDetails.button',
+                      })}
+                      values={lockExpenditurePayload}
+                      actionType={ActionTypes.EXPENDITURE_LOCK}
+                      mode="primarySolid"
+                      className="w-full"
+                      isLoading={expectedStepKey === ExpenditureStep.Funding}
+                      isFullSize
+                    />
+                  )
                 }
               />
             )}
@@ -403,10 +459,16 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               <ActionWithStakingInfo
                 userAdddress={expenditure?.ownerAddress}
                 stakeAmount={stakeAmount ?? ''}
+                title={formatText({
+                  id: 'expenditure.reviewStage.confirmDetails.completedInfo',
+                })}
               />
             ) : (
               <ActionWithPermissionsInfo
                 action={expenditure?.lockingActions?.items[0]}
+                title={formatText({
+                  id: 'expenditure.reviewStage.confirmDetails.completedInfo',
+                })}
               />
             )}
           </>
