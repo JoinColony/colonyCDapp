@@ -38,6 +38,11 @@ const MSG = defineMessages({
     defaultMessage:
       'Staged payments requires the Staged payments extension to be enabled.',
   },
+  customTransactionsVersionRequiredError: {
+    id: `${displayName}.customTransactionsVersionRequiredError`,
+    defaultMessage:
+      'Custom transactions requires Colony Network version 17 or higher.',
+  },
   learnMore: {
     id: `${displayName}.learnMore`,
     defaultMessage: 'Learn more',
@@ -80,6 +85,10 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
       case Action.StagedPayment:
         return isFieldDisabled
           ? formatText(MSG.stagedExpenditureExtensionNotEnabledError)
+          : undefined;
+      case Action.ArbitraryTxs:
+        return isFieldDisabled
+          ? formatText(MSG.customTransactionsVersionRequiredError)
           : undefined;
       default:
         return undefined;

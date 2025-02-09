@@ -20,10 +20,12 @@ import { MSG, displayName } from './translation.ts';
 
 interface ArbitraryTransactionsTableProps {
   name: string;
+  disabled?: boolean;
 }
 
 const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
   name,
+  disabled,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -90,6 +92,7 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
     isError: !!fieldState.error,
     hasNoDecisionMethods,
     getMenuProps,
+    isFormDisabled: disabled,
   });
 
   return (
@@ -131,7 +134,7 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
             size="small"
             isFullSize={isMobile}
             onClick={openTransactionModal}
-            disabled={hasNoDecisionMethods}
+            disabled={hasNoDecisionMethods || disabled}
           >
             {formatText({ id: 'button.addTransaction' })}
           </Button>
