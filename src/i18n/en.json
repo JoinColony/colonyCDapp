@@ -288,6 +288,14 @@
     "transaction.group.setStakeFraction.description": "Set Stake Fraction",
     "transaction.group.releaseStagedPayment.title": "Release Staged Payment",
     "transaction.group.releaseStagedPayment.description": "Release Staged Payment",
+    "transaction.group.createStreamingPayment.title": "Create Streaming Payment",
+    "transaction.group.createStreamingPayment.description": "Create Streaming Payment",
+    "transaction.group.claimStreamingPayment.title": "Claim Streaming Payment",
+    "transaction.group.claimStreamingPayment.description": "Claim Streaming Payment",
+    "transaction.group.editStreamingPayment.title": "Edit Streaming Payment",
+    "transaction.group.editStreamingPayment.description": "Edit Streaming Payment",
+    "transaction.group.editStreamingPaymentMotion.title": "Edit Streaming Payment",
+    "transaction.group.editStreamingPaymentMotion.description": "Edit Streaming Payment",
     "transaction.group.makeArbitraryTransaction.title": "Make arbitrary transaction",
     "transaction.group.makeArbitraryTransaction.description": "Make arbitrary transaction",
     "transaction.group.mintTokens.title": "Mint Tokens",
@@ -399,6 +407,8 @@
     "transaction.StagedExpenditureClient.multicall.title": "Multicall",
 
     "transaction.StreamingPaymentsClient.create.title": "Create Streaming Payment",
+    "transaction.StreamingPaymentsClient.claim.title": "Claim Streaming Payment",
+    "transaction.StreamingPaymentsClient.multicall.title": "Streaming Payment Multicall",
 
     "transaction.TokenClient.approve.title": "Approve amount of tokens",
     "transaction.TokenClient.setOwner.title": "Set Token Owner",

@@ -2,7 +2,11 @@ import { type ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 
 import { type NetworkInfo } from '~constants/index.ts';
-import { type ExternalLink, type ColonyRoleFragment } from '~gql';
+import {
+  type ExternalLink,
+  type ColonyRoleFragment,
+  type StreamingPaymentEndCondition,
+} from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import { type Authority } from '~types/authority.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
@@ -25,6 +29,8 @@ import {
   type ExpenditureFundPayload,
   type CancelStakedExpenditurePayload,
   type CancelExpenditurePayload,
+  type CancelStreamingPaymentPayload,
+  type EditStreamingPaymentPayload,
 } from './expenditures.ts';
 import {
   type ErrorActionType,
@@ -84,11 +90,45 @@ export type MotionDomainCreateEditPayload = {
   colonyDomains: Domain[];
   domainCreatedInNativeId: number;
 };
+
 interface OneTxPaymentMotionPayload extends OneTxPaymentPayload {
   colonyDomains: Domain[];
   colonyRoles: ColonyRoleFragment[];
   isMultiSig?: boolean;
 }
+
+export type StreamingPaymentsMotionCancelPayload = Omit<
+  CancelStreamingPaymentPayload,
+  'colonyAddress' | 'userAddress'
+> & {
+  motionDomainId: number;
+  votingReputationAddress: Address;
+  colony: Colony;
+};
+
+export type StreamingPaymentsMotionEditPayload = EditStreamingPaymentPayload & {
+  motionDomainId: number;
+  votingReputationAddress: Address;
+  colony: Colony;
+  annotationMessage?: string;
+};
+
+export type StreamingPaymentsMotionCreatePayload = {
+  colonyAddress: Address;
+  createdInDomain: Domain;
+  recipientAddress: Address;
+  tokenAddress: Address;
+  tokenDecimals: number;
+  amount: string;
+  startTimestamp: string;
+  endTimestamp?: string;
+  interval: number;
+  endCondition: StreamingPaymentEndCondition;
+  limitAmount?: string;
+  annotationMessage?: string;
+  votingReputationAddress: Address;
+  motionDomainId: number;
+};
 
 export type MotionActionTypes =
   | UniqueActionType<
@@ -479,6 +519,26 @@ export type MotionActionTypes =
       MetaWithSetter<object>
     >
   | UniqueActionType<
+      ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL,
+      StreamingPaymentsMotionCancelPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_STREAMING_PAYMENT_EDIT,
+      StreamingPaymentsMotionEditPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_EDIT_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STREAMING_PAYMENT_EDIT_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
       ActionTypes.MOTION_ARBITRARY_TRANSACTION,
       {
         customActionTitle: string;
@@ -494,5 +554,20 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_ARBITRARY_TRANSACTION_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_ARBITRARY_TRANSACTION_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_STREAMING_PAYMENT_CREATE,
+      StreamingPaymentsMotionCreatePayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STREAMING_PAYMENT_CREATE_SUCCESS,
       MetaWithSetter<object>
     >;

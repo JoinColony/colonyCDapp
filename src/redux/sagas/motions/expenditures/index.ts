@@ -4,3 +4,5 @@ export { default as releaseExpenditureStagesMotionSaga } from './releaseExpendit
 export { default as editLockedExpenditureMotionSaga } from './editLockedExpenditureMotion.ts';
 export { default as cancelExpenditureMotionSaga } from './cancelExpenditureMotion.ts';
 export { default as finalizeExpenditureMotionSaga } from './finalizeExpenditureMotion.ts';
+export { default as editStreamingPaymentMotion } from './editStreamingPaymentMotion.ts';
+export { default as createStreamingPaymentMotionSaga } from './createStreamingPaymentMotion.ts';
