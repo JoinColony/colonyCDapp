@@ -84,14 +84,14 @@ const TmpStreamingPayments = () => {
     endCondition,
     interval: 86400, // One day
     recipientAddress: user?.walletAddress ?? '',
-    startTimestamp: BigNumber.from(
+    startTimestamp: `${BigNumber.from(
       (blockTime ?? Math.floor(Date.now() / 1000)) - 604800,
-    ), // One week ago
+    )}`, // One week ago
     tokenAddress,
     tokenDecimals: parseInt(decimalAmount, 10),
-    endTimestamp: BigNumber.from(
+    endTimestamp: `${BigNumber.from(
       (blockTime ?? Math.floor(Date.now() / 1000)) + 604800,
-    ), // Next week
+    )}`, // Next week
     limitAmount: limit,
   };
 
@@ -121,6 +121,7 @@ const TmpStreamingPayments = () => {
       colonyAddress: colony.colonyAddress,
       streamingPaymentsAddress: streamingPaymentsAddress ?? '',
       streamingPayment,
+      tokenAddress: streamingPayment.tokenAddress,
     };
 
     await claim(claimPayload);

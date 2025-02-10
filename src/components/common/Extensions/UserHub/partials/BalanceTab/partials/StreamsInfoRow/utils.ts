@@ -1,6 +1,7 @@
 import Decimal from 'decimal.js';
 
 import { type ColonyFragment, type SupportedCurrencies } from '~gql';
+import { type StreamingPaymentItems } from '~shared/StreamingPayments/types.ts';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { fetchCurrentPrice } from '~utils/currency/currency.ts';
 import {
@@ -11,8 +12,6 @@ import {
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
-
-import { type StreamingPaymentItems } from './types.ts';
 
 export const calculateToCurrency = async ({
   amount,

@@ -158,6 +158,7 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
         colonyAddress: colony.colonyAddress,
         streamingPaymentsAddress: streamingPaymentsAddress ?? '',
         streamingPayment: streamingPaymentData,
+        tokenAddress: streamingPaymentData.tokenAddress,
       };
 
       await claim(claimPayload);

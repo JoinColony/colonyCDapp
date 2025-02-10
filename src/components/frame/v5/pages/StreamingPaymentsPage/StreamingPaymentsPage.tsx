@@ -51,11 +51,12 @@ const StreamingPaymentsPage = () => {
     nativeDomainId,
   });
 
-  const { isExtensionInstalled, extensionDataLoading, status } =
+  const { isExtensionInstalled, isExtensionDataLoading, status } =
     useExtensionItem(Extension.StreamingPayments);
 
   const isExtensionDisabled =
-    status === 'deprecated' || (!isExtensionInstalled && !extensionDataLoading);
+    status === 'deprecated' ||
+    (!isExtensionInstalled && !isExtensionDataLoading);
 
   return (
     <ContentWithTeamFilter>

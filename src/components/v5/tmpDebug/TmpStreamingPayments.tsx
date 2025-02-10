@@ -254,6 +254,7 @@ const TmpStreamingPayments = () => {
       colonyAddress: colony.colonyAddress,
       streamingPaymentsAddress: streamingPaymentsAddress ?? '',
       streamingPayment,
+      tokenAddress: streamingPayment.tokenAddress,
     };
 
     await claim(claimPayload);
