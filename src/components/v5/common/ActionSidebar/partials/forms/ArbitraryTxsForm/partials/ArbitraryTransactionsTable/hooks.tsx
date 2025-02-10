@@ -32,6 +32,7 @@ export const useArbitraryTxsTableColumns = ({
   isError,
   hasNoDecisionMethods,
   getMenuProps,
+  isFormDisabled,
 }): ColumnDef<AddTransactionTableModel, string>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<AddTransactionTableModel>(),
@@ -77,11 +78,12 @@ export const useArbitraryTxsTableColumns = ({
                   type="button"
                   onClick={openTransactionModal}
                   mode="link"
-                  disabled={hasNoDecisionMethods}
+                  disabled={hasNoDecisionMethods || isFormDisabled}
                   className={clsx(
                     'text-gray-400 no-underline md:hover:text-blue-400',
                     {
                       'text-negative-400': isError,
+                      '!text-gray-300': isFormDisabled,
                     },
                   )}
                 >
@@ -140,6 +142,7 @@ export const useArbitraryTxsTableColumns = ({
       hasNoDecisionMethods,
       openTransactionModal,
       isError,
+      isFormDisabled,
     ],
   );
 
