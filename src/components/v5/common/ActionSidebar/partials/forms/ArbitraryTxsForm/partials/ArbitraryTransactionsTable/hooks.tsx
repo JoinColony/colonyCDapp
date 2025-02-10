@@ -142,6 +142,7 @@ export const useArbitraryTxsTableColumns = ({
       hasNoDecisionMethods,
       openTransactionModal,
       isError,
+      isFormDisabled,
     ],
   );
 
