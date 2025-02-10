@@ -58,7 +58,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens by {initiator}}
       ${ColonyActionType.FundExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
       ${ColonyActionType.FinalizeExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
-      ${ColonyActionType.CreateStreamingPayment} {Create streaming payment}
+      ${ColonyActionType.CreateStreamingPayment} {Stream {amount} {tokenSymbol} / {period} to {recipient} by {initiator}}
       ${ColonyActionType.CreateStreamingPaymentMotion} {Create streaming payment}
 
       ${ColonyActionType.MakeArbitraryTransaction} {{arbitraryTransactionsLength, select,
@@ -91,7 +91,6 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateColonyObjectiveMultisig} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.SplitPayment} {Split Payment of {splitAmount} {tokenSymbol} by {initiator}}
       ${ExtendedColonyActionType.StagedPayment} {Staged payment {tokensNumber, plural, one {of {stagedAmount} {tokenSymbol}} other {with {tokensNumber} tokens}} to {recipient} with {milestonesCount} {milestonesCount, plural, one {milestone} other {milestones}} by {initiator}}
-      ${ColonyActionType.CreateStreamingPayment} {Stream {amount} {tokenSymbol} / {period} to {recipient} by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -161,7 +160,6 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateColonyObjectiveMotion} {Manage objective}
       ${ExtendedColonyActionType.UpdateColonyObjectiveMultisig} {Manage objective}
       ${ExtendedColonyActionType.SplitPayment} {Split payment}
-      ${ColonyActionType.CreateStreamingPayment} {Streaming payment}
       other {Generic}
     }`,
 };

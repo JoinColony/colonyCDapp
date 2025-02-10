@@ -117,7 +117,7 @@ const ActionSidebarLayout = forwardRef<
             'md:max-w-full': isSidebarFullscreen,
             'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
             'md:max-w-[67.3125rem]':
-              (!isSidebarFullscreen && !!transactionId && !actionNotFound) ||
+              (!isSidebarFullscreen && !!transactionHash && !actionNotFound) ||
               (!isSidebarFullscreen && !!transactionId && isLoading),
           },
         )}
