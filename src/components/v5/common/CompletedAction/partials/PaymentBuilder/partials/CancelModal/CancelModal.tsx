@@ -6,6 +6,7 @@ import {
   WarningCircle,
 } from '@phosphor-icons/react';
 import React, { useState, type FC } from 'react';
+import { defineMessages } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import { getRole } from '~constants/permissions.ts';
@@ -49,6 +50,22 @@ import { useCancelingDecisionMethods } from './hooks.ts';
 import RadioButtons from './partials/RadioButtons.tsx';
 import { PenaliseOptions } from './partials/types.ts';
 import { type CancelModalProps } from './types.ts';
+
+const displayName =
+  'v5.common.CompletedAction.partials.PaymentBuilder.partials.CancelModal';
+
+const MSG = defineMessages({
+  noPenaliseInfo: {
+    id: `${displayName}.noPenaliseInfot`,
+    defaultMessage:
+      'The payment creator will keep their full stake and reputation.',
+  },
+  penaliseInfo: {
+    id: `${displayName}.penaliseInfo`,
+    defaultMessage:
+      'The payment creator will lose their full stake and the relative amount of reputation. Penalised funds are burned.',
+  },
+});
 
 const CancelModal: FC<CancelModalProps> = ({
   isOpen,
@@ -114,7 +131,7 @@ const CancelModal: FC<CancelModalProps> = ({
   });
   const associatedActionId = getMotionAssociatedActionId(actionData);
 
-  const handleFundExpenditure = async ({ decisionMethod, penalise }) => {
+  const handleCancelExpenditure = async ({ decisionMethod, penalise }) => {
     setIsSubmitting(true);
     try {
       if (!expenditure) {
@@ -211,7 +228,7 @@ const CancelModal: FC<CancelModalProps> = ({
       {isExpenditureLocked ? (
         <Form
           className="flex flex-grow flex-col"
-          onSubmit={handleFundExpenditure}
+          onSubmit={handleCancelExpenditure}
           validationSchema={
             isActionStaked ? stakedValidationSchema : validationSchema
           }
@@ -252,8 +269,7 @@ const CancelModal: FC<CancelModalProps> = ({
                             className="shrink-0 text-success-400"
                           />
                           <p className="text-md">
-                            The payment creator will keep their full stake and
-                            reputation
+                            {formatText(MSG.noPenaliseInfo)}
                           </p>
                         </div>
                       )}
@@ -264,9 +280,7 @@ const CancelModal: FC<CancelModalProps> = ({
                             className="shrink-0 text-negative-400"
                           />
                           <p className="text-md">
-                            The payment creator will lose their full stake and
-                            the relative amount of reputation. Penalised funds
-                            are burned.
+                            {formatText(MSG.penaliseInfo)}
                           </p>
                         </div>
                       )}

@@ -1,8 +1,29 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
+
+import { formatText } from '~utils/intl.ts';
 
 import RadioButton from './RadioButton.tsx';
 import { PenaliseOptions } from './types.ts';
+
+const displayName =
+  'v5.common.CompletedAction.partials.PaymentBuilder.partials.CancelModal';
+
+const MSG = defineMessages({
+  noPenaliseRadio: {
+    id: `${displayName}.noPenaliseRadio`,
+    defaultMessage: `No, don't penalise`,
+  },
+  penaliseRadio: {
+    id: `${displayName}.penaliseRadio`,
+    defaultMessage: 'Yes, penalise',
+  },
+  requiredOptionInfo: {
+    id: `${displayName}.requiredOptionInfo`,
+    defaultMessage: 'A penalised option is required',
+  },
+});
 
 const RadioButtons = () => {
   const {
@@ -23,7 +44,7 @@ const RadioButtons = () => {
             onChange={onChange}
             hasError={!!error}
           >
-            Yes, penalise
+            {formatText(MSG.penaliseRadio)}
           </RadioButton>
         </li>
         <li className="w-full sm:w-1/2">
@@ -34,13 +55,13 @@ const RadioButtons = () => {
             onChange={onChange}
             hasError={!!error}
           >
-            No, don&apos;t penalise
+            {formatText(MSG.noPenaliseRadio)}
           </RadioButton>
         </li>
       </ul>
       {!!error && (
         <p className="mt-1 text-sm text-negative-400">
-          A penalised option is required
+          {formatText(MSG.requiredOptionInfo)}
         </p>
       )}
     </div>

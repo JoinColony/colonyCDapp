@@ -744,9 +744,12 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       );
 
       items.splice(
-        fundingItemIndex + 1,
+        isExpenditureFunded ? fundingItemIndex + 1 : fundingItemIndex,
         0,
-        getCancelItem(2, segregatedCancelActions.funding),
+        getCancelItem(
+          isExpenditureFunded ? 2 : 1,
+          segregatedCancelActions.funding,
+        ),
       );
     }
   }

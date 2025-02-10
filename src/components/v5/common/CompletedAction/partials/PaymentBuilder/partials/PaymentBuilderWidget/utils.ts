@@ -253,6 +253,13 @@ export const getCancelStepIndex = (
     return fundingItemIndex;
   }
 
+  if (
+    isExpenditureFullFunded &&
+    expenditure.cancellingActions?.items?.[0]?.type === 'CANCEL_EXPENDITURE'
+  ) {
+    return fundingItemIndex + expenditure.cancellingActions.items.length + 1;
+  }
+
   if (isExpenditureFullFunded && !isExpenditureFinalized) {
     return fundingItemIndex + 2;
   }
