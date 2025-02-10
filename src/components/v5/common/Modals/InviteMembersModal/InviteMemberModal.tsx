@@ -41,10 +41,12 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
 
   const getModalSubtitle = () => {
     if (isOutOfInvites) {
-      <FormattedMessage
-        {...MSG.modalDescriptionReached}
-        values={{ invitesAvailable }}
-      />;
+      return (
+        <FormattedMessage
+          {...MSG.modalDescriptionReached}
+          values={{ invitesAvailable }}
+        />
+      );
     }
 
     return (
