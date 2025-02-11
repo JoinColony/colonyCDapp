@@ -173,7 +173,7 @@ const useStagedPaymentTableColumns = ({
                   ) : (
                     <>
                       {isCorrectExtensionInstalled ? (
-                        <div className="fflex items-center gap-3 md:justify-end">
+                        <div className="flex items-center gap-3 md:justify-end">
                           <ReleaseButton
                             description={MSG.payNow}
                             items={currentMilestone ? [currentMilestone] : []}
