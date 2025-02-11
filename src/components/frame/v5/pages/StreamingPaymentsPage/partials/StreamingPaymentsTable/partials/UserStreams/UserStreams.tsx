@@ -109,7 +109,8 @@ const UserStreams: FC<UserStreamsProps> = ({
   const shouldShowTooltip = calculatedAmountArray.length > 0;
   const content = (
     <div className="flex w-full items-center justify-end gap-[0.125rem] text-1">
-      {currency} <NumeralCurrency value={lastMonthStreamed} /> {' /month'}
+      <NumeralCurrency value={lastMonthStreamed} />
+      {currency} {' /month'}
     </div>
   );
 
