@@ -21,7 +21,7 @@ export const getHorizontalRowClasses = ({
   hasWideBorders,
   hasMoreActions,
 }) =>
-  clsx(className, {
+  clsx(className, 'table-item', {
     'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
       hasMoreActions,
     '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':

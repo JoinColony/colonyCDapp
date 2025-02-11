@@ -21,4 +21,5 @@ export interface UserInfoPopoverProps {
   withVerifiedBadge?: boolean;
   children?: ((user?: UserFragment) => React.ReactNode) | React.ReactNode;
   showMultiSigPermissions?: boolean;
+  withUserName?: boolean;
 }

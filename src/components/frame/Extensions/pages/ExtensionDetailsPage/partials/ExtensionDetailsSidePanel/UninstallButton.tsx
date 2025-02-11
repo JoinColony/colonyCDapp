@@ -99,12 +99,31 @@ const MSG = {
         'I understand that funds can be lost and are unrecoverable',
     },
   }),
+  [Extension.StreamingPayments]: defineMessages({
+    uninstallTitle: {
+      id: `${displayName}.${Extension.StreamingPayments}.uninstallTitle`,
+      defaultMessage: 'Extension removal warning',
+    },
+    uninstallDescription: {
+      id: `${displayName}.${Extension.StreamingPayments}.uninstallDescription`,
+      defaultMessage:
+        'Uninstalling this extension will remove the ability for the colony to create and manage streaming payments. Ensure you understand the potential risks before continuing.',
+    },
+    uninstallWarning: {
+      id: `${displayName}.${Extension.StreamingPayments}.uninstallWarning`,
+      defaultMessage:
+        '{hasActiveStream, select, true {<li>The colony has at least one currently active stream. This extension cannot be uninstalled while any streams are still active, please cancel the stream or wait for its conclusion before uninstalling.</li>} other {}}{hasUnclaimedFunds, select, true {<li>The colony has at least one stream with unclaimed funds. This extension cannot be uninstalled until all streamed funds have been claimed. Please claim all remaining unclaimed funds before uninstalling.</li>} other {}}',
+    },
+    uninstallConfirmation: {
+      id: `${displayName}.${Extension.StreamingPayments}.uninstallConfirmation`,
+      defaultMessage: 'I understand the risk of uninstalling this extension.',
+    },
+  }),
 };
 
 const ListChunks = (chunks: React.ReactNode[]) => (
   <ul className="list-disc pl-4">{chunks}</ul>
 );
-const ListItemChunks = (chunks: React.ReactNode[]) => <li>{chunks}</li>;
 
 const UninstallButton = ({
   extensionData: { extensionId },
@@ -119,6 +138,16 @@ const UninstallButton = ({
   const {
     formState: { isSubmitting },
   } = useFormContext();
+
+  const isStreamingPaymentsExtension =
+    extensionId === Extension.StreamingPayments;
+
+  // @todo: add proper logic here to determine if there are active streams or unclaimed funds
+  const hasActiveStream = false;
+  const hasUnclaimedFunds = false;
+
+  const shouldShowWarning =
+    isStreamingPaymentsExtension && (hasActiveStream || hasUnclaimedFunds);
 
   return (
     <>
@@ -154,15 +183,18 @@ const UninstallButton = ({
         })}
         disabled={!isCheckboxChecked}
       >
-        <div className="mt-6 rounded-md border border-negative-400 bg-negative-100 p-4 text-sm text-negative-400">
-          <FormattedMessage
-            {...MSG[extensionId].uninstallWarning}
-            values={{
-              ul: ListChunks,
-              li: ListItemChunks,
-            }}
-          />
-        </div>
+        {shouldShowWarning && (
+          <div className="mt-6 rounded-md border border-negative-400 bg-negative-100 p-4 text-sm text-negative-400">
+            <FormattedMessage
+              {...MSG[extensionId].uninstallWarning}
+              values={{
+                ul: ListChunks,
+                hasActiveStream,
+                hasUnclaimedFunds,
+              }}
+            />
+          </div>
+        )}
         <Checkbox
           name="uninstall"
           id="uninstall"

@@ -109,6 +109,8 @@ export const getPermissionsNeededForAction = (
     case Action.ArbitraryTxs: {
       return PERMISSIONS_NEEDED_FOR_ACTION.ArbitraryTxs;
     }
+    case Action.StreamingPayment:
+      return PERMISSIONS_NEEDED_FOR_ACTION.StreamingPayment;
 
     default:
       return undefined;

@@ -7,6 +7,7 @@ import {
   ArrowsOutLineHorizontal,
   // @TODO: uncomment when staged payment is ready
   Steps,
+  Waves,
   type Icon,
 } from '@phosphor-icons/react';
 
@@ -40,16 +41,15 @@ export const GROUP_LIST: GroupListItem[] = [
     action: Action.PaymentBuilder,
     isNew: true,
   },
-  // @TODO: uncomment when streaming payment is ready
-  // {
-  //   title: formatText({ id: 'actions.streamingPayment' }),
-  //   description: formatText({
-  //     id: 'actions.description.streamingPayment',
-  //   }),
-  //   Icon: Waves,
-  //   action: Action.StreamingPayment,
-  //   isNew: true,
-  // },
+  {
+    title: formatText({ id: 'actions.streamingPayment' }),
+    description: formatText({
+      id: 'actions.description.streamingPayment',
+    }),
+    Icon: Waves,
+    action: Action.StreamingPayment,
+    isNew: true,
+  },
   {
     title: formatText({ id: 'actions.splitPayment' }),
     description: formatText({ id: 'actions.description.splitPayment' }),

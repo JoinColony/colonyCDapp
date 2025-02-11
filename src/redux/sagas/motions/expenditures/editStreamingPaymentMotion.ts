@@ -53,6 +53,7 @@ function* editStreamingPaymentMotion({
     annotationMessage,
   },
   meta,
+  meta: { setTxHash, id: metaId },
 }: Action<ActionTypes.MOTION_STREAMING_PAYMENT_EDIT>) {
   const { colonyAddress } = colony;
   const apolloClient = getContext(ContextModule.ApolloClient);
@@ -164,7 +165,7 @@ function* editStreamingPaymentMotion({
         params: [],
         group: {
           key: batchKey,
-          id: meta.id,
+          id: metaId,
           index: 1,
         },
         ready: false,
@@ -211,6 +212,8 @@ function* editStreamingPaymentMotion({
       });
     }
 
+    setTxHash?.(txHash);
+
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
       yield put({
         type: ActionTypes.MOTION_STREAMING_PAYMENT_EDIT_SUCCESS,
@@ -225,6 +228,12 @@ function* editStreamingPaymentMotion({
         )}?tx=${txHash}`,
       );
     }
+
+    window.history.replaceState(
+      {},
+      '',
+      `${APP_URL}${window.location.pathname.slice(1)}?tx=${txHash}`,
+    );
   } catch (e) {
     console.error(e);
 

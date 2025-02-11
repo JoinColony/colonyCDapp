@@ -6,10 +6,6 @@ import { MotionState } from '~utils/colonyMotions.ts';
 
 import { ExpenditureStep } from './types.ts';
 
-/**
- * Returns a boolean indicating whether the expenditure is fully funded,
- * i.e. the balance of each token is greater than or equal to the sum of its payouts
- */
 export const isExpenditureFullyFunded = (expenditure?: Expenditure | null) => {
   if (!expenditure) {
     return false;

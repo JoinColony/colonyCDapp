@@ -72,8 +72,8 @@ const AmountField: FC<AmountFieldProps> = ({
     tokenAddressController.value,
   );
 
-  const [value, setValue] = useState<string | undefined>(
-    field.value ? formatNumeral(field.value, formattingOptions) : undefined,
+  const [value, setValue] = useState<string>(
+    field.value ? formatNumeral(field.value, formattingOptions) : '',
   );
 
   const handleFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
