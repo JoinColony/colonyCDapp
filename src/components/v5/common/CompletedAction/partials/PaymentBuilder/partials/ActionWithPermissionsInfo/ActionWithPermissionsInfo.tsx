@@ -14,7 +14,6 @@ import { type ActionWithPermissionsInfoProps } from './types.ts';
 const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
   title,
   action,
-  title,
   additionalBadge,
   isActionCancelled,
   additionalInfo,

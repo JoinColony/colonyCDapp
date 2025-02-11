@@ -53,8 +53,6 @@ export const PaymentBuilderContext = createContext<{
   selectedFinalizeAction: null,
   setSelectedFinalizeAction: noop,
   setSelectedReleaseAction: noop,
-  selectedMilestones: [],
-  setSelectedMilestones: noop,
   selectedCancellingAction: null,
   setSelectedCancellingAction: noop,
 });
