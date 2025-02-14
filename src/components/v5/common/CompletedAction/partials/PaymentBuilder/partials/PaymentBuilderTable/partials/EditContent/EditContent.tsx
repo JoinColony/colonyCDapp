@@ -121,10 +121,10 @@ const EditContent: FC<EditContentProps> = ({ actionRow }) => {
   const isMotion = !!selectedEditingAction?.motionData;
 
   useEffect(() => {
-    if (!currentStep?.startsWith(ExpenditureStep.Edit)) {
+    if (!currentStep?.startsWith(ExpenditureStep.Edit) || !newValues) {
       toggleExpanded();
     }
-  }, [currentStep, toggleExpanded]);
+  }, [currentStep, toggleExpanded, newValues]);
 
   const changes: Changes = {};
 

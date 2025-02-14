@@ -8,9 +8,13 @@ import EditRequestItem from './EditRequestItem.tsx';
 
 interface EditRequestsProps {
   editingActions: ExpenditureAction[];
+  isEditMode?: boolean;
 }
 
-const EditRequests: FC<EditRequestsProps> = ({ editingActions }) => {
+const EditRequests: FC<EditRequestsProps> = ({
+  editingActions,
+  isEditMode,
+}) => {
   return (
     <MenuContainer
       className="w-full overflow-hidden p-[1.125rem]"
@@ -24,7 +28,7 @@ const EditRequests: FC<EditRequestsProps> = ({ editingActions }) => {
       <ul className="max-h-[6.25rem] overflow-y-auto overflow-x-hidden">
         {editingActions.map((action) => (
           <li className="mb-2 w-full last:mb-0" key={action.transactionHash}>
-            <EditRequestItem action={action} />
+            <EditRequestItem action={action} disabled={isEditMode} />
           </li>
         ))}
       </ul>

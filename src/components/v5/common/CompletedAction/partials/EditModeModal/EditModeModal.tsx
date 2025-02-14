@@ -68,13 +68,18 @@ const MSG = defineMessages({
 interface EditModeModalProps extends ModalProps {
   expenditure: Expenditure;
   editValues: ExpenditurePayoutFieldValue[] | undefined;
+  errorMessage?: string;
 }
 
-interface EditModeModalContentProps {
+interface EditModeModalContentProps
+  extends Pick<EditModeModalProps, 'errorMessage'> {
   onClose: () => void;
 }
 
-const EditModeModalContent: FC<EditModeModalContentProps> = ({ onClose }) => {
+const EditModeModalContent: FC<EditModeModalContentProps> = ({
+  onClose,
+  errorMessage,
+}) => {
   const [showMore, { toggle: toggleShowMore }] = useToggle();
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -147,6 +152,11 @@ const EditModeModalContent: FC<EditModeModalContentProps> = ({ onClose }) => {
             })}
           </div>
         )}
+        {errorMessage && (
+          <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm font-medium text-negative-400">
+            {errorMessage}
+          </div>
+        )}
       </div>
       <div className="mt-auto flex flex-col-reverse items-center justify-between gap-3 sm:flex-row">
         <Button mode="primaryOutline" isFullSize onClick={onClose}>
@@ -165,7 +175,12 @@ const EditModeModalContent: FC<EditModeModalContentProps> = ({ onClose }) => {
               }
             />
           ) : (
-            <Button mode="primarySolid" isFullSize type="submit">
+            <Button
+              mode="primarySolid"
+              isFullSize
+              type="submit"
+              disabled={!!errorMessage}
+            >
               {formatText(MSG.confirmMessage)}
             </Button>
           )}
@@ -180,6 +195,7 @@ const EditModeModal: FC<EditModeModalProps> = ({
   onClose,
   expenditure,
   editValues,
+  errorMessage,
   ...rest
 }) => {
   const { colony } = useColonyContext();
@@ -249,7 +265,7 @@ const EditModeModal: FC<EditModeModalProps> = ({
         validationSchema={validationSchema}
         defaultValues={{ decisionMethod: {} }}
       >
-        <EditModeModalContent onClose={onClose} />
+        <EditModeModalContent onClose={onClose} errorMessage={errorMessage} />
       </Form>
     </Modal>
   );

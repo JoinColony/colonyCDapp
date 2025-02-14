@@ -257,7 +257,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       heading: {
         label: formatText({ id: 'expenditure.editStage.label' }),
       },
-      content: expenditure ? <EditStep actions={actions} /> : null,
+      content: expenditure ? (
+        <EditStep actions={actions} isEditMode={isEditMode} />
+      ) : null,
     };
   };
 

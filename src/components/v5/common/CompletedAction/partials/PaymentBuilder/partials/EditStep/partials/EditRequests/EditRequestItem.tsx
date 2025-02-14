@@ -12,9 +12,10 @@ import useCountChanges from './hooks.ts';
 
 interface EditingRequestItemProps {
   action: ExpenditureAction;
+  disabled?: boolean;
 }
 
-const EditRequestItem: FC<EditingRequestItemProps> = ({ action }) => {
+const EditRequestItem: FC<EditingRequestItemProps> = ({ action, disabled }) => {
   const { transactionHash, expenditureSlotChanges } = action;
   const { motionState, loadingAction } = useGetColonyAction(transactionHash);
   const changesCount = useCountChanges(
@@ -37,12 +38,13 @@ const EditRequestItem: FC<EditingRequestItemProps> = ({ action }) => {
         'group flex w-full items-center justify-between outline-none transition-all',
         {
           'text-blue-400': isSelected,
-          'text-gray-600': !isSelected,
+          'text-gray-600': !isSelected || disabled,
         },
       )}
       onClick={() => {
         setSelectedEditingAction(action);
       }}
+      disabled={disabled}
     >
       <span
         className={clsx('text-sm', {

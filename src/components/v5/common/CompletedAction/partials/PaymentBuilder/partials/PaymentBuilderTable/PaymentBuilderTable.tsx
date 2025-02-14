@@ -28,7 +28,6 @@ import {
   type PaymentBuilderTableModel,
   type PaymentBuilderTableProps,
 } from './types.ts';
-import { getChangedSlots } from './utils.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.PaymentBuilderTable';
 
@@ -225,10 +224,14 @@ const useGetPaymentBuilderColumns = ({
   );
 };
 
-const useRenderSubComponent = () => {
-  return ({ row }: { row: Row<PaymentBuilderTableModel> }) => (
-    <EditContent actionRow={row} />
-  );
+const useRenderSubComponent = (
+  setIsExpanded: (id: number, isExpanded: boolean) => void,
+) => {
+  return ({ row }: { row: Row<PaymentBuilderTableModel> }) => {
+    setIsExpanded(row.original.id, row.getIsExpanded());
+
+    return <EditContent actionRow={row} />;
+  };
 };
 
 const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
@@ -243,6 +246,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     colony: { expendituresGlobalClaimDelay },
   } = useColonyContext();
   const { selectedEditingAction, currentStep } = usePaymentBuilderContext();
+  const [allRowsChanged, setAllRowsChanged] = useState(false);
   const { expenditureSlotChanges } = selectedEditingAction || {};
   const isEditStepActive =
     !!selectedEditingAction && currentStep?.startsWith(ExpenditureStep.Edit);
@@ -300,50 +304,78 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     return [...populatedItems, ...placeholderItems];
   }, [expendituresGlobalClaimDelay, items, expectedNumberOfPayouts]);
 
-  const dataWithChanges = useMemo(() => {
+  const newDataWithChanges = useMemo(() => {
     if (!expenditureSlotChanges) {
       return data.sort((a, b) => a.id - b.id);
     }
-
     const { newSlots, oldSlots } = expenditureSlotChanges;
 
-    const changedSlots = getChangedSlots(newSlots, oldSlots);
-    const changedData = data
-      .filter((item) => changedSlots.map((slot) => slot.id).includes(item.id))
-      .map((item) => {
-        const newSlot = newSlots.find((slot) => slot.id === item.id);
-        const oldSlot = oldSlots.find((slot) => slot.id === item.id);
+    const unchangedSlots: PaymentBuilderTableModel[] = [];
+    const changedSlots: PaymentBuilderTableModel[] = [];
 
-        return {
-          ...item,
-          newValues: newSlot,
-          oldValues: oldSlot,
-        };
-      })
-      .sort((a, b) => a.id - b.id);
+    newSlots.forEach((newSlot) => {
+      const found = oldSlots.some(
+        (oldSlot) => JSON.stringify(oldSlot) === JSON.stringify(newSlot),
+      );
 
-    const unchangedData = data
-      .filter((item) => !changedSlots.map((slot) => slot.id).includes(item.id))
-      .sort((a, b) => a.id - b.id);
+      const newItemSlot = newSlots.find((slot) => slot.id === newSlot.id);
+      const oldItemSlot = oldSlots.find((slot) => slot.id === newSlot.id);
 
-    return [...changedData, ...unchangedData];
-  }, [data, expenditureSlotChanges]);
+      if (found) {
+        unchangedSlots.push({
+          amount: newSlot.payouts?.[0].amount ?? '0',
+          claimDelay: newSlot?.claimDelay ?? '0',
+          id: newSlot.id,
+          isClaimed: newSlot.payouts?.[0].isClaimed ?? false,
+          isLoading: false,
+          recipient: newSlot?.recipientAddress ?? '',
+          tokenAddress: newSlot.payouts?.[0].tokenAddress ?? '',
+        });
+      } else {
+        changedSlots.push({
+          amount: newSlot.payouts?.[0].amount ?? '0',
+          claimDelay: newSlot.claimDelay ?? '',
+          id: newSlot.id,
+          isClaimed: newSlot.payouts?.[0].isClaimed ?? false,
+          isLoading: false,
+          newValues: newItemSlot,
+          oldValues: oldItemSlot,
+          recipient: newSlot.recipientAddress ?? '',
+          tokenAddress: newSlot.payouts?.[0].tokenAddress ?? '',
+        });
+      }
+    });
 
-  const filteredData = dataWithChanges.filter((item) =>
+    return [
+      ...changedSlots,
+      ...unchangedSlots.filter((item) => item.amount !== '0'),
+    ];
+  }, [expenditureSlotChanges, data]);
+
+  const filteredData = newDataWithChanges.filter((item) =>
     BigNumber.from(item.amount).gt(0),
   );
 
-  const dataToShow = isEditStepActive ? dataWithChanges : filteredData;
+  const dataToShow = isEditStepActive ? newDataWithChanges : filteredData;
 
   const columns = useGetPaymentBuilderColumns({
-    data: dataWithChanges,
+    data: newDataWithChanges,
     status,
     slots: items,
     finalizedTimestamp,
     expectedNumberOfPayouts,
   });
 
-  const renderSubComponent = useRenderSubComponent();
+  const [expandedRowsIds, setExpandedRowsIds] = useState<Array<number>>([]);
+
+  const renderSubComponent = useRenderSubComponent((id, isExpanded) => {
+    if (isExpanded && !expandedRowsIds.includes(id)) {
+      setExpandedRowsIds([...expandedRowsIds, id]);
+    }
+    if (!isExpanded && expandedRowsIds.includes(id)) {
+      setExpandedRowsIds(expandedRowsIds.filter((item) => item !== id));
+    }
+  });
   const tableRef = React.useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -351,11 +383,14 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
 
     if (isEditStepActive && tableRefCurrent) {
       const tableRows = tableRefCurrent.querySelectorAll('tbody > tr');
-      const changedItemsCount = dataWithChanges.filter(
+      const tableBodys = tableRefCurrent.querySelectorAll('tbody');
+
+      const changedItemsCount = newDataWithChanges.filter(
         (item) => item.newValues,
       ).length;
-      const lastChangedTableRow = tableRows[changedItemsCount - 1];
-      const hasAllRowsChanged = changedItemsCount === dataWithChanges.length;
+      const lastChangedTableRow =
+        tableRows[changedItemsCount + expandedRowsIds.length - 1];
+      const hasAllRowsChanged = changedItemsCount === newDataWithChanges.length;
       const rowsBeforeLastChanged = Array.from(tableRows).slice(
         0,
         changedItemsCount - 1,
@@ -364,6 +399,27 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
       if (rowsBeforeLastChanged.length) {
         rowsBeforeLastChanged.forEach((row) => {
           row.classList.add('previous-row');
+        });
+      }
+
+      const editedRowsLength = changedItemsCount + expandedRowsIds.length;
+      setAllRowsChanged(hasAllRowsChanged);
+
+      if (isTablet) {
+        tableBodys.forEach((tbody, index) => {
+          if (index < changedItemsCount) {
+            tbody.classList.add('tablet-edited');
+          } else {
+            tbody.classList.remove('tablet-edited');
+          }
+        });
+      } else {
+        tableRows.forEach((row, index) => {
+          if (index < editedRowsLength) {
+            row.classList.add('edited');
+          } else {
+            row.classList.remove('edited');
+          }
         });
       }
 
@@ -413,13 +469,19 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
         observers.forEach((observer) => observer.disconnect());
 
         tableRows.forEach((row) => {
-          row.classList.remove('previous-row', 'last-edited-row', 'last-row');
+          row.classList.remove(
+            'previous-row',
+            'last-edited-row',
+            'last-row',
+            'edited',
+            'tablet-edited',
+          );
         });
       };
     }
 
     return () => {};
-  }, [isEditStepActive, dataWithChanges]);
+  }, [isEditStepActive, newDataWithChanges, expandedRowsIds, isTablet]);
 
   return (
     <div className="mt-7" ref={tableRef}>
@@ -440,13 +502,21 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
       )}
       <Table<PaymentBuilderTableModel>
         className={clsx(
-          '[&_tbody]:relative [&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
           {
-            '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.25rem]': isTablet,
-            '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:pr-4 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
+            '[&_tbody>tr>td]:px-[18px] [&_tbody>tr>td]:py-[10px] [&_tr.edited:last-child>td:last-child]:before:h-[calc(100%-5px)] [&_tr.edited:not(:last-child)>td:first-child]:relative [&_tr.edited:not(:last-child)>td:first-child]:after:absolute [&_tr.edited:not(:last-child)>td:first-child]:after:left-0 [&_tr.edited:not(:last-child)>td:first-child]:after:top-0 [&_tr.edited:not(:last-child)>td:first-child]:after:h-[calc(100%+1px)] [&_tr.edited:not(:last-child)>td:first-child]:after:w-[1px] [&_tr.edited:not(:last-child)>td:first-child]:after:translate-x-[-1px] [&_tr.edited:not(:last-child)>td:first-child]:after:rounded-none [&_tr.edited:not(:last-child)>td:first-child]:after:bg-blue-400 [&_tr.edited>td:last-child]:relative [&_tr.edited>td:last-child]:before:absolute [&_tr.edited>td:last-child]:before:right-0 [&_tr.edited>td:last-child]:before:top-0 [&_tr.edited>td:last-child]:before:h-[calc(100%+1px)] [&_tr.edited>td:last-child]:before:w-[1px] [&_tr.edited>td:last-child]:before:translate-x-[1px] [&_tr.edited>td:last-child]:before:bg-blue-400':
               !isTablet,
-            '[&_thead]:relative [&_thead]:after:absolute [&_thead]:after:-left-px [&_thead]:after:-right-px [&_thead]:after:-top-px [&_thead]:after:bottom-0 [&_thead]:after:rounded-t-lg [&_thead]:after:border [&_thead]:after:border-blue-400 [&_tr.last-edited-row.expanded-below+tr_td:first-child]:after:border-l [&_tr.last-edited-row.expanded-below+tr_td:last-child]:after:border-r [&_tr.last-edited-row.expanded-below+tr_td]:after:border-b [&_tr.last-edited-row.expanded-below_td:first-child]:after:rounded-bl-none [&_tr.last-edited-row.expanded-below_td:last-child]:after:rounded-br-none [&_tr.last-edited-row.expanded-below_td]:after:border-b-0 [&_tr.last-edited-row_td:first-child]:after:border-l [&_tr.last-edited-row_td:last-child]:after:border-r [&_tr.last-edited-row_td]:after:border-b [&_tr.last-edited-row_td]:after:border-blue-400 [&_tr.last-row.expanded-below+tr_td:first-child]:after:rounded-bl-lg [&_tr.last-row.expanded-below+tr_td:last-child]:after:rounded-br-lg [&_tr.last-row_td:first-child]:after:rounded-bl-lg [&_tr.last-row_td:last-child]:after:rounded-br-lg [&_tr.previous-row.expanded-below+tr_td:first-child]:after:border-l [&_tr.previous-row.expanded-below+tr_td:last-child]:after:border-r [&_tr.previous-row_td:first-child]:after:border-l [&_tr.previous-row_td:last-child]:after:border-r [&_tr_td>div]:relative [&_tr_td]:after:absolute [&_tr_td]:after:-inset-px [&_tr_td]:after:border-blue-400 [&_tr_td]:sm:relative [&_tr_td_*]:z-[1]':
-              isEditStepActive,
+          },
+          {
+            '[&_thead]:relative [&_thead]:after:absolute [&_thead]:after:-left-px [&_thead]:after:-right-px [&_thead]:after:-top-px [&_thead]:after:bottom-0 [&_thead]:after:rounded-t-lg [&_thead]:after:border-b [&_thead]:after:border-blue-400':
+              !isTablet && isEditStepActive,
+          },
+          {
+            '[&_tr.edited:last-child>td]:after:border-b-1 [&_tr.edited:last-child>td:first-child]:after:border-l-1 [&_tr.edited:last-child>td:first-child]:after:h-full [&_tr.edited:last-child>td:not(:first-child)]:after:border-l-0 [&_tr.edited:last-child>td]:relative [&_tr.edited:last-child>td]:after:absolute [&_tr.edited:last-child>td]:after:bottom-0 [&_tr.edited:last-child>td]:after:right-0 [&_tr.edited:last-child>td]:after:h-[17px] [&_tr.edited:last-child>td]:after:w-[calc(100%+2px)] [&_tr.edited:last-child>td]:after:translate-x-[1px] [&_tr.edited:last-child>td]:after:border [&_tr.edited:last-child>td]:after:border-r-0 [&_tr.edited:last-child>td]:after:border-t-0 [&_tr.edited:last-child>td]:after:border-blue-400 [&_tr.edited>td:first-child]:after:rounded-bl-lg [&_tr.edited>td:last-child]:after:rounded-r-lg':
+              !isTablet && allRowsChanged,
+          },
+          {
+            '[&_tr.last-edited-row>td]:border-b-1 [&_tr.last-edited-row>td]:border [&_tr.last-edited-row>td]:border-l-0 [&_tr.last-edited-row>td]:border-r-0 [&_tr.last-edited-row>td]:border-t-0 [&_tr.last-edited-row>td]:border-blue-400':
+              !isTablet && !allRowsChanged,
           },
         )}
         rows={{

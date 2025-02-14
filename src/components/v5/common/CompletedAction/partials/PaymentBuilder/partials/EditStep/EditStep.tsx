@@ -11,9 +11,10 @@ import EditRequests from './partials/EditRequests/EditRequests.tsx';
 
 interface EditStepProps {
   actions: ExpenditureAction[];
+  isEditMode?: boolean;
 }
 
-const EditStep: FC<EditStepProps> = ({ actions }) => {
+const EditStep: FC<EditStepProps> = ({ actions, isEditMode }) => {
   const { selectedEditingAction } = usePaymentBuilderContext();
 
   const { motionData: selectedEditingMotion } = selectedEditingAction ?? {};
@@ -31,7 +32,12 @@ const EditStep: FC<EditStepProps> = ({ actions }) => {
 
   return (
     <div className="flex flex-col gap-2">
-      {actions && <EditRequests editingActions={sortedEditingActions} />}
+      {actions && (
+        <EditRequests
+          editingActions={sortedEditingActions}
+          isEditMode={isEditMode}
+        />
+      )}
       {selectedEditingMotion && (
         <MotionBox transactionId={selectedEditingMotion.transactionHash} />
       )}

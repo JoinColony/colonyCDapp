@@ -1,4 +1,5 @@
 import { unformatNumeral } from 'cleave-zen';
+import { isEqual } from 'lodash';
 import moveDecimal from 'move-decimal-point';
 import React, { useState, type FC } from 'react';
 import { defineMessages } from 'react-intl';
@@ -58,6 +59,10 @@ const MSG = defineMessages({
     id: `${displayName}.cancelEditMode`,
     defaultMessage: 'Cancel edit mode',
   },
+  noChangesError: {
+    id: `${displayName},noChangesError`,
+    defaultMessage: 'No changes have been made',
+  },
 });
 
 const PaymentBuilderEdit: FC<PaymentBuilderEditProps> = ({ action }) => {
@@ -71,6 +76,7 @@ const PaymentBuilderEdit: FC<PaymentBuilderEditProps> = ({ action }) => {
   const [editValues, setEditValues] = useState<
     ExpenditurePayoutFieldValue[] | undefined
   >();
+  const [isEdited, setIsEdited] = useState(false);
   const isMobile = useMobile();
 
   const validationSchema = useValidationSchema();
@@ -165,7 +171,9 @@ const PaymentBuilderEdit: FC<PaymentBuilderEditProps> = ({ action }) => {
                 {recipient.profile?.displayName}
               </UserInfoPopover>
             ) : null,
-            recipientsNumber: slots?.length,
+            recipientsNumber: slots?.filter(
+              (slot) => slot?.payouts?.[0].amount !== '0',
+            ).length,
             tokensNumber: tokensCount,
           },
         )}
@@ -201,6 +209,18 @@ const PaymentBuilderEdit: FC<PaymentBuilderEditProps> = ({ action }) => {
             slotId: payment.slotId,
           }));
 
+          setIsEdited(
+            !isEqual(
+              payments.map((item) => ({
+                amount: item.amount,
+                claimDelay: item.delay,
+                recipientAddress: item.recipient,
+                slotId: item.slotId,
+                tokenAddress: item.tokenAddress,
+              })),
+              mappedValues,
+            ),
+          );
           setEditValues(mappedValues as ExpenditurePayoutFieldValue[]);
         }}
         validationSchema={validationSchema}
@@ -235,6 +255,7 @@ const PaymentBuilderEdit: FC<PaymentBuilderEditProps> = ({ action }) => {
         editValues={editValues}
         onClose={() => setEditValues(undefined)}
         expenditure={expenditure}
+        errorMessage={!isEdited ? formatText(MSG.noChangesError) : undefined}
       />
     </>
   );
