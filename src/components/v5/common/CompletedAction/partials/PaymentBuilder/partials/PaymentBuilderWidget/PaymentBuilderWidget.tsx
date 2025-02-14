@@ -7,6 +7,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import {
+  type ColonyActionFragment,
   ExpenditureStatus,
   ExpenditureType,
   useGetColonyExpendituresQuery,
@@ -18,8 +19,7 @@ import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpen
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { DecisionMethod } from '~types/actions.ts';
-import { type ColonyAction, type ExpenditureAction } from '~types/graphql.ts';
-import { type MultiSigAction } from '~types/motions.ts';
+import { type ExpenditureAction } from '~types/graphql.ts';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import {
@@ -70,7 +70,6 @@ import {
   segregateFundingActions,
   segregateEditActions,
 } from './utils.ts';
-import MotionWidgetSkeleton from '~v5/shared/MotionWidgetSkeleton/MotionWidgetSkeleton.tsx';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { colony, refetchColony } = useColonyContext();
@@ -390,15 +389,15 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             <MotionBox transactionId={selectedFundingMotion.transactionHash} />
           )}
 
-          {selectedFundingMultiSig &&
-            isMultiSig(selectedFundingAction as ColonyAction) && (
-              <MultiSigFunding
-                action={selectedFundingAction as MultiSigAction}
-                onMultiSigRejected={() => {
-                  setExpectedStepKey(null);
-                }}
-              />
-            )}
+          {selectedFundingMultiSig && selectedFundingAction.multiSigData && (
+            <MultiSigFunding
+              action={selectedFundingAction as ColonyActionFragment}
+              onMultiSigRejected={() => {
+                setExpectedStepKey(null);
+              }}
+              multiSigData={selectedFundingAction.multiSigData}
+            />
+          )}
 
           {selectedFundingAction &&
             isSelectedActionInCurrentActions &&
@@ -535,42 +534,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           />
         ),
       };
-
-  const getFundingStepContent = () => {
-    if (selectedFundingMotion) {
-      return (
-        <MotionBox transactionId={selectedFundingMotion.transactionHash} />
-      );
-    }
-    // since the multisig widget doesn't fetch its own action we need to handle the loader here
-    if (selectedFundingMultiSig) {
-      if (loadingAction || !fundingAction) {
-        return <MotionWidgetSkeleton />;
-      }
-
-      if (fundingAction && fundingAction.multiSigData) {
-        return (
-          <MultiSigFunding
-            action={fundingAction}
-            multiSigData={fundingAction.multiSigData}
-            onMultiSigRejected={() => {
-              setExpectedStepKey(null);
-            }}
-          />
-        );
-      }
-
-      console.warn(
-        "The provided assumed multiSig action doesn't pass the type guard, something is wrong",
-      );
-      return null;
-    }
-
-    if (selectedFundingAction) {
-      return <ActionWithPermissionsInfo action={selectedFundingAction} />;
-    }
-    return null;
-  };
 
   const items: StepperItem<ExpenditureStep>[] = [
     {

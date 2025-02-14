@@ -304,7 +304,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     return [...populatedItems, ...placeholderItems];
   }, [expendituresGlobalClaimDelay, items, expectedNumberOfPayouts]);
 
-  const newDataWithChanges = useMemo(() => {
+  const dataWithChanges = useMemo(() => {
     if (!expenditureSlotChanges) {
       return data.sort((a, b) => a.id - b.id);
     }
@@ -352,14 +352,14 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     ];
   }, [expenditureSlotChanges, data]);
 
-  const filteredData = newDataWithChanges.filter((item) =>
+  const filteredData = dataWithChanges.filter((item) =>
     BigNumber.from(item.amount).gt(0),
   );
 
-  const dataToShow = isEditStepActive ? newDataWithChanges : filteredData;
+  const dataToShow = isEditStepActive ? dataWithChanges : filteredData;
 
   const columns = useGetPaymentBuilderColumns({
-    data: newDataWithChanges,
+    data: dataWithChanges,
     status,
     slots: items,
     finalizedTimestamp,
@@ -383,14 +383,17 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
 
     if (isEditStepActive && tableRefCurrent) {
       const tableRows = tableRefCurrent.querySelectorAll('tbody > tr');
+      const expandedRows = tableRefCurrent.querySelectorAll(
+        'tbody > tr.expanded-below',
+      );
       const tableBodys = tableRefCurrent.querySelectorAll('tbody');
 
-      const changedItemsCount = newDataWithChanges.filter(
+      const changedItemsCount = dataWithChanges.filter(
         (item) => item.newValues,
       ).length;
       const lastChangedTableRow =
         tableRows[changedItemsCount + expandedRowsIds.length - 1];
-      const hasAllRowsChanged = changedItemsCount === newDataWithChanges.length;
+      const hasAllRowsChanged = changedItemsCount === dataWithChanges.length;
       const rowsBeforeLastChanged = Array.from(tableRows).slice(
         0,
         changedItemsCount - 1,
@@ -402,7 +405,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
         });
       }
 
-      const editedRowsLength = changedItemsCount + expandedRowsIds.length;
+      const editedRowsLength = changedItemsCount + expandedRows.length;
       setAllRowsChanged(hasAllRowsChanged);
 
       if (isTablet) {
@@ -417,8 +420,12 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
         tableRows.forEach((row, index) => {
           if (index < editedRowsLength) {
             row.classList.add('edited');
+            if (index === editedRowsLength - 1) {
+              row.classList.add('last-expanded-row');
+            }
           } else {
             row.classList.remove('edited');
+            row.classList.remove('last-expanded-row');
           }
         });
       }
@@ -475,13 +482,14 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
             'last-row',
             'edited',
             'tablet-edited',
+            'last-expanded-row',
           );
         });
       };
     }
 
     return () => {};
-  }, [isEditStepActive, newDataWithChanges, expandedRowsIds, isTablet]);
+  }, [isEditStepActive, dataWithChanges, expandedRowsIds, isTablet]);
 
   return (
     <div className="mt-7" ref={tableRef}>
@@ -515,7 +523,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
               !isTablet && allRowsChanged,
           },
           {
-            '[&_tr.last-edited-row>td]:border-b-1 [&_tr.last-edited-row>td]:border [&_tr.last-edited-row>td]:border-l-0 [&_tr.last-edited-row>td]:border-r-0 [&_tr.last-edited-row>td]:border-t-0 [&_tr.last-edited-row>td]:border-blue-400':
+            '[&_tr.last-expanded-row>td]:border-b-1 [&_tr.last-expanded-row>td]:border [&_tr.last-expanded-row>td]:border-l-0 [&_tr.last-expanded-row>td]:border-r-0 [&_tr.last-expanded-row>td]:border-t-0 [&_tr.last-expanded-row>td]:border-blue-400':
               !isTablet && !allRowsChanged,
           },
         )}

@@ -55,8 +55,6 @@ export const PaymentBuilderContext = createContext<{
   selectedFinalizeAction: null,
   setSelectedFinalizeAction: noop,
   setSelectedReleaseAction: noop,
-  selectedMilestones: [],
-  setSelectedMilestones: noop,
   selectedEditingAction: null,
   setSelectedEditingAction: noop,
   currentStep: null,
