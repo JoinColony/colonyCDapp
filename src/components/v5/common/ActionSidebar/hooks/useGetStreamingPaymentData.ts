@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { FAILED_LOADING_DURATION as POLLING_TIMEOUT } from '~frame/LoadingTemplate/index.ts';
 import { useGetStreamingPaymentQuery } from '~gql';
@@ -22,14 +22,8 @@ export const useGetStreamingPaymentData = (
 
   const streamingPayment = data?.getStreamingPayment;
 
-  const [isPolling, setIsPolling] = useState(
-    streamingPaymentId && !streamingPayment,
-  );
-
   useEffect(() => {
     const shouldPoll = streamingPaymentId && !streamingPayment;
-
-    setIsPolling(shouldPoll);
 
     if (!shouldPoll) {
       return noop;
@@ -54,11 +48,9 @@ export const useGetStreamingPaymentData = (
     pollInterval,
   ]);
 
-  const isLoading = loading || !!isPolling;
-
   return {
     streamingPaymentData: streamingPayment,
-    loadingStreamingPayment: isLoading,
+    loadingStreamingPayment: loading,
     refetchStreamingPayment: refetch,
     startPolling,
     stopPolling,
