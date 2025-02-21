@@ -7,7 +7,7 @@ const calamityBannerItems: CalamityBannerItemProps[] = [
   {
     key: '1',
     linkProps: {
-      to: 'https://docs.colony.io/use/advanced-features/upgrade-colony-and-extensions',
+      to: 'https://github.com/JoinColony/colonyNetwork/releases',
       text: 'Learn more',
     },
     buttonProps: {
@@ -21,7 +21,7 @@ const calamityBannerItems: CalamityBannerItemProps[] = [
   {
     key: '2',
     linkProps: {
-      to: 'https://docs.colony.io/use/advanced-features/upgrade-colony-and-extensions',
+      to: 'https://github.com/JoinColony/colonyNetwork/releases',
       text: 'Learn more',
     },
     buttonProps: {

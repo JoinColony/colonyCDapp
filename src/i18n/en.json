@@ -1133,7 +1133,6 @@
     "actionSidebar.amount": "Amount",
     "actionSidebar.value": "Value",
     "actionSidebar.currentVersion": "Current version",
-    "actionSidebar.upToDate": "Your Colony version is up to date",
     "actionSidebar.newVersion": "New version",
     "actionSidebar.notEnoughMembersWithPermissions": "There are not enough members in this or higher teams with the required permissions to approve this action. Select a different team, or assign more users with the required multi-sig permissions.",
     "actionSidebar.availableTokens": "Available tokens",

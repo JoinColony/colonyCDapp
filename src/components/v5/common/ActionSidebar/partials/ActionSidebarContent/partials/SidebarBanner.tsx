@@ -1,5 +1,5 @@
 import { Extension } from '@colony/colony-js';
-import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
+import { WarningCircle, PushPin } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
@@ -28,7 +28,17 @@ const MSG = defineMessages({
     defaultMessage:
       'The {extensionName} extension is missing some or all of the permissions it needs to work.',
   },
+  newVersionInfo: {
+    id: `${displayName}.newVersionInfo`,
+    defaultMessage: `{isNewAvailable, select, true {New version available. View release notes for version details.} other {You are already on the latest version of Colony Network.}}`,
+  },
+  viewReleaseNotes: {
+    id: `${displayName}.viewReleaseNotes`,
+    defaultMessage: 'View release notes',
+  },
 });
+
+const RELEASE_NOTES = 'https://github.com/JoinColony/colonyNetwork/releases';
 
 export const SidebarBanner: FC = () => {
   const { watch } = useFormContext();
@@ -60,9 +70,6 @@ export const SidebarBanner: FC = () => {
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
   const isFieldDisabled = useIsFieldDisabled();
 
-  const showVersionUpToDateNotification =
-    selectedAction === Action.UpgradeColonyVersion && !canUpgrade;
-
   return (
     <>
       {selectedAction && (
@@ -82,13 +89,21 @@ export const SidebarBanner: FC = () => {
           </NotificationBanner>
         </div>
       ))}
-      {showVersionUpToDateNotification && (
-        <div className="mt-6">
-          <NotificationBanner icon={CheckCircle} status="success">
-            <FormattedMessage id="actionSidebar.upToDate" />
-          </NotificationBanner>
-        </div>
-      )}
+      <div className="mt-6">
+        <NotificationBanner
+          icon={PushPin}
+          status="success"
+          callToAction={
+            <a href={RELEASE_NOTES} target="_blank" rel="noreferrer">
+              {formatText(MSG.viewReleaseNotes)}
+            </a>
+          }
+        >
+          {formatText(MSG.newVersionInfo, {
+            isNewAvailable: canUpgrade,
+          })}
+        </NotificationBanner>
+      </div>
     </>
   );
 };
