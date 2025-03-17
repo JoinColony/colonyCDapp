@@ -1,14 +1,12 @@
-import { CopySimple } from '@phosphor-icons/react';
+import { SmileySticker } from '@phosphor-icons/react';
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import useBaseUrl from '~hooks/useBaseUrl.ts';
-import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { Heading3 } from '~shared/Heading/index.ts';
-import Button from '~v5/shared/Button/index.ts';
-import CardWithCallout from '~v5/shared/CardWithCallout/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
+
+import { ModalContent } from './partials/ModalContent.tsx';
 
 const displayName = 'v5.common.Modals.InviteMembersModal';
 
@@ -20,78 +18,62 @@ interface Props {
 const MSG = defineMessages({
   modalTitle: {
     id: `${displayName}.modalTitle`,
-    defaultMessage: 'Invite members to the private beta',
+    defaultMessage: 'Invite people to this colony',
   },
   modalDescription: {
     id: `${displayName}.modalDescription`,
     defaultMessage:
-      'You can invite up to 100 members to your Colony during the private beta using the invite link below.',
+      'You can invite {invitesAvailable} more {invitesAvailable, plural, one {person} other {people}} to join and follow this colony during early access. If you run out, you will be able to request more.',
   },
-  invitesUsed: {
-    id: `${displayName}.invitesUsed`,
-    defaultMessage: '{invitesUsed}/{invitesAvailable} invites used',
-  },
-  inviteLinkHeading: {
-    id: `${displayName}.inviteLinkHeading`,
-    defaultMessage: 'Your unique invite link:',
-  },
-  buttonText: {
-    id: `${displayName}.buttonText`,
-    defaultMessage: `{isCopied, select,
-      true {Link copied}
-      other {Copy link}
-    }`,
+  modalDescriptionReached: {
+    id: `${displayName}.modalDescriptionReached`,
+    defaultMessage:
+      'You have reached your invite limit during early access. If you need more, please make a request.',
   },
 });
 
 const InviteMembersModal = ({ isOpen, onClose }: Props) => {
   const {
-    colony: { colonyMemberInvite, name: colonyName },
+    colony: { colonyMemberInvite },
   } = useColonyContext();
+  const invitesAvailable = colonyMemberInvite?.invitesRemaining || 0;
+  const isOutOfInvites = invitesAvailable === 0;
 
-  const invitesAvailable = 100;
-  const inviteLink = useBaseUrl(
-    `/invite/${colonyName}/${colonyMemberInvite?.id}`,
-  );
-  const invitesUsed = 100 - (colonyMemberInvite?.invitesRemaining || 0);
+  const getModalSubtitle = () => {
+    if (isOutOfInvites) {
+      return (
+        <FormattedMessage
+          {...MSG.modalDescriptionReached}
+          values={{ invitesAvailable }}
+        />
+      );
+    }
 
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard();
+    return (
+      <FormattedMessage
+        {...MSG.modalDescription}
+        values={{ invitesAvailable }}
+      />
+    );
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={() => onClose()}>
       <div className="mb-8 mt-10 flex flex-col items-center">
+        <SmileySticker size={42} className="mb-3" />
         <Heading3
           appearance={{ theme: 'dark' }}
           className="font-semibold text-gray-900"
           text={MSG.modalTitle}
         />
         <p className="mt-1 text-center text-sm text-gray-600">
-          <FormattedMessage {...MSG.modalDescription} />
+          {getModalSubtitle()}
         </p>
       </div>
-      <CardWithCallout
-        title={
-          <span className="rounded-lg bg-gray-100 p-2 text-sm font-medium text-gray-900">
-            <FormattedMessage
-              {...MSG.invitesUsed}
-              values={{ invitesAvailable, invitesUsed }}
-            />
-          </span>
-        }
-        subtitle={<FormattedMessage {...MSG.inviteLinkHeading} />}
-        button={
-          <Button
-            text={MSG.buttonText}
-            mode={isCopied ? 'completed' : 'quinary'}
-            icon={isCopied ? undefined : CopySimple}
-            onClick={() => handleClipboardCopy(inviteLink)}
-            size="small"
-            textValues={{ isCopied }}
-          />
-        }
-      >
-        {inviteLink}
-      </CardWithCallout>
+      <ModalContent
+        isOutOfInvites={isOutOfInvites}
+        invitesAvailable={invitesAvailable}
+      />
     </Modal>
   );
 };
