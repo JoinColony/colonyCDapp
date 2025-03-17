@@ -47,6 +47,9 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
     ExpenditureType | undefined
   >(undefined);
 
+  const [selectedCancellingAction, setSelectedCancellingAction] =
+    useState<ExpenditureAction | null>(null);
+
   const value = useMemo(
     () => ({
       toggleOnFundingModal,
@@ -74,6 +77,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOffFinalizeModal,
       selectedFinalizeAction,
       setSelectedFinalizeAction,
+      selectedCancellingAction,
+      setSelectedCancellingAction,
     }),
     [
       toggleOnFundingModal,
@@ -95,6 +100,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOffFinalizeModal,
       selectedFinalizeAction,
       setSelectedFinalizeAction,
+      selectedCancellingAction,
+      setSelectedCancellingAction,
     ],
   );
 
