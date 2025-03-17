@@ -79,10 +79,6 @@ function* claimMotionRewards({
     const hasYayStake = !BigNumber.from(yayStake).isZero();
     const hasNayStake = !BigNumber.from(nayStake).isZero();
 
-    if (!hasYayStake && !hasNayStake) {
-      throw new Error('A motion with claims needs to be provided');
-    }
-
     const YAY_ID = 'yayClaim';
     const NAY_ID = 'nayClaim';
 
