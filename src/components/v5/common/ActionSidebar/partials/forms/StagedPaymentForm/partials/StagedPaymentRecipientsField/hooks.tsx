@@ -86,7 +86,7 @@ export const useStagedPaymentRecipientsTableColumns = (
         }),
         columnHelper.display({
           id: 'amount',
-          staticSize: '216px',
+          staticSize: '210px',
           header: () => formatText({ id: 'table.row.amount' }),
           cell: ({ row }) => (
             <AmountField
