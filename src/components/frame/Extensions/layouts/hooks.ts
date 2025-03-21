@@ -34,7 +34,7 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
       {
         key: '1',
         linkProps: {
-          to: 'https://docs.colony.io/use/advanced-features/upgrade-colony-and-extensions',
+          to: 'https://github.com/JoinColony/colonyNetwork/releases',
           text: formatText({ id: 'learn.more' }),
         },
         buttonProps: {
