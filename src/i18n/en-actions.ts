@@ -58,6 +58,8 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens by {initiator}}
       ${ColonyActionType.FundExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
       ${ColonyActionType.FinalizeExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
+      ${ColonyActionType.CreateStreamingPayment} {Create streaming payment}
+      ${ColonyActionType.CreateStreamingPaymentMotion} {Create streaming payment}
 
       ${ColonyActionType.MakeArbitraryTransaction} {{arbitraryTransactionsLength, select,
         0 {Arbitrary transaction by {initiator}}
@@ -139,6 +141,8 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.MakeArbitraryTransaction} {Custom transactions}
       ${ColonyActionType.MakeArbitraryTransactionsMotion} {Custom transactions}
       ${ColonyActionType.MakeArbitraryTransactionsMultisig} {Custom transactions}
+      ${ColonyActionType.CreateStreamingPayment} {Create streaming payment}
+      ${ColonyActionType.CreateStreamingPaymentMotion} {Create streaming payment}
       ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}

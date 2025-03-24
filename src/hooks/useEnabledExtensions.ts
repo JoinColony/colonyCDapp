@@ -18,6 +18,7 @@ export interface EnabledExtensionData {
   isStreamingPaymentsEnabled: boolean;
   isMultiSigEnabled: boolean;
   multiSigExtensionData: InstalledExtensionData | undefined;
+  streamingPaymentsAddress: Address | undefined;
 }
 
 const useEnabledExtensions = (): EnabledExtensionData => {
@@ -55,6 +56,7 @@ const useEnabledExtensions = (): EnabledExtensionData => {
     isStreamingPaymentsEnabled: !!streamingPaymentsExtension?.isEnabled,
     isMultiSigEnabled: !!multiSigExtension?.isEnabled,
     multiSigExtensionData: multiSigExtension,
+    streamingPaymentsAddress: streamingPaymentsExtension?.address,
   };
 };
 

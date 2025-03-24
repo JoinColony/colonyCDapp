@@ -149,10 +149,12 @@ const CompletedAction = ({ action }: ICompletedAction) => {
       case ColonyActionType.ReleaseStagedPaymentsMotion:
       case ColonyActionType.MakeArbitraryTransactionsMotion:
       case ColonyActionType.EditExpenditureMotion:
-      case ColonyActionType.FundExpenditureMotion: {
+      case ColonyActionType.FundExpenditureMotion:
+      case ColonyActionType.CancelStreamingPaymentMotion:
+      case ColonyActionType.EditStreamingPaymentMotion:
+      case ColonyActionType.CreateStreamingPaymentMotion: {
         const { motionData } = action;
 
-        // @NOTE: Enabling expenditure-related motions above temporarily (action UI will be missing)
         return motionData ? (
           <Motions action={action} motionData={motionData} />
         ) : null;

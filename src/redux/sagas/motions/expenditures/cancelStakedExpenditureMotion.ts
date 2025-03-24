@@ -18,11 +18,11 @@ import {
   createInvalidParamsError,
   getColonyManager,
   initiateTransaction,
+  putError,
 } from '~redux/sagas/utils/index.ts';
 
 function* cancelStakedExpenditureMotion({
   meta,
-  meta: { setTxHash },
   payload: {
     colonyAddress,
     stakedExpenditureAddress,
@@ -147,30 +147,15 @@ function* cancelStakedExpenditureMotion({
 
     yield initiateTransaction(createMotion.id);
 
-    const {
-      type,
-      payload: { transactionHash: txHash },
-    } = yield call(waitForTxResult, createMotion.channel);
+    yield waitForTxResult(createMotion.channel);
 
-    setTxHash?.(txHash);
-
-    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<Action<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS>>({
-        type: ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
-        meta,
-      });
-    }
+    yield put<Action<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS>>({
+      type: ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
+      meta,
+    });
   } catch (e) {
     console.error(e);
-    yield put<Action<ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR>>({
-      type: ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR,
-      payload: {
-        name: ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR,
-        message: JSON.stringify(e),
-      },
-      meta,
-      error: true,
-    });
+    yield putError(ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR, e, meta);
   } finally {
     createMotion.channel.close();
   }
