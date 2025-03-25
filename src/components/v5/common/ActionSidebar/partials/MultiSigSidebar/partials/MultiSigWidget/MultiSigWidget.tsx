@@ -155,7 +155,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
       <Stepper<MultiSigState>
         items={items}
         activeStepKey={activeStepKey}
-        setActiveStepKey={setActiveStepKey}
+        setActiveStepKey={(key: MultiSigState) => setActiveStepKey(key)}
       />
     );
   }

@@ -24,7 +24,11 @@ import { type StakingStepProps } from './types.ts';
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.StakingStep';
 
-const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
+const StakingStep: FC<StakingStepProps> = ({
+  className,
+  isActive,
+  isActionCancelled,
+}) => {
   const { canInteract } = useAppContext();
   const { action, motionData } = useMotionContext();
   const [isAccordionOpen, { toggle: toggleAccordion }] = useToggle();
@@ -142,6 +146,19 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
                 {
                   key: '2',
                   content: <NotEnoughTokensInfo />,
+                  className: 'bg-negative-100 text-negative-400 !py-3',
+                },
+              ]
+            : []),
+          ...(isActionCancelled
+            ? [
+                {
+                  key: '3',
+                  content: (
+                    <p className="text-sm">
+                      {formatText({ id: 'motion.cancelled' })}
+                    </p>
+                  ),
                   className: 'bg-negative-100 text-negative-400 !py-3',
                 },
               ]

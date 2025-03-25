@@ -160,7 +160,8 @@ export const useGetFinalizeStep = ({
                     id: 'expenditure.releaseStage.info',
                   })}
                   content={
-                    expectedStepKey === ExpenditureStep.Payment ? (
+                    expectedStepKey === ExpenditureStep.Payment ||
+                    expectedStepKey === ExpenditureStep.Cancel ? (
                       <IconButton
                         className="max-h-[2.5rem] w-full !text-md"
                         rounded="s"
