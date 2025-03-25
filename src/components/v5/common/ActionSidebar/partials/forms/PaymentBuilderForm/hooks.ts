@@ -29,6 +29,117 @@ import {
   getPaymentBuilderPayload,
 } from './utils.ts';
 
+export const useGetPaymentsValidationSchema = () => {
+  const { colony } = useColonyContext();
+  const tokenLockStatesMap = useTokenLockStates();
+
+  return useMemo(
+    () =>
+      array()
+        .of(
+          object()
+            .shape({
+              recipient: string()
+                .required(({ path }) => {
+                  const index = getLastIndexFromPath(path);
+                  if (index === undefined) {
+                    return formatText({ id: 'errors.recipient.required' });
+                  }
+                  return formatText(
+                    { id: 'errors.recipient.requiredIn' },
+                    { paymentIndex: index + 1 },
+                  );
+                })
+                .address(),
+              slotId: number(),
+              amount: string()
+                .required(formatText({ id: 'errors.amount' }))
+                .test(
+                  'more-than-zero',
+                  ({ path }) => {
+                    const index = getLastIndexFromPath(path);
+                    if (index === undefined) {
+                      return formatText({
+                        id: 'errors.amount.greaterThanZero',
+                      });
+                    }
+                    return formatText(
+                      { id: 'errors.amount.greaterThanZeroIn' },
+                      { paymentIndex: index + 1 },
+                    );
+                  },
+                  (value, context) =>
+                    amountGreaterThanZeroValidation({
+                      value,
+                      context,
+                      colony,
+                    }),
+                )
+                .test('tokens-sum-exceeded', '', (value, context) =>
+                  allTokensAmountValidation({
+                    value,
+                    context,
+                    colony,
+                  }),
+                ),
+              tokenAddress: string()
+                .required()
+                .test(
+                  'token-unlocked',
+                  formatText({ id: 'errors.amount.tokenIsLocked' }) || '',
+                  (value) =>
+                    !shouldPreventPaymentsWithTokenInColony(
+                      value || '',
+                      colony,
+                      tokenLockStatesMap,
+                    ),
+                ),
+              delay: string()
+                .test(
+                  'is-bigger-than-max',
+                  ({ path }) => {
+                    const index = getLastIndexFromPath(path);
+
+                    return formatText(
+                      { id: 'errors.delay.max' },
+                      {
+                        paymentIndex: index === undefined ? 1 : index + 1,
+                        max: CLAIM_DELAY_MAX_VALUE,
+                      },
+                    );
+                  },
+                  (value) => {
+                    if (!value) {
+                      return true;
+                    }
+
+                    const unformattedValue = unformatNumeral(value);
+
+                    return BigNumber.from(moveDecimal(unformattedValue, 4)).lte(
+                      moveDecimal(CLAIM_DELAY_MAX_VALUE, 4),
+                    );
+                  },
+                )
+                .required(({ path }) => {
+                  const index = getLastIndexFromPath(path);
+                  if (index === undefined) {
+                    return formatText({ id: 'errors.delay.empty' });
+                  }
+                  return formatText(
+                    { id: 'errors.delay.emptyIndex' },
+                    { paymentIndex: index + 1 },
+                  );
+                }),
+            })
+            .defined()
+            .required(),
+        )
+        .defined()
+        .required(),
+    [colony, tokenLockStatesMap],
+  );
+};
+
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
   const colonyTokens = useMemo(
@@ -189,7 +300,7 @@ export const useValidationSchema = () => {
         )
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, colonyTokens, tokenLockStatesMap],
+    [colonyTokens, colony, tokenLockStatesMap],
   );
 };
 

@@ -152,4 +152,12 @@ fragment ExpenditureAction on ColonyAction {
   multiSigData {
     ...ColonyMultiSig
   }
+  expenditureSlotChanges {
+    newSlots {
+      ...ExpenditureSlot
+    }
+    oldSlots {
+      ...ExpenditureSlot
+    }
+  }
 }

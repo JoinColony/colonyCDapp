@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
 import { ExtendedColonyActionType } from '~types/actions.ts';
@@ -14,6 +15,7 @@ import AddVerifiedMembers from './partials/AddVerifiedMembers/index.ts';
 import ArbitraryTransaction from './partials/ArbitraryTransaction/index.ts';
 import CreateDecision from './partials/CreateDecision/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
+import ExitEditModeModal from './partials/ExitEditModeModal/ExitEditModeModal.tsx';
 import ManageReputation from './partials/ManageReputation/index.ts';
 import ManageTeam from './partials/ManageTeam/index.ts';
 import ManageTokens from './partials/ManageTokens/ManageTokens.tsx';
@@ -36,6 +38,13 @@ const CompletedAction = ({ action }: ICompletedAction) => {
   const { colony } = useColonyContext();
 
   const actionType = getExtendedActionType(action, colony.metadata);
+  const {
+    isEditMode,
+    cancelEditModalToggle: [
+      isCancelModalOpen,
+      { toggleOff: toggleOffCancelModal },
+    ],
+  } = useActionSidebarContext();
 
   const getActionContent = () => {
     switch (actionType) {
@@ -176,30 +185,28 @@ const CompletedAction = ({ action }: ICompletedAction) => {
       <div
         className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8', {
           'sm:w-[calc(100%-23.75rem)]': action.isMotion,
+          'mb-[8.5rem] sm:mb-[5.5rem] sm:border sm:border-warning-400':
+            isEditMode,
+          'sm:border-b-0 sm:border-l-0': !isEditMode,
         })}
       >
         {getActionContent()}
       </div>
 
       <div
-        className={`
-            w-full
-            border-b
-            border-b-gray-200
-            bg-gray-25
-            px-6
-            py-8
-            sm:h-full
-            sm:w-[23.75rem]
-            sm:flex-shrink-0
-            sm:overflow-y-auto
-            sm:border-b-0
-            sm:border-l
-            sm:border-l-gray-200
-          `}
+        className={clsx(
+          'w-full border-b border-b-gray-200 bg-gray-25 px-6 py-8 sm:h-full sm:w-[23.75rem] sm:flex-shrink-0 sm:overflow-y-auto sm:border-b-0 sm:border-t sm:border-gray-200',
+          {
+            'border-b-warning-400': isEditMode,
+          },
+        )}
       >
         {getSidebarWidgetContent()}
       </div>
+      <ExitEditModeModal
+        isOpen={isCancelModalOpen}
+        onClose={toggleOffCancelModal}
+      />
     </div>
   );
 };
