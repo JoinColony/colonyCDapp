@@ -24,6 +24,8 @@ import RemoveVerifiedMembers from './partials/RemoveVerifiedMembers/index.ts';
 import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
 import SplitPayment from './partials/SplitPayment/SplitPayment.tsx';
+import StreamingPaymentWidget from './partials/StreamingPayment/partials/StreamingPaymentWidget/StreamingPaymentWidget.tsx';
+import StreamingPayment from './partials/StreamingPayment/StreamingPayment.tsx';
 import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
 import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
@@ -116,6 +118,10 @@ const CompletedAction = ({ action }: ICompletedAction) => {
         return <ManageTokens action={action} />;
       case ExtendedColonyActionType.SplitPayment:
         return <SplitPayment action={action} />;
+      case ColonyActionType.CreateStreamingPayment:
+        return <StreamingPayment action={action} />;
+      case ColonyActionType.CancelStreamingPayment:
+        return <StreamingPayment action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
@@ -165,6 +171,10 @@ const CompletedAction = ({ action }: ICompletedAction) => {
       case ExtendedColonyActionType.StagedPayment:
       case ExtendedColonyActionType.SplitPayment:
         return <PaymentBuilderWidget action={action} />;
+      case ColonyActionType.CreateStreamingPayment:
+        return <StreamingPaymentWidget action={action} />;
+      case ColonyActionType.CancelStreamingPayment:
+        return <StreamingPaymentWidget action={action} />;
       default:
         return <PermissionSidebar action={action} />;
     }

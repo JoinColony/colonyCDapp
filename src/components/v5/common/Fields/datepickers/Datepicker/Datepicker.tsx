@@ -58,7 +58,7 @@ const Datepicker: FC<DatepickerProps & { inputProps?: InputBaseProps }> = ({
     <DatePicker
       portalId={isMobile ? DATEPICKER_PORTAL_ID : undefined}
       calendarContainer={DatepickerContainer}
-      calendarClassName={styles.wrapper}
+      calendarClassName={clsx(styles.wrapper, styles['wrapper--simple'])}
       renderCustomHeader={(props) => (
         <DatepickerCustomHeader
           startDate={selectedDate}

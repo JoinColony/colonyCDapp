@@ -2,6 +2,7 @@ fragment StreamingPayment on StreamingPayment {
   id
   nativeId
   recipientAddress
+  creatorAddress
   nativeDomainId
   startTime
   endTime
@@ -11,6 +12,9 @@ fragment StreamingPayment on StreamingPayment {
     ...Token
   }
   amount
+  isCancelled
+  isWaived
+  createdAt
   metadata {
     endCondition
     changelog {
@@ -22,6 +26,11 @@ fragment StreamingPayment on StreamingPayment {
   claims {
     amount
     timestamp
+  }
+  creatingActions: actions(filter: { type: { eq: CREATE_STREAMING_PAYMENT } }) {
+    items {
+      transactionHash: id
+    }
   }
 }
 

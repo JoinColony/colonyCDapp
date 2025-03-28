@@ -22,8 +22,7 @@ const MSG = defineMessages({
   },
   requiredStakeDescription: {
     id: `${displayName}.requiredStakeDescription`,
-    defaultMessage:
-      'What percentage of the team’s reputation, in token terms, is required to create a Payment builder, Split or Staged payment action?',
+    defaultMessage: `The percentage of a team's reputation, in token terms, that is required to stake in order to create Advanced payment, Split payment, and Staged payment actions.`,
   },
 });
 

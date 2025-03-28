@@ -7,7 +7,6 @@ import {
 import moveDecimal from 'move-decimal-point';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateStreamingPaymentMetadataDocument,
@@ -27,6 +26,7 @@ import {
 } from '../transactions/index.ts';
 import {
   adjustRecipientAddress,
+  createActionMetadataInDB,
   getColonyManager,
   getEndTimeByEndCondition,
   initiateTransaction,
@@ -52,8 +52,10 @@ function* createStreamingPaymentAction({
     endCondition,
     limitAmount,
     annotationMessage,
+    customActionTitle,
   },
   meta,
+  meta: { setTxHash },
 }: Action<ActionTypes.STREAMING_PAYMENT_CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -175,6 +177,12 @@ function* createStreamingPaymentAction({
       },
     } = yield waitForTxResult(createStreamingPayment.channel);
 
+    if (customActionTitle) {
+      yield createActionMetadataInDB(txHash, {
+        customTitle: customActionTitle,
+      });
+    }
+
     if (annotationMessage) {
       yield uploadAnnotation({
         txChannel: annotateCreateStreamingPayment,
@@ -187,29 +195,29 @@ function* createStreamingPaymentAction({
       streamingPaymentsClient.getNumStreamingPayments,
     );
 
-    yield mutateWithAuthRetry(() =>
-      apolloClient.mutate<
-        CreateStreamingPaymentMetadataMutation,
-        CreateStreamingPaymentMetadataMutationVariables
-      >({
-        mutation: CreateStreamingPaymentMetadataDocument,
-        variables: {
-          input: {
-            id: getExpenditureDatabaseId(
-              colonyAddress,
-              toNumber(streamingPaymentId),
-            ),
-            endCondition,
-          },
+    yield apolloClient.mutate<
+      CreateStreamingPaymentMetadataMutation,
+      CreateStreamingPaymentMetadataMutationVariables
+    >({
+      mutation: CreateStreamingPaymentMetadataDocument,
+      variables: {
+        input: {
+          id: getExpenditureDatabaseId(
+            colonyAddress,
+            toNumber(streamingPaymentId),
+          ),
+          endCondition,
         },
-      }),
-    );
+      },
+    });
 
     yield put<AllActions>({
       type: ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
       payload: {},
       meta,
     });
+
+    setTxHash?.(txHash);
   } catch (error) {
     return yield putError(
       ActionTypes.STREAMING_PAYMENT_CREATE_ERROR,

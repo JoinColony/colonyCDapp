@@ -128,6 +128,7 @@ fragment ColonyAction on ColonyAction {
   members
   rootHash
   expenditureId
+  streamingPaymentId
   isMultiSig
   multiSigId
   multiSigData {
@@ -152,6 +153,7 @@ fragment ColonyAction on ColonyAction {
     contractAddress
     encodedFunction
   }
+  streamingPaymentId
 }
 
 fragment ApprovedTokenChanges on ApprovedTokenChanges {

@@ -20,12 +20,10 @@ const useStreamingPaymentAmountsLeft = (
 
   const amountClaimedToDate =
     streamingPayment.claims?.reduce((sum, claim) => {
-      const newAmount = BigNumber.from(claim.amount).add(sum);
+      return BigNumber.from(claim.amount).add(sum);
+    }, BigNumber.from(0)) ?? BigNumber.from(0);
 
-      return newAmount.toString();
-    }, '0') ?? '0';
-
-  let amountAvailableToClaim: BigNumber;
+  let amountAvailableToClaim = BigNumber.from(0);
 
   const {
     startTime: startTimeString,
@@ -44,19 +42,28 @@ const useStreamingPaymentAmountsLeft = (
       ? endTime.sub(startTime) // End time has already passed, the whole duration can be claimed.
       : BigNumber.from(currentTimestamp).sub(startTime); // End time has not passed, calculate duration to be claimed.
 
+    // Convert to WAD arithmetic to match Solidity implementation
+    const WAD = BigNumber.from(10).pow(18);
+    const intervalsToClaim = durationToClaim.mul(WAD).div(interval);
     const amountAvailableSinceStart = BigNumber.from(amount)
-      .mul(durationToClaim)
-      .div(interval);
+      .mul(intervalsToClaim)
+      .div(WAD); // Divide by WAD to get back to normal scale
 
-    amountAvailableToClaim = amountAvailableSinceStart.sub(amountClaimedToDate);
+    const difference = amountAvailableSinceStart.sub(amountClaimedToDate);
 
-    amountAvailableToClaim = amountAvailableToClaim.lt(0)
-      ? BigNumber.from(0)
-      : amountAvailableToClaim;
+    const tolerance = BigNumber.from(amount).div(BigNumber.from(10).pow(12));
+
+    if (difference.abs().lte(tolerance)) {
+      amountAvailableToClaim = BigNumber.from(0);
+    } else {
+      amountAvailableToClaim = difference.lt(0)
+        ? BigNumber.from(0)
+        : difference;
+    }
   }
 
   return {
-    amountClaimedToDate,
+    amountClaimedToDate: amountClaimedToDate.toString(),
     amountAvailableToClaim: amountAvailableToClaim.toString(),
   };
 };

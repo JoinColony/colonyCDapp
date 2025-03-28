@@ -79,6 +79,10 @@ export interface TableOptionsOverrides<T> {
   getPaginationRowModel?: (table: Table<T>) => () => RowModel<T>;
   onRowSelectionChange?: OnChangeFn<RowSelectionState>;
   getFilteredRowModel?: (table: Table<T>) => () => RowModel<T>;
+  loadMoreProps?: {
+    renderContent: (loadMore: () => void) => React.ReactNode;
+    itemsPerPage: number;
+  };
 }
 
 export interface BaseTableOptions<T>
@@ -124,6 +128,7 @@ export type HorizontalTableLayoutProps<T> = BaseTableLayoutProps<T> &
     | 'borders'
     | 'isDisabled'
     | 'data'
+    | 'overrides'
   > &
   Required<Pick<BaseTableProps<T>, 'renderCellWrapper'>>;
 

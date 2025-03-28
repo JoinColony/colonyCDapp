@@ -87,7 +87,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
         <MenuContainer
           className={clsx(
             contentWrapperClassName,
-            'absolute !left-0 z-dropdown w-[calc(100vw-2.4rem)] min-w-[calc(100vw-2.4rem)] overflow-y-auto px-6 py-4 sm:w-fit sm:min-w-fit',
+            'absolute !right-0 z-dropdown w-[calc(100vw-2.4rem)] min-w-[calc(100vw-2.4rem)] overflow-y-auto px-6 py-4 sm:w-fit sm:min-w-fit',
           )}
           hasShadow
           rounded="s"
@@ -103,6 +103,7 @@ const MeatBallMenu: FC<MeatBallMenuProps> = ({
             renderItemWrapper={renderItemWrapper}
             onClose={handleOnClose}
           />
+          {/* <p>asddsa</p> */}
         </MenuContainer>
       )}
     </div>

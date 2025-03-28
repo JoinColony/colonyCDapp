@@ -4,10 +4,13 @@ import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
+import { supportedExtensionsConfig } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 import { formatText } from '~utils/intl.ts';
+import { getNeededExtension } from '~v5/common/ActionSidebar/partials/utils.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import { type ActionTypeNotificationProps } from './types.ts';
@@ -28,10 +31,10 @@ const MSG = defineMessages({
     defaultMessage:
       'This will disable the Colony and prevent any further activity until resolved.',
   },
-  votingReputationExtensionNotEnabledError: {
-    id: `${displayName}.votingReputationExtensionNotEnabledError`,
+  noExtensionError: {
+    id: `${displayName}.noExtensionError`,
     defaultMessage:
-      'Agreements requires the Reputation weighted extension to be enabled.',
+      '{actionName} requires the {extensionName} extension to be enabled.',
   },
   stagedExpenditureExtensionNotEnabledError: {
     id: `${displayName}.stagedExpenditureExtensionNotEnabledError`,
@@ -45,6 +48,11 @@ const MSG = defineMessages({
   viewExtension: {
     id: `${displayName}.viewExtension`,
     defaultMessage: 'View extension',
+  },
+  extensionNotInstalled: {
+    id: `${displayName}.extensionNotInstalled`,
+    defaultMessage:
+      'You need to install the {extensionName} extension to create this action.',
   },
 });
 
@@ -75,18 +83,32 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
         return formatText(MSG.enterRecoveryModeError);
       case Action.CreateDecision:
         return isFieldDisabled
-          ? formatText(MSG.votingReputationExtensionNotEnabledError)
+          ? formatText(MSG.noExtensionError, {
+              actionName: 'Agreements',
+              extensionName: 'Reputation weighted',
+            })
           : undefined;
-      case Action.StagedPayment:
-        return isFieldDisabled
-          ? formatText(MSG.stagedExpenditureExtensionNotEnabledError)
+      case Action.StreamingPayment: {
+        const extensionName = supportedExtensionsConfig.find(
+          (extension) => extension.extensionId === Extension.StreamingPayments,
+        )?.name;
+
+        return isFieldDisabled && extensionName
+          ? formatText(MSG.noExtensionError, {
+              actionName: 'Streaming',
+              extensionName: 'Streaming Payments',
+            })
           : undefined;
+      }
       default:
         return undefined;
     }
   };
 
   const notificationTitle = getNotificationTitle();
+
+  const extensionId = getNeededExtension(selectedAction);
+  const extensionLink = `${COLONY_EXTENSIONS_ROUTE}/${extensionId}`;
 
   return (
     <>
@@ -105,17 +127,15 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
                   {formatText(MSG.learnMore)}
                 </a>
               ) : (
-                selectedAction === Action.CreateDecision && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigate(`extensions/${Extension.VotingReputation}`);
-                      toggleActionSidebarOff();
-                    }}
-                  >
-                    {formatText(MSG.viewExtension)}
-                  </button>
-                )
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate(extensionLink);
+                    toggleActionSidebarOff();
+                  }}
+                >
+                  {formatText(MSG.viewExtension)}
+                </button>
               )
             }
           >

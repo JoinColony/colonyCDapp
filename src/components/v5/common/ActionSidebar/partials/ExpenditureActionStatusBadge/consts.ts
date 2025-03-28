@@ -1,6 +1,5 @@
+import { ExpenditureActionStatus } from '~types/expenditures.ts';
 import { tw } from '~utils/css/index.ts';
-
-import { ExpenditureActionStatus } from './types.ts';
 
 export const EXPENDITURE_STATUS_TO_CLASSNAME_MAP: Record<
   ExpenditureActionStatus,

@@ -58,7 +58,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens by {initiator}}
       ${ColonyActionType.FundExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
       ${ColonyActionType.FinalizeExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
-      ${ColonyActionType.CreateStreamingPayment} {Create streaming payment}
+      ${ColonyActionType.CreateStreamingPayment} {Stream {amount} {tokenSymbol} / {period} to {recipient} by {initiator}}
       ${ColonyActionType.CreateStreamingPaymentMotion} {Create streaming payment}
 
       ${ColonyActionType.MakeArbitraryTransaction} {{arbitraryTransactionsLength, select,

@@ -244,6 +244,7 @@ export type ExpendituresActionTypes =
         endCondition: StreamingPaymentEndCondition;
         limitAmount?: string;
         annotationMessage?: string;
+        customActionTitle?: string;
       },
       MetaWithSetter<object>
     >
@@ -280,6 +281,7 @@ export type ExpendituresActionTypes =
         colonyAddress: Address;
         streamingPaymentsAddress: Address;
         streamingPayment: StreamingPayment;
+        tokenAddress: Address;
       },
       MetaWithSetter<object>
     >

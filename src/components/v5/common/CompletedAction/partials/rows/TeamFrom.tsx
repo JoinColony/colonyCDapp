@@ -24,6 +24,10 @@ const TeamFromRow = ({ teamMetadata, actionType }: TeamFromRowProps) => {
         return formatText({
           id: 'actionSidebar.tooltip.managePermissions.team',
         });
+      case ColonyActionType.CreateStreamingPayment:
+        return formatText({
+          id: 'actionSidebar.tooltip.streamingPayment.from',
+        });
       default:
         return formatText({
           id: 'actionSidebar.tooltip.simplePayment.from',
@@ -39,6 +43,8 @@ const TeamFromRow = ({ teamMetadata, actionType }: TeamFromRowProps) => {
         return formatText({ id: 'actionSidebar.team' });
       case ColonyActionType.CreateExpenditure:
         return formatText({ id: 'actionSidebar.fundFrom' });
+      case ColonyActionType.CreateStreamingPayment:
+        return formatText({ id: 'actionSidebar.streamFrom' });
       default:
         return formatText({ id: 'actionSidebar.from' });
     }

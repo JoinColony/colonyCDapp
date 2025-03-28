@@ -24,11 +24,7 @@ export const useMobileMenuPosition = ({
       let translateX = '0';
       let translateY = '0';
 
-      if (!isMobile) {
-        if (leftOffset < menu.clientWidth || hasLeftAlignment) {
-          translateX = 'calc(-100% + 1.2rem)';
-        }
-      } else {
+      if (isMobile) {
         translateX = `calc(-100% + ${leftOffset}px - 1.2rem)`;
       }
 
