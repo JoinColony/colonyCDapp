@@ -1,7 +1,7 @@
 import { HandPalm, UserFocus, UsersThree } from '@phosphor-icons/react';
 import isDate from 'date-fns/isDate';
-import React, { type FC } from 'react';
-import { useWatch } from 'react-hook-form';
+import React, { useEffect, type FC } from 'react';
+import { useWatch, useFormContext } from 'react-hook-form';
 
 import { StreamingPaymentEndCondition } from '~gql';
 import { formatText } from '~utils/intl.ts';
@@ -29,6 +29,21 @@ const StreamingPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const selectedTeam = useWatch({ name: 'from' });
   const startsCondition = useWatch({ name: 'starts' });
   const endsCondition = useWatch({ name: 'ends' });
+  const amountValue = useWatch({ name: 'amount' });
+  const limitValue = useWatch({ name: 'limit' });
+
+  const { setValue } = useFormContext();
+
+  useEffect(() => {
+    if (typeof amountValue === 'string' && amountValue.includes(',')) {
+      const newValue = amountValue.replace(/,/g, '');
+      setValue('amount', newValue);
+    }
+    if (typeof limitValue === 'string' && limitValue.includes(',')) {
+      const newValue = limitValue.replace(/,/g, '');
+      setValue('limit', newValue);
+    }
+  }, [limitValue, amountValue, setValue]);
 
   return (
     <>
