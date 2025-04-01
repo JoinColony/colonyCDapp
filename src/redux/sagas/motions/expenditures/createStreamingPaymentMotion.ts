@@ -28,6 +28,7 @@ import {
   getColonyManager,
   initiateTransaction,
   uploadAnnotation,
+  getEndTimeByEndCondition,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
 import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
@@ -35,9 +36,6 @@ import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 export type CreateStreamingPaymentMotionPayload =
   Action<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE>['payload'];
-
-// @TODO: Figure out a more appropriate way of getting this
-const TIMESTAMP_IN_FUTURE = 2_000_000_000;
 
 function* createStreamingPaymentMotion({
   payload: {
@@ -54,6 +52,7 @@ function* createStreamingPaymentMotion({
     tokenDecimals,
     amount,
     endCondition,
+    limitAmount,
   },
   meta,
   meta: { setTxHash },
@@ -122,6 +121,20 @@ function* createStreamingPaymentMotion({
     const convertedAmount = BigNumber.from(amount).mul(
       BigNumber.from(10).pow(getTokenDecimalsWithFallback(tokenDecimals)),
     );
+    const limitInWei = limitAmount
+      ? BigNumber.from(limitAmount).mul(
+          BigNumber.from(10).pow(getTokenDecimalsWithFallback(tokenDecimals)),
+        )
+      : null;
+
+    const realEndTimestamp = getEndTimeByEndCondition({
+      endCondition,
+      startTimestamp,
+      interval,
+      amountInWei: convertedAmount.toString(),
+      limitInWei: limitInWei?.toString() || null,
+      endTimestamp,
+    });
 
     const encodedAction =
       yield streamingPaymentsClient.interface.encodeFunctionData('create', [
@@ -131,7 +144,7 @@ function* createStreamingPaymentMotion({
         adminChildSkillIndex,
         createdInDomain.nativeId,
         startTimestamp,
-        endTimestamp ?? TIMESTAMP_IN_FUTURE,
+        realEndTimestamp,
         interval,
         recipientAddress,
         tokenAddress,
