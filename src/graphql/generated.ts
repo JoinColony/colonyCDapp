@@ -1155,6 +1155,8 @@ export type ColonyMotion = {
   objectionAnnotation?: Maybe<Annotation>;
   /** Id of the associated objection annotation, if any */
   objectionAnnotationId?: Maybe<Scalars['ID']>;
+  /** Pending streaming payment to be created by motion, if any */
+  pendingStreamingPayment?: Maybe<PendingStreamingPayment>;
   /** Streaming Payment changes by the action */
   pendingStreamingPaymentChanges?: Maybe<StreamingPaymentChanges>;
   /** Streaming payment metadata that is stored temporarily and committed to the database once the corresponding motion passes */
@@ -1669,6 +1671,7 @@ export type CreateColonyMotionInput = {
   nativeMotionDomainId: Scalars['String'];
   nativeMotionId: Scalars['String'];
   objectionAnnotationId?: InputMaybe<Scalars['ID']>;
+  pendingStreamingPayment?: InputMaybe<PendingStreamingPaymentInput>;
   pendingStreamingPaymentChanges?: InputMaybe<StreamingPaymentChangesInput>;
   pendingStreamingPaymentMetadataId?: InputMaybe<Scalars['ID']>;
   remainingStakes: Array<Scalars['String']>;
@@ -6618,6 +6621,34 @@ export type PaymentInput = {
   tokenAddress: Scalars['String'];
 };
 
+export type PendingStreamingPayment = {
+  __typename?: 'PendingStreamingPayment';
+  /** Amount per interval */
+  amount: Scalars['String'];
+  /** End time in seconds since epoch */
+  endTime: Scalars['String'];
+  /** Payment interval in seconds */
+  interval: Scalars['String'];
+  /** Native domain ID where the streaming payment will be created */
+  nativeDomainId: Scalars['Int'];
+  /** Address of the recipient */
+  recipientAddress: Scalars['String'];
+  /** Start time in seconds since epoch */
+  startTime: Scalars['String'];
+  /** Token address used for payments */
+  tokenAddress: Scalars['ID'];
+};
+
+export type PendingStreamingPaymentInput = {
+  amount: Scalars['String'];
+  endTime: Scalars['String'];
+  interval: Scalars['String'];
+  nativeDomainId: Scalars['Int'];
+  recipientAddress: Scalars['String'];
+  startTime: Scalars['String'];
+  tokenAddress: Scalars['ID'];
+};
+
 export type PrivateBetaInviteCode = {
   __typename?: 'PrivateBetaInviteCode';
   createdAt: Scalars['AWSDateTime'];
@@ -9970,6 +10001,7 @@ export type UpdateColonyMotionInput = {
   nativeMotionDomainId?: InputMaybe<Scalars['String']>;
   nativeMotionId?: InputMaybe<Scalars['String']>;
   objectionAnnotationId?: InputMaybe<Scalars['ID']>;
+  pendingStreamingPayment?: InputMaybe<PendingStreamingPaymentInput>;
   pendingStreamingPaymentChanges?: InputMaybe<StreamingPaymentChangesInput>;
   pendingStreamingPaymentMetadataId?: InputMaybe<Scalars['ID']>;
   remainingStakes?: InputMaybe<Array<Scalars['String']>>;
