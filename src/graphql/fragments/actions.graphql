@@ -258,6 +258,9 @@ fragment ColonyMotion on ColonyMotion {
   createdAt
   createdBy
   expenditureSlotIds
+  pendingStreamingPayment {
+    ...PendingStreamingPayment
+  }
 }
 
 fragment MotionMessage on MotionMessage {
