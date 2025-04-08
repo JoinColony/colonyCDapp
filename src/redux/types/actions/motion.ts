@@ -128,6 +128,7 @@ export type StreamingPaymentsMotionCreatePayload = {
   annotationMessage?: string;
   votingReputationAddress: Address;
   motionDomainId: number;
+  customActionTitle: string;
 };
 
 export type MotionActionTypes =

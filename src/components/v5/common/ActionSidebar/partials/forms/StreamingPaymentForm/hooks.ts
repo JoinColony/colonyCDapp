@@ -11,6 +11,7 @@ import { StreamingPaymentEndCondition } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
@@ -136,6 +137,7 @@ export const useStreamingPayment = (
   const tokenAddress = useWatch({ name: 'tokenAddress' });
   const limitTokenAddress = useWatch({ name: 'limitTokenAddress' });
   const endCondition = useWatch({ name: 'ends' });
+  const decisionMethod = useWatch({ name: 'decisionMethod' });
   const { setValue, resetField, trigger } = useFormContext();
   const { currentBlockTime: blockTime } = useCurrentBlockTime();
 
@@ -171,7 +173,10 @@ export const useStreamingPayment = (
       }),
       [colony.nativeToken.tokenAddress],
     ),
-    actionType: ActionTypes.STREAMING_PAYMENT_CREATE,
+    actionType:
+      decisionMethod === DecisionMethod.Permissions
+        ? ActionTypes.STREAMING_PAYMENT_CREATE
+        : ActionTypes.MOTION_STREAMING_PAYMENT_CREATE,
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(

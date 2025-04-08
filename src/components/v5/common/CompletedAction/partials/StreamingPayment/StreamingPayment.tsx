@@ -160,7 +160,13 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
       </div>
     );
   }
-  if (!streamingPaymentData) {
+
+  const streamingData = streamingPaymentData ?? {
+    ...action.motionData?.pendingStreamingPayment,
+    metadata: action.motionData?.pendingStreamingPaymentMetadata,
+  };
+
+  if (!streamingData) {
     return null;
   }
   const {
@@ -182,7 +188,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
     endTime,
     startTime,
     metadata: streamingPaymentMetadata,
-  } = streamingPaymentData;
+  } = streamingData;
   const selectedToken = getSelectedToken(colony, tokenAddress || '');
   const formattedAmount = getNumeralTokenAmount(
     amount || '1',
@@ -193,7 +199,8 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
   const motionDomain = motionData?.motionDomain ?? null;
 
   const limitAmount = getStreamingPaymentLimit({
-    streamingPayment: streamingPaymentData,
+    // @ts-ignore
+    streamingPayment: streamingData,
   });
 
   const formattedLimitAmount = getNumeralTokenAmount(
@@ -205,7 +212,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
     address: user?.walletAddress || '',
     colony,
     requiredRoles: [ColonyRole.Arbitration],
-    requiredRolesDomain: streamingPaymentData.nativeDomainId,
+    requiredRolesDomain: nativeDomainId ?? 0,
   });
 
   const showCancelOption =
@@ -239,7 +246,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
           toggleActionSidebarOn({
             [TITLE_FIELD_NAME]: customTitle,
             [ACTION_TYPE_FIELD_NAME]: Action.StreamingPayment,
-            [FROM_FIELD_NAME]: streamingPaymentData?.nativeDomainId,
+            [FROM_FIELD_NAME]: nativeDomainId,
             [RECIPIENT_FIELD_NAME]: recipientAddress,
             [AMOUNT_FIELD_NAME]: formattedAmount,
             [TOKEN_FIELD_NAME]: selectedToken?.tokenAddress,
@@ -257,7 +264,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
                   interval: 'custom',
                 }
               : {
-                  interval: getAmountPerValue(interval).toLowerCase(),
+                  interval: getAmountPerValue(interval ?? '0').toLowerCase(),
                 },
             limit: limitAmount ? formattedLimitAmount : undefined,
             limitTokenAddress: limitAmount
@@ -265,7 +272,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
               : undefined,
             [CREATED_IN_FIELD_NAME]: isMotion
               ? motionDomain?.nativeId
-              : streamingPaymentData?.nativeDomainId,
+              : nativeDomainId,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           });
         }, 500);
@@ -316,7 +323,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
             actionType: ColonyActionType.CreateStreamingPayment,
             amount: formattedAmount,
             tokenSymbol: selectedToken?.symbol,
-            period: getAmountPerValue(interval).toLowerCase(),
+            period: getAmountPerValue(interval ?? '0').toLowerCase(),
             recipient: recipientAddress ? (
               <UserInfoPopover
                 walletAddress={recipientAddress}
@@ -402,7 +409,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
         <AmountRow amount={amount || '1'} token={selectedToken || undefined} />
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.amountPer' })}
-          rowContent={<p>{getAmountPerValue(interval)}</p>}
+          rowContent={<p>{getAmountPerValue(interval ?? '0')}</p>}
           RowIcon={Calendar}
           tooltipContent={formatText({
             id: 'actionSidebar.tooltip.streamingPayment.amount.per',
@@ -432,7 +439,8 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
       )}
       <CancelModal
         isOpen={isCancelModalOpen}
-        streamingPayment={streamingPaymentData}
+        // @ts-ignore
+        streamingPayment={streamingData}
         onClose={toggleCancelModalOff}
         onSuccess={() =>
           setExpectedActionStatus(StreamingPaymentStatus.Cancelled)

@@ -48,6 +48,7 @@ const ActionSidebarLayout = forwardRef<
   ) => {
     const isMobile = useMobile();
     const { isCopied, handleClipboardCopy } = useCopyToClipboard();
+    const noActionFound = !!(actionNotFound && !isLoading);
 
     const [
       isSidebarFullscreen,
@@ -117,7 +118,7 @@ const ActionSidebarLayout = forwardRef<
             'md:max-w-full': isSidebarFullscreen,
             'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
             'md:max-w-[67.3125rem]':
-              (!isSidebarFullscreen && !!transactionHash && !actionNotFound) ||
+              (!isSidebarFullscreen && !!transactionHash && !noActionFound) ||
               (!isSidebarFullscreen && !!transactionId && isLoading),
           },
         )}
