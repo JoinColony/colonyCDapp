@@ -49,6 +49,7 @@ export const getStreamingPaymentPayload = (
     limit,
     from,
     decisionMethod,
+    title,
   } = values;
 
   const selectedToken = getSelectedToken(colony, tokenAddress);
@@ -93,5 +94,6 @@ export const getStreamingPaymentPayload = (
       ends === StreamingPaymentEndCondition.LimitReached ? limit : undefined,
     annotationMessage,
     motionDomainId: Id.RootDomain,
+    customActionTitle: title,
   };
 };

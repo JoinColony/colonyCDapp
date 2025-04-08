@@ -29,6 +29,7 @@ import {
   initiateTransaction,
   uploadAnnotation,
   getEndTimeByEndCondition,
+  createActionMetadataInDB,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
 import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
@@ -53,6 +54,7 @@ function* createStreamingPaymentMotion({
     amount,
     endCondition,
     limitAmount,
+    customActionTitle,
   },
   meta,
   meta: { setTxHash },
@@ -213,6 +215,8 @@ function* createStreamingPaymentMotion({
         },
       }),
     );
+
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({

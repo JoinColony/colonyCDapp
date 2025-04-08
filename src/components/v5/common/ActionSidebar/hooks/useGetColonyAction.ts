@@ -171,7 +171,7 @@ const useGetColonyAction = (transactionHash: OptionalValue<string>) => {
   useEffect(() => {
     if (
       (hasPendingAnnotation && !action?.annotation) ||
-      (!actionData?.getColonyAction && actionCalled)
+      (!actionData?.getColonyAction?.metadata && actionCalled)
     ) {
       startActionPoll();
     } else {

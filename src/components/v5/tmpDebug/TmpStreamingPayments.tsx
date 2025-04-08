@@ -461,6 +461,7 @@ const TmpStreamingPayments = () => {
       votingReputationAddress: votingReputationAddress ?? '',
       annotationMessage: annotation,
       startTimestamp: '0',
+      customActionTitle: 'Streaming payment',
     };
 
   return (
