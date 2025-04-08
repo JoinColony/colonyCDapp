@@ -36,7 +36,8 @@ import {
 } from '../utils/index.ts';
 
 export type CreateStreamingPaymentPayload =
-  Action<ActionTypes.STREAMING_PAYMENT_CREATE>['payload'];
+  | Action<ActionTypes.STREAMING_PAYMENT_CREATE>['payload']
+  | Action<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE>['payload'];
 
 function* createStreamingPaymentAction({
   payload: {

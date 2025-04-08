@@ -1,3 +1,4 @@
+import { Id } from '@colony/colony-js';
 import isDate from 'date-fns/isDate';
 import { BigNumber } from 'ethers';
 
@@ -91,5 +92,6 @@ export const getStreamingPaymentPayload = (
     limitAmount:
       ends === StreamingPaymentEndCondition.LimitReached ? limit : undefined,
     annotationMessage,
+    motionDomainId: Id.RootDomain,
   };
 };

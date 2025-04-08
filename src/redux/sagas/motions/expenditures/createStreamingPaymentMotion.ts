@@ -8,7 +8,14 @@ import {
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ADDRESS_ZERO, APP_URL } from '~constants';
+import { ContextModule, getContext } from '~context/index.ts';
+import {
+  CreateStreamingPaymentMetadataDocument,
+  type CreateStreamingPaymentMetadataMutation,
+  type CreateStreamingPaymentMetadataMutationVariables,
+} from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
   createGroupTransaction,
@@ -21,15 +28,14 @@ import {
   getColonyManager,
   initiateTransaction,
   uploadAnnotation,
+  getEndTimeByEndCondition,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
+import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 export type CreateStreamingPaymentMotionPayload =
   Action<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE>['payload'];
-
-// @TODO: Figure out a more appropriate way of getting this
-const TIMESTAMP_IN_FUTURE = 2_000_000_000;
 
 function* createStreamingPaymentMotion({
   payload: {
@@ -45,10 +51,13 @@ function* createStreamingPaymentMotion({
     tokenAddress,
     tokenDecimals,
     amount,
+    endCondition,
+    limitAmount,
   },
   meta,
   meta: { setTxHash },
 }: Action<ActionTypes.MOTION_STREAMING_PAYMENT_CREATE>) {
+  const apolloClient = getContext(ContextModule.ApolloClient);
   const batchKey = 'createMotion';
 
   const { createMotion, annotateMotion } = yield call(
@@ -112,6 +121,20 @@ function* createStreamingPaymentMotion({
     const convertedAmount = BigNumber.from(amount).mul(
       BigNumber.from(10).pow(getTokenDecimalsWithFallback(tokenDecimals)),
     );
+    const limitInWei = limitAmount
+      ? BigNumber.from(limitAmount).mul(
+          BigNumber.from(10).pow(getTokenDecimalsWithFallback(tokenDecimals)),
+        )
+      : null;
+
+    const realEndTimestamp = getEndTimeByEndCondition({
+      endCondition,
+      startTimestamp,
+      interval,
+      amountInWei: convertedAmount.toString(),
+      limitInWei: limitInWei?.toString() || null,
+      endTimestamp,
+    });
 
     const encodedAction =
       yield streamingPaymentsClient.interface.encodeFunctionData('create', [
@@ -121,7 +144,7 @@ function* createStreamingPaymentMotion({
         adminChildSkillIndex,
         createdInDomain.nativeId,
         startTimestamp,
-        endTimestamp ?? TIMESTAMP_IN_FUTURE,
+        realEndTimestamp,
         interval,
         recipientAddress,
         tokenAddress,
@@ -174,6 +197,22 @@ function* createStreamingPaymentMotion({
     } = yield waitForTxResult(createMotion.channel);
 
     setTxHash?.(txHash);
+
+    // Create pending metadata for the streaming payment
+    yield mutateWithAuthRetry(() =>
+      apolloClient.mutate<
+        CreateStreamingPaymentMetadataMutation,
+        CreateStreamingPaymentMetadataMutationVariables
+      >({
+        mutation: CreateStreamingPaymentMetadataDocument,
+        variables: {
+          input: {
+            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
+            endCondition,
+          },
+        },
+      }),
+    );
 
     if (annotationMessage) {
       yield uploadAnnotation({

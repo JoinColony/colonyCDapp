@@ -40,3 +40,25 @@ fragment StreamingPaymentChanges on StreamingPaymentChanges {
   interval
   amount
 }
+
+fragment PendingStreamingPayment on PendingStreamingPayment {
+  recipientAddress
+  nativeDomainId
+  tokenAddress
+  amount
+  startTime
+  endTime
+  interval
+}
+
+fragment PendingStreamingPaymentMetadata on StreamingPaymentMetadata {
+  createdAt
+  endCondition
+  id
+  updatedAt
+  changelog {
+    newEndCondition
+    oldEndCondition
+    transactionHash
+  }
+}

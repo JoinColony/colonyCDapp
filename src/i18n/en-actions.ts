@@ -141,8 +141,8 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.MakeArbitraryTransaction} {Custom transactions}
       ${ColonyActionType.MakeArbitraryTransactionsMotion} {Custom transactions}
       ${ColonyActionType.MakeArbitraryTransactionsMultisig} {Custom transactions}
-      ${ColonyActionType.CreateStreamingPayment} {Create streaming payment}
-      ${ColonyActionType.CreateStreamingPaymentMotion} {Create streaming payment}
+      ${ColonyActionType.CreateStreamingPayment} {Streaming payment}
+      ${ColonyActionType.CreateStreamingPaymentMotion} {Streaming payment}
       ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}

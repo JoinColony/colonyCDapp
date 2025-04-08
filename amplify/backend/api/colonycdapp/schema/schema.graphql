@@ -3062,6 +3062,11 @@ type ColonyMotion @model {
   streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
 
   """
+  Pending streaming payment to be created by motion, if any
+  """
+  pendingStreamingPayment: PendingStreamingPayment
+
+  """
   Streaming Payment changes by the action
   """
   pendingStreamingPaymentChanges: StreamingPaymentChanges
@@ -4130,6 +4135,37 @@ type StreamingPayment @model @searchable {
   Address of the stream creator, can be a user or an extension
   """
   creatorAddress: ID!
+}
+
+type PendingStreamingPayment {
+  """
+  Address of the recipient
+  """
+  recipientAddress: String!
+  """
+  Native domain ID where the streaming payment will be created
+  """
+  nativeDomainId: Int!
+  """
+  Start time in seconds since epoch
+  """
+  startTime: String!
+  """
+  End time in seconds since epoch
+  """
+  endTime: String!
+  """
+  Payment interval in seconds
+  """
+  interval: String!
+  """
+  Token address used for payments
+  """
+  tokenAddress: ID!
+  """
+  Amount per interval
+  """
+  amount: String!
 }
 
 type StreamingPaymentMetadata @model {

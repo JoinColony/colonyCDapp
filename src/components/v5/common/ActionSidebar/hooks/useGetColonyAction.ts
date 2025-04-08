@@ -45,6 +45,7 @@ const useGetColonyAction = (transactionHash: OptionalValue<string>) => {
   const {
     data: actionData,
     loading: loadingAction,
+    called: actionCalled,
     startPolling,
     stopPolling,
     refetch: refetchAction,
@@ -168,7 +169,10 @@ const useGetColonyAction = (transactionHash: OptionalValue<string>) => {
   });
 
   useEffect(() => {
-    if (hasPendingAnnotation && !action?.annotation) {
+    if (
+      (hasPendingAnnotation && !action?.annotation) ||
+      (!actionData?.getColonyAction && actionCalled)
+    ) {
       startActionPoll();
     } else {
       setHasPendingAnnotation(false);
@@ -182,11 +186,13 @@ const useGetColonyAction = (transactionHash: OptionalValue<string>) => {
     hasPendingAnnotation,
     startActionPoll,
     stopActionPoll,
+    actionCalled,
+    actionData?.getColonyAction,
   ]);
 
   return {
     isValidTransactionHash: isValidTx,
-    isInvalidTransactionHash: !isValidTx,
+    isInvalidTransactionHash: !isValidTx && !!transactionHash,
     isUnknownTransaction:
       isValidTx && action?.colony?.colonyAddress !== colonyAddress,
     loadingAction:
