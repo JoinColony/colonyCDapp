@@ -305,7 +305,7 @@ const Motions: FC<ICompletedMotionAction> = ({ action, motionData }) => {
     <MotionProvider action={action} motionData={motionData}>
       <Stepper<Steps>
         activeStepKey={activeStepKey}
-        setActiveStepKey={setActiveStepKey}
+        setActiveStepKey={(key: Steps) => setActiveStepKey(key)}
         items={items}
       />
     </MotionProvider>

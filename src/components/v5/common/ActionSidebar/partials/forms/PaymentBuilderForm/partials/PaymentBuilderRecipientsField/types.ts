@@ -11,4 +11,5 @@ export interface PaymentBuilderRecipientsFieldModel {
   amount?: string;
   tokenAddress?: string;
   delay?: string;
+  slotId?: number;
 }

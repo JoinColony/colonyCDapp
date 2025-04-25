@@ -46,12 +46,16 @@ export const getRecipientsNumber = (expenditureData?: Expenditure) => {
 
   const { slots, metadata } = expenditureData;
 
+  const filteredSlots = slots.filter(
+    (slot) => slot?.payouts?.[0].amount !== '0',
+  );
+
   if (!metadata?.expectedNumberOfPayouts) {
-    return slots.length;
+    return filteredSlots.length;
   }
 
   if (metadata.expectedNumberOfPayouts < slots.length) {
-    return slots.length;
+    return filteredSlots.length;
   }
 
   return metadata.expectedNumberOfPayouts;
