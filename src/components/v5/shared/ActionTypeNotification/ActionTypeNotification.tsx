@@ -1,6 +1,8 @@
 import { Extension } from '@colony/colony-js';
 import { WarningCircle } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
+import { useCallback } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +10,7 @@ import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { formatText } from '~utils/intl.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import { type ActionTypeNotificationProps } from './types.ts';
@@ -37,6 +40,15 @@ const MSG = defineMessages({
     id: `${displayName}.stagedExpenditureExtensionNotEnabledError`,
     defaultMessage:
       'Staged payments requires the Staged payments extension to be enabled.',
+  },
+  customTransactionsVersionRequiredError: {
+    id: `${displayName}.customTransactionsVersionRequiredError`,
+    defaultMessage:
+      'Custom transactions requires Colony Network version 17 or higher.',
+  },
+  upgradeColony: {
+    id: `${displayName}.upgradeColony`,
+    defaultMessage: 'Upgrade colony',
   },
   learnMore: {
     id: `${displayName}.learnMore`,
@@ -81,12 +93,57 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
         return isFieldDisabled
           ? formatText(MSG.stagedExpenditureExtensionNotEnabledError)
           : undefined;
+      case Action.ArbitraryTxs:
+        return isFieldDisabled
+          ? formatText(MSG.customTransactionsVersionRequiredError)
+          : undefined;
       default:
         return undefined;
     }
   };
 
   const notificationTitle = getNotificationTitle();
+
+  const { reset } = useFormContext();
+
+  const handleUpgradeColony = useCallback(() => {
+    reset({
+      [ACTION_TYPE_FIELD_NAME]: Action.UpgradeColonyVersion,
+    });
+  }, [reset]);
+
+  const getCallToAction = () => {
+    if (actionTypeNotificationHref) {
+      return (
+        <a href={actionTypeNotificationHref} target="_blank" rel="noreferrer">
+          {formatText(MSG.learnMore)}
+        </a>
+      );
+    }
+
+    switch (selectedAction) {
+      case Action.CreateDecision:
+        return (
+          <button
+            type="button"
+            onClick={() => {
+              navigate(`extensions/${Extension.VotingReputation}`);
+              toggleActionSidebarOff();
+            }}
+          >
+            {formatText(MSG.viewExtension)}
+          </button>
+        );
+      case Action.ArbitraryTxs:
+        return (
+          <button type="button" onClick={handleUpgradeColony}>
+            {formatText(MSG.upgradeColony)}
+          </button>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <>
@@ -95,29 +152,7 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
           <NotificationBanner
             status="error"
             icon={WarningCircle}
-            callToAction={
-              actionTypeNotificationHref ? (
-                <a
-                  href={actionTypeNotificationHref}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {formatText(MSG.learnMore)}
-                </a>
-              ) : (
-                selectedAction === Action.CreateDecision && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigate(`extensions/${Extension.VotingReputation}`);
-                      toggleActionSidebarOff();
-                    }}
-                  >
-                    {formatText(MSG.viewExtension)}
-                  </button>
-                )
-              )
-            }
+            callToAction={getCallToAction()}
           >
             {notificationTitle}
           </NotificationBanner>

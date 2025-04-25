@@ -20,8 +20,11 @@ const ArbitraryTxsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     <>
       <DecisionMethodField disabled={isFieldDisabled} />
       <CreatedIn readonly />
-      <Description />
-      <ArbitraryTransactionsTable name="transactions" />
+      <Description disabled={isFieldDisabled} />
+      <ArbitraryTransactionsTable
+        name="transactions"
+        disabled={isFieldDisabled}
+      />
     </>
   );
 };

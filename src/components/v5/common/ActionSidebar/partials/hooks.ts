@@ -86,6 +86,7 @@ export const useIsFieldDisabled = () => {
   } = useExtensionData(Extension.StagedExpenditure);
 
   const selectedAction = useActiveActionType();
+  const { colony } = useColonyContext();
 
   const isVotingReputationExtensionEnabled =
     votingReputationExtensionData &&
@@ -110,6 +111,9 @@ export const useIsFieldDisabled = () => {
     !isStagedExpenditureExtensionEnabled &&
     !stagedExpenditureLoading
   ) {
+    return true;
+  }
+  if (selectedAction === Action.ArbitraryTxs && colony.version < 17) {
     return true;
   }
 
