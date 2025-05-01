@@ -1,4 +1,5 @@
 import { Extension, Id } from '@colony/colony-js';
+import { format } from 'date-fns';
 import { BigNumber } from 'ethers';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -123,6 +124,7 @@ export const useClaimConfig = ({
     motionStateHistory.hasFailedNotFinalizable;
 
   const userStake = usersStakes.find(({ address }) => address === userAddress);
+
   const stakerReward = stakerRewards.find(
     ({ address }) => address === userAddress,
   );
@@ -133,20 +135,21 @@ export const useClaimConfig = ({
     }
   }, [stakerReward?.isClaimed, isClaimed]);
 
+  const userReward = voterRewards?.items.find(
+    (voterReward) => voterReward?.userAddress === userAddress,
+  );
+
   const userVoteRewardAmount = useMemo(() => {
     if (!userAddress || !voterRewards?.items) {
       return 0;
     }
-    const userReward = voterRewards.items.find(
-      (voterReward) => voterReward?.userAddress === userAddress,
-    );
 
     if (!userReward) {
       return 0;
     }
 
     return userReward.amount;
-  }, [userAddress, voterRewards]);
+  }, [userAddress, voterRewards, userReward]);
 
   const userTotalStake = useMemo(
     () =>
@@ -177,7 +180,9 @@ export const useClaimConfig = ({
   // Else, return full widget
   const buttonTextId = isClaimed ? 'button.claimed' : 'button.claim';
   const remainingStakesNumber = remainingStakes.length;
-  const canClaimStakes = userTotalStake ? !userTotalStake.isZero() : false;
+  const canClaimStakes = userTotalStake
+    ? !userTotalStake.isZero()
+    : !!userReward;
   const handleClaimSuccess = () => {
     setIsClaimed(true);
     pollLockedTokenBalance();
@@ -263,6 +268,33 @@ export const useClaimConfig = ({
           </div>
         ),
       },
+      {
+        key: WinningsItems.Completed,
+        label: formatText({ id: 'motion.finalizeStep.completed' }),
+        value: (
+          <div>
+            <Numeral
+              value={
+                motionStateHistory?.endedAt
+                  ? formatText(
+                      { id: 'motion.finalizeStep.completedAt' },
+                      {
+                        date: format(
+                          new Date(motionStateHistory.endedAt),
+                          'dd MMM yyyy',
+                        ),
+                        hour: format(
+                          new Date(motionStateHistory.endedAt),
+                          'h:mma',
+                        ).toLowerCase(),
+                      },
+                    )
+                  : ''
+              }
+            />
+          </div>
+        ),
+      },
     ];
   };
 
@@ -276,5 +308,6 @@ export const useClaimConfig = ({
     handleClaimSuccess,
     claimPayload,
     canClaimStakes,
+    hasUserStake: !!userStake,
   };
 };
