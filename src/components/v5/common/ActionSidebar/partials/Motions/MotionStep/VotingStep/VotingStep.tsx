@@ -37,7 +37,11 @@ const MSG = defineMessages({
   },
 });
 
-const VotingStep: FC<ICompletedMotionAction> = ({ action, motionData }) => {
+const VotingStep: FC<ICompletedMotionAction> = ({
+  action,
+  motionData,
+  isActionCancelled,
+}) => {
   const {
     currentReputationPercent,
     currentUserVote,
@@ -116,6 +120,19 @@ const VotingStep: FC<ICompletedMotionAction> = ({ action, motionData }) => {
         </div>
       }
       sections={[
+        ...(isActionCancelled
+          ? [
+              {
+                key: '1',
+                content: (
+                  <p className="text-sm">
+                    {formatText({ id: 'motion.cancelled' })}
+                  </p>
+                ),
+                className: 'bg-negative-100 text-negative-400 !py-3',
+              },
+            ]
+          : []),
         {
           key: VotingStepSections.Vote,
           content: (

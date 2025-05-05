@@ -3,4 +3,5 @@ import { type ICompletedMotionAction } from '~v5/common/ActionSidebar/partials/M
 export interface RevealStepProps
   extends Pick<ICompletedMotionAction, 'action'> {
   motionState?: number;
+  isActionCancelled?: boolean;
 }

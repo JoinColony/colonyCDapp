@@ -11,7 +11,10 @@ import MotionWidgetSkeleton from '~v5/shared/MotionWidgetSkeleton/MotionWidgetSk
 
 import { type Steps, CustomStep, type MotionBoxProps } from './types.ts';
 
-const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
+const MotionBox: FC<MotionBoxProps> = ({
+  transactionId,
+  isActionCancelled,
+}) => {
   const { canInteract } = useAppContext();
   const { action, networkMotionState, motionState, loadingAction } =
     useGetColonyAction(transactionId);
@@ -41,6 +44,7 @@ const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
         content: (
           <StakingStep
             isActive={activeStepKey === NetworkMotionState.Staking}
+            isActionCancelled={isActionCancelled}
           />
         ),
         isVisible: activeStepKey === NetworkMotionState.Staking,
@@ -49,14 +53,22 @@ const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
         key: NetworkMotionState.Submit,
         content:
           action && motionData ? (
-            <MotionStep.Voting action={action} motionData={motionData} />
+            <MotionStep.Voting
+              action={action}
+              motionData={motionData}
+              isActionCancelled={isActionCancelled}
+            />
           ) : null,
         isVisible: motionState === MotionState.Voting && motionStakes,
       },
       {
         key: NetworkMotionState.Reveal,
         content: action ? (
-          <MotionStep.Reveal action={action} motionState={networkMotionState} />
+          <MotionStep.Reveal
+            action={action}
+            motionState={networkMotionState}
+            isActionCancelled={isActionCancelled}
+          />
         ) : null,
         isVisible: activeStepKey === NetworkMotionState.Reveal && motionStakes,
       },
@@ -82,6 +94,7 @@ const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
     motionStakes,
     motionState,
     networkMotionState,
+    isActionCancelled,
   ]);
 
   return !loadingAction && action && motionData ? (

@@ -25,7 +25,11 @@ import { type RevealStepProps } from './types.ts';
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.RevealStep';
 
-const RevealStep: FC<RevealStepProps> = ({ action, motionState }) => {
+const RevealStep: FC<RevealStepProps> = ({
+  action,
+  motionState,
+  isActionCancelled,
+}) => {
   const { transactionHash, rootHash } = action;
   const { canInteract } = useAppContext();
   const [isInformationAccordionOpen, { toggle: toggleInformationAccordion }] =
@@ -103,6 +107,19 @@ const RevealStep: FC<RevealStepProps> = ({ action, motionState }) => {
         </>
       }
       sections={[
+        ...(isActionCancelled
+          ? [
+              {
+                key: '3',
+                content: (
+                  <p className="text-sm">
+                    {formatText({ id: 'motion.cancelled' })}
+                  </p>
+                ),
+                className: 'bg-negative-100 text-negative-400 !py-3',
+              },
+            ]
+          : []),
         {
           key: '1',
           content: (
@@ -164,7 +181,7 @@ const RevealStep: FC<RevealStepProps> = ({ action, motionState }) => {
                   : 'motion.revealStep.buttonShow',
               })}
               isOpen={isInformationAccordionOpen}
-              onToggle={toggleInformationAccordion}
+              onToggle={() => toggleInformationAccordion()}
               className={clsx(
                 `
                   [&_.accordion-toggler]:text-sm
