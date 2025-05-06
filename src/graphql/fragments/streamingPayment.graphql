@@ -1,0 +1,43 @@
+fragment StreamingPayment on StreamingPayment {
+  id
+  nativeId
+  recipientAddress
+  nativeDomainId
+  startTime
+  endTime
+  interval
+  tokenAddress
+  token {
+    ...Token
+  }
+  amount
+  metadata {
+    endCondition
+    changelog {
+      transactionHash
+      oldEndCondition
+      newEndCondition
+    }
+  }
+  claims {
+    amount
+    timestamp
+  }
+}
+
+fragment StreamingPaymentChanges on StreamingPaymentChanges {
+  startTime
+  endTime
+  interval
+  amount
+}
+
+fragment PendingStreamingPayment on PendingStreamingPayment {
+  recipientAddress
+  nativeDomainId
+  tokenAddress
+  amount
+  startTime
+  endTime
+  interval
+}

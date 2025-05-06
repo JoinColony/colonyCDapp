@@ -11,7 +11,12 @@ import {
   type ExpenditurePayoutFieldValue,
   type ExpenditureStageFieldValue,
 } from '~types/expenditures.ts';
-import { type Domain, type Expenditure } from '~types/graphql.ts';
+import {
+  type StreamingPayment,
+  type Domain,
+  type Expenditure,
+  type Colony,
+} from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 
 import {
@@ -29,6 +34,14 @@ export type ExpenditureFundPayload = {
   annotationMessage?: string;
 };
 
+export type CancelStreamingPaymentPayload = {
+  colonyAddress?: Address;
+  streamingPayment: StreamingPayment;
+  annotationMessage?: string;
+  userAddress: Address;
+  shouldWaive?: boolean;
+};
+
 export type CancelStakedExpenditurePayload = {
   colonyAddress: Address;
   stakedExpenditureAddress: string;
@@ -43,6 +56,18 @@ export type CancelExpenditurePayload = {
   stakedExpenditureAddress?: Address;
   annotationMessage?: string;
   userAddress: Address;
+};
+
+export type EditStreamingPaymentPayload = {
+  colony: Colony;
+  streamingPayment: StreamingPayment;
+  streamingPaymentsAddress: string;
+  startTimestamp?: string;
+  endTimestamp?: string;
+  amount?: string;
+  interval?: number;
+  endCondition?: StreamingPaymentEndCondition;
+  limitAmount?: string;
 };
 
 export type ExpendituresActionTypes =
@@ -213,8 +238,8 @@ export type ExpendituresActionTypes =
         tokenAddress: Address;
         tokenDecimals: number;
         amount: string;
-        startTimestamp: number;
-        endTimestamp?: number;
+        startTimestamp: string;
+        endTimestamp?: string;
         interval: number;
         endCondition: StreamingPaymentEndCondition;
         limitAmount?: string;
@@ -237,4 +262,41 @@ export type ExpendituresActionTypes =
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.SET_STAKE_FRACTION_ERROR, object>
-  | UniqueActionType<ActionTypes.SET_STAKE_FRACTION_SUCCESS, object, object>;
+  | UniqueActionType<ActionTypes.SET_STAKE_FRACTION_SUCCESS, object, object>
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CANCEL,
+      CancelStreamingPaymentPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.STREAMING_PAYMENT_CANCEL_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CANCEL_SUCCESS,
+      object,
+      object
+    >
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CLAIM,
+      {
+        colonyAddress: Address;
+        streamingPaymentsAddress: Address;
+        streamingPayment: StreamingPayment;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.STREAMING_PAYMENT_CLAIM_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_CLAIM_SUCCESS,
+      object,
+      object
+    >
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_EDIT,
+      EditStreamingPaymentPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.STREAMING_PAYMENT_EDIT_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_EDIT_SUCCESS,
+      object,
+      object
+    >;

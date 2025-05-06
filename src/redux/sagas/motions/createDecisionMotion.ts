@@ -15,7 +15,6 @@ import {
 } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
-import { putError, takeFrom } from '~utils/saga/effects.ts';
 
 import {
   createTransaction,
@@ -27,6 +26,8 @@ import {
   createActionMetadataInDB,
   getColonyManager,
   initiateTransaction,
+  putError,
+  takeFrom,
 } from '../utils/index.ts';
 
 function* createDecisionMotion({
@@ -156,7 +157,7 @@ function* createDecisionMotion({
       payload: { walletAddress, colonyAddress },
     });
   } catch (caughtError) {
-    console.error('the kot error', caughtError);
+    console.error(caughtError);
     yield putError(ActionTypes.MOTION_CREATE_DECISION_ERROR, caughtError, meta);
   } finally {
     txChannel.close();

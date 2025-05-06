@@ -18,6 +18,7 @@ import {
 import {
   getColonyManager,
   initiateTransaction,
+  putError,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
 
@@ -158,15 +159,11 @@ function* releaseExpenditureStagesMotion({
     }
   } catch (e) {
     console.error(e);
-    yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR>>({
-      type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR,
-      payload: {
-        name: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR,
-        message: JSON.stringify(e),
-      },
+    yield putError(
+      ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR,
+      e,
       meta,
-      error: true,
-    });
+    );
   } finally {
     createMotion.channel.close();
   }

@@ -1,12 +1,17 @@
 import { all, call } from 'redux-saga/effects';
 
+import cancelStreamingPaymentsMotionSaga from '../motions/expenditures/cancelStreamingPaymentsMotion.ts';
+
 import cancelExpenditureSaga from './cancelExpenditure.ts';
 import cancelStakedExpenditureSaga from './cancelStakedExpenditure.ts';
+import cancelStreamingPaymentSaga from './cancelStreamingPayment.ts';
 import claimExpenditureSaga from './claimExpenditure.ts';
+import claimStreamingPaymentSaga from './claimStreamingPayment.ts';
 import createExpenditureSaga from './createExpenditure.ts';
 import createStakedExpenditureSaga from './createStakedExpenditure.ts';
 import createStreamingPaymentSaga from './createStreamingPayment.ts';
 import editExpenditureSaga from './editExpenditure.ts';
+import editStreamingPaymentSaga from './editStreamingPayment.ts';
 import finalizeExpenditureSaga from './finalizeExpenditure.ts';
 import fundExpenditureSaga from './fundExpenditure.ts';
 import lockExpenditureSaga from './lockExpenditure.ts';
@@ -29,5 +34,9 @@ export default function* expendituresSagas() {
     call(cancelStakedExpenditureSaga),
     call(createStreamingPaymentSaga),
     call(setStakeFractionSaga),
+    call(cancelStreamingPaymentSaga),
+    call(claimStreamingPaymentSaga),
+    call(cancelStreamingPaymentsMotionSaga),
+    call(editStreamingPaymentSaga),
   ]);
 }

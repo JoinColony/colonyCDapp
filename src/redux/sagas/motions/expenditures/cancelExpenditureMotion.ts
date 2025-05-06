@@ -13,6 +13,7 @@ import {
   createTransactionChannels,
   waitForTxResult,
 } from '~redux/sagas/transactions/index.ts';
+import { checkColonyVersionCompliance } from '~redux/sagas/utils/checkColonyVersionCompliance.ts';
 import {
   getColonyManager,
   initiateTransaction,
@@ -39,11 +40,9 @@ function* cancelExpenditureMotion({
       throw new Error('Invalid payload');
     }
 
-    if (colony.version < 15) {
-      throw new Error(
-        'Motions to cancel expenditure are only available in Colony version 15 and above',
-      );
-    }
+    checkColonyVersionCompliance({
+      colony,
+    });
 
     const colonyManager = yield call(getColonyManager);
     const colonyClient = yield call(

@@ -14,3 +14,9 @@ query GetExpenditure($expenditureId: ID!) {
     ...Expenditure
   }
 }
+
+query GetStreamingPayment($streamingPaymentId: ID!) {
+  getStreamingPayment(id: $streamingPaymentId) {
+    ...StreamingPayment
+  }
+}
