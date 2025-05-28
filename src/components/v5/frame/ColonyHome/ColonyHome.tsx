@@ -27,6 +27,10 @@ const ColonyHome = () => {
   );
   const { defaultValues } = useGetActionFormData(selectedAction);
 
+  const [code, setCode] = useState<string>('');
+
+  const src = `http://localhost:3000/en/swap?integrationCode=${code}`;
+
   return (
     <div
       className="flex flex-grow flex-col gap-6 sm:min-h-full md:gap-4.5"
@@ -36,6 +40,17 @@ const ColonyHome = () => {
         <DashboardHeader />
         <TeamFilter />
       </div>
+      <iframe
+        src={src}
+        title="Sulfur Widget Preview"
+        className="h-[600px] w-[500px]"
+      />
+      <button
+        type="button"
+        onClick={() => setCode((state) => (!state ? 'code' : ''))}
+      >
+        Toggle code
+      </button>
       <FundsCards />
       <div className="flex h-fit w-full flex-col gap-4.5 lg:grid lg:grid-cols-3">
         <TotalInOutBalance />
