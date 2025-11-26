@@ -40,9 +40,12 @@ const getUserLiquidationAddressHandler = async (event) => {
 
   const liquidationAddresses = await getLiquidationAddresses(bridgeCustomerId);
 
-  const relevantLiquidationAddress = liquidationAddresses.find(
-    (address) => address.external_account_id === firstAccount.id,
-  )?.address;
+  const relevantLiquidationAddress =
+    liquidationAddresses.find(
+      (address) =>
+        address.external_account_id === firstAccount.id &&
+        address.state === 'active',
+    )?.address ?? null;
 
   return relevantLiquidationAddress;
 };
