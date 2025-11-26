@@ -130,7 +130,7 @@ const createKYCLinks = async (fullName, email) => {
     },
   );
 
-  if (response.status !== 200) {
+  if (response.status !== 200 && !response.data.existing_kyc_link) {
     console.log(`Could not generate new KYC links`);
   }
 
@@ -204,7 +204,9 @@ const getExternalAccounts = async (bridgeCustomerId) => {
     return null;
   }
 
-  return response.data.data;
+  const activeAccounts = response.data.data.filter((a) => a.active === true);
+
+  return activeAccounts;
 };
 
 const getBridgeCustomer = async (bridgeCustomerId) => {
