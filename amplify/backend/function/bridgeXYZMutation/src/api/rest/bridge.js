@@ -177,6 +177,21 @@ const getLiquidationAddresses = async (bridgeCustomerId) => {
   return response.data.data;
 };
 
+const getLiquidationAddressForExternalAccount = async (
+  bridgeCustomerId,
+  externalAccountId,
+) => {
+  const liquidationAddresses = await getLiquidationAddresses(bridgeCustomerId);
+
+  return (
+    liquidationAddresses.find(
+      (address) =>
+        address.external_account_id === externalAccountId &&
+        address.state === 'active',
+    )?.address ?? null
+  );
+};
+
 const getExternalAccounts = async (bridgeCustomerId) => {
   const response = await handleGet(
     `${bridgeApiConfig.endpoints.routes.customers}/${bridgeCustomerId}/${bridgeApiConfig.endpoints.resources.externalAccounts}`,
@@ -228,4 +243,5 @@ module.exports = {
   getLiquidationAddresses,
   getGatewayFee,
   getDrainsHistory,
+  getLiquidationAddressForExternalAccount,
 };

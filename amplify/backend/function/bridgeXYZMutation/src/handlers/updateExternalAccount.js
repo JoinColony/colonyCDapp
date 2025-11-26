@@ -4,8 +4,8 @@ const {
   handlePut,
   createExternalAccount,
   deleteExternalAccount,
-  getLiquidationAddresses,
   getExternalAccounts,
+  getLiquidationAddressForExternalAccount,
 } = require('../api/rest/bridge');
 
 const updateExternalAccountHandler = async (event) => {
@@ -28,6 +28,10 @@ const updateExternalAccountHandler = async (event) => {
 
   const bridgeCustomerId = graphQlData?.getUser?.bridgeCustomerId;
 
+  if (!bridgeCustomerId) {
+    throw new Error('Bridge customer ID not found');
+  }
+
   const externalAccounts = await getExternalAccounts(bridgeCustomerId);
 
   const newAccount = await createExternalAccount(bridgeCustomerId, account);
@@ -43,7 +47,10 @@ const updateExternalAccountHandler = async (event) => {
    * Only if the currency is the same as the new account
    * Otherwise, creating new liquidation address is handled elsewhere
    */
-  const liquidationAddresses = await getLiquidationAddresses(bridgeCustomerId);
+  const liquidationAddresses = await getLiquidationAddressForExternalAccount(
+    bridgeCustomerId,
+    input.id,
+  );
   const targetLiquidationAddress = liquidationAddresses.find(
     (address) => address.external_account_id === input.id,
   );

@@ -3,7 +3,7 @@ const { utils } = require('ethers');
 const { graphqlRequest } = require('../api/graphql/utils');
 const {
   getBridgeCustomer,
-  getLiquidationAddresses,
+  getLiquidationAddressForExternalAccount,
   getExternalAccounts,
   createKYCLinks,
   createLiquidationAddress,
@@ -68,7 +68,7 @@ const checkKYCHandler = async (event) => {
       };
     }
 
-    const liquidationAddress = await getLiquidationAddress(
+    const liquidationAddress = await getOrCreateLiquidationAddress(
       checksummedWalletAddress,
       bridgeCustomerId,
       bankAccount.id,
@@ -140,20 +140,17 @@ const getBankAccountDetails = async (bridgeCustomerId) => {
   };
 };
 
-const getLiquidationAddress = async (
+const getOrCreateLiquidationAddress = async (
   userAddress,
   bridgeCustomerId,
   externalAccountId,
   externalAccountCurrency,
 ) => {
-  const liquidationAddresses = await getLiquidationAddresses(
-    bridgeCustomerId,
-    externalAccountId,
-  );
-
-  let externalAccountLiquidationAddress = liquidationAddresses.find(
-    (address) => address.external_account_id === externalAccountId,
-  )?.address;
+  let externalAccountLiquidationAddress =
+    await getLiquidationAddressForExternalAccount(
+      bridgeCustomerId,
+      externalAccountId,
+    );
 
   if (externalAccountLiquidationAddress) {
     return externalAccountLiquidationAddress;
