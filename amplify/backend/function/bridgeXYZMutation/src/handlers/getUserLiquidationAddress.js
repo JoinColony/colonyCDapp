@@ -1,7 +1,7 @@
 const { graphqlRequest } = require('../api/graphql/utils');
 const {
-  getLiquidationAddresses,
   getExternalAccounts,
+  getLiquidationAddressForExternalAccount,
 } = require('../api/rest/bridge');
 
 const EnvVarsConfig = require('../config/envVars.js');
@@ -38,16 +38,12 @@ const getUserLiquidationAddressHandler = async (event) => {
     return null;
   }
 
-  const liquidationAddresses = await getLiquidationAddresses(bridgeCustomerId);
+  const liquidationAddress = await getLiquidationAddressForExternalAccount(
+    bridgeCustomerId,
+    firstAccount.id,
+  );
 
-  const relevantLiquidationAddress =
-    liquidationAddresses.find(
-      (address) =>
-        address.external_account_id === firstAccount.id &&
-        address.state === 'active',
-    )?.address ?? null;
-
-  return relevantLiquidationAddress;
+  return liquidationAddress;
 };
 
 module.exports = {
