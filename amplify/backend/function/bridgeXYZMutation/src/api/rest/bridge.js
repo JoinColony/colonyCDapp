@@ -130,7 +130,7 @@ const createKYCLinks = async (fullName, email) => {
     },
   );
 
-  if (response.status !== 200) {
+  if (response.status !== 200 && !response.data.existing_kyc_link) {
     console.log(`Could not generate new KYC links`);
   }
 
@@ -177,6 +177,21 @@ const getLiquidationAddresses = async (bridgeCustomerId) => {
   return response.data.data;
 };
 
+const getLiquidationAddressForExternalAccount = async (
+  bridgeCustomerId,
+  externalAccountId,
+) => {
+  const liquidationAddresses = await getLiquidationAddresses(bridgeCustomerId);
+
+  return (
+    liquidationAddresses.find(
+      (address) =>
+        address.external_account_id === externalAccountId &&
+        address.state === 'active',
+    )?.address ?? null
+  );
+};
+
 const getExternalAccounts = async (bridgeCustomerId) => {
   const response = await handleGet(
     `${bridgeApiConfig.endpoints.routes.customers}/${bridgeCustomerId}/${bridgeApiConfig.endpoints.resources.externalAccounts}`,
@@ -189,7 +204,9 @@ const getExternalAccounts = async (bridgeCustomerId) => {
     return null;
   }
 
-  return response.data.data;
+  const activeAccounts = response.data.data.filter((a) => a.active === true);
+
+  return activeAccounts;
 };
 
 const getBridgeCustomer = async (bridgeCustomerId) => {
@@ -228,4 +245,5 @@ module.exports = {
   getLiquidationAddresses,
   getGatewayFee,
   getDrainsHistory,
+  getLiquidationAddressForExternalAccount,
 };
