@@ -192,6 +192,20 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getCurrentUserProfile": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getUserNotificationsHMAC": {
       "build": true,
       "providerPlugin": "awscloudformation",

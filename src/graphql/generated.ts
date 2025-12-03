@@ -11058,13 +11058,11 @@ export type GetUserByAddressQueryVariables = Exact<{
 // GetUserByAddress returns public user data only
 export type GetUserByAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, isAutoOfframpEnabled?: boolean | null } | null } | null> } | null };
 
-export type GetCurrentUserQueryVariables = Exact<{
-  address: Scalars['ID'];
-}>;
+export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-// GetCurrentUser returns private user data for the authenticated user
-export type GetCurrentUserQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId: string, notificationsDisabled: boolean, mutedColonyAddresses: Array<string>, paymentNotificationsDisabled: boolean, mentionNotificationsDisabled: boolean, adminNotificationsDisabled: boolean } | null } | null> } | null };
+// GetCurrentUser returns private user data for the authenticated user via Lambda with auth enforcement
+export type GetCurrentUserQuery = { __typename?: 'Query', getCurrentUserProfile?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId: string, notificationsDisabled: boolean, mutedColonyAddresses: Array<string>, paymentNotificationsDisabled: boolean, mentionNotificationsDisabled: boolean, adminNotificationsDisabled: boolean } | null } | null };
 
 export type GetUserReputationQueryVariables = Exact<{
   input: GetUserReputationInput;
@@ -15837,11 +15835,9 @@ export type GetUserByAddressQueryHookResult = ReturnType<typeof useGetUserByAddr
 export type GetUserByAddressLazyQueryHookResult = ReturnType<typeof useGetUserByAddressLazyQuery>;
 export type GetUserByAddressQueryResult = Apollo.QueryResult<GetUserByAddressQuery, GetUserByAddressQueryVariables>;
 export const GetCurrentUserDocument = gql`
-    query GetCurrentUser($address: ID!) {
-  getUserByAddress(id: $address) {
-    items {
-      ...UserPrivate
-    }
+    query GetCurrentUser {
+  getCurrentUserProfile {
+    ...UserPrivate
   }
 }
     ${UserPrivateFragmentDoc}`;
@@ -15857,12 +15853,10 @@ export const GetCurrentUserDocument = gql`
  *
  * @example
  * const { data, loading, error } = useGetCurrentUserQuery({
- *   variables: {
- *      address: // value for 'address'
- *   },
+ *   variables: {},
  * });
  */
-export function useGetCurrentUserQuery(baseOptions: Apollo.QueryHookOptions<GetCurrentUserQuery, GetCurrentUserQueryVariables>) {
+export function useGetCurrentUserQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentUserQuery, GetCurrentUserQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetCurrentUserQuery, GetCurrentUserQueryVariables>(GetCurrentUserDocument, options);
       }

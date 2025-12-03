@@ -8,11 +8,10 @@ query GetUserByAddress($address: ID!) {
 }
 
 # Query for fetching the current authenticated user's private data
-query GetCurrentUser($address: ID!) {
-  getUserByAddress(id: $address) {
-    items {
-      ...UserPrivate
-    }
+# This uses a Lambda function that enforces authentication
+query GetCurrentUser {
+  getCurrentUserProfile {
+    ...UserPrivate
   }
 }
 

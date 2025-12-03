@@ -1111,6 +1111,14 @@ type Query {
   """
   getUserNotificationsHMAC: String
     @function(name: "getUserNotificationsHMAC-${env}")
+
+  """
+  Get the current authenticated user's private profile data.
+  This query enforces authentication and only returns data for the authenticated user.
+  Returns null if not authenticated.
+  """
+  getCurrentUserProfile: User
+    @function(name: "getCurrentUserProfile-${env}")
 }
 
 """

@@ -44,14 +44,12 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
           }
 
           // Fetch authenticated user's private data using GetCurrentUser query
+          // This calls a Lambda function that validates auth via x-wallet-address header
           const { data } = await getCurrentUser({
-            variables: {
-              address: utils.getAddress(address),
-            },
             fetchPolicy: 'network-only',
           });
           // GetCurrentUser uses UserPrivate fragment which includes sensitive data
-          const [authenticatedUser] = data?.getUserByAddress?.items || [];
+          const authenticatedUser = data?.getCurrentUserProfile;
           if (authenticatedUser) {
             setUser(authenticatedUser);
           } else {
