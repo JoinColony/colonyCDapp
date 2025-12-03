@@ -43,15 +43,17 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
             setUserLoading(true);
           }
 
+          // Fetch authenticated user's private data using GetCurrentUser query
           const { data } = await getCurrentUser({
             variables: {
               address: utils.getAddress(address),
             },
             fetchPolicy: 'network-only',
           });
-          const [currentUser] = data?.getUserByAddress?.items || [];
-          if (currentUser) {
-            setUser(currentUser);
+          // GetCurrentUser uses UserPrivate fragment which includes sensitive data
+          const [authenticatedUser] = data?.getUserByAddress?.items || [];
+          if (authenticatedUser) {
+            setUser(authenticatedUser);
           } else {
             setUser(null);
           }

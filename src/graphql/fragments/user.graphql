@@ -13,7 +13,7 @@ fragment User on User {
   }
 }
 
-# For lightweight display of users (minimal data)
+# Public lightweight display fragment - minimal data for user display (e.g. avatars, names)
 fragment UserDisplay on User {
   walletAddress: id
   profile {
