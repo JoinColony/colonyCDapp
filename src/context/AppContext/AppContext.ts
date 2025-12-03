@@ -5,14 +5,14 @@ import {
   type SetStateAction,
 } from 'react';
 
-import { type JoinedColony, type User } from '~types/graphql.ts';
+import { type JoinedColony, type UserPrivate } from '~types/graphql.ts';
 import { type ColonyWallet } from '~types/wallet.ts';
 
 export interface AppContextValue {
   wallet?: ColonyWallet | null;
   walletConnecting: boolean;
   setWalletConnecting: Dispatch<SetStateAction<boolean>>;
-  user?: User | null;
+  user?: UserPrivate | null;
   userLoading: boolean;
   connectWallet: () => void;
   disconnectWallet: () => void;

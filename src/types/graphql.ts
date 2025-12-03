@@ -1,5 +1,6 @@
 import {
   type UserFragment,
+  type UserPrivateFragment,
   type ColonyFragment,
   type TokenFragment,
   type ExtensionFragment,
@@ -65,6 +66,9 @@ export type ContributorReputation = ContributorReputationFragment;
 export type ContributorRoles = ContributorRolesFragment;
 
 export type User = UserFragment;
+
+// UserPrivate contains sensitive user data and should only be used for the authenticated user
+export type UserPrivate = UserPrivateFragment;
 
 export type Colony = ColonyFragment;
 

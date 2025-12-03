@@ -54,10 +54,7 @@ fragment ColonyContributor on ColonyContributor {
     }
   }
   user {
-    walletAddress: id
-    profile {
-      ...Profile
-    }
+    ...User
   }
   type
 }

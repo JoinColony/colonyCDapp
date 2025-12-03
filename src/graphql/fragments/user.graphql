@@ -1,4 +1,31 @@
+# Public User fragment - for displaying other users (no sensitive data)
 fragment User on User {
+  walletAddress: id
+  profile {
+    avatar
+    bio
+    displayName
+    displayNameChanged
+    location
+    thumbnail
+    website
+    isAutoOfframpEnabled
+  }
+}
+
+# For lightweight display of users (minimal data)
+fragment UserDisplay on User {
+  walletAddress: id
+  profile {
+    displayName
+    displayNameChanged
+    avatar
+    thumbnail
+  }
+}
+
+# Private User fragment - for authenticated user's own data only
+fragment UserPrivate on User {
   profile {
     ...Profile
   }
@@ -13,16 +40,7 @@ fragment User on User {
   }
 }
 
-fragment UserDisplay on User {
-  walletAddress: id
-  profile {
-    displayName
-    displayNameChanged
-    avatar
-    thumbnail
-  }
-}
-
+# Full Profile - contains private data, only used by UserPrivate
 fragment Profile on Profile {
   avatar
   bio

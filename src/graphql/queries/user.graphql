@@ -1,7 +1,17 @@
+# Query for fetching any user's public data
 query GetUserByAddress($address: ID!) {
   getUserByAddress(id: $address) {
     items {
       ...User
+    }
+  }
+}
+
+# Query for fetching the current authenticated user's private data
+query GetCurrentUser($address: ID!) {
+  getUserByAddress(id: $address) {
+    items {
+      ...UserPrivate
     }
   }
 }

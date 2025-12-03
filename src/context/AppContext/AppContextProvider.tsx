@@ -7,7 +7,7 @@ import React, {
   useEffect,
 } from 'react';
 
-import { useGetUserByAddressLazyQuery } from '~gql';
+import { useGetCurrentUserLazyQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useJoinedColonies from '~hooks/useJoinedColonies.ts';
 import usePrevious from '~hooks/usePrevious.ts';
@@ -27,7 +27,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   // and the first render is important here
   const [walletConnecting, setWalletConnecting] = useState(true);
 
-  const [getUserByAddress] = useGetUserByAddressLazyQuery();
+  const [getCurrentUser] = useGetCurrentUserLazyQuery();
 
   const {
     joinedColonies,
@@ -43,7 +43,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
             setUserLoading(true);
           }
 
-          const { data } = await getUserByAddress({
+          const { data } = await getCurrentUser({
             variables: {
               address: utils.getAddress(address),
             },
@@ -62,7 +62,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     },
-    [getUserByAddress],
+    [getCurrentUser],
   );
 
   const updateWallet = useCallback(() => {
