@@ -82,6 +82,8 @@ services:
     depends_on:
       amplify:
         condition: service_healthy
+    environment:
+      AUTH_DOMAIN: 'localhost:9091'
 
   network-files:
     container_name: 'network-files'
