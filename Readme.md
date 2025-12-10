@@ -2,6 +2,10 @@
 
 An iteration of the Colony Dapp sporting both a fully decentralized operating mode, as well as a mode enhanced by a metadata caching layer.
 
+# IMPORTANT - Deployments #
+
+The latest "full" release deployed to production is r13, which is both behind and ahead of `master`. Any further changes that need to be deployed to production should be merged into `r13-maint`, and we should treat that branch as deployable to prod.
+
 ## Prerequisites
 
 - `node` `v20.11.x` (Best use [nvm](https://github.com/nvm-sh/nvm))
