@@ -153,25 +153,36 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     success: ActionTypes.USER_LOGOUT_SUCCESS,
   });
 
-  const setUserContextWithErrorFallback = useCallback(async () => {
-    try {
-      // Temporary! (Like all other permanant solutions)
-      // This will put the app in a loading state preventing the user from interacting
-      // with anything until they have authenticated with the auth proxy
-      setWalletConnecting(true);
-      await setupUserContext(undefined);
-      setWalletConnecting(false);
-    } catch (error) {
-      // In case of error clear out the wallet and user (in the local state)
-      // All the others are cleared by the `userLogout` saga call which is called
-      // automatically if the `setupUserContext` saga fails
-      setWalletConnecting(true);
-      await handleLogOut();
-      setWallet(null);
-      setUser(null);
-      setWalletConnecting(false);
-    }
-  }, [setupUserContext, setWallet, setUser, setWalletConnecting, handleLogOut]);
+  const setUserContextWithErrorFallback = useCallback(
+    async (walletAddress: string) => {
+      try {
+        // Temporary! (Like all other permanant solutions)
+        // This will put the app in a loading state preventing the user from interacting
+        // with anything until they have authenticated with the auth proxy
+        setWalletConnecting(true);
+        await setupUserContext(undefined);
+        await updateUser(walletAddress);
+        setWalletConnecting(false);
+      } catch (error) {
+        // In case of error clear out the wallet and user (in the local state)
+        // All the others are cleared by the `userLogout` saga call which is called
+        // automatically if the `setupUserContext` saga fails
+        setWalletConnecting(true);
+        await handleLogOut();
+        setWallet(null);
+        setUser(null);
+        setWalletConnecting(false);
+      }
+    },
+    [
+      setupUserContext,
+      updateUser,
+      setWallet,
+      setUser,
+      setWalletConnecting,
+      handleLogOut,
+    ],
+  );
 
   const clearDynamicWalletStorage = useCallback(() => {
     localStorage.removeItem(DynamicLocalStorageKeys.STORE);
@@ -273,9 +284,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
           await updateWallet();
 
-          await updateUser(primaryWalletAddress);
-
-          await setUserContextWithErrorFallback();
+          await setUserContextWithErrorFallback(primaryWalletAddress);
 
           return;
         }
@@ -284,9 +293,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         if (contextWallet?.address === primaryWalletAddress && !wallet) {
           await updateWallet();
 
-          await updateUser(primaryWalletAddress);
-
-          await setUserContextWithErrorFallback();
+          await setUserContextWithErrorFallback(primaryWalletAddress);
 
           debugLogging('WALLET RECOVER AFTER CRASH', {
             primaryWallet,
@@ -325,9 +332,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
           await updateWallet();
 
-          await updateUser(primaryWalletAddress);
-
-          await setUserContextWithErrorFallback();
+          await setUserContextWithErrorFallback(primaryWalletAddress);
         }
       }
     };
