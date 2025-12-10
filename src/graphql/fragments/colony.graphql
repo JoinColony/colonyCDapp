@@ -49,10 +49,6 @@ fragment Colony on Colony {
   reputation
   expendituresGlobalClaimDelay
   private
-  colonyMemberInvite {
-    id
-    invitesRemaining
-  }
   lastUpdatedContributorsWithReputation
 }
 

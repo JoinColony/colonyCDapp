@@ -16,12 +16,6 @@ mutation UpdateUserProfile($input: UpdateProfileInput!) {
   }
 }
 
-mutation UpdateUser($input: UpdateUserInput!) {
-  updateUser(input: $input) {
-    id
-  }
-}
-
 mutation InitializeUser($input: InitializeUserInput!) {
   initializeUser(input: $input) {
     failedTransactions {

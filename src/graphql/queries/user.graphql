@@ -14,7 +14,7 @@ query GetUserByName($name: String!) {
   getProfileByUsername(displayName: $name) {
     items {
       user {
-        ...User
+        ...UserDisplay
       }
     }
   }
@@ -23,7 +23,7 @@ query GetUserByName($name: String!) {
 query GetUsers($filter: ModelUserFilterInput, $limit: Int) {
   listUsers(filter: $filter, limit: $limit) {
     items {
-      ...User
+      ...UserDisplay
     }
   }
 }

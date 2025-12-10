@@ -1,4 +1,4 @@
-import { type UserFragment } from '~gql';
+import { type UserDisplayFragment } from '~gql';
 
 export interface UserAvatarsItem {
   address: string;
@@ -9,7 +9,7 @@ export interface UserAvatarsItem {
 export interface UserAvatarsProps {
   maxAvatarsToShow?: number;
   className?: string;
-  items: UserFragment[];
+  items: UserDisplayFragment[];
   size?: number;
   showRemainingAvatars?: boolean;
   remainingAvatarsCount?: number;

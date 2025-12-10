@@ -4,7 +4,7 @@ query GetUserByUserOrLiquidationAddress(
 ) {
   getUserByAddress(id: $userOrLiquidationAddress) {
     items {
-      ...User
+      ...UserDisplay
     }
   }
   getUserByLiquidationAddress(

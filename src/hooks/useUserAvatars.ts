@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { type UserFragment } from '~gql';
+import { type UserDisplayFragment } from '~gql';
 import useUsersByAddresses from '~hooks/useUsersByAddresses.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { calculateRemainingItems } from '~utils/avatars.ts';
@@ -12,7 +12,7 @@ export const useUserAvatars = (
   items: UserAvatarsItem[],
 ): {
   remainingAvatarsCount: number;
-  registeredUsers: UserFragment[];
+  registeredUsers: UserDisplayFragment[];
 } => {
   const remainingAvatarsCount = calculateRemainingItems(maxAvatars, items);
   const { user } = useAppContext();

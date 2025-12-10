@@ -1,5 +1,6 @@
 import {
   type UserFragment,
+  type UserDisplayFragment,
   type ColonyFragment,
   type TokenFragment,
   type ExtensionFragment,
@@ -65,6 +66,8 @@ export type ContributorReputation = ContributorReputationFragment;
 export type ContributorRoles = ContributorRolesFragment;
 
 export type User = UserFragment;
+
+export type UserDisplay = UserDisplayFragment;
 
 export type Colony = ColonyFragment;
 
