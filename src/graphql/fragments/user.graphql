@@ -1,6 +1,7 @@
 fragment User on User {
   profile {
     ...Profile
+    email
   }
   walletAddress: id
   privateBetaInviteCode {
@@ -28,7 +29,6 @@ fragment Profile on Profile {
   bio
   displayName
   displayNameChanged
-  email
   location
   thumbnail
   website
