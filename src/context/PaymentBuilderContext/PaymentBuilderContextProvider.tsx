@@ -47,6 +47,12 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
     ExpenditureType | undefined
   >(undefined);
 
+  const [selectedEditingAction, setSelectedEditingAction] =
+    useState<ExpenditureAction | null>(null);
+  const [currentStep, setCurrentStep] = useState<
+    ExpenditureStep | string | null
+  >(null);
+
   const value = useMemo(
     () => ({
       toggleOnFundingModal,
@@ -65,6 +71,10 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       selectedExpenditureMotion: null,
       expectedStepKey,
       setExpectedStepKey,
+      selectedEditingAction,
+      setSelectedEditingAction,
+      currentStep,
+      setCurrentStep,
       selectedFundingAction,
       setSelectedFundingAction,
       selectedReleaseAction,
@@ -87,7 +97,12 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       expectedExpenditureType,
       isReleaseModalOpen,
       expectedStepKey,
+      selectedEditingAction,
+      setSelectedEditingAction,
+      currentStep,
+      setCurrentStep,
       selectedFundingAction,
+      setSelectedFundingAction,
       selectedReleaseAction,
       setSelectedReleaseAction,
       isFinalizeModalOpen,
