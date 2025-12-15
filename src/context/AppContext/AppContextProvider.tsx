@@ -14,7 +14,7 @@ import useLocalStorage from 'use-local-storage';
 
 import { deauthenticateWallet } from '~auth/index.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
-import { useGetUserByAddressLazyQuery } from '~gql';
+import { useGetOwnUserLazyQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useJoinedColonies from '~hooks/useJoinedColonies.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -45,7 +45,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   // and the first render is important here
   const [walletConnecting, setWalletConnecting] = useState(false);
   const { setShowAuthFlow, handleLogOut, primaryWallet } = useDynamicContext();
-  const [getUserByAddress] = useGetUserByAddressLazyQuery();
+  const [getOwnUser] = useGetOwnUserLazyQuery();
   const [autoConnectedWalletAddress] = useLocalStorage(
     DynamicLocalStorageKeys.CONNECTED_WALLET_NS,
     undefined,
@@ -70,7 +70,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
           // Only request new user data if the wallet actually changed
           if (user?.walletAddress !== address) {
-            const { data } = await getUserByAddress({
+            const { data } = await getOwnUser({
               variables: {
                 address: utils.getAddress(address),
               },
@@ -90,7 +90,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     },
-    [getUserByAddress, user],
+    [getOwnUser, user],
   );
 
   const updateWallet = useCallback(async () => {

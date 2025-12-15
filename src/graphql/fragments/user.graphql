@@ -21,6 +21,7 @@ fragment UserDisplay on User {
     displayNameChanged
     avatar
     thumbnail
+    isAutoOfframpEnabled
   }
 }
 

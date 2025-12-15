@@ -1,7 +1,15 @@
-query GetUserByAddress($address: ID!) {
+query GetOwnUser($address: ID!) {
   getUserByAddress(id: $address) {
     items {
       ...User
+    }
+  }
+}
+
+query GetUserByAddress($address: ID!) {
+  getUserByAddress(id: $address) {
+    items {
+      ...UserDisplay
     }
   }
 }
