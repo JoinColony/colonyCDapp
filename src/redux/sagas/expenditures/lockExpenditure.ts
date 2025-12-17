@@ -3,7 +3,6 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
-import { takeFrom } from '~utils/saga/effects.ts';
 
 import {
   type ChannelDefinition,
@@ -11,7 +10,7 @@ import {
   createTransactionChannels,
   waitForTxResult,
 } from '../transactions/index.ts';
-import { initiateTransaction, putError } from '../utils/index.ts';
+import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
 export type LockExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_LOCK>['payload'];

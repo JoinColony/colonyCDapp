@@ -20,11 +20,11 @@ import {
   getColonyManager,
   initiateTransaction,
   getEditLockedExpenditureMulticallData,
-  uploadAnnotation,
   getResolvedPayouts,
+  putError,
+  takeFrom,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
-import { takeFrom } from '~utils/saga/effects.ts';
 
 export type EditExpenditureMotionPayload =
   Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE>['payload'];
@@ -39,7 +39,6 @@ function* editLockedExpenditureMotion({
     motionDomainId,
   },
   meta,
-  meta: { setTxHash },
 }: Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE>) {
   const colonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(
@@ -152,38 +151,15 @@ function* editLockedExpenditureMotion({
       );
     }
 
-    const {
-      type,
-      payload: { transactionHash: txHash },
-    } = yield call(waitForTxResult, createMotion.channel);
+    yield waitForTxResult(createMotion.channel);
 
-    setTxHash?.(txHash);
-
-    if (annotationMessage) {
-      yield uploadAnnotation({
-        txChannel: annotateEditLockedExpenditure,
-        message: annotationMessage,
-        txHash,
-      });
-    }
-
-    if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS>>({
-        type: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS,
-        meta,
-      });
-    }
+    yield put<Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS>>({
+      type: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS,
+      meta,
+    });
   } catch (e) {
     console.error(e);
-    yield put<Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR>>({
-      type: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR,
-      payload: {
-        name: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR,
-        message: JSON.stringify(e),
-      },
-      meta,
-      error: true,
-    });
+    yield putError(ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR, e, meta);
   } finally {
     createMotion.channel.close();
     annotateEditLockedExpenditure.channel.close();

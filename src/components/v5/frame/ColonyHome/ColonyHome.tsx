@@ -12,6 +12,7 @@ import { formatText } from '~utils/intl.ts';
 import useGetActionFormData from '~v5/common/ActionSidebar/hooks/useGetActionFormData.ts';
 import Link from '~v5/shared/Link/index.ts';
 import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
+import TmpStreamingPayments from '~v5/tmpDebug/TmpStreamingPayments.tsx';
 
 import DashboardHeader from './partials/DashboardHeader/index.ts';
 import FundsCards from './partials/FundsCards/index.ts';
@@ -32,6 +33,8 @@ const ColonyHome = () => {
       className="flex flex-grow flex-col gap-6 sm:min-h-full md:gap-4.5"
       data-tour={TourTargets.Dashboard}
     >
+      {/* @TODO: Remove before merging to master */}
+      <TmpStreamingPayments />
       <div className="flex flex-col gap-8 sm:gap-6">
         <DashboardHeader />
         <TeamFilter />

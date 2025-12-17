@@ -36,3 +36,10 @@ export const getHistoricRolesDatabaseId = ({
 }) => {
   return `${colonyAddress}_${nativeId}_${recipientAddress}_${blockNumber}${isMultiSig ? '_multisig' : ''}_roles`;
 };
+
+export const getStreamingPaymentDatabaseId = (
+  colonyAddress: string,
+  nativeStreamingPaymentId: number,
+) => {
+  return `${colonyAddress}_${nativeStreamingPaymentId}`;
+};
