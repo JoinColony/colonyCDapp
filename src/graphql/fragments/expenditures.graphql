@@ -144,7 +144,7 @@ fragment ExpenditureAction on ColonyAction {
   createdAt
   expenditureSlotIds
   initiatorUser {
-    ...User
+    ...UserDisplay
   }
   motionData {
     ...ColonyMotion

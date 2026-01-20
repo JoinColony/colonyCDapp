@@ -14,7 +14,7 @@ import useLocalStorage from 'use-local-storage';
 
 import { deauthenticateWallet } from '~auth/index.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
-import { useGetUserByAddressLazyQuery } from '~gql';
+import { useGetOwnUserLazyQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useJoinedColonies from '~hooks/useJoinedColonies.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -45,7 +45,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   // and the first render is important here
   const [walletConnecting, setWalletConnecting] = useState(false);
   const { setShowAuthFlow, handleLogOut, primaryWallet } = useDynamicContext();
-  const [getUserByAddress] = useGetUserByAddressLazyQuery();
+  const [getOwnUser] = useGetOwnUserLazyQuery();
   const [autoConnectedWalletAddress] = useLocalStorage(
     DynamicLocalStorageKeys.CONNECTED_WALLET_NS,
     undefined,
@@ -70,7 +70,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
           // Only request new user data if the wallet actually changed
           if (user?.walletAddress !== address) {
-            const { data } = await getUserByAddress({
+            const { data } = await getOwnUser({
               variables: {
                 address: utils.getAddress(address),
               },
@@ -90,7 +90,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     },
-    [getUserByAddress, user],
+    [getOwnUser, user],
   );
 
   const updateWallet = useCallback(async () => {
@@ -153,25 +153,36 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     success: ActionTypes.USER_LOGOUT_SUCCESS,
   });
 
-  const setUserContextWithErrorFallback = useCallback(async () => {
-    try {
-      // Temporary! (Like all other permanant solutions)
-      // This will put the app in a loading state preventing the user from interacting
-      // with anything until they have authenticated with the auth proxy
-      setWalletConnecting(true);
-      await setupUserContext(undefined);
-      setWalletConnecting(false);
-    } catch (error) {
-      // In case of error clear out the wallet and user (in the local state)
-      // All the others are cleared by the `userLogout` saga call which is called
-      // automatically if the `setupUserContext` saga fails
-      setWalletConnecting(true);
-      await handleLogOut();
-      setWallet(null);
-      setUser(null);
-      setWalletConnecting(false);
-    }
-  }, [setupUserContext, setWallet, setUser, setWalletConnecting, handleLogOut]);
+  const setUserContextWithErrorFallback = useCallback(
+    async (walletAddress: string) => {
+      try {
+        // Temporary! (Like all other permanant solutions)
+        // This will put the app in a loading state preventing the user from interacting
+        // with anything until they have authenticated with the auth proxy
+        setWalletConnecting(true);
+        await setupUserContext(undefined);
+        await updateUser(walletAddress);
+        setWalletConnecting(false);
+      } catch (error) {
+        // In case of error clear out the wallet and user (in the local state)
+        // All the others are cleared by the `userLogout` saga call which is called
+        // automatically if the `setupUserContext` saga fails
+        setWalletConnecting(true);
+        await handleLogOut();
+        setWallet(null);
+        setUser(null);
+        setWalletConnecting(false);
+      }
+    },
+    [
+      setupUserContext,
+      updateUser,
+      setWallet,
+      setUser,
+      setWalletConnecting,
+      handleLogOut,
+    ],
+  );
 
   const clearDynamicWalletStorage = useCallback(() => {
     localStorage.removeItem(DynamicLocalStorageKeys.STORE);
@@ -273,9 +284,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
           await updateWallet();
 
-          await updateUser(primaryWalletAddress);
-
-          await setUserContextWithErrorFallback();
+          await setUserContextWithErrorFallback(primaryWalletAddress);
 
           return;
         }
@@ -284,9 +293,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         if (contextWallet?.address === primaryWalletAddress && !wallet) {
           await updateWallet();
 
-          await updateUser(primaryWalletAddress);
-
-          await setUserContextWithErrorFallback();
+          await setUserContextWithErrorFallback(primaryWalletAddress);
 
           debugLogging('WALLET RECOVER AFTER CRASH', {
             primaryWallet,
@@ -325,9 +332,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
           await updateWallet();
 
-          await updateUser(primaryWalletAddress);
-
-          await setUserContextWithErrorFallback();
+          await setUserContextWithErrorFallback(primaryWalletAddress);
         }
       }
     };

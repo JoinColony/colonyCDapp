@@ -1,7 +1,7 @@
 fragment ColonyUserRole on ColonyRole {
   id
   targetUser {
-    ...User
+    ...UserDisplay
   }
   targetAddress
   role_1

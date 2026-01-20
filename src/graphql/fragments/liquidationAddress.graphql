@@ -3,7 +3,7 @@ fragment LiquidationAddress on LiquidationAddress {
   chainId
   userAddress
   user {
-    ...User
+    ...UserDisplay
   }
   liquidationAddress
 }

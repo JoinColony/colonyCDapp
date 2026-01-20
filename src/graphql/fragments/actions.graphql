@@ -185,7 +185,7 @@ fragment UserMotionStakes on UserMotionStakes {
 fragment VoterRewardsHistory on VoterRewardsHistory {
   userAddress
   user {
-    ...User
+    ...UserDisplay
   }
   amount
 }
@@ -265,7 +265,7 @@ fragment MotionMessage on MotionMessage {
   name
   messageKey
   initiatorUser {
-    ...User
+    ...UserDisplay
   }
   vote
   amount
@@ -302,7 +302,7 @@ fragment MultiSigUserSignature on MultiSigUserSignature {
   role
   userAddress
   user {
-    ...User
+    ...UserDisplay
   }
   multiSigId
   vote
