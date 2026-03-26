@@ -12,7 +12,6 @@ const ParamNames = {
   appsyncApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FAWS_APPSYNC_API_KEY`,
   bnbRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2FBNB_RPC_ENDPOINT`,
   ethRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2FETH_RPC_ENDPOINT`,
-  bscscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FBSCSCAN_API_KEY`,
   etherscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FETHERSCAN_API_KEY`,
   bridgeXYZApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FBRIDGEXYZ_API_KEY`,
   bridgeXYZApiUrl: `%2Famplify%2Fcdapp%2F${ENV}%2FBRIDGEXYZ_API_URL`,
@@ -21,6 +20,8 @@ const ParamNames = {
   magicbellApiSecret: `%2Famplify%2Fcdapp%2F${ENV}%2FMAGICBELL_API_SECRET`,
   coinGeckoApiUrl: `%2Famplify%2Fcdapp%2F${ENV}%2FCOINGECKO_API_URL`,
   coinGeckoApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FCOINGECKO_API_KEY`,
+  pinataApiSecret: `%2Famplify%2Fcdapp%2F${ENV}%2FPINATA_API_SECRET`,
+  arbiscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FARBISCAN_API_KEY`,
 };
 
 const getParam = async (paramName) => {

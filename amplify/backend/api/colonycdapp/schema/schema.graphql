@@ -1111,6 +1111,14 @@ type Query {
   """
   getUserNotificationsHMAC: String
     @function(name: "getUserNotificationsHMAC-${env}")
+  getClientSecrets: ClientSecrets
+    @function(name: "getClientSecrets-${env}")
+}
+
+type ClientSecrets {
+  pinataApiSecret: String
+  coinGeckoApiKey: String
+  arbiscanApiKey: String
 }
 
 """
