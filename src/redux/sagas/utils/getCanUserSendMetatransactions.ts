@@ -2,11 +2,13 @@ import { utils } from 'ethers';
 
 import { getContext, ContextModule } from '~context/index.ts';
 import {
-  GetUserByAddressDocument,
-  type GetUserByAddressQuery,
-  type GetUserByAddressQueryVariables,
+  GetOwnUserDocument,
+  type GetOwnUserQuery,
+  type GetOwnUserQueryVariables,
 } from '~gql';
 import { canUseMetatransactions } from '~utils/checks/index.ts';
+
+import type { ApolloQueryResult } from '@apollo/client';
 
 export function* metatransactionsEnabled() {
   const metatransactionsAvailable = canUseMetatransactions();
@@ -20,11 +22,11 @@ export function* metatransactionsEnabled() {
 
   const checksummedWalletAddress = utils.getAddress(wallet.address);
 
-  const { data } = yield apolloClient.query<
-    GetUserByAddressQuery,
-    GetUserByAddressQueryVariables
+  const { data }: ApolloQueryResult<GetOwnUserQuery> = yield apolloClient.query<
+    GetOwnUserQuery,
+    GetOwnUserQueryVariables
   >({
-    query: GetUserByAddressDocument,
+    query: GetOwnUserDocument,
     variables: {
       address: checksummedWalletAddress,
     },
