@@ -6,7 +6,7 @@ COPY package.json package-lock.json ./
 RUN SKIP_HOOKS=true npm ci
 
 # Package the import-meta-env as single binary as we don't have node on the production container
-RUN npx @yao-pkg/pkg ./node_modules/@import-meta-env/cli/bin/import-meta-env.js \
+RUN npx @yao-pkg/pkg@6.12.0 ./node_modules/@import-meta-env/cli/bin/import-meta-env.js \
   -t node20-alpine-x64 \
   -o import-meta-env-alpine
 # To get the git commit hash later
