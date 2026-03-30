@@ -2,6 +2,7 @@ import { type JsonFragment } from '@ethersproject/abi';
 import { keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 
 import { ARBITRARY_TRANSACTION_NETWORKS } from '~constants/index.ts';
+import clientSecrets from '~utils/clientSecrets.ts';
 
 export interface AbiItemExtended extends JsonFragment {
   name: string;
@@ -30,7 +31,7 @@ export const fetchContractABI = async (
 
     const currentNetworkData = getCurrentNetworkData(chainId)!;
 
-    const apiKey = import.meta.env.ARBISCAN_API_KEY;
+    const { arbiscanApiKey: apiKey } = clientSecrets;
     const apiUri =
       `${currentNetworkData.apiUri}` +
       `?apiKey=${apiKey}` +

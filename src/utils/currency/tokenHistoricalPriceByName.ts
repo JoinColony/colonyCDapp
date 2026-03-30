@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 
 import { SupportedCurrencies } from '~gql';
+import clientSecrets from '~utils/clientSecrets.ts';
 
 import { currencyApiConfig, coinGeckoMappings } from './config.ts';
 import {
@@ -23,7 +24,7 @@ const buildHistoricalTokenNameCoinGeckoURL = (
     currencyApiConfig.endpoints.tokenHistoricalPriceByName;
 
   return buildAPIEndpoint(new URL(`${url}/${tokenName}/history`), {
-    [searchParams.api]: import.meta.env.COINGECKO_API_KEY ?? '',
+    [searchParams.api]: clientSecrets.coinGeckoApiKey,
     [searchParams.date]: getDateSearchParamValue(date),
   });
 };

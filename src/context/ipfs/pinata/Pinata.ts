@@ -1,13 +1,9 @@
+import clientSecrets from '~utils/clientSecrets.ts';
+
 import { PINATA_ENDPOINT, JSON_MIME_TYPE } from './constants.ts';
 
 class Pinata {
-  hasApiAccess: boolean;
-
-  constructor() {
-    this.hasApiAccess = !!(
-      import.meta.env.PINATA_API_KEY && import.meta.env.PINATA_API_SECRET
-    );
-  }
+  private readonly secrets = clientSecrets;
 
   /**
    * Return a JSON string to IPFS using the Pinata.cloud API
@@ -18,7 +14,7 @@ class Pinata {
       typeof data !== 'string' ? JSON.stringify(data) : data;
 
     try {
-      if (!this.hasApiAccess) {
+      if (!(import.meta.env.PINATA_API_KEY && this.secrets.pinataApiSecret)) {
         throw new Error('Client does not have the correct Pinata API keys');
       }
       /*
@@ -34,12 +30,11 @@ class Pinata {
         /*
          * @NOTE This is because Pinata.cloud makes us supply their non-standard headers
          */
-        // @ts-ignore
         headers: {
           // eslint-disable-next-line camelcase
           pinata_api_key: import.meta.env.PINATA_API_KEY,
           // eslint-disable-next-line camelcase
-          pinata_secret_api_key: import.meta.env.PINATA_API_SECRET,
+          pinata_secret_api_key: this.secrets.pinataApiSecret,
           'Content-Type': JSON_MIME_TYPE,
         },
         body: potentialJSONBlob,

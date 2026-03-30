@@ -270,6 +270,13 @@ export type ChainMetadataInput = {
   transactionHash?: InputMaybe<Scalars['String']>;
 };
 
+export type ClientSecrets = {
+  __typename?: 'ClientSecrets';
+  arbiscanApiKey?: Maybe<Scalars['String']>;
+  coinGeckoApiKey?: Maybe<Scalars['String']>;
+  pinataApiSecret?: Maybe<Scalars['String']>;
+};
+
 export enum ClientType {
   CoinMachineClient = 'CoinMachineClient',
   ColonyClient = 'ColonyClient',
@@ -6653,6 +6660,7 @@ export type Query = {
   getActionsByColony?: Maybe<ModelColonyActionConnection>;
   getAnnotation?: Maybe<Annotation>;
   getCacheTotalBalance?: Maybe<CacheTotalBalance>;
+  getClientSecrets?: Maybe<ClientSecrets>;
   getColoniesByNativeTokenId?: Maybe<ModelColonyConnection>;
   getColony?: Maybe<Colony>;
   getColonyAction?: Maybe<ColonyAction>;
@@ -10687,6 +10695,11 @@ export type GetGatewayFeeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetGatewayFeeQuery = { __typename?: 'Query', bridgeGetGatewayFee?: { __typename?: 'BridgeGatewayFeeReturn', transactionFeePercentage?: number | null, success?: boolean | null } | null };
 
+export type GetClientSecretsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetClientSecretsQuery = { __typename?: 'Query', getClientSecrets?: { __typename?: 'ClientSecrets', pinataApiSecret?: string | null, coinGeckoApiKey?: string | null, arbiscanApiKey?: string | null } | null };
+
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
@@ -13780,6 +13793,42 @@ export function useGetGatewayFeeLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetGatewayFeeQueryHookResult = ReturnType<typeof useGetGatewayFeeQuery>;
 export type GetGatewayFeeLazyQueryHookResult = ReturnType<typeof useGetGatewayFeeLazyQuery>;
 export type GetGatewayFeeQueryResult = Apollo.QueryResult<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>;
+export const GetClientSecretsDocument = gql`
+    query GetClientSecrets {
+  getClientSecrets {
+    pinataApiSecret
+    coinGeckoApiKey
+    arbiscanApiKey
+  }
+}
+    `;
+
+/**
+ * __useGetClientSecretsQuery__
+ *
+ * To run a query within a React component, call `useGetClientSecretsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetClientSecretsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetClientSecretsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetClientSecretsQuery(baseOptions?: Apollo.QueryHookOptions<GetClientSecretsQuery, GetClientSecretsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetClientSecretsQuery, GetClientSecretsQueryVariables>(GetClientSecretsDocument, options);
+      }
+export function useGetClientSecretsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetClientSecretsQuery, GetClientSecretsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetClientSecretsQuery, GetClientSecretsQueryVariables>(GetClientSecretsDocument, options);
+        }
+export type GetClientSecretsQueryHookResult = ReturnType<typeof useGetClientSecretsQuery>;
+export type GetClientSecretsLazyQueryHookResult = ReturnType<typeof useGetClientSecretsLazyQuery>;
+export type GetClientSecretsQueryResult = Apollo.QueryResult<GetClientSecretsQuery, GetClientSecretsQueryVariables>;
 export const GetFullColonyByAddressDocument = gql`
     query GetFullColonyByAddress($address: ID!) {
   getColonyByAddress(id: $address) {
