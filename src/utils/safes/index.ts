@@ -15,7 +15,6 @@ export {
   type AbiItemExtended,
   fetchContractABI,
   isAbiItem,
-  fetchContractName,
 } from './getContractUsefulMethods.ts';
 
 export { getArrayFromString } from './contractParserValidation.ts';

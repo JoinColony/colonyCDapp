@@ -1,5 +1,6 @@
 import { SupportedCurrencies } from '~gql';
 import { Network } from '~types/network.ts';
+import clientSecrets from '~utils/clientSecrets.ts';
 import debugLogging from '~utils/debug/debugLogging.ts';
 
 import { currencyApiConfig, coinGeckoMappings } from './config.ts';
@@ -28,7 +29,7 @@ const buildTokenAddressCoinGeckoURL = (
   return buildAPIEndpoint(new URL(`${url}/${chain}`), {
     [searchParams.from]: contractAddress,
     [searchParams.to]: denomination,
-    [searchParams.api]: import.meta.env.COINGECKO_API_KEY ?? '',
+    [searchParams.api]: clientSecrets.coinGeckoApiKey,
   });
 };
 

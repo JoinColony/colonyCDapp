@@ -1,10 +1,8 @@
 import { type JsonFragment } from '@ethersproject/abi';
 import { keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 
-import {
-  ARBITRARY_TRANSACTION_NETWORKS,
-  BINANCE_NETWORK,
-} from '~constants/index.ts';
+import { ARBITRARY_TRANSACTION_NETWORKS } from '~constants/index.ts';
+import clientSecrets from '~utils/clientSecrets.ts';
 
 export interface AbiItemExtended extends JsonFragment {
   name: string;
@@ -20,39 +18,6 @@ const getCurrentNetworkData = (chainId: string) => {
   );
 };
 
-export const getApiKey = (chainId: string) => {
-  if (chainId === BINANCE_NETWORK.chainId) {
-    return import.meta.env.BSCSCAN_API_KEY;
-  }
-  return import.meta.env.ETHERSCAN_API_KEY;
-};
-
-export const fetchContractName = async (
-  contractAddress: string,
-  safeChainId: string,
-): Promise<string> => {
-  // will be defined since fetchContractName is only called if selectedSafe is defined
-
-  const currentNetworkData = getCurrentNetworkData(safeChainId)!;
-
-  const apiKey = getApiKey(currentNetworkData.chainId);
-  const apiUri =
-    `${currentNetworkData.apiUri}` +
-    `?apiKey=${apiKey}` +
-    `&module=contract` +
-    `&action=getsourcecode` +
-    `&address=${contractAddress}`;
-
-  try {
-    const response = await fetch(apiUri);
-    const data = await response.json();
-    return data.result[0].ContractName || '';
-  } catch (error) {
-    console.error('Failed to get contract name', error);
-    return '';
-  }
-};
-
 export const fetchContractABI = async (
   contractAddress: string,
   chainId: string,
@@ -66,7 +31,7 @@ export const fetchContractABI = async (
 
     const currentNetworkData = getCurrentNetworkData(chainId)!;
 
-    const apiKey = import.meta.env.ARBISCAN_API_KEY;
+    const { arbiscanApiKey: apiKey } = clientSecrets;
     const apiUri =
       `${currentNetworkData.apiUri}` +
       `?apiKey=${apiKey}` +

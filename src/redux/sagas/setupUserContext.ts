@@ -1,10 +1,15 @@
+import { type ApolloQueryResult } from '@apollo/client';
 import { all, call, fork, put } from 'redux-saga/effects';
 
 // import AppLoadingState from '~context/appLoadingState';
 
 import { authenticateWallet } from '~auth/index.ts';
-import { getContext, ContextModule } from '~context/index.ts';
+import { getContext, setContext, ContextModule } from '~context/index.ts';
+import getIPFSWithFallback from '~context/ipfs/getIpfsWithFallback.ts';
+import pinataClient from '~context/ipfs/pinataClient.ts';
+import { GetClientSecretsDocument, type GetClientSecretsQuery } from '~gql';
 import { failPendingTransactions } from '~state/transactionState.ts';
+import { setClientSecrets } from '~utils/clientSecrets.ts';
 
 import { ActionTypes } from '../actionTypes.ts';
 import { type AllActions } from '../types/actions/index.ts';
@@ -46,10 +51,43 @@ function* setupContextDependentSagas() {
   ]);
 }
 
+function* fetchAndApplyClientSecrets() {
+  try {
+    const apolloClient = getContext(ContextModule.ApolloClient);
+    const { data }: ApolloQueryResult<GetClientSecretsQuery> =
+      yield apolloClient.query<GetClientSecretsQuery>({
+        query: GetClientSecretsDocument,
+      });
+
+    const secrets = data?.getClientSecrets;
+    if (!secrets) return;
+
+    setClientSecrets({
+      pinataApiSecret: secrets.pinataApiSecret ?? '',
+      coinGeckoApiKey: secrets.coinGeckoApiKey ?? '',
+      arbiscanApiKey: secrets.arbiscanApiKey ?? '',
+    });
+
+    if (
+      import.meta.env.NETWORK_ID !== 'ganache' &&
+      import.meta.env.PINATA_API_KEY &&
+      secrets.pinataApiSecret
+    ) {
+      setContext(
+        ContextModule.IPFSWithFallback,
+        getIPFSWithFallback(undefined, pinataClient),
+      );
+    }
+  } catch (error) {
+    console.error('Could not fetch client secrets:', error);
+  }
+}
+
 function* initializeFullWallet() {
   // We're forking the next one as we don't really need to wait for it
   yield call(getGasPrices);
   yield call(authenticateWallet);
+  yield call(fetchAndApplyClientSecrets);
   yield fork(failPendingTransactions);
 }
 
