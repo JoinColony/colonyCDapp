@@ -3,6 +3,5 @@
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
   "DynamoDBEnablePointInTimeRecovery": "true",
-  "APIKeyExpirationEpoch": 1805968800,
-  "CreateAPIKey": 1
+  "CreateAPIKey": 0
 }
